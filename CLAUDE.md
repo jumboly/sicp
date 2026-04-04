@@ -65,9 +65,21 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [ ] Section 1.2〜1.3
 - [ ] Chapter 2〜5
 
+## インライン実行
+
+- `static/assets/snippet-runner.js` — eval スニペットに Run/Open/Copy/Reset ボタンを追加
+- ビルド時に `processSnippetHtml.js` が `<pre>` に `data-preamble`（依存コード）と `data-url`（Source Academy URL）を付与
+- Run: `data-preamble` + 編集中コードを `eval()` で実行、結果をスニペット直下に表示
+- コードは `contenteditable` で編集可能、Reset で元に戻せる
+
+## ブランチ戦略
+
+- `ja`（デフォルトブランチ）: fork 独自の変更（翻訳、機能追加）はすべてここで作業
+- `master`: upstream と同期するためのブランチ。直接コミットしない
+
 ## デプロイ
 
-- `master` への push で GitHub Actions が自動デプロイ
+- `ja` への push で GitHub Actions が自動デプロイ
 - `.github/workflows/deploy-pages.yml` で `yarn web-js && yarn js && yarn json` を実行
 - `peaceiris/actions-gh-pages@v4` で `docs_out/` を `gh-pages` ブランチに公開
 
@@ -78,3 +90,9 @@ yarn lint  # prettier で javascript/ ディレクトリをチェック
 ```
 
 CI で lint が走るので、`javascript/` 配下のファイルを編集したら prettier でフォーマットすること。
+
+## ライセンス
+
+- upstream は CC BY-SA 4.0（テキスト・図）+ GPLv3（プログラム）
+- 日本語翻訳は CC BY-SA 4.0 の Adapted Material に該当
+- `javascript/html/Licences.tsx` に翻訳である旨・原作リンク・ライセンス表記を記載済み
