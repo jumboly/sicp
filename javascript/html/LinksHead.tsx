@@ -1,6 +1,9 @@
 import { html } from "hono/html";
 import type { FC } from "hono/jsx";
 
+// Cache busting: ビルド時のタイムスタンプをローカルアセットのURLに付与
+const buildHash = Date.now().toString(36);
+
 const HtmlHeadPart1: FC = () => {
   return html`<meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
@@ -30,7 +33,7 @@ const HtmlHeadPart2: FC<HtmlHeadPart2Props> = ({ toIndexFolder }) => {
     <link
       rel="stylesheet"
       media="all"
-      href="${toIndexFolder}assets/stylesheet.css"
+      href="${toIndexFolder}assets/stylesheet.css?v=${buildHash}"
     />
 
     <link
@@ -70,8 +73,8 @@ const HtmlHeadPart2: FC<HtmlHeadPart2Props> = ({ toIndexFolder }) => {
     <!--  <script type="text/javascript"
       src="${toIndexFolder}MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full">
     </script> -->
-    <script src="${toIndexFolder}assets/application.js"></script>
-    <script src="${toIndexFolder}assets/lang-toggle.js?v=2"></script>
+    <script src="${toIndexFolder}assets/application.js?v=${buildHash}"></script>
+    <script src="${toIndexFolder}assets/lang-toggle.js?v=${buildHash}"></script>
 
     <!-- Rendering inline LaTeX -->
     <script type="text/x-mathjax-config">
