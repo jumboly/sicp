@@ -31,6 +31,10 @@
       }
     }
 
+    // Set body class for CSS styling in both mode
+    document.body.classList.remove("lang-mode-en", "lang-mode-ja", "lang-mode-both");
+    document.body.classList.add("lang-mode-" + mode);
+
     try {
       localStorage.setItem(STORAGE_KEY, mode);
     } catch (e) {}
