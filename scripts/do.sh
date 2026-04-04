@@ -67,6 +67,7 @@ prepare() {
 	PDF_BASENAME="$(basename "${PDF_FILE}" .pdf)"
 	cp "${LATEX_PDF}/${PDF_BASENAME}."{log,ilg,ind,idx} ${DOCS} || :
  	[ ! -f ${GENERATED_HTML}/index.html ] || cp -rf ${GENERATED_HTML}/* ${DOCS}
+ 	[ ! -d html_js ] || [ ! -f html_js/index.html ] || cp -rf html_js/* ${DOCS}
  	[ ! -d ${GENERATED_JS} ] || ( zip -r ${ZIP_FILE} ${GENERATED_JS}; \
  	                              cp ${ZIP_FILE} ${DOCS} )
 	[ ! -d ${GENERATED_JSON} ] || ( rm -rf ${DOCS}/json; \

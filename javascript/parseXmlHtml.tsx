@@ -68,7 +68,8 @@ export const tagsToRemove = new Set([
   "FORCE_PAGE_BREAK_AND_FILL",
   "FILBREAK",
   "LONG_PAGE",
-  "SHORT_PAGE"
+  "SHORT_PAGE",
+  "SCHEME"
 ]);
 // SOLUTION tag handled by processSnippet
 
@@ -77,7 +78,10 @@ const ignoreTags = new Set([
   "SPLIT",
   "SPLITINLINE",
   "JAVASCRIPT",
-  "WEB_ONLY"
+  "WEB_ONLY",
+  "BILINGUAL",
+  "EN",
+  "JA"
 ]);
 
 const preserveTags = new Set([
@@ -793,6 +797,24 @@ const processTextFunctionsSplit = {
   }
 };
 
+const processTextFunctionsBilingual = {
+  BILINGUAL: (node, writeTo) => {
+    const en = getChildrenByTagName(node, "EN")[0];
+    const ja = getChildrenByTagName(node, "JA")[0];
+
+    if (en) {
+      writeTo.push(`<span class="lang-en">`);
+      recursiveProcessTextHtml(en.firstChild, writeTo);
+      writeTo.push(`</span>`);
+    }
+    if (ja) {
+      writeTo.push(`<span class="lang-ja" style="display:none">`);
+      recursiveProcessTextHtml(ja.firstChild, writeTo);
+      writeTo.push(`</span>`);
+    }
+  }
+};
+
 export const switchParseFunctionsHtml = version => {
   if (version == "split") {
     console.log("generate split version of web textbook");
@@ -803,6 +825,12 @@ export const switchParseFunctionsHtml = version => {
     };
   } else if (version == "scheme") {
     console.log("generate sicp scheme web textbook");
+  } else if (version == "js") {
+    console.log("generate js web textbook with bilingual support");
+    processTextFunctionsHtml = {
+      ...processTextFunctionsHtml,
+      ...processTextFunctionsBilingual
+    };
   }
 };
 

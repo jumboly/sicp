@@ -269,6 +269,8 @@ async function main() {
       outputDir = path.join(__dirname, "../html_split");
     } else if (version == "scheme") {
       outputDir = path.join(__dirname, "../html_scheme");
+    } else if (version == "js") {
+      outputDir = path.join(__dirname, "../html_js");
     }
 
     switchParseFunctionsHtml(version);

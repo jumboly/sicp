@@ -64,6 +64,15 @@ const Navigation: FC = () => {
           ${raw(<NavigationElements />)}
         </span></span
       >
+      <button
+        id="lang-toggle"
+        class="btn btn-sm btn-outline-light"
+        onclick="toggleLanguage()"
+        title="Switch language"
+        style="margin-left: auto; font-size: 0.8rem; padding: 2px 8px; white-space: nowrap;"
+      >
+        JA に切替
+      </button>
     </nav>`;
 };
 
