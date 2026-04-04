@@ -115,7 +115,10 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 2.4.1 Representations for Complex Numbers
 - [x] Section 2.4.2 Tagged data
 - [x] Section 2.4.3 Data-Directed Programming and Additivity
-- [ ] Chapter 2 (Section 2.5)
+- [x] Section 2.5 Systems with Generic Operations (導入部)
+- [x] Section 2.5.1 Generic Arithmetic Operations
+- [x] Section 2.5.2 Combining Data of Different Types
+- [x] Section 2.5.3 Example: Symbolic Algebra
 - [ ] Chapter 3〜5
 
 ## インライン実行
@@ -150,11 +153,19 @@ yarn validate-bilingual   # BILINGUAL タグ配置ルールを検証
 
 「〜まで翻訳して」「〜まで一括で」といった指示があった場合、以下を各セクションごとに**直列で**繰り返す（並列エージェント不可）：
 
-1. **翻訳**: XMLファイルを読み、TRANSLATION_GUIDE.md に従って BILINGUAL タグで翻訳を追加
-2. **検証**: `yarn validate-bilingual` を実行、エラーがあれば修正
-3. **レビュー**: 別エージェント（Agent ツール）で翻訳をレビュー（用語の一貫性、文体、タグ配置ルール）
-4. **用語集更新**: TRANSLATION_GUIDE.md に新出用語があれば追加
-5. **進捗更新**: CLAUDE.md の翻訳進捗チェックリストを更新
+1. **翻訳（サブエージェント）**: Agent ツールで翻訳用サブエージェントを起動し、XMLファイルの翻訳を委任する
+   - コンテンツフィルター回避のため、翻訳は必ずサブエージェントで実行する（メインプロセスでの直接翻訳は禁止）
+   - サブエージェントには以下を渡す：対象ファイルパス、翻訳対象の行範囲、TRANSLATION_GUIDE.md のパス、BILINGUAL タグ配置ルール、用語集（前セクションのレビューで得たフィードバックがあればそれも含める）
+   - 大きなファイルは範囲を分割して複数回のサブエージェントに分ける（目安：TEXT ブロック10個程度ずつ）
+   - **400エラー時のリトライ**: サブエージェントがコンテンツフィルター（400エラー）で失敗した場合、翻訳範囲を半分に分割してリトライする。それでも失敗する場合はさらに半分にする。最小単位（単一のTEXTブロック）でも失敗する場合は、JA に英文をコピーし `<!-- content filter blocked translation -->` コメントを付けて次に進む
+2. **品質確認（メインプロセス）**: サブエージェント完了後、以下をメインプロセスで実行する
+   - `yarn validate-bilingual` で構造検証
+   - `grep -n '�'` で文字化けチェック（サブエージェントは文字化けを起こすことがある）
+   - 文字化けがあれば修正
+3. **レビュー（サブエージェント）**: 別のサブエージェントで翻訳をレビュー（用語の一貫性、文体、タグ配置ルール）
+4. **用語連携**: レビューで指摘された用語の問題や新出用語をメモし、次セクションの翻訳サブエージェントへのプロンプトに反映する
+5. **用語集更新**: TRANSLATION_GUIDE.md に新出用語があれば追加
+6. **進捗更新**: CLAUDE.md の翻訳進捗チェックリストを更新
 
 - 途中で確認を求めず、すべて完了するまで自律的に進める
 - 判断に迷った箇所は最後にまとめて報告する

@@ -1,11 +1,16 @@
 <SUBSECTION>
   <NAME>
-    Combining Data of Different Types
+    <BILINGUAL>
+      <EN>Combining Data of Different Types</EN>
+      <JA>異なる型のデータの組み合わせ</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:combining-data-of-different-types"/>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We have seen how to define a unified arithmetic system that
     encompasses ordinary numbers, complex numbers, rational numbers, and
     any other type of number we might decide to invent, but we have
@@ -20,8 +25,15 @@
     would like to introduce the cross-type operations in some carefully
     controlled way, so that we can support them
     without seriously violating our module boundaries.
+    </EN>
+    <JA>
+    ここまで、通常の数、複素数、有理数、そしてこの先考案するかもしれないあらゆる種類の数を包含する統一的な算術システムの定義方法を見てきましたが、重要な問題を無視してきました。これまでに定義した演算は、異なるデータ型を完全に独立したものとして扱っています。つまり、たとえば2つの通常の数を加算するパッケージと、2つの複素数を加算するパッケージは別々に存在しています。まだ考慮していなかったのは、型の境界をまたぐ演算を定義することに意味があるという事実です。たとえば、複素数と通常の数の加算などです。私たちはプログラムの各部分の間に障壁を導入して、それぞれを独立に開発・理解できるようにするために多大な努力を払ってきました。型をまたぐ演算を、モジュールの境界を大きく侵害することなくサポートできるよう、慎重に制御された方法で導入したいと考えています。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     One way to handle
     <INDEX>operation<SUBINDEX>cross-type</SUBINDEX></INDEX>
     <INDEX>cross-type operations</INDEX>
@@ -39,7 +51,23 @@
     </SPLITINLINE>
     for adding complex numbers to ordinary numbers and installs this in the
     table using the tag
-    <SPLITINLINE><SCHEME><SCHEMEINLINE>(complex scheme-number)</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>list("complex", "javascript_number")</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>:<FOOTNOTE>We
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>(complex scheme-number)</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>list("complex", "javascript_number")</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>:
+    </EN>
+    <JA>
+    <INDEX>operation<SUBINDEX>cross-type</SUBINDEX></INDEX>
+    <INDEX>cross-type operations</INDEX>
+    <INDEX>type(s)<SUBINDEX>cross-type operations</SUBINDEX></INDEX>
+    型をまたぐ演算を扱う1つの方法は、演算が有効な型の組み合わせごとに異なる<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を設計することです。たとえば、複素数パッケージを拡張して、複素数と通常の数を加算する<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を提供し、タグ
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>(complex scheme-number)</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>list("complex", "javascript_number")</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> を使ってテーブルに登録できます：
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>We
     also have to supply an almost identical
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -51,7 +79,19 @@
       <JAVASCRIPT>
 	<JAVASCRIPTINLINE>list("javascript_number", "complex")</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
-    </SPLITINLINE></FOOTNOTE>
+    </SPLITINLINE></EN>
+    <JA>型<PDF_ONLY><BR/></PDF_ONLY>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(scheme_number complex)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>list("javascript_number", "complex")</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>を扱うために、ほぼ同一の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>も用意する必要があります。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET CHAP="4" HIDE="yes">
       <NAME>add_complex_to_javascript_number_example</NAME>
       <JAVASCRIPT>
@@ -88,6 +128,8 @@ put("add", list("complex", "javascript_number"),
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     This technique works, but it is cumbersome.  With such a system, the
     cost of introducing a new type is not just the construction of the
     package of
@@ -113,14 +155,36 @@ put("add", list("complex", "javascript_number"),
     these two packages.  Formulating coherent policies on the division of
     responsibility among packages can be an overwhelming task in designing
     systems with many packages and many cross-type operations.
+    </EN>
+    <JA>
+    この手法は機能しますが、煩雑です。このようなシステムでは、新しい型を導入するコストは、その型用の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    のパッケージを構築するだけにとどまらず、型をまたぐ演算を実装する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の構築とインストールも必要になります。これは、その型自体の演算を定義するのに必要なコード量よりも、はるかに多くなりがちです。また、この方法は、個別のパッケージを加法的に組み合わせる能力、少なくとも各パッケージの実装者が他のパッケージについて考慮しなければならない範囲を限定する能力を損ないます。たとえば、上の例では、複素数と通常の数の混合演算の処理は複素数パッケージの責任とするのが妥当に思えます。しかし、有理数と複素数の組み合わせは、複素数パッケージが行うかもしれませんし、有理数パッケージが行うかもしれませんし、あるいはこれら二つのパッケージから抽出した演算を使う第三のパッケージが行うかもしれません。多くのパッケージと多くの型をまたぐ演算を持つシステムを設計する際に、パッケージ間の責任分担について一貫した方針を定めることは、非常に困難な作業になりえます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Coercion</NAME>
+    <NAME>
+      <BILINGUAL>
+        <EN>Coercion</EN>
+        <JA>型変換</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>coercion<OPEN/></INDEX>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In the general situation of completely unrelated operations acting on
     completely unrelated types, implementing explicit cross-type operations,
     cumbersome though it may be, is the best that one can hope for.
@@ -133,8 +197,15 @@ put("add", list("complex", "javascript_number"),
     view the ordinary number as a complex number whose imaginary part is zero.
     This transforms the problem to that of combining two complex numbers, which
     can be handled in the ordinary way by the complex-arithmetic package.
+    </EN>
+    <JA>
+    完全に無関係な演算が完全に無関係な型に作用するという一般的な状況では、明示的な型をまたぐ演算を実装するのは、煩雑ではあっても、望みうる最善の方法です。しかし幸いなことに、型システムに潜む追加の構造を活用することで、通常はもっとうまくやれます。多くの場合、異なるデータ型は完全に独立しているわけではなく、ある型のオブジェクトを別の型として見なす方法があるかもしれません。このプロセスは<EM>型変換</EM>（coercion）と呼ばれます。たとえば、通常の数と複素数を算術的に組み合わせるよう求められた場合、通常の数を虚部がゼロの複素数と見なすことができます。これにより問題は二つの複素数の組み合わせに変換され、複素数算術パッケージの通常の方法で処理できます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In general, we can implement this idea by designing
     <INDEX>coercion<SUBINDEX><SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
     coercion
@@ -150,6 +221,19 @@ put("add", list("complex", "javascript_number"),
     </SPLITINLINE>
     which transforms a given ordinary number to a complex number with that real
     part and zero imaginary part:
+    </EN>
+    <JA>
+    一般に、このアイデアは、ある型のオブジェクトを別の型の同等のオブジェクトに変換する
+    <INDEX>coercion<SUBINDEX><SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
+    型変換<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を設計することで実装できます。以下は典型的な型変換<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>で、与えられた通常の数を、その実部を持ち虚部がゼロの複素数に変換します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>javascript_number_to_complex</DECLARATION></INDEX> 
       <NAME>javascript_number_to_complex</NAME>
@@ -263,6 +347,8 @@ put_coercion("javascript_number", "complex",
 get_coercion("javascript_number", "complex");
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     (We assume that there are
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>put-coercion</SCHEMEINLINE></SCHEME>
@@ -294,8 +380,39 @@ get_coercion("javascript_number", "complex");
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     included in the table.
+    </EN>
+    <JA>
+    （このテーブルを操作するための
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>put-coercion</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>put_coercion</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>get-coercion</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>get_coercion</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が利用可能であると仮定します。）一般に、テーブルの一部のスロットは空になります。なぜなら、各型の任意のデータオブジェクトを他のすべての型に型変換できるとは限らないからです。たとえば、任意の複素数を通常の数に型変換する方法はないので、テーブルに汎用の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>complex-&gt;scheme-number</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>complex_to_javascript_number</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は含まれません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Once the coercion table has been set up, we can handle coercion in a
     uniform manner by modifying the
     <SPLITINLINE>
@@ -317,8 +434,34 @@ get_coercion("javascript_number", "complex");
     </SPLITINLINE>
     found in the operation-and-type table. Otherwise, we try coercion.  For
     simplicity, we consider only the case where there are two
-    arguments.<FOOTNOTE>See exercise<SPACE/><REF NAME="ex:multi-coercion"/> for
-    generalizations.</FOOTNOTE>  We check the coercion table to see if objects
+    arguments.
+    </EN>
+    <JA>
+    型変換テーブルが設定されたら、<REF NAME="sec:data-directed"/>節の
+    <SPLITINLINE>
+      <SCHEME>
+      <SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を修正することで、型変換を統一的に扱えるようになります。演算の適用を求められたとき、まず以前と同様に、その演算が引数の型に対して定義されているかどうかを確認します。定義されていれば、演算と型のテーブルで見つかった<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>にディスパッチします。そうでなければ、型変換を試みます。簡単のために、引数が二つの場合だけを考えます。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>See exercise<SPACE/><REF NAME="ex:multi-coercion"/> for
+    generalizations.</EN>
+    <JA>一般化については練習問題<SPACE/><REF NAME="ex:multi-coercion"/>を参照してください。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    We check the coercion table to see if objects
     of the first type can be coerced to the second type.  If so, we coerce the
     first argument and try the operation again.  If objects of the first type
     cannot in general be coerced to the second type, we try the coercion the
@@ -329,6 +472,14 @@ get_coercion("javascript_number", "complex");
       <SCHEME>procedure:</SCHEME>
       <JAVASCRIPT>function:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    型変換テーブルを調べて、第1の型のオブジェクトを第2の型に型変換できるかどうかを確認します。できる場合は、第1引数を型変換して演算を再度試みます。第1の型のオブジェクトを一般に第2の型に型変換できない場合は、逆方向の型変換を試み、第2引数を第1引数の型に型変換する方法があるかどうかを確認します。最後に、どちらの型も他方の型に型変換する既知の方法がなければ、諦めます。以下がその<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>です：
+    </JA>
+    </BILINGUAL>
      <INDEX><DECLARATION>apply_generic</DECLARATION><SUBINDEX>with coercion</SUBINDEX></INDEX>
     <SNIPPET HIDE="yes">
       <NAME>base_operation_table</NAME>
@@ -717,6 +868,8 @@ function apply_generic(op, args) {
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     This coercion scheme has many advantages over the method of defining
     explicit cross-type operations, as outlined above.  Although we still
     need to write coercion
@@ -740,7 +893,26 @@ function apply_generic(op, args) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    for each collection of types and each generic operation.<FOOTNOTE>If we are
+    for each collection of types and each generic operation.
+    </EN>
+    <JA>
+    この型変換の仕組みは、上で述べた明示的な型をまたぐ演算を定義する方法に比べて、多くの利点があります。型を関連付けるための型変換<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を書く必要は依然としてありますが（<LATEXINLINE>$n$</LATEXINLINE>個の型を持つシステムでは最大<LATEXINLINE>$n^2$</LATEXINLINE>個の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>）、型の組み合わせごとにジェネリック演算ごとに異なる<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を書くのではなく、型のペアごとに一つの<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を書くだけで済みます。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>If we are
     clever, we can usually get by with fewer than
     <LATEXINLINE>$n^2$</LATEXINLINE> coercion
     <SPLITINLINE>
@@ -762,12 +934,33 @@ function apply_generic(op, args) {
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     that can be inferred from the ones that are supplied
-    explicitly.</FOOTNOTE>  What we are counting on here is the fact that the
+    explicitly.</EN>
+    <JA>うまくやれば、通常は<LATEXINLINE>$n^2$</LATEXINLINE>個よりも少ない型変換<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>で済ませることができます。たとえば、型1から型2への変換方法と型2から型3への変換方法がわかっていれば、その知識を使って型1から型3への変換が可能です。これにより、新しい型をシステムに追加する際に明示的に用意する必要のある型変換<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の数を大幅に削減できます。必要な洗練度をシステムに組み込む意思があれば、型間の関係の<QUOTE>グラフ</QUOTE>を探索し、明示的に提供されたものから推論できる型変換<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を自動的に生成させることも可能です。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    What we are counting on here is the fact that the
     appropriate transformation between types depends only on the types
     themselves, not on the operation to be applied.
+    </EN>
+    <JA>
+    ここで頼りにしているのは、型間の適切な変換が型自体にのみ依存し、適用される演算には依存しないという事実です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <DO_BREAK_PAGE/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     On the other hand, there may be applications for which our coercion
     scheme is not general enough.  Even when neither of the objects to be
     combined can be converted to the type of the other it may still be
@@ -776,15 +969,27 @@ function apply_generic(op, args) {
     modularity in our programs, it is usually necessary to build systems
     that take advantage of still further structure in the relations among
     types, as we discuss next.
+    </EN>
+    <JA>
+    一方で、この型変換の仕組みでは十分に汎用的でないアプリケーションもあるかもしれません。組み合わせるオブジェクトのどちらも他方の型に変換できない場合でも、両方のオブジェクトを第三の型に変換することで演算を実行できる可能性はあります。このような複雑さに対処しつつプログラムのモジュール性を維持するためには、通常、型間の関係におけるさらなる構造を活用するシステムを構築する必要があります。これについては次で議論します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Hierarchies of types</NAME>
+    <NAME>
+      <BILINGUAL>
+        <EN>Hierarchies of types</EN>
+        <JA>型の階層</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>type(s)<SUBINDEX>hierarchy of</SUBINDEX><OPEN/></INDEX>
   <INDEX>hierarchy of types<OPEN/></INDEX>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The coercion scheme presented above relied on the existence of natural
     relations between pairs of types.  Often there is more <QUOTE>global</QUOTE>
     structure in how the different types relate to each other.  For
@@ -808,16 +1013,37 @@ function apply_generic(op, args) {
     has at most one supertype and at most one subtype.  Such a structure,
     called a <EM>tower</EM>, is illustrated in
     figure<SPACE/><REF NAME="fig:tower"/>.
+    </EN>
+    <JA>
+    上で示した型変換の方式は、型のペア間に自然な関係が存在することに依存していました。多くの場合、異なる型どうしの関係には、より<QUOTE>グローバル</QUOTE>な構造があります。例えば、整数、有理数、実数、複素数を扱うジェネリック算術システムを構築しているとしましょう。このようなシステムでは、整数を有理数の特殊な場合と見なし、有理数を実数の特殊な場合、実数を複素数の特殊な場合と見なすのは、ごく自然なことです。これは実際には、いわゆる<EM>型の階層</EM>と呼ばれるものです。例えば、整数は有理数の
+    <INDEX>subtype</INDEX>
+    <INDEX>type(s)<SUBINDEX>subtype</SUBINDEX></INDEX>
+    <EM>サブタイプ</EM>です（つまり、有理数に適用できる演算はすべて、自動的に整数にも適用できます）。逆に、有理数は整数の
+    <INDEX>supertype</INDEX>
+    <INDEX>type(s)<SUBINDEX>supertype</SUBINDEX></INDEX>
+    <EM>スーパータイプ</EM>であると言います。ここでの階層は非常に単純な種類のもので、各型には高々1つのスーパータイプと高々1つのサブタイプしかありません。このような構造は<EM>タワー</EM>と呼ばれ、図<SPACE/><REF NAME="fig:tower"/>に示されています。
+    </JA>
+    </BILINGUAL>
     <FIGURE>
       <FIGURE split_scale="0.1" web_scale="0.2" scale="0.59" src="img_original/ch2-Z-G-66.svg"></FIGURE>
-      <CAPTION>A tower of types.
+      <CAPTION>
+      <BILINGUAL>
+      <EN>A tower of types.
       <INDEX>tower of types</INDEX>
       <INDEX>type(s)<SUBINDEX>tower of</SUBINDEX></INDEX>
+      </EN>
+      <JA>型のタワー。
+      <INDEX>tower of types</INDEX>
+      <INDEX>type(s)<SUBINDEX>tower of</SUBINDEX></INDEX>
+      </JA>
+      </BILINGUAL>
       </CAPTION>
       <LABEL NAME="fig:tower"/>
     </FIGURE>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     If we have a tower structure, then we can greatly simplify the problem
     of adding a new type to the hierarchy, for we need only specify how
     the new type is embedded in the next supertype above it and how it is
@@ -838,10 +1064,26 @@ function apply_generic(op, args) {
     a real number is transformed into a complex number.  We then allow the
     system to transform the integer into a complex number through these steps
     and then add the two complex numbers.
+    </EN>
+    <JA>
+    タワー構造があれば、階層に新しい型を追加する問題を大幅に簡略化できます。新しい型がその上の最も近いスーパータイプにどう埋め込まれるか、そしてその下の型のスーパータイプとしてどう機能するかを指定するだけでよいからです。例えば、整数と複素数を加算したい場合、特別な型変換
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>integer-&gt;complex</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>integer_to_complex</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を明示的に定義する必要はありません。代わりに、整数を有理数に変換する方法、有理数を実数に変換する方法、実数を複素数に変換する方法を定義します。そうすれば、システムがこれらのステップを経て整数を複素数に変換し、2つの複素数を加算できるようになります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
     <INDEX>type(s)<SUBINDEX>raising</SUBINDEX></INDEX>
      <INDEX><USE>apply_generic</USE><SUBINDEX>with tower of types</SUBINDEX></INDEX>
+    <BILINGUAL>
+    <EN>
     We can redesign our
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
@@ -864,8 +1106,30 @@ function apply_generic(op, args) {
     the same level in the tower.  (Exercises<SPACE/><REF NAME="ex:raise"/>
     and <SPACE/><REF NAME="ex:apply-with-raise"/>
     concern the details of implementing such a strategy.)
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を次のように再設計できます。各型に対して、その型のオブジェクトをタワーの1レベル上に<QUOTE>引き上げる（raise）</QUOTE>
+    <SCHEMEINLINE>raise</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を用意する必要があります。そうすると、システムが異なる型のオブジェクトに対して演算を行う必要があるとき、すべてのオブジェクトがタワーの同じレベルになるまで、低い型を順次引き上げることができます。（練習問題<SPACE/><REF NAME="ex:raise"/>と<SPACE/><REF NAME="ex:apply-with-raise"/>で、このような戦略の実装の詳細を扱います。）
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Another advantage of a tower is that we can easily implement the notion
     that every type <QUOTE>inherits</QUOTE> all operations defined on a
     supertype.  For instance, if we do not supply a special
@@ -892,9 +1156,31 @@ function apply_generic(op, args) {
     crawl up the tower, transforming our argument as we go, until we either
     find a level at which the desired operation can be performed or hit the
     top (in which case we give up).
+    </EN>
+    <JA>
+    タワーのもう1つの利点は、すべての型がスーパータイプに定義された演算を<QUOTE>継承する</QUOTE>という概念を容易に実装できることです。例えば、整数の実部を求める特別な
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を用意しなくても、整数が複素数のサブタイプであるという事実により、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>real-part</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>real_part</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は整数に対しても定義されることが期待できるはずです。タワーでは、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を修正することで、これを統一的に実現できます。要求された演算が与えられたオブジェクトの型に対して直接定義されていない場合、オブジェクトをスーパータイプに引き上げて再試行します。このようにして、引数を変換しながらタワーを上に向かってたどり、目的の演算が実行できるレベルを見つけるか、最上部に到達するか（その場合はあきらめます）のどちらかになります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
     <INDEX>type(s)<SUBINDEX>lowering</SUBINDEX></INDEX>
+    <BILINGUAL>
+    <EN>
     Yet another advantage of a tower over a more general hierarchy is that
     it gives us a simple way to <QUOTE>lower</QUOTE> a data object to the
     simplest representation.  For example, if we add
@@ -906,14 +1192,26 @@ function apply_generic(op, args) {
     to distinguish those objects that can be lowered, such as
     <LATEXINLINE>$6+0i$</LATEXINLINE>, from those that cannot, such as
     <LATEXINLINE>$6+2i$</LATEXINLINE>.)
+    </EN>
+    <JA>
+    より一般的な階層に対するタワーのさらなる利点は、データオブジェクトを最も単純な表現に<QUOTE>引き下げる</QUOTE>簡単な方法が得られることです。例えば、<LATEXINLINE>$2+3i$</LATEXINLINE>と<LATEXINLINE>$4-3i$</LATEXINLINE>を加算した場合、答えを複素数<LATEXINLINE>$6+0i$</LATEXINLINE>ではなく整数6として得られると便利です。練習問題<SPACE/><REF NAME="ex:simplify"/>では、このような引き下げ操作の実装方法を議論します。（ポイントは、<LATEXINLINE>$6+0i$</LATEXINLINE>のように引き下げ可能なオブジェクトと、<LATEXINLINE>$6+2i$</LATEXINLINE>のように引き下げできないオブジェクトを区別する一般的な方法が必要だということです。）
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Inadequacies of hierarchies</NAME>
+    <NAME>
+      <BILINGUAL>
+        <EN>Inadequacies of hierarchies</EN>
+        <JA>階層の不十分さ</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>hierarchy of types<SUBINDEX>inadequacy of</SUBINDEX></INDEX>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     If the data types in our system can be naturally arranged in a tower,
     this greatly simplifies the problems of dealing with generic operations
     on different types, as we have seen.  Unfortunately, this is usually
@@ -947,7 +1245,29 @@ function apply_generic(op, args) {
     problem in coercing a value <QUOTE>down</QUOTE> the type hierarchy.
     Dealing with large numbers of interrelated types while still preserving
     modularity in the design of large systems is very difficult, and is an area
-    of much current research.<FOOTNOTE>This statement, which also appears in
+    of much current research.
+    </EN>
+    <JA>
+    これまで見てきたように、システムのデータ型がタワーとして自然に並べられる場合、異なる型に対するジェネリック演算の問題は大幅に簡略化されます。残念ながら、通常はそうではありません。図<SPACE/><REF NAME="fig:relations-among-figures"/>は、混合型のより複雑な配置を示しており、異なる種類の幾何学的図形間の関係を表しています。一般に、
+    <INDEX>type(s)<SUBINDEX>multiple subtype and supertype</SUBINDEX></INDEX>
+    <INDEX>supertype<SUBINDEX>multiple</SUBINDEX></INDEX>
+    <INDEX>subtype<SUBINDEX>multiple</SUBINDEX></INDEX>
+    1つの型が複数のサブタイプを持つことがあります。例えば、三角形と四辺形はどちらも多角形のサブタイプです。さらに、1つの型が複数のスーパータイプを持つこともあります。例えば、直角二等辺三角形は二等辺三角形とも直角三角形とも見なせます。この複数スーパータイプの問題は特に厄介です。階層内で型を<QUOTE>引き上げる</QUOTE>一意な方法がないことを意味するからです。オブジェクトに演算を適用するための<QUOTE>正しい</QUOTE>スーパータイプを見つけるには、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    のような
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    が型ネットワーク全体をかなり探索する必要があるかもしれません。一般に1つの型には複数のサブタイプがあるため、型の階層を<QUOTE>下方向に</QUOTE>型変換する場合にも同様の問題があります。大規模システムの設計でモジュール性を保ちながら、多数の相互に関連する型を扱うのは非常に難しく、現在も盛んに研究されている分野です。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    This statement, which also appears in
     the first edition of this book, is just as true now as it was when we wrote
     it
     <SPLITINLINE>
@@ -978,16 +1298,42 @@ function apply_generic(op, args) {
     <QUOTE>classes</QUOTE> or <QUOTE>inheritance.</QUOTE>  In fact, we suspect
     that these problems cannot be adequately addressed in terms of
     computer-language design alone, without also drawing on work in knowledge
-    representation and automated reasoning.</FOOTNOTE>
+    representation and automated reasoning.
+    </EN>
+    <JA>
+    この声明は本書の初版にも掲載されていますが、
+    <SPLITINLINE>
+      <SCHEME>12年前</SCHEME>
+      <JAVASCRIPT>1984年</JAVASCRIPT>
+    </SPLITINLINE>
+    に書いたときと同様に、今でも当てはまります。異なる種類のエンティティ間の関係を表現するための有用で一般的なフレームワークの開発（哲学者が<QUOTE>オントロジー</QUOTE>と呼ぶもの）は、手に負えないほど難しいようです。
+    <SPLITINLINE>
+      <SCHEME>10年前</SCHEME>
+      <JAVASCRIPT>1984年</JAVASCRIPT>
+    </SPLITINLINE>
+    に存在した混乱と現在存在する混乱の主な違いは、今ではさまざまな不十分なオントロジー理論が、それに対応する不十分なプログラミング言語に多数具現化されていることです。例えば、
+    <INDEX>object-oriented programming languages</INDEX>
+    <INDEX>programming language<SUBINDEX>object-oriented</SUBINDEX></INDEX>
+    オブジェクト指向プログラミング言語の複雑さの多く<EMDASH/>そして現代のオブジェクト指向言語間の微妙で紛らわしい違い<EMDASH/>は、相互に関連する型に対するジェネリック演算の扱いに集中しています。第<SPACE/><REF NAME="chap:state"></REF>章での計算オブジェクトの議論では、これらの問題を完全に回避しています。オブジェクト指向プログラミングに馴染みのある読者は、第<SPACE/><REF NAME="chap:state"></REF>章でローカル状態について多くのことを述べていますが、<QUOTE>クラス</QUOTE>や<QUOTE>継承</QUOTE>には一切触れていないことに気づくでしょう。実際、これらの問題は、知識表現や自動推論の研究を活用せずに、プログラミング言語の設計だけでは適切に対処できないのではないかと考えています。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
   </TEXT>
   <FIGURE>
     <FIGURE split_scale="0.6" scale="0.59" src="img_original/ch2-Z-G-67.svg"></FIGURE>
-    <CAPTION>Relations among types of geometric figures.</CAPTION>
+    <CAPTION>
+    <BILINGUAL>
+    <EN>Relations among types of geometric figures.</EN>
+    <JA>幾何学的図形の型間の関係。</JA>
+    </BILINGUAL>
+    </CAPTION>
     <LABEL NAME="fig:relations-among-figures"/>
   </FIGURE>
 
   <EXERCISE>
      <INDEX><USE>apply_generic</USE><SUBINDEX>with coercion</SUBINDEX></INDEX>
+    <BILINGUAL>
+    <EN>
     Louis Reasoner has noticed that
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
@@ -1009,6 +1355,29 @@ function apply_generic(op, args) {
       </JAVASCRIPT>
     </SPLITINLINE>
     coercion shown above, he would do:
+    </EN>
+    <JA>
+    Louis Reasonerは、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    が、引数がすでに同じ型であっても、互いの型に型変換しようとする可能性があることに気づきました。そこで彼は、型変換テーブルに各型の引数を自分自身の型に<QUOTE>型変換</QUOTE>する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を登録する必要があると考えました。たとえば、上で示した
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>scheme-number-&gt;complex</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>javascript_number_to_complex</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の型変換に加えて、次のようにします：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>javascript_number_to_javascript_</DECLARATION> <JAVASCRIPTINLINE>number</JAVASCRIPTINLINE></INDEX> 
       <INDEX><DECLARATION>complex_to_complex</DECLARATION></INDEX> 
@@ -1032,6 +1401,8 @@ put_coercion("complex", "complex", complex_to_complex);
 
     <OL>
       <LI>
+        <BILINGUAL>
+        <EN>
         With Louis<APOS/>s coercion
         <SPLITINLINE>
 	  <SCHEME>procedures</SCHEME>
@@ -1059,6 +1430,35 @@ put_coercion("complex", "complex", complex_to_complex);
 	for an operation that is not found in the table for those types?
 	For example, assume that we<APOS/>ve defined a generic exponentiation
         operation:
+        </EN>
+        <JA>
+        Louisの型変換
+        <SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+        がインストールされた状態で、それらの型に対する演算がテーブルに見つからない場合、
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+        が型
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>scheme-number</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>"complex"</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	の2つの引数、または型
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>complex</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>"javascript_@number"</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	の2つの引数で呼び出されるとどうなりますか？
+	たとえば、ジェネリックなべき乗演算を次のように定義したとします：
+        </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="no">
           <REQUIRES>apply_generic</REQUIRES>
           <SCHEME>
@@ -1070,6 +1470,8 @@ function exp(x, y) {
 }
           </JAVASCRIPT>
         </SNIPPET>
+        <BILINGUAL>
+        <EN>
         and have put a
         <SPLITINLINE>
 	  <SCHEME>procedure</SCHEME>
@@ -1081,6 +1483,21 @@ function exp(x, y) {
 	  <JAVASCRIPT>JavaScript-number</JAVASCRIPT>
 	</SPLITINLINE>
         package but not in any other package:
+        </EN>
+        <JA>
+        そして、べき乗の
+        <SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+        を
+	<SPLITINLINE>
+	  <SCHEME>Scheme-number</SCHEME>
+	  <JAVASCRIPT>JavaScript-number</JAVASCRIPT>
+	</SPLITINLINE>
+        パッケージには登録しましたが、他のパッケージには登録していないとします：
+        </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="no" LATEX="yes">
           <SCHEME>
 ;; following added to Scheme-number package
@@ -1093,10 +1510,19 @@ put("exp", list("javascript_number", "javascript_number"),
     (x, y) => tag(math_exp(x, y))); // using primitive $\texttt{math\char`_exp}$
           </JAVASCRIPT>
         </SNIPPET>
+        <BILINGUAL>
+        <EN>
         What happens if we call <SCHEMEINLINE>exp</SCHEMEINLINE> with two
 	complex numbers as arguments?
+        </EN>
+        <JA>
+        2つの複素数を引数として <SCHEMEINLINE>exp</SCHEMEINLINE> を呼び出すとどうなりますか？
+        </JA>
+        </BILINGUAL>
       </LI>
       <LI>
+        <BILINGUAL>
+        <EN>
         Is Louis correct that something had to be done about coercion with
 	arguments of the same type, or does
 	<SPLITINLINE>
@@ -1105,8 +1531,22 @@ put("exp", list("javascript_number", "javascript_number"),
 	  </JAVASCRIPT>
 	</SPLITINLINE>
         work correctly as is?
+        </EN>
+        <JA>
+        同じ型の引数に対する型変換について何か対処が必要だというLouisの主張は正しいですか？
+        それとも
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+        はそのままで正しく動作しますか？
+        </JA>
+        </BILINGUAL>
       </LI>
       <LI>
+        <BILINGUAL>
+        <EN>
         Modify
 	<SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
@@ -1115,16 +1555,36 @@ put("exp", list("javascript_number", "javascript_number"),
 	</SPLITINLINE>
 	so that it doesn<APOS/>t try coercion if the two arguments have the
 	same type.
+        </EN>
+        <JA>
+        2つの引数が同じ型の場合に型変換を試みないように
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	を修正してください。
+        </JA>
+        </BILINGUAL>
       </LI>
     </OL>
     <SOLUTION>
     <OL>
-    <LI>If Louis puts the coercion functions into the operations table,
-    <JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE> will enter an infinite loop
+    <LI>
+    <BILINGUAL>
+    <EN>If Louis puts the coercion functions into the operations table,
+    <JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE> will enter an infinite loop</EN>
+    <JA>Louisが型変換関数を演算テーブルに登録すると、
+    <JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE> は無限ループに入ります</JA>
+    </BILINGUAL>
     </LI>
     <LI>
-    Louis's code does not work. <JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE> works correctly as is.
-    But we could modify it to exit with an error before attempting any same-type coercions.
+    <BILINGUAL>
+    <EN>Louis's code does not work. <JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE> works correctly as is.
+    But we could modify it to exit with an error before attempting any same-type coercions.</EN>
+    <JA>Louisのコードは動作しません。<JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE> はそのままで正しく動作します。
+    ただし、同じ型の型変換を試みる前にエラーで終了するように修正することはできます。</JA>
+    </BILINGUAL>
     </LI>
     <LI>
     <SNIPPET HIDE="yes">
@@ -1223,6 +1683,8 @@ function apply_generic(op, args) {
 
   <EXERCISE>
      <INDEX><USE>apply_generic</USE><SUBINDEX>with coercion of multiple arguments</SUBINDEX></INDEX>
+    <BILINGUAL>
+    <EN>
     Show how to generalize
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
@@ -1236,6 +1698,19 @@ function apply_generic(op, args) {
     two-argument version given above) is not sufficiently general.
     (Hint: Consider the case where there are some suitable mixed-type
     operations present in the table that will not be tried.)
+    </EN>
+    <JA>
+    複数の引数の一般的な場合に型変換を扱えるように
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を一般化する方法を示してください。1つの戦略は、すべての引数をまず第1引数の型に変換しようと試み、次に第2引数の型に変換しようと試み、というように続けることです。
+    この戦略（および上で示した2引数版）が十分に一般的でない状況の例を挙げてください。
+    （ヒント：テーブルに適切な混合型の演算が存在するのに、それが試されないケースを考えてみてください。）
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:multi-coercion"/>
     <SOLUTION>
       <SNIPPET HIDE="yes">
@@ -1314,16 +1789,28 @@ function apply_generic(op, args) {
 }
         </JAVASCRIPT>
       </SNIPPET>
+    <BILINGUAL>
+    <EN>
     A situation where this approach is not sufficient is if you have three
     types, A, B, C where A can be coerced to B and C can be coerced to B, and
     there is a registered operation for (A, B, B). Evaluating the operation for
     (A, B, C) will only try (A, B, C) and (B, B, B) while you can just coerce C
     to B and use the registered operation for (A, B, B)
+    </EN>
+    <JA>
+    このアプローチが不十分な状況の例：3つの型A、B、Cがあり、AはBに型変換でき、CもBに型変換でき、
+    (A, B, B) に対する演算が登録されている場合です。(A, B, C) に対して演算を評価すると、
+    (A, B, C) と (B, B, B) だけが試されますが、実際にはCをBに型変換して
+    登録済みの (A, B, B) の演算を使えばよいのです。
+    </JA>
+    </BILINGUAL>
     </SOLUTION>
   </EXERCISE>
 
   <EXERCISE>
     <INDEX>type(s)<SUBINDEX>raising</SUBINDEX></INDEX>
+    <BILINGUAL>
+    <EN>
     Suppose you are designing a generic arithmetic system for dealing with
     the tower of types shown in figure<SPACE/><REF NAME="fig:tower"/>:
     integer, rational, real, complex.  For
@@ -1335,6 +1822,19 @@ function apply_generic(op, args) {
     that raises objects of that type one level in the tower.  Show how to
     install a generic <SCHEMEINLINE>raise</SCHEMEINLINE> operation that will
     work for each type (except complex).
+    </EN>
+    <JA>
+    図<SPACE/><REF NAME="fig:tower"/>に示された型のタワー、すなわち
+    整数、有理数、実数、複素数を扱うジェネリック算術システムを設計しているとします。
+    各型について（複素数を除く）、その型のオブジェクトをタワーの1つ上のレベルに引き上げ（raise）する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を設計してください。各型（複素数を除く）に対して動作するジェネリックな
+    <SCHEMEINLINE>raise</SCHEMEINLINE> 演算をインストールする方法を示してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:raise"/>
     <SOLUTION>
       <SNIPPET HIDE="yes">
@@ -1438,6 +1938,8 @@ put("raise", list("javascript_number"),
 
   <EXERCISE>
      <INDEX><USE>apply_generic</USE><SUBINDEX>with coercion by raising</SUBINDEX></INDEX>
+    <BILINGUAL>
+    <EN>
     Using the <SCHEMEINLINE>raise</SCHEMEINLINE> operation of
     exercise<SPACE/><REF NAME="ex:raise"/>, modify the
     <SPLITINLINE>
@@ -1454,12 +1956,31 @@ put("raise", list("javascript_number"),
     a way to test which of two types is higher in the tower.  Do this in a
     manner that is <QUOTE>compatible</QUOTE> with the rest of the system and
     will not lead to problems in adding new levels to the tower.
+    </EN>
+    <JA>
+    練習問題<SPACE/><REF NAME="ex:raise"/>の <SCHEMEINLINE>raise</SCHEMEINLINE> 演算を使って、
+    この節で議論した逐次的な引き上げ（raise）の方法により引数が同じ型になるように型変換するように
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を修正してください。2つの型のうちどちらがタワーの上位にあるかをテストする方法を考案する必要があります。
+    システムの他の部分と<QUOTE>互換性</QUOTE>があり、タワーに新しいレベルを追加する際に問題が生じないようにしてください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:apply-with-raise"/>
   </EXERCISE>
 
   <EXERCISE>
      <INDEX><USE>apply_generic</USE><SUBINDEX>with coercion to simplify</SUBINDEX></INDEX>
     <INDEX>type(s)<SUBINDEX>lowering</SUBINDEX></INDEX>
+    <BILINGUAL>
+    <EN>
     This section mentioned a method for <QUOTE>simplifying</QUOTE> a data object
     by lowering it in the tower of types as far as possible.  Design a
     <SPLITINLINE>
@@ -1496,7 +2017,43 @@ put("raise", list("javascript_number"),
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     that drops an object as far as possible.  You will need to design the
-    various projection operations<FOOTNOTE>A real number can be projected to
+    various projection operations</EN>
+    <JA>
+    この節では、データオブジェクトを型のタワーの中でできるだけ下位に引き下げることで<QUOTE>簡約化</QUOTE>する方法に触れました。
+    練習問題<SPACE/><REF NAME="ex:raise"/>で記述したタワーに対してこれを実現する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>drop</SCHEMEINLINE> を設計してください。鍵となるのは、オブジェクトを引き下げられるかどうかを何らかの一般的な方法で判定することです。
+    たとえば、複素数 <LATEXINLINE>$1.5+0i$</LATEXINLINE> は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>real</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>"real"</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    まで引き下げることができ、
+    複素数 <LATEXINLINE>$1+0i$</LATEXINLINE> は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>integer</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>"integer"</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    まで引き下げることができ、
+    複素数 <LATEXINLINE>$2+3i$</LATEXINLINE> はまったく引き下げることができません。
+    オブジェクトを引き下げられるかどうかを判定する計画は次のとおりです。
+    まず、オブジェクトをタワーの下方に<QUOTE>押し下げる</QUOTE>ジェネリック演算 <SCHEMEINLINE>project</SCHEMEINLINE> を定義します。
+    たとえば、複素数の project では虚部を捨てることになります。
+    そして、ある数を project し、その結果を元の型まで <SCHEMEINLINE>raise</SCHEMEINLINE> で引き上げ直したときに、
+    元と等しいものが得られれば、その数は drop できます。
+    <SCHEMEINLINE>drop</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を書いて、オブジェクトをできるだけ下位まで drop する方法を具体的に示してください。
+    さまざまな projection 演算を設計する必要があります</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>A real number can be projected to
     an integer using the
     <INDEX><USE>math_round</USE> (primitive function)</INDEX>
     <INDEX><PRIMITIVE/><SUBINDEX><USE>math_round</USE><ECMA>Math.round</ECMA></SUBINDEX></INDEX>
@@ -1509,7 +2066,23 @@ put("raise", list("javascript_number"),
       </JAVASCRIPT>
     </SPLITINLINE>
     primitive, which returns the closest integer
-    to its argument.</FOOTNOTE> and install
+    to its argument.</EN>
+    <JA>実数は、引数に最も近い整数を返すプリミティブ関数
+    <INDEX><USE>math_round</USE> (primitive function)</INDEX>
+    <INDEX><PRIMITIVE/><SUBINDEX><USE>math_round</USE><ECMA>Math.round</ECMA></SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>round</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>math_round</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を使って整数に project できます。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN> and install
     <SCHEMEINLINE>project</SCHEMEINLINE> as a generic operation in the system.
     You will also need to make use of a generic equality predicate, such as
     described in exercise<SPACE/><REF NAME="ex:equ?"/>.  Finally, use
@@ -1522,10 +2095,25 @@ put("raise", list("javascript_number"),
     </SPLITINLINE>
     from exercise<SPACE/><REF NAME="ex:apply-with-raise"/> so that it
     <QUOTE>simplifies</QUOTE> its answers.
+    </EN>
+    <JA>また、<SCHEMEINLINE>project</SCHEMEINLINE> をシステムにジェネリック演算としてインストールしてください。
+    また、練習問題<SPACE/><REF NAME="ex:equ?"/>で記述したようなジェネリックな等値述語も使う必要があります。
+    最後に、<SCHEMEINLINE>drop</SCHEMEINLINE> を使って、
+    練習問題<SPACE/><REF NAME="ex:apply-with-raise"/>の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を、答えを<QUOTE>簡約化</QUOTE>するように書き直してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:simplify"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Suppose we want to handle complex numbers whose real
     parts, imaginary parts, magnitudes, and angles can be either ordinary
     numbers, rational numbers, or other numbers we might wish to add to
@@ -1533,6 +2121,15 @@ put("raise", list("javascript_number"),
     to accommodate this.  You will have to define operations such as
     <SCHEMEINLINE>sine</SCHEMEINLINE> and <SCHEMEINLINE>cosine</SCHEMEINLINE>
     that are generic over ordinary numbers and rational numbers.
+    </EN>
+    <JA>
+    実部、虚部、絶対値、偏角が通常の数、有理数、あるいはシステムに追加したい他の数のいずれかであるような複素数を扱いたいとします。
+    これに対応するためにシステムに必要な変更を記述し、実装してください。
+    通常の数と有理数に対してジェネリックな
+    <SCHEMEINLINE>sine</SCHEMEINLINE> や <SCHEMEINLINE>cosine</SCHEMEINLINE>
+    などの演算を定義する必要があります。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:2_86"/>
   </EXERCISE>
 

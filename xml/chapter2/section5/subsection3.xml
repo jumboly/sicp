@@ -1,11 +1,16 @@
 <SUBSECTION>
   <NAME>
-    Example: Symbolic Algebra
+    <BILINGUAL>
+    <EN>Example: Symbolic Algebra</EN>
+    <JA>例：シンボリック代数</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:symbolic-algebra"/>
   <INDEX>symbolic algebra<OPEN/></INDEX>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The manipulation of symbolic algebraic expressions is a complex
     process that illustrates many of the hardest problems that occur in
     the design of large-scale systems.  An
@@ -29,8 +34,22 @@
     as a polynomial in <LATEXINLINE>$x$</LATEXINLINE> with coefficients that
     are trigonometric functions of polynomials in
     <LATEXINLINE>$y$</LATEXINLINE> whose coefficients are integers.
+    </EN>
+    <JA>
+    シンボリックな代数式の操作は複雑なプロセスであり、大規模システムの設計で生じる最も困難な問題の多くを示しています。
+    <INDEX>algebraic expression</INDEX>
+    代数式は一般に、演算子をオペランドに適用したツリーという階層構造として見ることができます。代数式は、定数や変数といったプリミティブなオブジェクトの集合から出発し、加算や乗算などの代数演算子を使ってそれらを組み合わせることで構築できます。他の言語と同様に、複合オブジェクトを簡単な用語で参照できるようにする抽象を形成します。シンボリック代数における典型的な抽象は、線形結合、多項式、有理関数、三角関数などの概念です。これらは複合<QUOTE>型</QUOTE>と見なすことができ、式の処理を制御するのに役立つことがよくあります。たとえば、次の式は
+
+    <LATEX>
+      \[ x^{2}\, \sin (y^2+1)+x\, \cos 2y+\cos (y^3 -2y^2) \]
+    </LATEX>
+    <LATEXINLINE>$x$</LATEXINLINE> についての多項式であり、その係数は <LATEXINLINE>$y$</LATEXINLINE> の多項式の三角関数で、さらにその係数は整数である、と記述できます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We will not attempt to develop a complete algebraic-manipulation
     system here.  Such systems are exceedingly complex programs, embodying
     deep algebraic knowledge and elegant algorithms.  What we will do is
@@ -38,29 +57,60 @@
     arithmetic of polynomials.  We will illustrate the kinds of decisions
     the designer of such a system faces, and how to apply the ideas of
     abstract data and generic operations to help organize this effort.
+    </EN>
+    <JA>
+    ここでは完全な代数操作システムを開発しようとは思いません。そのようなシステムは極めて複雑なプログラムであり、深い代数の知識と洗練されたアルゴリズムを体現しています。ここで行うのは、代数操作の単純だが重要な部分、すなわち多項式の算術に着目することです。このようなシステムの設計者が直面する種類の決定と、抽象データおよびジェネリック演算の概念をどのように適用してこの作業を整理するかを示します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Arithmetic on polynomials</NAME>
+    <NAME>
+      <BILINGUAL>
+      <EN>Arithmetic on polynomials</EN>
+      <JA>多項式の算術</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>polynomial(s)<OPEN/></INDEX>
   <INDEX>polynomial arithmetic<OPEN/></INDEX>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Our first task in designing a system for performing arithmetic on
     polynomials is to decide just what a polynomial is.  Polynomials are
-    normally defined relative to certain variables (the 
+    normally defined relative to certain variables (the
     <INDEX>indeterminate of a polynomial</INDEX>
     <INDEX>polynomial(s)<SUBINDEX>indeterminate of</SUBINDEX></INDEX>
     <EM>indeterminates</EM> of the polynomial).  For simplicity, we will
-      restrict ourselves to polynomials having just one indeterminate 
+      restrict ourselves to polynomials having just one indeterminate
       <INDEX>univariate polynomial</INDEX>
       <INDEX>polynomial(s)<SUBINDEX>univariate</SUBINDEX></INDEX>
-      <EM>(univariate polynomials</EM>).<FOOTNOTE>On the other hand, we will
+      <EM>(univariate polynomials</EM>).
+    </EN>
+    <JA>
+    多項式の算術を行うシステムを設計する最初の課題は、多項式とは正確に何かを決めることです。多項式は通常、特定の変数（多項式の
+    <INDEX>indeterminate of a polynomial</INDEX>
+    <INDEX>polynomial(s)<SUBINDEX>indeterminate of</SUBINDEX></INDEX>
+    <EM>不定元</EM>）に対して定義されます。簡単のために、不定元が1つだけの多項式
+      <INDEX>univariate polynomial</INDEX>
+      <INDEX>polynomial(s)<SUBINDEX>univariate</SUBINDEX></INDEX>
+      <EM>（一変数多項式</EM>）に限定します。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+      <BILINGUAL>
+      <EN>On the other hand, we will
       allow polynomials whose coefficients are themselves polynomials in other
       variables.  This will give us essentially the same representational
       power as a full multivariate system, although it does lead to coercion
-      problems, as discussed below.</FOOTNOTE> We will define a polynomial to
+      problems, as discussed below.</EN>
+      <JA>一方で、係数自体が他の変数の多項式である多項式は許容します。これにより、完全な多変数システムと本質的に同じ表現力が得られますが、後述するように型変換の問題が生じます。</JA>
+      </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    We will define a polynomial to
       be a sum of terms, each of which is either a coefficient, a power of the
       indeterminate, or a product of a coefficient and a power of the
       indeterminate.  A coefficient is defined as an algebraic expression
@@ -75,8 +125,23 @@
       </LATEX>
       is a polynomial in <LATEXINLINE>$x$</LATEXINLINE> whose coefficients are
       polynomials in <LATEXINLINE>$y$</LATEXINLINE>.
+    </EN>
+    <JA>
+    多項式を項の和として定義します。各項は、係数、不定元のべき乗、または係数と不定元のべき乗の積のいずれかです。係数は、多項式の不定元に依存しない代数式として定義されます。たとえば、
+      <LATEX>
+        \[ 5x^2 +3x +7 \]
+      </LATEX>
+      は <LATEXINLINE>$x$</LATEXINLINE> についての単純な多項式であり、
+      <LATEX>
+        \[ (y^2 +1)x^3 +(2y)x+1 \]
+      </LATEX>
+      は <LATEXINLINE>$x$</LATEXINLINE> についての多項式で、その係数は <LATEXINLINE>$y$</LATEXINLINE> の多項式です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Already we are skirting some thorny issues.  Is the first of these
     polynomials the same as the polynomial
     <LATEXINLINE>$5y^2 +3y +7$</LATEXINLINE>, or not?  A reasonable answer
@@ -88,31 +153,59 @@
     this, or not? Furthermore, there are other ways to represent a
     polynomial<EMDASH/>for example, as a product of factors, or (for a
     univariate polynomial) as the set of roots, or as a listing of the values
-    of the polynomial at a specified set of points.<FOOTNOTE>For univariate
+    of the polynomial at a specified set of points.
+    </EN>
+    <JA>
+    すでにいくつかの厄介な問題に差し掛かっています。最初の多項式は多項式 <LATEXINLINE>$5y^2 +3y +7$</LATEXINLINE> と同じでしょうか、それとも違うでしょうか？ 妥当な答えは<QUOTE>多項式を純粋に数学的な関数として考えるなら「はい」ですが、多項式を構文形式として考えるなら「いいえ」</QUOTE>かもしれません。2番目の多項式は、代数的には <LATEXINLINE>$y$</LATEXINLINE> についての多項式で係数が <LATEXINLINE>$x$</LATEXINLINE> の多項式であるものと等価です。私たちのシステムはこれを認識すべきでしょうか？ さらに、多項式を表現する他の方法もあります<EMDASH/>たとえば、因数の積として、あるいは（一変数多項式の場合）根の集合として、あるいは指定された点の集合における多項式の値のリストとして表現できます。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>For univariate
     polynomials, giving the value of a polynomial at a given set of points can
     be a particularly good representation.  This makes polynomial arithmetic
     extremely simple.  To obtain, for example, the sum of two polynomials
     represented in this way, we need only add the values of the
     polynomials at corresponding points.  To transform back to a more
-    familiar representation, we can use the 
+    familiar representation, we can use the
     <INDEX>Lagrange interpolation formula</INDEX>
     Lagrange interpolation formula, which shows how to recover the coefficients
     of a polynomial of degree <LATEXINLINE>$n$</LATEXINLINE> given the values
-    of the polynomial at <LATEXINLINE>$n+1$</LATEXINLINE> points.</FOOTNOTE>
+    of the polynomial at <LATEXINLINE>$n+1$</LATEXINLINE> points.</EN>
+    <JA>一変数多項式の場合、与えられた点の集合における多項式の値を示すことは、特に優れた表現になりえます。これにより多項式算術は極めて単純になります。たとえば、このように表現された2つの多項式の和を求めるには、対応する点での多項式の値を足し合わせるだけです。より馴染みのある表現に戻すには、
+    <INDEX>Lagrange interpolation formula</INDEX>
+    ラグランジュの補間公式を使えます。これは、<LATEXINLINE>$n+1$</LATEXINLINE> 個の点における多項式の値から、次数 <LATEXINLINE>$n$</LATEXINLINE> の多項式の係数を復元する方法を示すものです。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     We can finesse these questions by deciding that in our
     algebraic-manipulation system a <QUOTE>polynomial</QUOTE> will be a
     particular syntactic form, not its underlying mathematical meaning.
+    </EN>
+    <JA>
+    私たちの代数操作システムにおいて<QUOTE>多項式</QUOTE>は特定の構文形式であり、その背後にある数学的な意味ではない、と決めることでこれらの問題を巧みに回避できます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Now we must consider how to go about doing arithmetic on polynomials.
     In this simple system, we will consider only addition and
     multiplication.  Moreover, we will insist that two polynomials to be
     combined must have the same indeterminate.
+    </EN>
+    <JA>
+    次に、多項式の算術をどのように行うかを考えなければなりません。この単純なシステムでは、加算と乗算のみを扱います。さらに、組み合わせる2つの多項式は同じ不定元を持つ必要があるとします。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We will approach the design of our system by following the familiar
     discipline of data abstraction.  We will represent polynomials using a
-    data structure called a 
+    data structure called a
     <INDEX>poly</INDEX>
     <EM>poly</EM>, which consists of a variable and a
     <INDEX>term list of polynomial</INDEX>
@@ -137,8 +230,8 @@
 	string,
       </JAVASCRIPT>
     </SPLITINLINE>
-    so we can use the 
-     <INDEX><USE>is_same_variable</USE></INDEX> 
+    so we can use the
+     <INDEX><USE>is_same_variable</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>same-variable?</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>is_same_variable</JAVASCRIPTINLINE>
@@ -159,6 +252,53 @@
     <INDEX>polynomial arithmetic<SUBINDEX>addition</SUBINDEX><OPEN/></INDEX>
     <INDEX>polynomial arithmetic<SUBINDEX>multiplication</SUBINDEX><OPEN/></INDEX>
     addition and multiplication of polys:
+    </EN>
+    <JA>
+    私たちは馴染みのあるデータ抽象の規律に従ってシステムの設計に取り組みます。多項式は
+    <INDEX>poly</INDEX>
+    <EM>poly</EM> と呼ばれるデータ構造を使って表現します。これは変数と
+    <INDEX>term list of polynomial</INDEX>
+    項の集まりで構成されます。セレクタ <SCHEMEINLINE>variable</SCHEMEINLINE> と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>term-list</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>term_list</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が poly からそれらの部分を取り出し、コンストラクタ
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-poly</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_poly</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が与えられた変数と項リストから poly を組み立てるものとします。変数は単なる
+    <SPLITINLINE>
+      <SCHEME>
+	シンボルなので、
+      </SCHEME>
+      <JAVASCRIPT>
+	文字列なので、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <REF NAME="sec:symbolic-differentiation"/> 節の
+     <INDEX><USE>is_same_variable</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>same-variable?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_same_variable</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を使って変数を比較できます。次の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、poly の
+    <INDEX>polynomial arithmetic<SUBINDEX>addition</SUBINDEX><OPEN/></INDEX>
+    <INDEX>polynomial arithmetic<SUBINDEX>multiplication</SUBINDEX><OPEN/></INDEX>
+    加算と乗算を定義します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="4">
       <INDEX><DECLARATION>add_poly</DECLARATION></INDEX> 
       <INDEX><DECLARATION>mul_poly</DECLARATION></INDEX> 
@@ -203,6 +343,8 @@ function mul_poly(p1, p2) {
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To incorporate polynomials into our generic arithmetic system, we need
     to supply them with type tags.  We<APOS/>ll use the tag
     <SPLITINLINE>
@@ -212,6 +354,16 @@ function mul_poly(p1, p2) {
     </SPLITINLINE>
     and install appropriate operations on tagged polynomials in the operation
     table.
+    </EN>
+    <JA>
+    多項式をジェネリック算術システムに組み込むには、型タグを付ける必要があります。タグとして
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>polynomial</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>"polynomial"</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使い、タグ付き多項式に対する適切な演算を演算テーブルにインストールします。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
 	We<APOS/>ll embed all our code in an installation procedure
@@ -247,10 +399,17 @@ function mul_poly(p1, p2) {
 	</SNIPPET>
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	We<APOS/>ll embed all our code in an installation function
 	for the polynomial package,
 	similar to the installation functions in
 	section<SPACE/><REF NAME="sec:generic-arithmetic-operators"/>:
+	</EN>
+	<JA>
+	<REF NAME="sec:generic-arithmetic-operators"/> 節のインストール関数と同様に、すべてのコードを多項式パッケージのインストール関数に埋め込みます：
+	</JA>
+	</BILINGUAL>
 	  <SNIPPET EVAL="no" LATEX="yes">
 	    <INDEX>package<SUBINDEX>polynomial</SUBINDEX></INDEX>
 	    <INDEX><USE>polynomial</USE> package</INDEX> 
@@ -301,72 +460,142 @@ function install_polynomial_package() {
     </SPLIT>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Polynomial addition is performed termwise.  Terms of the same order
     (i.e., with the same power of the indeterminate) must be combined.
     This is done by forming a new term of the same order whose coefficient
     is the sum of the coefficients of the addends.  Terms in one addend
     for which there are no terms of the same order in the other addend are
     simply accumulated into the sum polynomial being constructed.
+    </EN>
+    <JA>
+    多項式の加算は項ごとに行われます。同じ次数（つまり不定元の同じべき乗）の項は結合しなければなりません。これは、同じ次数の新しい項を作り、その係数を加数の係数の和とすることで行います。一方の加数にあって他方に同じ次数の項がない項は、構築中の和の多項式にそのまま蓄積されます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In order to manipulate term lists, we will assume that we have a
-    constructor 
-      <INDEX><USE>the_empty_termlist</USE></INDEX>  
+    constructor
+      <INDEX><USE>the_empty_termlist</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>the-empty-termlist</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>the_empty_termlist</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    that returns an empty term list and a constructor 
-      <INDEX><USE>adjoin_term</USE></INDEX> 
+    that returns an empty term list and a constructor
+      <INDEX><USE>adjoin_term</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>adjoin-term</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>adjoin_@term</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     that adjoins a new term to a term list.  We will also assume that we have
-    a predicate 
-      <INDEX><USE>is_empty_termlist</USE></INDEX> 
+    a predicate
+      <INDEX><USE>is_empty_termlist</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>empty-termlist?</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>is_empty_termlist</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
     that tells if a given term list is empty, a selector
-      <INDEX><USE>first_term</USE></INDEX> 
+      <INDEX><USE>first_term</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>first-term</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>first_term</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    that extracts the highest-order term from a term list, and a selector 
-      <INDEX><USE>rest_terms</USE></INDEX> 
+    that extracts the highest-order term from a term list, and a selector
+      <INDEX><USE>rest_terms</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>rest-terms</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>rest_terms</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     that returns all but the highest-order term.  To manipulate terms,
-    we will suppose that we have a constructor 
-      <INDEX><USE>make_term</USE></INDEX> 
+    we will suppose that we have a constructor
+      <INDEX><USE>make_term</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-term</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_term</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    that constructs a term with given order and coefficient, and selectors 
-      <INDEX><USE>order</USE></INDEX> 
-    <SCHEMEINLINE>order</SCHEMEINLINE> and 
-      <INDEX><USE>coeff</USE></INDEX> 
+    that constructs a term with given order and coefficient, and selectors
+      <INDEX><USE>order</USE></INDEX>
+    <SCHEMEINLINE>order</SCHEMEINLINE> and
+      <INDEX><USE>coeff</USE></INDEX>
     <SCHEMEINLINE>coeff</SCHEMEINLINE> that return, respectively, the order
     and the coefficient of the term.  These operations allow us to consider
     both terms and term lists as data abstractions, whose concrete
     representations we can worry about separately.
+    </EN>
+    <JA>
+    項リストを操作するために、空の項リストを返すコンストラクタ
+      <INDEX><USE>the_empty_termlist</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>the-empty-termlist</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>the_empty_termlist</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と、新しい項を項リストに追加するコンストラクタ
+      <INDEX><USE>adjoin_term</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>adjoin-term</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>adjoin_@term</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    があるものとします。また、与えられた項リストが空かどうかを判定する述語
+      <INDEX><USE>is_empty_termlist</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>empty-termlist?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_empty_termlist</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    、項リストから最高次の項を取り出すセレクタ
+      <INDEX><USE>first_term</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>first-term</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>first_term</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    、最高次の項以外のすべてを返すセレクタ
+      <INDEX><USE>rest_terms</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rest-terms</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>rest_terms</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    があるものとします。項を操作するために、与えられた次数と係数で項を構築するコンストラクタ
+      <INDEX><USE>make_term</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-term</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_term</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と、それぞれ項の次数と係数を返すセレクタ
+      <INDEX><USE>order</USE></INDEX>
+    <SCHEMEINLINE>order</SCHEMEINLINE> および
+      <INDEX><USE>coeff</USE></INDEX>
+    <SCHEMEINLINE>coeff</SCHEMEINLINE> があるものとします。これらの操作により、項と項リストの両方をデータ抽象として扱うことができ、具体的な表現については別途考えることができます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Here is the
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     that constructs the term list for the sum of two
-    <SPLITINLINE><SCHEME>polynomials:</SCHEME><JAVASCRIPT>polynomials;</JAVASCRIPT></SPLITINLINE><FOOTNOTE>This operation is very much like the ordered
+    <SPLITINLINE><SCHEME>polynomials:</SCHEME><JAVASCRIPT>polynomials;</JAVASCRIPT></SPLITINLINE>
+    </EN>
+    <JA>
+    以下は2つの多項式の和の項リストを構築する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE><SCHEME>です：</SCHEME><JAVASCRIPT>です。</JAVASCRIPT></SPLITINLINE>
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>This operation is very much like the ordered
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>union-set</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>union_set</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -378,15 +607,37 @@ function install_polynomial_package() {
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>union-set</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>union_set</JAVASCRIPTINLINE>.</JAVASCRIPT>
-    </SPLITINLINE></FOOTNOTE>
+    </SPLITINLINE></EN>
+    <JA>この演算は、演習問題<SPACE/><REF NAME="ex:union-set"/>で開発した順序付きの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>union-set</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>union_set</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    演算と非常によく似ています。実際、多項式の項を不定元のべき乗に従って順序付けられた集合と考えると、和の項リストを生成するプログラムは
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>union-set</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>union_set</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    とほぼ同一です。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SPLIT>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	note that we slightly extend the syntax of
 	<INDEX>conditional statement<SUBINDEX>conditional instead of alternative block</SUBINDEX></INDEX>
 	conditional statements described in
       section<SPACE/><REF NAME="sec:lambda"/> by admitting another conditional
       statement in place of the block following
       <JAVASCRIPTINLINE>else</JAVASCRIPTINLINE>:
+	</EN>
+	<JA>
+	<REF NAME="sec:lambda"/> 節で説明した
+	<INDEX>conditional statement<SUBINDEX>conditional instead of alternative block</SUBINDEX></INDEX>
+	条件文の構文を少し拡張し、<JAVASCRIPTINLINE>else</JAVASCRIPTINLINE> に続くブロックの代わりに別の条件文を許容していることに注意してください：
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
     <SNIPPET CHAP="4">
@@ -438,6 +689,8 @@ function add_terms(L1, L2) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The most important point to note here is that we used the generic addition
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -446,9 +699,22 @@ function add_terms(L1, L2) {
      <INDEX><USE>add</USE> (generic)<SUBINDEX>used for polynomial coefficients</SUBINDEX></INDEX>
     <SCHEMEINLINE>add</SCHEMEINLINE> to add together the coefficients of the
     terms being combined.  This has powerful consequences, as we will see below.
+    </EN>
+    <JA>
+    ここで注目すべき最も重要な点は、結合される項の係数を足し合わせるためにジェネリックな加算
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+     <INDEX><USE>add</USE> (generic)<SUBINDEX>used for polynomial coefficients</SUBINDEX></INDEX>
+    <SCHEMEINLINE>add</SCHEMEINLINE> を使ったことです。これは後で見るように強力な結果をもたらします。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <DO_BREAK_PAGE/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In order to multiply two term lists, we multiply each term of the first
     list by all the terms of the other list, repeatedly using
     <SPLITINLINE>
@@ -461,6 +727,16 @@ function add_terms(L1, L2) {
     into a sum.  Multiplying two terms forms a term whose order is the sum of
     the orders of the factors and whose coefficient is the product of the
     coefficients of the factors:
+    </EN>
+    <JA>
+    2つの項リストを乗算するには、最初のリストの各項を他方のリストのすべての項と掛け合わせます。これには
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-term-by-all-terms</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_term_by_all_terms</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を繰り返し使います。この関数は与えられた項を与えられた項リストのすべての項と掛け合わせます。結果として得られる項リスト（最初のリストの各項に対して1つ）は和に蓄積されます。2つの項の乗算では、次数が因数の次数の和で、係数が因数の係数の積である項が作られます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="4">
       <INDEX><DECLARATION>mul_terms</DECLARATION></INDEX> 
       <NAME>mul_terms</NAME>
@@ -509,6 +785,8 @@ function mul_term_by_all_terms(t1, L) {
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     This is really all there is to polynomial addition and multiplication.
     Notice that, since we operate on terms using the generic
     <SPLITINLINE>
@@ -520,7 +798,7 @@ function mul_term_by_all_terms(t1, L) {
     <SCHEMEINLINE>add</SCHEMEINLINE> and <SCHEMEINLINE>mul</SCHEMEINLINE>,
     our polynomial package is automatically able to handle any type of
     coefficient that is known about by the generic arithmetic package.
-    If we include a 
+    If we include a
     <INDEX>coercion<SUBINDEX>in polynomial arithmetic</SUBINDEX></INDEX>
     coercion mechanism such as one of those discussed in
     section<SPACE/><REF NAME="sec:combining-data-of-different-types"/>,
@@ -534,8 +812,33 @@ function mul_term_by_all_terms(t1, L) {
       \end{array}
       \]
     </LATEX>
+    </EN>
+    <JA>
+    多項式の加算と乗算に必要なのは本当にこれだけです。ジェネリック
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>add</USE> (generic)<SUBINDEX>used for polynomial coefficients</SUBINDEX></INDEX>
+    <INDEX><USE>mul</USE> (generic)<SUBINDEX>used for polynomial coefficients</SUBINDEX></INDEX>
+    <SCHEMEINLINE>add</SCHEMEINLINE> と <SCHEMEINLINE>mul</SCHEMEINLINE> を使って項を操作しているので、多項式パッケージはジェネリック算術パッケージが認識するあらゆる型の係数を自動的に扱えることに注目してください。<REF NAME="sec:combining-data-of-different-types"/> 節で議論したような
+    <INDEX>coercion<SUBINDEX>in polynomial arithmetic</SUBINDEX></INDEX>
+    型変換メカニズムを含めれば、異なる係数型の多項式に対する演算も自動的に扱えるようになります。たとえば、
+    <LATEX>
+      \[
+      \begin{array}{l}
+      {\left[3x^2 +(2+3i)x+7\right] \cdot \left[x^4 +\frac{2}{3}x^2
+      +(5+3i)\right]}
+      \end{array}
+      \]
+    </LATEX>
+    のような演算です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Because we installed the polynomial addition and multiplication
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -575,7 +878,7 @@ function mul_term_by_all_terms(t1, L) {
       <SCHEME><SCHEMEINLINE>mul-poly</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>mul_poly</JAVASCRIPTINLINE>.</JAVASCRIPT>
     </SPLITINLINE>
-    The result is a kind of 
+    The result is a kind of
     <INDEX>data-directed recursion</INDEX>
     <INDEX>recursion<SUBINDEX>data-directed</SUBINDEX></INDEX>
     <QUOTE>data-directed recursion</QUOTE> in which, for example, a call to
@@ -592,7 +895,59 @@ function mul_term_by_all_terms(t1, L) {
     coefficients were themselves polynomials (as might be used to represent
     polynomials in three variables), the data direction would ensure that the
     system would follow through another level of recursive calls, and so on
-    through as many levels as the structure of the data dictates.<FOOTNOTE>To
+    through as many levels as the structure of the data dictates.
+    </EN>
+    <JA>
+    多項式の加算と乗算の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-poly</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>add_@poly</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-poly</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_poly</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を型 <SCHEMEINLINE>polynomial</SCHEMEINLINE> に対する <SCHEMEINLINE>add</SCHEMEINLINE> と <SCHEMEINLINE>mul</SCHEMEINLINE> 演算としてジェネリック算術システムにインストールしたので、私たちのシステムは次のような多項式演算も自動的に扱えます。
+    <LATEX>
+      \[
+      \begin{array}{l}
+      {\left[ (y+1)x^2 +(y^2 +1)x+(y-1)\right]\cdot \left[(y-2)x+(y^3 +7)\right]}
+      \end{array}
+      \]
+    </LATEX>
+    その理由は、システムが係数を結合しようとすると <SCHEMEINLINE>add</SCHEMEINLINE> と <SCHEMEINLINE>mul</SCHEMEINLINE> を通じてディスパッチするからです。係数自体が（<LATEXINLINE>$y$</LATEXINLINE> の）多項式なので、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-poly</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_poly</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-poly</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_poly</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使って結合されます。この結果、一種の
+    <INDEX>data-directed recursion</INDEX>
+    <INDEX>recursion<SUBINDEX>data-directed</SUBINDEX></INDEX>
+    <QUOTE>データ指向再帰</QUOTE>が生まれます。たとえば、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-poly</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_poly</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の呼び出しは、係数を乗算するために
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-poly</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_poly</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    への再帰呼び出しを引き起こします。係数の係数がそれ自体多項式であれば（3変数の多項式を表現するのに使われるかもしれません）、データの方向付けにより、システムはさらに別のレベルの再帰呼び出しを辿り、データの構造が指示する限り多くのレベルにわたってこれが続きます。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>To
     make this work completely smoothly, we should also add to our generic
     arithmetic system the ability to coerce a <QUOTE>number</QUOTE> to a
     polynomial by regarding it as a polynomial of degree zero whose coefficient
@@ -604,17 +959,33 @@ function mul_term_by_all_terms(t1, L) {
       \]
     </LATEX>
     which requires adding the coefficient <LATEXINLINE>$y+1$</LATEXINLINE> to
-    the coefficient 2.</FOOTNOTE>
+    the coefficient 2.</EN>
+    <JA>これを完全にスムーズに動作させるには、<QUOTE>数</QUOTE>を、その数を係数とする0次の多項式と見なすことで多項式に型変換する機能をジェネリック算術システムに追加する必要があります。これは、
+    <LATEX>
+      \[
+      {\left[ x^2 +(y+1)x+5\right]+ \left[ x^2 +2x+1\right]}
+      \]
+    </LATEX>
+    のような演算を行う場合に必要です。この演算では、係数 <LATEXINLINE>$y+1$</LATEXINLINE> と係数 2 を加算する必要があります。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <INDEX>polynomial arithmetic<SUBINDEX>addition</SUBINDEX><CLOSE/></INDEX>
     <INDEX>polynomial arithmetic<SUBINDEX>multiplication</SUBINDEX><CLOSE/></INDEX>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Representing term lists</NAME>
+    <NAME>
+      <BILINGUAL>
+      <EN>Representing term lists</EN>
+      <JA>項リストの表現</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>term list of polynomial<SUBINDEX>representing</SUBINDEX><OPEN/></INDEX>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Finally, we must confront the job of implementing a good
     representation for term lists.  A term list is, in effect, a set of
     coefficients keyed by the order of the term.  Hence, any of the
@@ -634,15 +1005,34 @@ function mul_term_by_all_terms(t1, L) {
     </SPLITINLINE>
     always access term lists sequentially from highest to lowest order.
     Thus, we will use some kind of ordered list representation.
+    </EN>
+    <JA>
+    最後に、項リストの適切な表現を実装する作業に取り組まなければなりません。項リストは実質的に、項の次数をキーとする係数の集合です。したがって、<REF NAME="sec:representing-sets"/> 節で議論した集合の表現方法のいずれでもこの作業に適用できます。一方、私たちの
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-terms</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_terms</JAVASCRIPTINLINE></JAVASCRIPT>
+      </SPLITINLINE> と <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-terms</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_terms</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は常に最高次から最低次へと順に項リストにアクセスします。そこで、何らかの順序付きリスト表現を使うことにします。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     How should we structure the list that represents a term list?  One
     consideration is the <QUOTE>density</QUOTE> of the polynomials we intend
-    to manipulate.  A polynomial is said to be 
+    to manipulate.  A polynomial is said to be
     <INDEX>dense polynomial</INDEX>
     <INDEX>polynomial(s)<SUBINDEX>dense</SUBINDEX></INDEX>
     <EM>dense</EM> if it has nonzero coefficients in terms of most orders.
-    If it has many zero terms it is said to be 
+    If it has many zero terms it is said to be
     <INDEX>sparse polynomial</INDEX>
     <INDEX>polynomial(s)<SUBINDEX>sparse</SUBINDEX></INDEX>
     <EM>sparse</EM>.  For example,
@@ -654,8 +1044,29 @@ function mul_term_by_all_terms(t1, L) {
       \[ B:\quad x^{100} +2x^2 +1 \]
     </LATEX>
     is sparse.
+    </EN>
+    <JA>
+    項リストを表現するリストをどのように構造化すべきでしょうか？ 一つの考慮事項は、操作しようとする多項式の<QUOTE>密度</QUOTE>です。多項式がほとんどの次数で非ゼロの係数を持つ場合、
+    <INDEX>dense polynomial</INDEX>
+    <INDEX>polynomial(s)<SUBINDEX>dense</SUBINDEX></INDEX>
+    <EM>密</EM>であると言います。ゼロの項が多い場合は
+    <INDEX>sparse polynomial</INDEX>
+    <INDEX>polynomial(s)<SUBINDEX>sparse</SUBINDEX></INDEX>
+    <EM>疎</EM>であると言います。たとえば、
+    <LATEX>
+      \[ A:\quad x^5 +2x^4 +3x^2 -2x -5 \]
+    </LATEX>
+    は密な多項式ですが、
+    <LATEX>
+      \[ B:\quad x^{100} +2x^2 +1 \]
+    </LATEX>
+    は疎な多項式です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	The term lists of dense polynomials are most efficiently represented
@@ -679,7 +1090,33 @@ function mul_term_by_all_terms(t1, L) {
       </JAVASCRIPT>
     </SPLITINLINE>
     The order of a term in this representation is the length of the sublist
-    beginning with that term<APOS/>s coefficient, decremented by 1.<FOOTNOTE>In
+    beginning with that term<APOS/>s coefficient, decremented by 1.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	密な多項式の項リストは、係数のリストとして最も効率的に表現できます。
+      </SCHEME>
+      <JAVASCRIPT>
+	密な多項式の項リストは、係数のリストとして最も効率的に表現できます。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    たとえば、
+    <SPLITINLINE>
+      <JAVASCRIPT>
+	多項式
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    上の <LATEXINLINE>$A$</LATEXINLINE> は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(1 2 0 3 -2 -5)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>list(1, 2, 0, 3, -2, -5)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と表現できます。この表現における項の次数は、その項の係数から始まるサブリストの長さから1を引いたものです。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>In
     these polynomial examples, we assume that we have implemented the generic
     arithmetic system using the type mechanism suggested in
     exercise<SPACE/><REF NAME="ex:internal-type-system"/>. Thus, coefficients
@@ -695,7 +1132,23 @@ function mul_term_by_all_terms(t1, L) {
       <JAVASCRIPT>string
       <JAVASCRIPTINLINE>"javascript_number"</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
-    </SPLITINLINE></FOOTNOTE>  
+    </SPLITINLINE></EN>
+    <JA>これらの多項式の例では、演習問題<SPACE/><REF NAME="ex:internal-type-system"/>で提案された型メカニズムを使ってジェネリック算術システムを実装したものと仮定しています。したがって、通常の数である係数は、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が
+    <SPLITINLINE>
+      <SCHEME>シンボル <SCHEMEINLINE>scheme-number</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>文字列
+      <JAVASCRIPTINLINE>"javascript_number"</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    であるペアとしてではなく、数そのものとして表現されます。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     This would be a terrible representation for a sparse polynomial such as
     <LATEXINLINE>$B$</LATEXINLINE>: There would be a giant list of zeros
     punctuated by a few lonely nonzero terms.  A more reasonable representation
@@ -713,7 +1166,21 @@ function mul_term_by_all_terms(t1, L) {
     will use this method.  We will assume that term lists are represented as
     lists of terms, arranged from highest-order to lowest-order term. Once we
     have made this decision, implementing the selectors and constructors for
-    terms and term lists is straightforward:<FOOTNOTE>Although we are assuming
+    terms and term lists is straightforward:
+    </EN>
+    <JA>
+    これは <LATEXINLINE>$B$</LATEXINLINE> のような疎な多項式にはひどい表現になります。わずかな非ゼロの項の間に膨大なゼロのリストが並ぶことになります。疎な多項式の項リストのより合理的な表現は、非ゼロの項のリストです。各項はその次数と対応する係数を含むリストです。この方式では、多項式 <LATEXINLINE>$B$</LATEXINLINE> は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>((100 1) (2 2) (0 1))</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>list(list(100, 1), list(2, 2), list(0, 1))</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と効率的に表現されます。多項式の操作のほとんどは疎な多項式に対して行われるため、この方法を使うことにします。項リストは最高次の項から最低次の項へと並べられた項のリストとして表現するものとします。この決定をしたら、項と項リストのセレクタとコンストラクタの実装は単純明快です：
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>Although we are assuming
     that term lists are ordered, we have implemented
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>adjoin-term</SCHEMEINLINE></SCHEME>
@@ -760,7 +1227,51 @@ function mul_term_by_all_terms(t1, L) {
     constructor for the ordered-list
     representation of sets
     (exercise<SPACE/><REF NAME="ex:adjoin-set"/>).
-    <LABEL NAME="foot:adjoin-term"/></FOOTNOTE>
+    <LABEL NAME="foot:adjoin-term"/></EN>
+    <JA>項リストが順序付けられていると仮定しているにもかかわらず、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>adjoin-term</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>adjoin_term</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は単に
+    <SPLITINLINE>
+      <SCHEME>
+	新しい項を既存の項リストに <SCHEMEINLINE>cons</SCHEMEINLINE> する
+      </SCHEME>
+      <JAVASCRIPT>
+	新しい項を既存の項リストの先頭に追加する
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    ように実装しました。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>adjoin-term</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>adjoin_term</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使う
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    （たとえば
+    <SPLITINLINE>
+      <SCHEME>
+      <SCHEMEINLINE>add-terms</SCHEMEINLINE>）</SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>add_terms</JAVASCRIPTINLINE>）</JAVASCRIPT>
+    </SPLITINLINE>
+    が常にリスト中に現れるものより高い次数の項で呼び出すことを保証する限り、これで問題ありません。そのような保証をしたくない場合は、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>adjoin-term</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>adjoin_term</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を集合の順序付きリスト表現の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>adjoin-set</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>adjoin_set</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    コンストラクタと同様に実装することもできました（演習問題<SPACE/><REF NAME="ex:adjoin-set"/>）。
+    <LABEL NAME="foot:adjoin-term"/></JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET CHAP="4">
       <INDEX><DECLARATION>adjoin_term</DECLARATION></INDEX> 
       <INDEX><DECLARATION>the_empty_termlist</DECLARATION></INDEX> 
@@ -814,6 +1325,8 @@ function order(term) { return head(term); }
 function coeff(term) { return head(tail(term)); }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     where
     <SPLITINLINE><SCHEME><SCHEMEINLINE>=zero?</SCHEMEINLINE></SCHEME>
     <JAVASCRIPT><JAVASCRIPTINLINE>is_equal_to_zero</JAVASCRIPTINLINE>
@@ -821,14 +1334,36 @@ function coeff(term) { return head(tail(term)); }
     </SPLITINLINE>
     is as defined in exercise<SPACE/><REF NAME="ex:=zero?"/>.  (See also
     exercise<SPACE/><REF NAME="ex:adjoin-term"/> below.)
+    </EN>
+    <JA>
+    ここで
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>=zero?</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>is_equal_to_zero</JAVASCRIPTINLINE>
+    </JAVASCRIPT>
+    </SPLITINLINE>
+    は演習問題<SPACE/><REF NAME="ex:=zero?"/>で定義したものです。（以下の演習問題<SPACE/><REF NAME="ex:adjoin-term"/>も参照してください。）
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Users of the polynomial package will create (tagged) polynomials by means
     of the
     <SPLITINLINE>
       <SCHEME>procedure:</SCHEME>
       <JAVASCRIPT>function:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    多項式パッケージのユーザは、次の
+    <SPLITINLINE>
+      <SCHEME>手続きを使って</SCHEME>
+      <JAVASCRIPT>関数を使って</JAVASCRIPT>
+    </SPLITINLINE>
+    （タグ付き）多項式を作成します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>make_polynomial_requires</NAME>
       <REQUIRES>is_same_variable</REQUIRES>
@@ -1002,6 +1537,8 @@ head(tail(tail(tail(mul(p1, p2)))));
     </SNIPPET>
   </TEXT>
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Install
     <INDEX><USE>is_equal_to_zero</USE> (generic)<SUBINDEX>for polynomials</SUBINDEX></INDEX>
     <INDEX>zero test (generic)<SUBINDEX>for polynomials</SUBINDEX></INDEX>
@@ -1016,14 +1553,42 @@ head(tail(tail(tail(mul(p1, p2)))));
     <JAVASCRIPT><JAVASCRIPTINLINE>adjoin_term</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     to work for polynomials with coefficients that are themselves polynomials.
+    </EN>
+    <JA>
+    ジェネリック算術パッケージに多項式用の
+    <INDEX><USE>is_equal_to_zero</USE> (generic)<SUBINDEX>for polynomials</SUBINDEX></INDEX>
+    <INDEX>zero test (generic)<SUBINDEX>for polynomials</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>=zero?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_equal_to_zero</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    をインストールしてください。これにより、係数自体が多項式である多項式に対して
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>adjoin-term</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>adjoin_term</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が動作するようになります。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:adjoin-term"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Extend the polynomial system to include
     <INDEX>polynomial arithmetic<SUBINDEX>subtraction</SUBINDEX></INDEX>
     subtraction of polynomials.
     (Hint: You may find it helpful to define a generic negation operation.)
+    </EN>
+    <JA>
+    多項式システムを拡張して、多項式の
+    <INDEX>polynomial arithmetic<SUBINDEX>subtraction</SUBINDEX></INDEX>
+    減算を含めてください。
+    （ヒント：ジェネリックな符号反転演算を定義すると便利かもしれません。）
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:sub-poly"/>
     <SOLUTION>
       <SNIPPET EVAL="no">
@@ -1060,16 +1625,28 @@ function sub_poly(p1, p2) {
 
   <EXERCISE>
     <LABEL NAME="ex:5_29"/>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>Define procedures</SCHEME>
       <JAVASCRIPT>Declare functions</JAVASCRIPT>
     </SPLITINLINE>
     that implement the term-list representation described above as
     appropriate for dense polynomials.
+    </EN>
+    <JA>
+    上述の密な多項式に適した項リスト表現を実装する<SPLITINLINE>
+      <SCHEME>手続きを定義</SCHEME>
+      <JAVASCRIPT>関数を宣言</JAVASCRIPT>
+    </SPLITINLINE>してください。
+    </JA>
+    </BILINGUAL>
   </EXERCISE>
 
   <EXERCISE>
     <LABEL NAME="ex:2_90"/>
+    <BILINGUAL>
+    <EN>
     Suppose we want to have a polynomial system that is efficient for both
     sparse and dense polynomials.  One way to do this is to allow both
     kinds of term-list representations in our system.  The situation is
@@ -1079,12 +1656,19 @@ function sub_poly(p1, p2) {
     different types of term lists and make the operations on term lists
     generic.  Redesign the polynomial system to implement this generalization.
     This is a major effort, not a local change.
+    </EN>
+    <JA>
+    疎な多項式と密な多項式の両方に対して効率的な多項式システムが欲しいとします。これを実現する1つの方法は、システム内で両方の種類の項リスト表現を許容することです。この状況は、<REF NAME="sec:multiple-reps"/>節の複素数の例と類似しています。そこでは直交形式と極形式の両方の表現を許容しました。これを行うには、異なる種類の項リストを区別し、項リストに対する演算をジェネリックにする必要があります。この一般化を実装するように多項式システムを再設計してください。これは局所的な変更ではなく、大規模な作業です。
+    </JA>
+    </BILINGUAL>
   </EXERCISE>
  
   <INDEX>term list of polynomial<SUBINDEX>representing</SUBINDEX><CLOSE/></INDEX>
 
   <EXERCISE>
     <LABEL NAME="ex:/terms"/>
+    <BILINGUAL>
+    <EN>
     A univariate polynomial can be divided by another one to produce a
     <INDEX>polynomial arithmetic<SUBINDEX>division</SUBINDEX></INDEX>
     polynomial quotient and a polynomial remainder.  For example,
@@ -1104,9 +1688,26 @@ function sub_poly(p1, p2) {
     divisor exceeds the order of the dividend and declare the dividend to
     be the remainder.  Also, if the dividend ever becomes zero, return
     zero as both quotient and remainder.
+    </EN>
+    <JA>
+    1変数多項式を別の多項式で割ると、多項式の商と多項式の剰余が得られます。
+    <INDEX>polynomial arithmetic<SUBINDEX>division</SUBINDEX></INDEX>
+    例えば、
+    <LATEX>
+      \[
+      \begin{array}{lll}
+      \dfrac{x^5-1}{x^2 -1} &amp; = &amp; x^3 +x,\ \text{remainder }x-1
+      \end{array}
+      \]
+    </LATEX>
+    除算は筆算（長除法）で実行できます。つまり、被除数の最高次の項を除数の最高次の項で割ります。その結果が商の最初の項です。次に、その結果に除数を掛け、被除数からそれを引き、差を除数で再帰的に割ることで残りの答えを求めます。除数の次数が被除数の次数を超えたら止め、被除数を剰余として宣言します。また、被除数がゼロになった場合は、商と剰余の両方としてゼロを返します。
+    </JA>
+    </BILINGUAL>
     <P/>
+    <BILINGUAL>
+    <EN>
     We can design a
-    <INDEX><USE>div_poly</USE><FRAGILE/></INDEX> 
+    <INDEX><USE>div_poly</USE><FRAGILE/></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>div-poly</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>div_poly</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -1167,7 +1768,70 @@ function sub_poly(p1, p2) {
     </SPLITINLINE>
     can take two term lists as arguments and return a list of the quotient
     term list and the remainder term list.
+    </EN>
+    <JA>
+    <INDEX><USE>div_poly</USE><FRAGILE/></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-poly</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_poly</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-poly</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>add_poly</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-poly</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_poly</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    をモデルにして設計できます。この<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、2つの多項式が同じ変数を持つかどうかを確認します。同じであれば、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-poly</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>div_poly</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は変数を取り除き、問題を
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-terms</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>div_terms</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    に渡します。これが項リストに対する除算演算を実行します。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Div-poly</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	関数
+	<JAVASCRIPTINLINE>div_poly</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は最後に、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-terms</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_terms</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    から提供された結果に変数を再び付けます。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-terms</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_terms</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は、除算の商と剰余の両方を計算するように設計すると便利です。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-terms</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	関数 <JAVASCRIPTINLINE>div_terms</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は2つの項リストを引数として受け取り、商の項リストと剰余の項リストのリストを返すことができます。
+    </JA>
+    </BILINGUAL>
     <P/>
+    <BILINGUAL>
+    <EN>
     Complete the following definition of
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>div-terms</SCHEMEINLINE></SCHEME>
@@ -1189,6 +1853,28 @@ function sub_poly(p1, p2) {
     </SPLITINLINE>
     which takes two polys as arguments and returns a list of the quotient and
     remainder polys.
+    </EN>
+    <JA>
+    以下の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-terms</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>div_terms</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の定義の欠けている<SPLITINLINE>
+      <SCHEME>
+	式を
+      </SCHEME>
+      <JAVASCRIPT>
+	部分を
+      </JAVASCRIPT>
+    </SPLITINLINE>埋めて完成させてください。これを使って、2つの多項式を引数として受け取り、商と剰余の多項式のリストを返す
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-poly</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_poly</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を実装してください。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes" POSTPADDING="no">
       <INDEX><DECLARATION>div_terms</DECLARATION><FRAGILE/></INDEX> 
       <SCHEME>
@@ -1229,7 +1915,7 @@ function div_terms(L1, L2) {
   </EXERCISE>
 
   <SUBHEADING>
-    <NAME>Hierarchies of types in symbolic algebra</NAME>
+    <NAME><BILINGUAL><EN>Hierarchies of types in symbolic algebra</EN><JA>シンボリック代数における型の階層</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>hierarchy of types<SUBINDEX><ORDER>symbolic</ORDER>in symbolic algebra<OPEN/></SUBINDEX></INDEX>
@@ -1237,6 +1923,8 @@ function div_terms(L1, L2) {
   <INDEX>type(s)<SUBINDEX>hierarchy in symbolic algebra</SUBINDEX><OPEN/></INDEX>
   
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Our polynomial system illustrates how objects of one type
     (polynomials) may in fact be complex objects that have objects of many
     different types as parts.  This poses no real difficulty in defining
@@ -1247,8 +1935,15 @@ function div_terms(L1, L2) {
     themselves be polynomials.  Our generic operations and our
     data-directed programming style can handle this complication without
     much trouble.
+    </EN>
+    <JA>
+    私たちの多項式システムは、ある1つの型のオブジェクト（多項式）が、実際には多くの異なる型のオブジェクトを部品として持つ複合オブジェクトであり得ることを示しています。これはジェネリック演算の定義において本質的な困難をもたらしません。複合型の部品に対して必要な操作を実行するための適切なジェネリック演算をインストールするだけで済みます。実際、多項式は一種の<QUOTE>再帰的データ抽象</QUOTE>を形成しており、多項式の部品自体が多項式であり得ます。私たちのジェネリック演算とデータ指向プログラミングのスタイルは、この複雑さをそれほど苦労せずに扱うことができます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     On the other hand, polynomial algebra is a system for which the data
     types cannot be naturally arranged in a tower.  For instance, it is
     possible to have polynomials in <LATEXINLINE>$x$</LATEXINLINE> whose
@@ -1261,7 +1956,7 @@ function div_terms(L1, L2) {
     of the other by expanding and rearranging terms so that both polynomials
     have the same principal variable.  One can impose a towerlike structure on
     this by ordering the variables and thus always converting any polynomial
-    to a 
+    to a
     <INDEX>canonical form, for polynomials</INDEX>
     <INDEX>polynomial(s)<SUBINDEX>canonical form</SUBINDEX></INDEX>
     <QUOTE>canonical form</QUOTE> with the highest-priority variable
@@ -1272,9 +1967,19 @@ function div_terms(L1, L2) {
     for this domain or for any domain where the user can invent new types
     dynamically using old types in various combining forms, such as
     trigonometric functions, power series, and integrals.
+    </EN>
+    <JA>
+    一方、多項式代数はデータ型を自然にタワーに配置できないシステムです。例えば、係数が <LATEXINLINE>$y$</LATEXINLINE> の多項式である <LATEXINLINE>$x$</LATEXINLINE> の多項式を持つことができます。同様に、係数が <LATEXINLINE>$x$</LATEXINLINE> の多項式である <LATEXINLINE>$y$</LATEXINLINE> の多項式を持つことも可能です。これらの型のどちらも、自然な意味で他方より<QUOTE>上</QUOTE>にあるとは言えませんが、それぞれの集合の要素を加算する必要がしばしば生じます。これを行う方法はいくつかあります。1つの可能性は、項を展開して再配置し、両方の多項式が同じ主変数を持つように一方の多項式を他方の型に変換することです。変数に順序を付けることでタワーのような構造を課すことができ、任意の多項式を常に最も優先度の高い変数が支配的で、優先度の低い変数が係数の中に埋め込まれた
+    <INDEX>canonical form, for polynomials</INDEX>
+    <INDEX>polynomial(s)<SUBINDEX>canonical form</SUBINDEX></INDEX>
+    <QUOTE>標準形</QUOTE>に変換します。この戦略はかなりうまく機能しますが、変換によって多項式が不必要に展開され、読みにくくなり、おそらく効率も悪くなる可能性があります。タワー戦略は、この領域や、三角関数、べき級数、積分のように、古い型をさまざまな組み合わせ形式で使ってユーザーが動的に新しい型を発明できる領域にとって、明らかに自然ではありません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
-    It should not be surprising that controlling 
+    <BILINGUAL>
+    <EN>
+    It should not be surprising that controlling
     <INDEX>coercion<SUBINDEX>in algebraic manipulation</SUBINDEX></INDEX>
     coercion is a serious problem in the design of large-scale
     algebraic-manipulation systems. Much of the complexity of such systems is
@@ -1283,12 +1988,26 @@ function div_terms(L1, L2) {
     yet completely understand the concept of a data type.  Nevertheless, what
     we know provides us with powerful structuring and modularity principles to
     support the design of large systems.
+    </EN>
+    <JA>
+    大規模な代数操作システムの設計において、
+    <INDEX>coercion<SUBINDEX>in algebraic manipulation</SUBINDEX></INDEX>
+    型変換の制御が深刻な問題であることは驚くべきことではありません。そのようなシステムの複雑さの多くは、多様な型の間の関係に関わっています。実際、型変換をまだ完全には理解していないと言っても過言ではありません。実のところ、データ型という概念自体もまだ完全には理解していません。それでもなお、私たちが知っていることは、大規模システムの設計を支える強力な構造化とモジュール性の原則を提供してくれます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     By imposing an ordering on variables, extend the polynomial package so
     that addition and multiplication of polynomials works for polynomials
     in different variables.  (This is not easy!)
+    </EN>
+    <JA>
+    変数に順序を課すことで、異なる変数の多項式に対しても加算と乗算が機能するように多項式パッケージを拡張してください。（これは簡単ではありません！）
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:2_92"/>
   </EXERCISE>
   
@@ -1297,7 +2016,7 @@ function div_terms(L1, L2) {
   <INDEX>type(s)<SUBINDEX>hierarchy in symbolic algebra</SUBINDEX><CLOSE/></INDEX>
 
   <SUBHEADING>
-    <NAME>Extended exercise: Rational functions</NAME>
+    <NAME><BILINGUAL><EN>Extended exercise: Rational functions</EN><JA>発展演習：有理関数</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>rational function<OPEN/></INDEX>
@@ -1305,6 +2024,8 @@ function div_terms(L1, L2) {
   <INDEX>polynomial arithmetic<SUBINDEX>rational functions</SUBINDEX><OPEN/></INDEX>
   
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can extend our generic arithmetic system to include <EM>rational
     functions</EM>.  These are <QUOTE>fractions</QUOTE> whose numerator and
     denominator are polynomials, such as
@@ -1326,16 +2047,47 @@ function div_terms(L1, L2) {
       \]
     </LATEX>
     (Here the sum has been simplified by removing common factors.
-    Ordinary <QUOTE>cross multiplication</QUOTE> would have produced a 
+    Ordinary <QUOTE>cross multiplication</QUOTE> would have produced a
     fourth-degree polynomial over a fifth-degree polynomial.)
+    </EN>
+    <JA>
+    ジェネリック算術システムを拡張して<EM>有理関数</EM>を含めることができます。これらは分子と分母が多項式である<QUOTE>分数</QUOTE>であり、例えば
+    <LATEX>
+      \[
+      \begin{array}{l}
+      \dfrac{x+1}{x^3 -1}
+      \end{array}
+      \]
+    </LATEX>
+    のようなものです。システムは有理関数の加算、減算、乗算、除算が可能で、以下のような計算を実行できるべきです。
+    <LATEX>
+      \[
+      \begin{array}{lll}
+      \dfrac{x+1}{x^3 -1}+\dfrac{x}{x^2 -1} &amp; = &amp; \dfrac{x^3 +2x^2 +3x +1}{x^4 +
+      x^3 -x-1}
+      \end{array}
+      \]
+    </LATEX>
+    （ここでは共通因子を除去して和が簡約化されています。通常の<QUOTE>たすき掛け</QUOTE>では、5次多項式を分母とする4次多項式が生じていたでしょう。）
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     If we modify our rational-arithmetic package so that it uses generic
     operations, then it will do what we want, except for the problem
     of reducing fractions to lowest terms.
+    </EN>
+    <JA>
+    有理数算術パッケージをジェネリック演算を使うように修正すれば、分数を既約分数に約分する問題を除いて、望みどおりに動作します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
-  <EXERCISE> 
+  <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Modify the rational-arithmetic package to use generic operations, but
     change
     <SPLITINLINE>
@@ -1350,6 +2102,22 @@ function div_terms(L1, L2) {
       </JAVASCRIPT>
     </SPLITINLINE>
     on two polynomials to produce a rational function
+    </EN>
+    <JA>
+    有理数算術パッケージをジェネリック演算を使うように修正してください。ただし、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-rat</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>make_rat</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は分数を既約分数に約分しないように変更してください。2つの多項式に対して
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-rational</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_rational</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を呼び出して有理関数を生成し、システムをテストしてください。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
             (define p1 (make-polynomial 'x '((2 1)(0 1))))
@@ -1362,6 +2130,8 @@ const p2 = make_polynomial("x", list(make_term(3, 1), make_term(0, 1)));
 const rf = make_rational(p2, p1);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Now add <SCHEMEINLINE>rf</SCHEMEINLINE> to itself, using
     <SCHEMEINLINE>add</SCHEMEINLINE>. You will observe that this addition
     <SPLITINLINE>
@@ -1369,10 +2139,20 @@ const rf = make_rational(p2, p1);
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     does not reduce fractions to lowest terms.
+    </EN>
+    <JA>
+    次に、<SCHEMEINLINE>add</SCHEMEINLINE> を使って <SCHEMEINLINE>rf</SCHEMEINLINE> を自分自身に加算してください。この加算<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が分数を既約分数に約分しないことが分かるでしょう。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:make-rat-poly"/>
   </EXERCISE>
   <EXERCISE_FOLLOWED_BY_TEXT/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can reduce polynomial fractions to lowest terms using the same idea
     we used with integers: modifying
     <SPLITINLINE>
@@ -1380,13 +2160,29 @@ const rf = make_rational(p2, p1);
       <JAVASCRIPT><JAVASCRIPTINLINE>make_rat</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     to divide both the numerator and the denominator by their greatest common
-    divisor. The notion of 
+    divisor. The notion of
     <INDEX>greatest common divisor<SUBINDEX>of polynomials</SUBINDEX></INDEX>
     <INDEX>polynomial arithmetic<SUBINDEX>greatest common divisor</SUBINDEX><OPEN/></INDEX>
     <QUOTE>greatest common divisor</QUOTE> makes sense for polynomials.  In
     fact, we can compute the GCD of two polynomials using essentially the
-    same Euclid<APOS/>s Algorithm that works for integers.<FOOTNOTE>The fact
-    that 
+    same Euclid<APOS/>s Algorithm that works for integers.
+    </EN>
+    <JA>
+    整数の場合と同じ考え方を使って、多項式の分数を既約分数に約分できます。つまり、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-rat</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_rat</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を修正して、分子と分母の両方をそれらの最大公約数で割るのです。
+    <INDEX>greatest common divisor<SUBINDEX>of polynomials</SUBINDEX></INDEX>
+    <INDEX>polynomial arithmetic<SUBINDEX>greatest common divisor</SUBINDEX><OPEN/></INDEX>
+    <QUOTE>最大公約数</QUOTE>の概念は多項式に対しても意味があります。実際、整数に対して機能するのと本質的に同じユークリッドの互除法を使って、2つの多項式のGCDを計算できます。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    The fact
+    that
     <INDEX>Euclid<APOS/>s Algorithm<SUBINDEX><ORDER>polynomials</ORDER>for polynomials</SUBINDEX></INDEX>
     <INDEX>polynomial arithmetic<SUBINDEX>Euclid<APOS/>s Algorithm</SUBINDEX></INDEX>
     Euclid<APOS/>s Algorithm works for polynomials is formalized in algebra
@@ -1408,8 +2204,23 @@ const rf = make_rational(p2, p1);
     view, this is what is needed to prove that Euclid<APOS/>s Algorithm works.
     For the domain of integers, the measure <LATEXINLINE>$m$</LATEXINLINE> of an
     integer is the absolute value of the integer itself.  For the domain of
-    polynomials, the measure of a polynomial is its degree.</FOOTNOTE>  The
-    integer version is
+    polynomials, the measure of a polynomial is its degree.
+    </EN>
+    <JA>
+    <INDEX>Euclid<APOS/>s Algorithm<SUBINDEX><ORDER>polynomials</ORDER>for polynomials</SUBINDEX></INDEX>
+    <INDEX>polynomial arithmetic<SUBINDEX>Euclid<APOS/>s Algorithm</SUBINDEX></INDEX>
+    ユークリッドの互除法が多項式に対して機能するという事実は、代数学では多項式が
+    <INDEX>Euclidean ring</INDEX>
+    <INDEX>measure in a Euclidean ring</INDEX>
+    <EM>ユークリッド環</EM>と呼ばれる一種の代数的領域を形成すると述べることで形式化されています。ユークリッド環とは、加算、減算、可換乗算を認め、さらに環の各元 <LATEXINLINE>$x$</LATEXINLINE> に正の整数の<QUOTE>測度</QUOTE> <LATEXINLINE>$m(x)$</LATEXINLINE> を割り当てる方法を持つ領域です。その性質として、任意の非ゼロの <LATEXINLINE>$x$</LATEXINLINE> と <LATEXINLINE>$y$</LATEXINLINE> に対して <LATEXINLINE>$m(xy)\geq m(x)$</LATEXINLINE> が成り立ち、任意の <LATEXINLINE>$x$</LATEXINLINE> と <LATEXINLINE>$y$</LATEXINLINE> に対して、<LATEXINLINE>$y=qx+r$</LATEXINLINE> かつ <LATEXINLINE>$r=0$</LATEXINLINE> または <LATEXINLINE>$m(r) &lt; m(x)$</LATEXINLINE> となるような <LATEXINLINE>$q$</LATEXINLINE> が存在します。抽象的な観点からは、これがユークリッドの互除法が機能することを証明するために必要なことです。整数の領域では、整数の測度 <LATEXINLINE>$m$</LATEXINLINE> はその整数自身の絶対値です。多項式の領域では、多項式の測度はその次数です。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>  The
+    integer version is</EN>
+    <JA>  整数版は次のとおりです。</JA>
+    </BILINGUAL>
     <SHORT_PAGE lines="3"/>
     <SNIPPET EVAL="no">
       <SCHEME>
@@ -1426,8 +2237,15 @@ function gcd(a, b) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Using this, we could make the obvious modification to define a GCD
     operation that works on term lists:
+    </EN>
+    <JA>
+    これを使って、項リストに対して機能するGCD演算を定義するための明白な修正を行うことができます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>gcd_terms</DECLARATION></INDEX> 
       <SCHEME>
@@ -1444,6 +2262,8 @@ function gcd_terms(a, b) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     where
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>remainder-terms</SCHEMEINLINE></SCHEME>
@@ -1458,9 +2278,28 @@ function gcd_terms(a, b) {
       <JAVASCRIPT><JAVASCRIPTINLINE>div_terms</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     that was implemented in exercise<SPACE/><REF NAME="ex:/terms"/>.
+    </EN>
+    <JA>
+    ここで
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>remainder-terms</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>remainder_terms</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、演習<SPACE/><REF NAME="ex:/terms"/>で実装した項リストの除算演算
+    <SPLITINLINE>
+      <SCHEME>
+      <SCHEMEINLINE>div-terms</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_terms</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が返すリストから剰余の部分を取り出します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Using
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>div-terms</SCHEMEINLINE>,</SCHEME>
@@ -1471,7 +2310,7 @@ function gcd_terms(a, b) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX><USE>remainder_terms</USE></INDEX> 
+    <INDEX><USE>remainder_terms</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>remainder-terms</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>remainder_terms</JAVASCRIPTINLINE>
@@ -1512,6 +2351,54 @@ function gcd_terms(a, b) {
     </SPLITINLINE>
     for polynomials and to ordinary <SCHEMEINLINE>gcd</SCHEMEINLINE> for
     ordinary numbers.  As a test, try
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-terms</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>div_terms</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使って、
+    <INDEX><USE>remainder_terms</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>remainder-terms</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>remainder_terms</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を実装し、これを使って上記のように
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>gcd-terms</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>gcd_@terms</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を定義してください。次に、2つの多項式の多項式GCDを計算する
+    <INDEX>greatest common divisor<SUBINDEX>generic</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>gcd-poly</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+      <JAVASCRIPTINLINE>gcd_poly</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を書いてください（この<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、2つの多項式が同じ変数でない場合はエラーを通知すべきです）。システムに、多項式に対しては
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>gcd-poly</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>gcd_poly</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    に、通常の数に対しては通常の <SCHEMEINLINE>gcd</SCHEMEINLINE> に帰着するジェネリック演算
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>greatest-common-divisor</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>greatest_common_divisor</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    をインストールしてください。テストとして、次を試してください。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
             (define p1 (make-polynomial 'x '((4 1) (3 -1) (2 -2) (1 2))))
@@ -1525,11 +2412,20 @@ const p2 = make_polynomial("x", list(make_term(3, 1), make_term(1, -1)));
 greatest_common_divisor(p1, p2);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     and check your result by hand.
+    </EN>
+    <JA>
+    結果を手計算で確認してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:remainder-terms"/>
   </EXERCISE>
 
-  <EXERCISE> 
+  <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Define <LATEXINLINE>$P_{1}$</LATEXINLINE>,
     <LATEXINLINE>$P_{2}$</LATEXINLINE>, and
     <LATEXINLINE>$P_{3}$</LATEXINLINE> to be the polynomials
@@ -1576,17 +2472,10 @@ greatest_common_divisor(p1, p2);
     difficulties with the GCD
     <SPLITINLINE>
       <SCHEME>
-	algorithm.<FOOTNOTE>In an implementation like MIT Scheme, this produces
-	a polynomial that is indeed a divisor of
-	<LATEXINLINE>$Q_1$</LATEXINLINE> and <LATEXINLINE>$Q_2$</LATEXINLINE>,
-	but with rational coefficients. In many other Scheme systems, in which
-	division of integers can produce limited-precision decimal numbers, we
-	may fail to get a valid divisor.</FOOTNOTE>
+	algorithm.
       </SCHEME>
       <JAVASCRIPT>
-	algorithm.<FOOTNOTE>In JavaScript, division of integers can produce
-	limited-precision decimal numbers, and thus we
-	may fail to get a valid divisor.</FOOTNOTE>
+	algorithm.
       </JAVASCRIPT>
     </SPLITINLINE>
     To understand what is happening, try tracing
@@ -1595,11 +2484,83 @@ greatest_common_divisor(p1, p2);
       <JAVASCRIPT><JAVASCRIPTINLINE>gcd_terms</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     while computing the GCD or try performing the division by hand.
+    </EN>
+    <JA>
+    <LATEXINLINE>$P_{1}$</LATEXINLINE>、<LATEXINLINE>$P_{2}$</LATEXINLINE>、<LATEXINLINE>$P_{3}$</LATEXINLINE> を以下の多項式として定義してください。
+    <TABLE>
+      <TR>
+	<TD>
+	  <LATEXINLINE>$P_{1}$</LATEXINLINE>:
+	</TD>
+	<TD>
+	  <LATEXINLINE>$x^2 - 2x + 1$</LATEXINLINE>
+	</TD>
+      </TR>
+      <TR>
+	<TD>
+	  <LATEXINLINE>$P_{2}$</LATEXINLINE>:
+	</TD>
+	<TD>
+	  <LATEXINLINE>$11x^2 + 7$</LATEXINLINE>
+	</TD>
+      </TR>
+      <TR>
+	<TD>
+	  <LATEXINLINE>$P_{3}$</LATEXINLINE>:
+	</TD>
+	<TD>
+	  <LATEXINLINE>$13x + 5$</LATEXINLINE>
+	</TD>
+      </TR>
+    </TABLE>
+    次に、<LATEXINLINE>$Q_1$</LATEXINLINE> を <LATEXINLINE>$P_1$</LATEXINLINE> と <LATEXINLINE>$P_2$</LATEXINLINE> の積、<LATEXINLINE>$Q_2$</LATEXINLINE> を <LATEXINLINE>$P_1$</LATEXINLINE> と <LATEXINLINE>$P_3$</LATEXINLINE> の積として定義し、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>greatest-common-divisor</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>greatest_common_divisor</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    （演習<SPACE/><REF NAME="ex:remainder-terms"/>）を使って <LATEXINLINE>$Q_1$</LATEXINLINE> と <LATEXINLINE>$Q_2$</LATEXINLINE> のGCDを計算してください。答えが <LATEXINLINE>$P_1$</LATEXINLINE> と同じではないことに注意してください。この例では非整数の演算が計算に導入され、GCD<SPLITINLINE>
+      <SCHEME>
+	アルゴリズムに
+      </SCHEME>
+      <JAVASCRIPT>
+	アルゴリズムに
+      </JAVASCRIPT>
+    </SPLITINLINE>困難を引き起こします。何が起きているかを理解するには、GCDの計算中に
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>gcd-terms</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>gcd_terms</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    をトレースするか、手計算で除算を行ってみてください。
+    </JA>
+    </BILINGUAL><SPLITINLINE>
+      <SCHEME>
+	<FOOTNOTE><BILINGUAL>
+	<EN>In an implementation like MIT Scheme, this produces
+	a polynomial that is indeed a divisor of
+	<LATEXINLINE>$Q_1$</LATEXINLINE> and <LATEXINLINE>$Q_2$</LATEXINLINE>,
+	but with rational coefficients. In many other Scheme systems, in which
+	division of integers can produce limited-precision decimal numbers, we
+	may fail to get a valid divisor.</EN>
+	<JA>MIT Scheme のような実装では、これは確かに <LATEXINLINE>$Q_1$</LATEXINLINE> と <LATEXINLINE>$Q_2$</LATEXINLINE> の約数である多項式を生成しますが、有理数の係数を持ちます。整数の除算が有限精度の小数を生成する多くの他の Scheme システムでは、有効な約数を得ることに失敗する可能性があります。</JA>
+	</BILINGUAL></FOOTNOTE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<FOOTNOTE><BILINGUAL>
+	<EN>In JavaScript, division of integers can produce
+	limited-precision decimal numbers, and thus we
+	may fail to get a valid divisor.</EN>
+	<JA>JavaScript では、整数の除算が有限精度の小数を生成する可能性があるため、有効な約数を得ることに失敗する可能性があります。</JA>
+	</BILINGUAL></FOOTNOTE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
     <LABEL NAME="ex:gcd-of-polys"/>
   </EXERCISE>
   <EXERCISE_FOLLOWED_BY_TEXT/>
   <SHORT_PAGE lines="1"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can solve the problem exhibited in
     exercise<SPACE/><REF NAME="ex:gcd-of-polys"/> if
     we use the following modification of the GCD algorithm (which really
@@ -1612,8 +2573,15 @@ greatest_common_divisor(p1, p2);
     functions to lowest terms; the GCD will be used to divide both the
     numerator and denominator, so the integer constant factor will cancel
     out.
+    </EN>
+    <JA>
+    GCDアルゴリズムの以下の修正を使えば、演習<SPACE/><REF NAME="ex:gcd-of-polys"/>で示された問題を解決できます（これは整数係数の多項式の場合にのみ本当に機能します）。GCD計算で多項式の除算を行う前に、除算過程で分数が生じないことを保証するために選ばれた整数の定数因子を被除数に掛けます。したがって、答えは実際のGCDとは整数定数因子だけ異なりますが、有理関数を既約分数に約分する場合にはこれは問題になりません。GCDは分子と分母の両方を割るために使われるので、整数定数因子は打ち消されます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     More precisely, if <LATEXINLINE>$P$</LATEXINLINE> and
     <LATEXINLINE>$Q$</LATEXINLINE> are polynomials, let
     <LATEXINLINE>$O_1$</LATEXINLINE> be the order of
@@ -1632,17 +2600,36 @@ greatest_common_divisor(p1, p2);
       <JAVASCRIPT><JAVASCRIPTINLINE>div_terms</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     algorithm without introducing any fractions.  The operation of multiplying
-    the dividend by this constant and then dividing is sometimes called the 
+    the dividend by this constant and then dividing is sometimes called the
     <INDEX>pseudodivision of polynomials</INDEX>
     <EM>pseudodivision</EM> of <LATEXINLINE>$P$</LATEXINLINE> by
     <LATEXINLINE>$Q$</LATEXINLINE>.  The remainder of the division is
     called the
     <INDEX>pseudoremainder of polynomials</INDEX>
     <EM>pseudoremainder</EM>.
+    </EN>
+    <JA>
+    より正確に言うと、<LATEXINLINE>$P$</LATEXINLINE> と <LATEXINLINE>$Q$</LATEXINLINE> が多項式であるとし、<LATEXINLINE>$O_1$</LATEXINLINE> を <LATEXINLINE>$P$</LATEXINLINE> の次数（つまり <LATEXINLINE>$P$</LATEXINLINE> の最大の項の次数）、<LATEXINLINE>$O_2$</LATEXINLINE> を <LATEXINLINE>$Q$</LATEXINLINE> の次数とします。<LATEXINLINE>$c$</LATEXINLINE> を <LATEXINLINE>$Q$</LATEXINLINE> の最高次の係数とします。すると、<LATEXINLINE>$P$</LATEXINLINE> に
+    <INDEX>integerizing factor</INDEX>
+    <EM>整数化因子</EM>
+    <LATEXINLINE>$c^{1+O_{1} -O_{2}}$</LATEXINLINE> を掛ければ、結果の多項式は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-terms</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_terms</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    アルゴリズムを使って分数を導入することなく <LATEXINLINE>$Q$</LATEXINLINE> で割ることができることが示せます。被除数にこの定数を掛けてから除算する操作は、<LATEXINLINE>$P$</LATEXINLINE> の <LATEXINLINE>$Q$</LATEXINLINE> による
+    <INDEX>pseudodivision of polynomials</INDEX>
+    <EM>擬除算</EM>と呼ばれることがあります。この除算の剰余は
+    <INDEX>pseudoremainder of polynomials</INDEX>
+    <EM>擬剰余</EM>と呼ばれます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
-  <EXERCISE> 
+  <EXERCISE>
     <LABEL NAME="ex:pseudoremainder-terms"/>
+    <BILINGUAL>
+    <EN>
     <OL>
       <LI>
         Implement the
@@ -1704,12 +2691,73 @@ greatest_common_divisor(p1, p2);
 	divisor.
       </LI>
     </OL>
+    </EN>
+    <JA>
+    <OL>
+      <LI>
+        <SPLITINLINE><SCHEME>手続き</SCHEME>
+	<JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+        <SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>pseudoremainder-terms</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>pseudoremainder_terms</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+        </SPLITINLINE>
+	を実装してください。これは
+        <SPLITINLINE>
+          <SCHEME><SCHEMEINLINE>remainder-terms</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>remainder_terms</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+        </SPLITINLINE>
+	と同様ですが、
+	<SPLITINLINE>
+          <SCHEME><SCHEMEINLINE>div-terms</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>div_terms</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+        </SPLITINLINE>
+	を呼び出す前に上述の整数化因子を被除数に掛ける点が異なります。
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>gcd-terms</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>gcd_terms</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+        </SPLITINLINE>
+	を
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>pseudoremainder-terms</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>pseudoremainder_terms</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+        </SPLITINLINE>
+	を使うように修正し、演習<SPACE/><REF NAME="ex:gcd-of-polys"/>の例で
+	<SPLITINLINE>
+          <SCHEME><SCHEMEINLINE>greatest-common-divisor</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>greatest_common_divisor</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+        </SPLITINLINE>
+	が整数係数の答えを生成することを確認してください。
+      </LI>
+      <LI>
+        GCDは整数係数を持つようになりましたが、それらは <LATEXINLINE>$P_1$</LATEXINLINE> の係数より大きくなっています。
+	<SPLITINLINE>
+          <SCHEME><SCHEMEINLINE>gcd-terms</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>gcd_terms</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+        </SPLITINLINE>
+	を修正して、すべての係数をそれらの（整数の）最大公約数で割ることにより、答えの係数から共通因子を除去するようにしてください。
+      </LI>
+    </OL>
+    </JA>
+    </BILINGUAL>
   </EXERCISE>
   <INDEX>polynomial arithmetic<SUBINDEX>greatest common divisor</SUBINDEX><CLOSE/></INDEX>
   <INDEX>rational function<SUBINDEX>reducing to lowest terms</SUBINDEX><OPEN/></INDEX>
   <INDEX>reducing to lowest terms<OPEN/></INDEX>
   <EXERCISE_FOLLOWED_BY_TEXT/>  
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Thus, here is how to reduce a rational function to lowest terms:
     <UL>
       <LI>
@@ -1743,10 +2791,34 @@ greatest_common_divisor(p1, p2);
 	denominator and dividing through by this factor.
       </LI>
     </UL>
+    </EN>
+    <JA>
+    したがって、有理関数を既約分数に約分する方法は以下のとおりです。
+    <UL>
+      <LI>
+	演習<SPACE/><REF NAME="ex:pseudoremainder-terms"/>の
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>gcd-terms</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>gcd_@terms</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	のバージョンを使って、分子と分母のGCDを計算します。
+      </LI>
+      <LI>
+	GCDを得たら、GCDで割る前に分子と分母の両方に同じ整数化因子を掛けて、GCDによる除算が非整数の係数を導入しないようにします。因子としては、GCDの最高次の係数を <LATEXINLINE>$1+O_{1} -O_{2}$</LATEXINLINE> 乗したものを使えます。ここで <LATEXINLINE>$O_{2}$</LATEXINLINE> はGCDの次数、<LATEXINLINE>$O_{1}$</LATEXINLINE> は分子と分母の次数の最大値です。これにより、分子と分母をGCDで割っても分数が導入されないことが保証されます。
+      </LI>
+      <LI>
+	この操作の結果は整数係数の分子と分母になります。すべての整数化因子のため、係数は通常非常に大きくなるので、最後のステップは、分子と分母のすべての係数の（整数の）最大公約数を計算し、この因子で割ることによって冗長な因子を除去することです。
+      </LI>
+    </UL>
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
     <LABEL NAME="ex:reduce-poly"/>
+    <BILINGUAL>
+    <EN>
     <OL>
       <LI>
 	Implement this algorithm as a
@@ -1819,6 +2891,80 @@ greatest_common_divisor(p1, p2);
 	<JAVASCRIPT><JAVASCRIPTINLINE>make_rat</JAVASCRIPTINLINE></JAVASCRIPT>
 	</SPLITINLINE>
 	did for integers:
+      </LI>
+    </OL>
+    </EN>
+    <JA>
+    <OL>
+      <LI>
+	このアルゴリズムを、2つの項リスト <SCHEMEINLINE>n</SCHEMEINLINE> と <SCHEMEINLINE>d</SCHEMEINLINE> を引数として受け取り、上記のアルゴリズムで既約に約分された <SCHEMEINLINE>n</SCHEMEINLINE> と <SCHEMEINLINE>d</SCHEMEINLINE> であるリスト <SCHEMEINLINE>nn</SCHEMEINLINE>、<SCHEMEINLINE>dd</SCHEMEINLINE> を返す
+	<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>reduce-terms</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>reduce_terms</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	として実装してください。また、
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>add-poly</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>add_poly</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	と同様の
+	<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>reduce-poly</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>reduce_poly</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	も書いてください。これは2つの多項式が同じ変数を持つかどうかを確認します。同じであれば、
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>reduce-poly</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>reduce_poly</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	は変数を取り除き、問題を
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>reduce-terms</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>reduce_terms</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	に渡し、
+	<SPLITINLINE>
+	  <SCHEME>
+	  <SCHEMEINLINE>reduce-terms</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>reduce_terms</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	が提供する2つの項リストに変数を再び付けます。
+      </LI>
+      <LI>
+        元の
+	<SPLITINLINE>
+	<SCHEME><SCHEMEINLINE>make-rat</SCHEMEINLINE></SCHEME>
+	<JAVASCRIPT><JAVASCRIPTINLINE>make_rat</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>
+	が整数に対して行ったことを実行する、
+	<SPLITINLINE>
+          <SCHEME><SCHEMEINLINE>reduce-terms</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>reduce_terms</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	と同様の<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>を定義してください。
+      </LI>
+    </OL>
+    </JA>
+    </BILINGUAL>
         <SNIPPET EVAL="no">
           <SCHEME>
                 (define (reduce-integers n d)
@@ -1832,6 +2978,8 @@ function reduce_integers(n, d) {
 }
           </JAVASCRIPT>
         </SNIPPET>
+        <BILINGUAL>
+        <EN>
         and define
         <SCHEMEINLINE>reduce</SCHEMEINLINE> as a generic operation that calls
 	<SPLITINLINE>
@@ -1839,7 +2987,7 @@ function reduce_integers(n, d) {
           <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
         </SPLITINLINE>
-	to dispatch	
+	to dispatch
 	<SPLITINLINE>
           <SCHEME>
 	     to either
@@ -1873,6 +3021,42 @@ function reduce_integers(n, d) {
         handles rational expressions in either integers or polynomials.
         To test your program, try the example at the beginning of this
         extended exercise:
+        </EN>
+        <JA>
+        そして、<SCHEMEINLINE>reduce</SCHEMEINLINE> を、
+	<SPLITINLINE>
+          <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+        </SPLITINLINE>
+	を呼び出して
+	<SPLITINLINE>
+          <SCHEME>
+	     <SCHEMEINLINE>reduce-poly</SCHEMEINLINE>
+	  </SCHEME>
+          <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>reduce_poly</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+        </SPLITINLINE>
+	（<SCHEMEINLINE>polynomial</SCHEMEINLINE> 引数の場合）または
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>reduce-integers</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>reduce_integers</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+        </SPLITINLINE>
+	（<SPLITINLINE>
+          <SCHEME><SCHEMEINLINE>scheme-number</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>javascript_@number</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+        </SPLITINLINE>
+	引数の場合）にディスパッチするジェネリック演算として定義してください。これで、
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>make-rat</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>make_rat</JAVASCRIPTINLINE></JAVASCRIPT>
+        </SPLITINLINE>
+	が与えられた分子と分母を組み合わせて有理数を作る前に <SCHEMEINLINE>reduce</SCHEMEINLINE> を呼び出すようにすることで、有理数算術パッケージが分数を既約分数に約分するようにすることが容易にできます。これでシステムは、整数でも多項式でも有理式を扱えるようになります。プログラムをテストするには、この発展演習の最初の例を試してください。
+        </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="no">
           <SCHEME>
                 (define p1 (make-polynomial 'x '((1 1)(0 1))))
@@ -1897,12 +3081,21 @@ const rf2 = make_rational(p3, p4);
 add(rf1, rf2);
           </JAVASCRIPT>
         </SNIPPET>
+        <BILINGUAL>
+        <EN>
         See if you get the correct answer, correctly reduced to lowest terms.
+        </EN>
+        <JA>
+        正しい答えが得られ、正しく既約分数に約分されているかどうか確認してください。
+        </JA>
+        </BILINGUAL>
       </LI>
     </OL>
   </EXERCISE>
   <EXERCISE_FOLLOWED_BY_TEXT/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The GCD computation is at the heart of any system that does operations
     on rational functions.  The algorithm used above, although
     mathematically straightforward, is extremely slow.  The slowness is
@@ -1913,18 +3106,41 @@ add(rf1, rf2);
     <INDEX>reducing to lowest terms<CLOSE/></INDEX>
     One of the active areas in the development of
     algebraic-manipulation systems is the design of better algorithms for
-    computing polynomial GCDs.<FOOTNOTE>One extremely efficient and
-    elegant method for computing 
+    computing polynomial GCDs.
+    </EN>
+    <JA>
+    GCD計算は、有理関数に対する演算を行うあらゆるシステムの中核にあります。上で使ったアルゴリズムは、数学的には単純明快ですが、極めて遅いです。この遅さは、除算演算の回数が多いことと、擬除算で生成される中間係数のサイズが膨大になることに部分的に起因しています。
+    <INDEX>rational function<SUBINDEX>reducing to lowest terms</SUBINDEX><CLOSE/></INDEX>
+    <INDEX>reducing to lowest terms<CLOSE/></INDEX>
+    代数操作システムの開発における活発な研究分野の1つは、多項式のGCDを計算するためのより良いアルゴリズムの設計です。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    One extremely efficient and
+    elegant method for computing
     <INDEX>polynomial arithmetic<SUBINDEX>greatest common divisor</SUBINDEX></INDEX>
     <INDEX>polynomial arithmetic<SUBINDEX>probabilistic algorithm for GCD</SUBINDEX></INDEX>
     <INDEX>probabilistic algorithm</INDEX>
     <INDEX>algorithm<SUBINDEX>probabilistic</SUBINDEX></INDEX>
-    polynomial GCDs was discovered by 
+    polynomial GCDs was discovered by
     <INDEX>Zippel, Richard E.</INDEX>
     Richard Zippel (1979).  The method is a probabilistic algorithm, as is the
     fast test for primality that we discussed in chapter<SPACE/><REF NAME="chap:fun"></REF>.
     Zippel<APOS/>s book (1993) describes this method, together with other ways
-    to compute polynomial GCDs.</FOOTNOTE>
+    to compute polynomial GCDs.
+    </EN>
+    <JA>
+    多項式のGCDを計算するための極めて効率的でエレガントな方法は、
+    <INDEX>polynomial arithmetic<SUBINDEX>greatest common divisor</SUBINDEX></INDEX>
+    <INDEX>polynomial arithmetic<SUBINDEX>probabilistic algorithm for GCD</SUBINDEX></INDEX>
+    <INDEX>probabilistic algorithm</INDEX>
+    <INDEX>algorithm<SUBINDEX>probabilistic</SUBINDEX></INDEX>
+    <INDEX>Zippel, Richard E.</INDEX>
+    Richard Zippel（1979）によって発見されました。この方法は確率的アルゴリズムであり、<REF NAME="chap:fun"></REF>章で議論した素数性の高速テストと同様です。Zippelの著書（1993）は、この方法と多項式のGCDを計算する他の方法を説明しています。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <INDEX>rational function<CLOSE/></INDEX>
     <INDEX>function (mathematical)<SUBINDEX>rational</SUBINDEX><CLOSE/></INDEX>
     <INDEX>polynomial arithmetic<SUBINDEX>rational functions</SUBINDEX><CLOSE/></INDEX>

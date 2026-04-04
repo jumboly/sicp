@@ -1,10 +1,17 @@
 <SECTION>
-  <NAME>Systems with Generic Operations</NAME>
+  <NAME>
+    <BILINGUAL>
+      <EN>Systems with Generic Operations</EN>
+      <JA>ジェネリック演算を持つシステム</JA>
+    </BILINGUAL>
+  </NAME>
 
   <SECTIONCONTENT/>
 
   <LABEL NAME="sec:generic-operators"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In the previous section, we saw how to design systems in which data
     objects can be represented in more than one way.  The key idea is to
     link the code that specifies the data operations to the several
@@ -43,8 +50,39 @@
     section<SPACE/><REF NAME="sec:data-directed"/>.  We will now use
     data-directed techniques to construct a package of arithmetic operations
     that incorporates all the arithmetic packages we have already constructed.
+    </EN>
+    <JA>
+    前の節では、データオブジェクトを複数の方法で表現できるシステムの設計方法を見ました。鍵となるアイデアは、データ操作を指定するコードを、ジェネリックインターフェース<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を通じて複数の表現にリンクすることでした。
+    ここでは、この同じアイデアを使って、異なる表現に対してジェネリックな演算を定義するだけでなく、異なる種類の引数に対しても
+    <INDEX>arithmetic<SUBINDEX>generic</SUBINDEX></INDEX>
+    ジェネリックな演算を定義する方法を見ていきます。これまでに、いくつかの異なる算術演算パッケージを見てきました。言語に組み込まれたプリミティブな算術（<SCHEMEINLINE>+</SCHEMEINLINE>、
+    <SCHEMEINLINE>-</SCHEMEINLINE>、<SCHEMEINLINE>*</SCHEMEINLINE>、
+    <SCHEMEINLINE>/</SCHEMEINLINE>）、
+    節<SPACE/><REF NAME="sec:rationals"/>の有理数算術（<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-rat</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_rat</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sub-rat</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sub_rat</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-rat</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_rat</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-rat</SCHEMEINLINE>）、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_rat</JAVASCRIPTINLINE>）、</JAVASCRIPT>
+    </SPLITINLINE>
+    そして節<SPACE/><REF NAME="sec:data-directed"/>で実装した複素数算術です。ここでは、データ指向の手法を使って、これまでに構築したすべての算術パッケージを統合する算術演算パッケージを構築します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	Figure<SPACE/><REF NAME="fig:generic-system_scheme"/>
@@ -54,7 +92,7 @@
       </JAVASCRIPT>
     </SPLITINLINE>
     shows the structure of the system we
-    shall build.  Notice the 
+    shall build.  Notice the
     <INDEX>abstraction barriers<SUBINDEX>in generic arithmetic system</SUBINDEX></INDEX>
     abstraction barriers.  From the perspective
     of someone using <QUOTE>numbers,</QUOTE> there is a single
@@ -87,6 +125,38 @@
     rectangular and polar).  Moreover, the structure of the system is additive,
     so that one can design the individual arithmetic packages separately and
     combine them to produce a generic arithmetic system.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:generic-system_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:generic-system"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>は、これから構築するシステムの構造を示しています。
+    <INDEX>abstraction barriers<SUBINDEX>in generic arithmetic system</SUBINDEX></INDEX>
+    抽象バリアに注目してください。<QUOTE>数</QUOTE>を使う人の視点からは、与えられた数が何であれそれに対して動作する単一の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>add</SCHEMEINLINE> があるだけです。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Add</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>add</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、通常の算術、有理数算術、複素数算術の各パッケージを、数を使うプログラムから統一的にアクセスできるようにするジェネリックインターフェースの一部です。個々の算術パッケージ（例えば複素数パッケージ）は、それ自体がジェネリック<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>（例えば
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-complex</SCHEMEINLINE>）</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_complex</JAVASCRIPTINLINE>）
+      </JAVASCRIPT>
+    </SPLITINLINE>を通じてアクセスでき、異なる表現（直交形式や極形式など）のために設計されたパッケージを組み合わせます。さらに、このシステムの構造は加法的であり、個々の算術パッケージを別々に設計してから組み合わせて、ジェネリック算術システムを作ることができます。
+    </JA>
+    </BILINGUAL>
     <INDEX>message passing<CLOSE/></INDEX>
     <SPLIT>
       <SCHEME>
@@ -100,9 +170,14 @@
         <FIGURE>
           <FIGURE scale="0.60" src="img_javascript/ch2-Z-G-64.svg"></FIGURE>
           <CAPTION>
-	    Generic
+	    <BILINGUAL>
+	    <EN>Generic
 	    <INDEX>generic arithmetic operations<SUBINDEX>structure of system</SUBINDEX></INDEX>
-	    arithmetic system.
+	    arithmetic system.</EN>
+	    <JA>ジェネリック
+	    <INDEX>generic arithmetic operations<SUBINDEX>structure of system</SUBINDEX></INDEX>
+	    算術システム。</JA>
+	    </BILINGUAL>
 	  </CAPTION>
           <LABEL NAME="fig:generic-system"/>
         </FIGURE>

@@ -1,12 +1,17 @@
 
 <SUBSECTION>
   <NAME>
-    Generic Arithmetic Operations
+    <BILINGUAL>
+      <EN>Generic Arithmetic Operations</EN>
+      <JA>ジェネリック算術演算</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:generic-arithmetic-operators"/>
   <INDEX>generic arithmetic operations<OPEN/></INDEX>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The task of designing generic arithmetic operations is analogous to that of
     designing the generic complex-number operations.  We would like, for
     instance, to have a generic addition
@@ -36,14 +41,46 @@
     </SPLITINLINE>
     to dispatch to an appropriate package according to the data type of its
     arguments.
+    </EN>
+    <JA>
+    ジェネリック算術演算を設計する作業は、ジェネリック複素数演算を設計する作業と類似しています。たとえば、通常の数に対してはプリミティブな加算 <SCHEMEINLINE>+</SCHEMEINLINE> のように動作し、有理数に対しては
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-rat</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_rat</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    のように動作し、複素数に対しては
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-complex</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_complex</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    のように動作するジェネリックな加算<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>add</SCHEMEINLINE> が欲しいのです。<SCHEMEINLINE>add</SCHEMEINLINE> やその他のジェネリック算術演算は、<DO_BREAK_PAGE/>節<SPACE/><REF NAME="sec:data-directed"/>で複素数のジェネリックセレクタを実装したのと同じ戦略に従って実装できます。各種類の数に型タグを付け、ジェネリック<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が引数のデータ型に応じて適切なパッケージにディスパッチするようにします。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The generic arithmetic
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     are defined as follows:
+    </EN>
+    <JA>
+    ジェネリック算術<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は次のように定義されます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>add</DECLARATION> (generic)</INDEX>
       <INDEX><DECLARATION>sub</DECLARATION> (generic)</INDEX>
@@ -69,6 +106,8 @@ function div(x, y) { return apply_generic("div", list(x, y)); }
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We begin
     by installing a package for handling
     <INDEX>number(s)<SUBINDEX><ORDER>generic</ORDER>in generic arithmetic system</SUBINDEX></INDEX>
@@ -81,7 +120,7 @@ function div(x, y) { return apply_generic("div", list(x, y)); }
       </SCHEME>
     </SPLITINLINE>
     tag these
-    with the 
+    with the
     <SPLITINLINE>
       <SCHEME>symbol <SCHEMEINLINE>scheme-number</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT>
@@ -106,6 +145,33 @@ function div(x, y) { return apply_generic("div", list(x, y)); }
       <JAVASCRIPT>
       <JAVASCRIPTINLINE>list("javascript_number", "javascript_number")</JAVASCRIPTINLINE>:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    まず、
+    <INDEX>number(s)<SUBINDEX><ORDER>generic</ORDER>in generic arithmetic system</SUBINDEX></INDEX>
+    <INDEX>ordinary numbers (in generic arithmetic system)</INDEX>
+    <EM>通常の</EM>数、つまり言語のプリミティブな数を扱うパッケージをインストールすることから始めます。これらには
+    <SPLITINLINE>
+      <SCHEME>シンボル <SCHEMEINLINE>scheme-number</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	文字列 <JAVASCRIPTINLINE>"javascript_number"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    でタグを付けます。このパッケージの算術演算はプリミティブな算術<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>です（したがって、タグなしの数を扱うための追加の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を定義する必要はありません）。これらの演算はそれぞれ2つの引数を取るため、リスト
+    <SPLITINLINE>
+      <SCHEME>
+      <SCHEMEINLINE>(scheme-number scheme-number)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+      <JAVASCRIPTINLINE>list("javascript_number", "javascript_number")</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>をキーとしてテーブルに登録されます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="4">
       <INDEX>package<SUBINDEX>JavaScript-number</SUBINDEX></INDEX>
       <INDEX><USE>javascript_number</USE> package</INDEX>
@@ -152,6 +218,8 @@ function install_javascript_number_package() {
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Users of the
     <SPLITINLINE>
       <SCHEME>Scheme-number package</SCHEME>
@@ -162,6 +230,17 @@ function install_javascript_number_package() {
       <SCHEME>procedure:</SCHEME>
       <JAVASCRIPT>function:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>Scheme 数パッケージ</SCHEME>
+      <JAVASCRIPT>JavaScript 数パッケージ</JAVASCRIPT>
+    </SPLITINLINE>のユーザは、次の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を使って（タグ付きの）通常の数を作成します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="4" HIDE="yes">
       <NAME>actually_install_javascript_number_package</NAME>
       <JAVASCRIPT>
@@ -197,6 +276,8 @@ add(n1, n2);
     
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Now that the framework of the generic arithmetic system is in place,
     we can readily include new kinds of numbers.  Here is a package that
     performs rational arithmetic.  Notice that, as a benefit of
@@ -207,6 +288,14 @@ add(n1, n2);
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     in the package:
+    </EN>
+    <JA>
+    ジェネリック算術システムのフレームワークが整ったので、新しい種類の数を容易に追加できます。以下は有理数算術を行うパッケージです。加法性の恩恵として、節<SPACE/><REF NAME="sec:rationals"/>の有理数コードをそのまま修正なしでパッケージ内部の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>として使えることに注目してください：
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="4">
       <INDEX>package<SUBINDEX>rational-number</SUBINDEX></INDEX>
       <INDEX><USE>rational</USE> package</INDEX>
@@ -322,6 +411,8 @@ add(r1, r2);
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can install a similar package to handle complex numbers, using the tag
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>complex</SCHEMEINLINE>.</SCHEME>
@@ -339,7 +430,7 @@ add(r1, r2);
       <JAVASCRIPT><JAVASCRIPTINLINE>make_from_mag_ang</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    that were defined by the rectangular and polar packages.  
+    that were defined by the rectangular and polar packages.
     <INDEX>additivity</INDEX>
     Additivity permits us to use, as the internal operations, the same
     <SPLITINLINE>
@@ -367,6 +458,53 @@ add(r1, r2);
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     from section<SPACE/><REF NAME="sec:representations-complex-numbers"/>.
+    </EN>
+    <JA>
+    タグ
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>complex</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>"complex"</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使って、複素数を扱う同様のパッケージをインストールできます。パッケージを作成する際に、直交パッケージと極パッケージで定義された演算
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-from-real-imag</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_from_real_imag</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-from-mag-ang</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_from_mag_ang</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    をテーブルから取り出します。
+    <INDEX>additivity</INDEX>
+    加法性のおかげで、節<SPACE/><REF NAME="sec:representations-complex-numbers"/>の同じ
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-complex</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_complex</JAVASCRIPTINLINE>、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sub-complex</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sub_complex</JAVASCRIPTINLINE>、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-complex</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_complex</JAVASCRIPTINLINE>、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-complex</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_complex</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を内部演算としてそのまま使うことができます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="4">
       <INDEX>package<SUBINDEX>complex-number</SUBINDEX></INDEX>
       <INDEX><USE>complex</USE> package</INDEX>
@@ -467,6 +605,8 @@ function install_complex_package() {
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Programs outside the complex-number package can construct complex
     numbers either from real and imaginary parts or from magnitudes and
     angles.  Notice how the underlying
@@ -476,6 +616,14 @@ function install_complex_package() {
     </SPLITINLINE>
     originally defined in the rectangular and polar packages, are exported to
     the complex package, and exported from there to the outside world.
+    </EN>
+    <JA>
+    複素数パッケージの外部のプログラムは、実部と虚部から、または絶対値と偏角から複素数を構築できます。もともと直交パッケージと極パッケージで定義された内部<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が複素数パッケージにエクスポートされ、そこからさらに外部にエクスポートされる仕組みに注目してください。
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="4" HIDE="yes">
       <NAME>actually_install_complex_package</NAME>
       <JAVASCRIPT>
@@ -523,6 +671,8 @@ tail(add(r, p));
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     What we have here is a
     <INDEX>type tag<SUBINDEX>two-level</SUBINDEX></INDEX>
     two-level tag system.  A typical complex number,
@@ -554,6 +704,31 @@ tail(add(r, p));
     appropriate package is stripped off (by applying
     <SCHEMEINLINE>contents</SCHEMEINLINE>) and the next level of tag (if any)
     becomes visible to be used for further dispatching.
+    </EN>
+    <JA>
+    ここにあるのは
+    <INDEX>type tag<SUBINDEX>two-level</SUBINDEX></INDEX>
+    2レベルのタグシステムです。典型的な複素数、たとえば直交形式の <LATEXINLINE>$3+4i$</LATEXINLINE> は、
+    <SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:complex-number-structure_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:complex-number-structure"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>に示すように表現されます。外側のタグ
+    <SPLITINLINE><SCHEME>(<SCHEMEINLINE>complex</SCHEMEINLINE>)</SCHEME>
+    <JAVASCRIPT>(<JAVASCRIPTINLINE>"complex"</JAVASCRIPTINLINE>)</JAVASCRIPT>
+    </SPLITINLINE>
+    は、数を複素数パッケージに送るために使われます。複素数パッケージ内に入ると、次のタグ
+    <SPLITINLINE>
+      <SCHEME>(<SCHEMEINLINE>rectangular</SCHEMEINLINE>)</SCHEME>
+      <JAVASCRIPT>(<JAVASCRIPTINLINE>"rectangular"</JAVASCRIPTINLINE>)
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    が数を直交パッケージに送るために使われます。大規模で複雑なシステムでは多くのレベルがあり得て、各レベルはジェネリック演算によって次のレベルとインターフェースされます。データオブジェクトが<QUOTE>下方に</QUOTE>渡されるとき、適切なパッケージに送るために使われた外側のタグは（<SCHEMEINLINE>contents</SCHEMEINLINE> を適用することで）剥がされ、次のレベルのタグ（もしあれば）が露出して、さらなるディスパッチに使われます。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
         <FIGURE>
@@ -569,8 +744,11 @@ tail(add(r, p));
         <FIGURE>
           <FIGURE src="img_javascript/ch2-Z-G-65.svg"></FIGURE>
           <CAPTION>
-	    Representation of <LATEXINLINE>$3+4i$</LATEXINLINE> in
-	    rectangular form.
+	    <BILINGUAL>
+	    <EN>Representation of <LATEXINLINE>$3+4i$</LATEXINLINE> in
+	    rectangular form.</EN>
+	    <JA>直交形式での <LATEXINLINE>$3+4i$</LATEXINLINE> の表現。</JA>
+	    </BILINGUAL>
 	  </CAPTION>
           <LABEL NAME="fig:complex-number-structure"/>
         </FIGURE>
@@ -578,6 +756,8 @@ tail(add(r, p));
     </SPLIT>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In the above packages, we used
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>add-rat</SCHEMEINLINE>,</SCHEME>
@@ -602,8 +782,32 @@ tail(add(r, p));
     we could simply name them <SCHEMEINLINE>add</SCHEMEINLINE>,
     <SCHEMEINLINE>sub</SCHEMEINLINE>, <SCHEMEINLINE>mul</SCHEMEINLINE>, and
     <SCHEMEINLINE>div</SCHEMEINLINE> in both packages.
+    </EN>
+    <JA>
+    上記のパッケージでは、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-rat</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_rat</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-complex</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_complex</JAVASCRIPTINLINE>、
+    </JAVASCRIPT></SPLITINLINE>
+    およびその他の算術<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を元の記述のままそのまま使いました。しかし、これらの宣言が異なるインストール<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の内部にある場合、互いに異なる名前を持つ必要はもはやありません。どちらのパッケージでも単に <SCHEMEINLINE>add</SCHEMEINLINE>、
+    <SCHEMEINLINE>sub</SCHEMEINLINE>、<SCHEMEINLINE>mul</SCHEMEINLINE>、
+    <SCHEMEINLINE>div</SCHEMEINLINE> と名付ければよいのです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
-  <EXERCISE> 
+  <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Louis Reasoner tries to evaluate the expression
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>(magnitude z)</SCHEMEINLINE></SCHEME>
@@ -653,6 +857,54 @@ tail(add(r, p));
     </SPLITINLINE>
     numbers.  All you have to do to make this work is add the following to the
     <SCHEMEINLINE>complex</SCHEMEINLINE> package:</QUOTE>
+    </EN>
+    <JA>
+    Louis Reasoner が式
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(magnitude z)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>magnitude(z)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を評価しようとしました。ここで <SCHEMEINLINE>z</SCHEMEINLINE> は
+    <SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:complex-number-structure_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:complex-number-structure"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>に示されたオブジェクトです。驚いたことに、答え <LATEXINLINE>$5$</LATEXINLINE> の代わりに、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    からエラーメッセージが返され、型
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(complex)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>list("complex")</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に対する演算 <SCHEMEINLINE>magnitude</SCHEMEINLINE> のメソッドがないと言われました。
+    彼はこのやりとりを Alyssa P. Hacker に見せたところ、彼女はこう言いました。<QUOTE>問題は、複素数セレクタが
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>complex</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>"complex"</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    型の数に対しては定義されておらず、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>polar</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>"polar"</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rectangular</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>"rectangular"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    型の数に対してのみ定義されているということよ。これを動くようにするには、<SCHEMEINLINE>complex</SCHEMEINLINE> パッケージに次のコードを追加するだけでいいわ：</QUOTE>
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="4">
       <NAME>use_generic_magnitude</NAME>
       <REQUIRES>install_complex_package_usage</REQUIRES>
@@ -681,6 +933,8 @@ const z = make_complex_from_real_imag(3, 4);
 magnitude(z);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Describe in detail why this works.  As an example, trace through all the
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -712,7 +966,39 @@ magnitude(z);
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     is dispatched to in each case?
+    </EN>
+    <JA>
+    これがなぜ動くのか詳しく説明してください。例として、<SCHEMEINLINE>z</SCHEMEINLINE> が
+    <SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:complex-number-structure_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:complex-number-structure"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>に示されたオブジェクトであるとき、式
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(magnitude z)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>magnitude(z)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の評価で呼び出されるすべての<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>をトレースしてください。特に、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は何回呼び出されますか？ それぞれの場合にどの<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>にディスパッチされますか？
+    </JA>
+    </BILINGUAL>
     <SOLUTION>
+      <BILINGUAL>
+      <EN>
       Putting the above lines to the package will open up
       <SCHEMEINLINE>z</SCHEMEINLINE>, and those lines act as a pass-through.
       <SPLITINLINE>
@@ -722,6 +1008,17 @@ magnitude(z);
       </SPLITINLINE>
       will be invoked twice. We shall trace with substitution model how the
       program evaluates.
+      </EN>
+      <JA>
+      上記の行をパッケージに追加すると、<SCHEMEINLINE>z</SCHEMEINLINE> が開かれ、これらの行はパススルーとして機能します。
+      <SPLITINLINE>
+	<SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+	<JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE>
+	</JAVASCRIPT>
+      </SPLITINLINE>
+      は2回呼び出されます。置換モデルを使ってプログラムがどのように評価されるかをトレースします。
+      </JA>
+      </BILINGUAL>
       <SNIPPET EVAL="no">
         <JAVASCRIPT>
 magnitude(z);
@@ -798,7 +1095,9 @@ math_sqrt(25);
     <LABEL NAME="ex:2_77"/>
   </EXERCISE>
 
-  <EXERCISE> 
+  <EXERCISE>
+    <BILINGUAL>
+    <EN>
     The internal
     <INDEX>JavaScript<SUBINDEX>internal type system</SUBINDEX></INDEX>
     <INDEX>data types<SUBINDEX>in JavaScript</SUBINDEX></INDEX>
@@ -874,10 +1173,86 @@ math_sqrt(25);
 	string <JAVASCRIPTINLINE>"javascript_number"</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <INDEX>JavaScript<SUBINDEX>internal type system</SUBINDEX></INDEX>
+    <INDEX>data types<SUBINDEX>in JavaScript</SUBINDEX></INDEX>
+    <INDEX><USE>is_number</USE> (primitive function)<SUBINDEX>data types and</SUBINDEX></INDEX>
+    <INDEX><USE>is_string</USE> (primitive function)<SUBINDEX>data types and</SUBINDEX></INDEX>
+    <INDEX><USE>attach_tag</USE><SUBINDEX>using JavaScript data types</SUBINDEX></INDEX>
+    <INDEX><USE>type_tag</USE><SUBINDEX>using JavaScript data types</SUBINDEX></INDEX>
+    <INDEX><USE>contents</USE><SUBINDEX>using JavaScript data types</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>scheme-number</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>javascript_number</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    パッケージの内部<SPLITINLINE><SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、本質的にはプリミティブ<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>+</SCHEMEINLINE>、<SCHEMEINLINE>-</SCHEMEINLINE> 等の呼び出しに過ぎません。言語のプリミティブを直接使えなかったのは、型タグシステムが各データオブジェクトに型を付けることを要求していたためです。しかし実際には、すべての
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    の実装には内部的に使用される型システムがあります。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>symbol?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_string</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    や
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>number?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_number</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    などのプリミティブ述語は、データオブジェクトが特定の型を持つかどうかを判定します。節<SPACE/><REF NAME="sec:manifest-types"/>の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>type-tag</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>type_tag</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>contents</SCHEMEINLINE>、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>attach-tag</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>attach_tag</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の定義を修正して、ジェネリックシステムが
+    <SPLITINLINE><SCHEME>Scheme</SCHEME>
+    <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    の内部型システムを利用するようにしてください。つまり、通常の数は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が
+    <SPLITINLINE>
+      <SCHEME>シンボル <SCHEMEINLINE>scheme-number</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	文字列 <JAVASCRIPTINLINE>"javascript_number"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    であるペアとしてではなく、単に
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    の数として表現されるようにし、それ以外は従来通り動作するようにしてください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:internal-type-system"/>
     <SOLUTION>
+      <BILINGUAL>
+      <EN>
       The following modifications will take advantage of the JavaScript number
       implementation:
+      </EN>
+      <JA>
+      次の修正で JavaScript の数の実装を利用できます：
+      </JA>
+      </BILINGUAL>
       <SNIPPET>
         <JAVASCRIPT>
 function attach_tag(type_tag, contents) {
@@ -920,7 +1295,9 @@ function contents(datum) {
     </SOLUTION>
   </EXERCISE>
 
-  <EXERCISE> 
+  <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Define a generic equality predicate
     <INDEX><USE>is_equal</USE> (generic predicate)</INDEX>
     <INDEX>equality<SUBINDEX><ORDER>generic</ORDER>in generic arithmetic system</SUBINDEX></INDEX>
@@ -931,6 +1308,18 @@ function contents(datum) {
     that tests the equality of two numbers, and install it in the generic
     arithmetic package.  This operation should work for ordinary numbers,
     rational numbers, and complex numbers.
+    </EN>
+    <JA>
+    2つの数の等値性をテストするジェネリック等値述語
+    <INDEX><USE>is_equal</USE> (generic predicate)</INDEX>
+    <INDEX>equality<SUBINDEX><ORDER>generic</ORDER>in generic arithmetic system</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>equ?</SCHEMEINLINE></SCHEME><JAVASCRIPT>
+      <JAVASCRIPTINLINE>is_equal</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を定義し、ジェネリック算術パッケージにインストールしてください。この演算は通常の数、有理数、複素数に対して動作するようにしてください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:equ?"/>
     <SOLUTION>
       <SNIPPET EVAL="no">
@@ -982,6 +1371,8 @@ function install_complex_package() {
 </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Define a generic predicate
     <INDEX><USE>is_equal_to_zero</USE> (generic)</INDEX>
     <INDEX>zero test (generic)</INDEX>
@@ -993,6 +1384,19 @@ function install_complex_package() {
     that tests if its argument is zero, and install it in the generic
     arithmetic package.  This operation should work for ordinary numbers,
     rational numbers, and complex numbers.
+    </EN>
+    <JA>
+    引数がゼロかどうかをテストするジェネリック述語
+    <INDEX><USE>is_equal_to_zero</USE> (generic)</INDEX>
+    <INDEX>zero test (generic)</INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>=zero?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_equal_to_zero</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を定義し、ジェネリック算術パッケージにインストールしてください。この演算は通常の数、有理数、複素数に対して動作するようにしてください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:=zero?"/>
     <SOLUTION>
       <SNIPPET EVAL="no">

@@ -107,6 +107,30 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | additivity / additive | 加法性 / 加法的 | |
 | principle of least commitment | 最小コミットメントの原則 | |
 | operation-and-type table | 演算と型のテーブル | |
+| coercion | 型変換 | |
+| coercion table | 型変換テーブル | |
+| cross-type operations | 型をまたぐ演算 | |
+| hierarchy of types | 型の階層 | |
+| tower (of types) | タワー | 型の階層が線形の場合 |
+| subtype | サブタイプ | |
+| supertype | スーパータイプ | |
+| raise | raise / 引き上げ | 型のタワーで上位に変換 |
+| lower / drop | 引き下げ / drop | 型のタワーで下位に変換 |
+| project | project | 型を下位に射影 |
+| polynomial | 多項式 | |
+| polynomial arithmetic | 多項式算術 | |
+| univariate polynomial | 一変数多項式 | |
+| indeterminate | 不定元 | 多項式の変数 |
+| coefficient | 係数 | |
+| term | 項 | 多項式の |
+| term list | 項リスト | |
+| order (of term) | 次数 | |
+| dense polynomial | 密な多項式 | |
+| sparse polynomial | 疎な多項式 | |
+| symbolic algebra | シンボリック代数 | |
+| rational function | 有理関数 | |
+| pseudoremainder | 擬剰余 | |
+| integerizing factor | 整数化因子 | |
 
 ### 数値データ型
 
