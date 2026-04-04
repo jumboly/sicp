@@ -22,6 +22,19 @@ const Licences: FC = () => {
     </div>
 
     <div class="title-text-LICENCE">
+      This is a Japanese translation of
+      <a href="https://sourceacademy.org/sicpjs/" rel="nofollow"
+        >SICP JavaScript Edition</a
+      >, based on the
+      <a href="https://github.com/source-academy/sicp" rel="nofollow"
+        >original source</a
+      >. The Japanese translation is licensed under
+      <a href="http://creativecommons.org/licenses/by-sa/4.0/" rel="nofollow"
+        >CC BY-SA 4.0</a
+      >.
+    </div>
+
+    <div class="title-text-LICENCE">
       <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" rel="nofollow"
         ><img
           src="https://camo.githubusercontent.com/46d38fe6087a9b9bdf7e45458901b818765b8391/68747470733a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f636f6d6d6f6e732f7468756d622f372f37392f4c6963656e73655f69636f6e2d67706c2e7376672f353070782d4c6963656e73655f69636f6e2d67706c2e7376672e706e67"
