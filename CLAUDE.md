@@ -56,12 +56,21 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - `LinksHead.tsx` でローカルアセットの URL にビルド時ハッシュを付与してキャッシュバスティングしている
 - `SCHEME` タグは `tagsToRemove` に追加済み（JS版で Scheme コンテンツを抑制）
 
+## 翻訳ガイド
+
+`TRANSLATION_GUIDE.md` に用語集・文体・タグ配置ルールをまとめている。翻訳作業時は必ず参照すること。
+
+- **読者像**: C#/Java/JS の業務経験あり、Scheme/関数型言語は未経験
+- **文体**: です/ます体
+- **用語方針**: 学術的な漢語（原始式、被演算子）よりカタカナ語（プリミティブな式、オペランド）を優先
+
 ## 翻訳進捗
 
 - [x] Section 1.1.1 Expressions
 - [x] Section 1.1.2 Naming and the Environment
 - [x] Section 1.1.3 Evaluating Operator Combinations
-- [ ] Section 1.1.4〜1.1.8
+- [x] Section 1.1.4 Compound Functions
+- [ ] Section 1.1.5〜1.1.8
 - [ ] Section 1.2〜1.3
 - [ ] Chapter 2〜5
 
