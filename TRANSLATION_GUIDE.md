@@ -462,6 +462,28 @@ UL・OL は BILINGUAL の中にそのまま入れてよい。パーサーが `<d
 </FOOTNOTE>
 ```
 
+### EPIGRAPH（章冒頭の引用）
+
+- EPIGRAPH 内のテキストも BILINGUAL で翻訳する
+- ATTRIBUTION（著者名・書名・日付）は翻訳しない
+
+```xml
+<EPIGRAPH>
+  <BILINGUAL>
+  <EN>
+    English quote text.
+  </EN>
+  <JA>
+    引用の日本語訳。
+  </JA>
+  </BILINGUAL>
+  <ATTRIBUTION>
+    <AUTHOR>Author Name</AUTHOR>
+    <TITLE>Book Title</TITLE>
+  </ATTRIBUTION>
+</EPIGRAPH>
+```
+
 ### SOLUTION（演習問題の解答）
 
 - SOLUTION 内の解説テキストも BILINGUAL で翻訳する。SNIPPET のみの解答は翻訳不要
