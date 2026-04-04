@@ -20,6 +20,8 @@
 
   <LONG_PAGE lines="1"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     One of our goals in this chapter is to isolate issues about thinking
     procedurally.  As a case in point, let us consider that, in evaluating
     <SPLITINLINE>
@@ -32,7 +34,7 @@
       Due to the prominence of the keyword
       <JAVASCRIPTINLINE>function</JAVASCRIPTINLINE>, we are generally replacing
       references to "procedure/procedural" with references to
-      "function/functional". The above sentences are an exception; 
+      "function/functional". The above sentences are an exception;
       the terms "thinking procedurally" and "procedure" are perhaps still
       adequate for the JavaScript edition here.
     </COMMENT>
@@ -102,12 +104,89 @@
     multiplication.  We will see later that it is useful to be able to work with
     combinations whose operators are themselves compound expressions.
   </FOOTNOTE></SCHEME></SPLITINLINE>
+    </EN>
+    <JA>
+    この章の目標の一つは、手続き的に考えることに関する問題を明確にすることです。
+    具体的な例として、
+    <SPLITINLINE>
+      <JAVASCRIPT>
+	演算子の
+      </JAVASCRIPT>
+    </SPLITINLINE>組み合わせを評価する際に、インタプリタ自体が手続きに従っていることを考えてみましょう。
+    <COMMENT>
+      Due to the prominence of the keyword
+      <JAVASCRIPTINLINE>function</JAVASCRIPTINLINE>, we are generally replacing
+      references to "procedure/procedural" with references to
+      "function/functional". The above sentences are an exception;
+      the terms "thinking procedurally" and "procedure" are perhaps still
+      adequate for the JavaScript edition here.
+    </COMMENT>
+    <UL>
+      <LI>
+      <SPLITINLINE>
+	<SCHEME>
+	  組み合わせ
+	</SCHEME>
+	<JAVASCRIPT>
+	  演算子の組み合わせ
+	</JAVASCRIPT>
+      </SPLITINLINE>を評価するには、次のようにします：
+      <OL>
+        <LI>組み合わせの
+	<SPLITINLINE>
+	  <SCHEME>
+	    部分式
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    被演算子式
+	  </JAVASCRIPT>
+	</SPLITINLINE>を評価する。</LI>
+        <LI>
+	  <SPLITINLINE>
+	    <SCHEME>
+	      最も左の部分式（演算子）の値である手続きを、
+              他の部分式（被演算子）の値である引数に適用する。
+	    </SCHEME>
+	    <JAVASCRIPT>
+	      演算子が示す関数を、被演算子の値である引数に適用する。
+	    </JAVASCRIPT>
+	  </SPLITINLINE>
+        </LI>
+      </OL>
+      </LI>
+    </UL>
+    <COMMENT>
+      The Scheme version does not distinguish between operator and
+      application combinations. However, due to the infix notation,
+      the JavaScript version needs to describe slightly different
+      rules for those two. This section contains the rule for operator
+      combination, and section 1.1.5 introduces a new rule for function
+      application.
+    </COMMENT>
+    この単純な規則でさえ、一般的なプロセスに関するいくつかの重要な点を示しています。
+    まず、最初のステップが、組み合わせの評価プロセスを達成するためには、
+    まず組み合わせの各被演算子に対して評価プロセスを実行しなければならないことを
+    規定していることに注目してください。したがって、評価規則は本質的に
+    <INDEX>recursion</INDEX>
+    <EM>再帰的</EM>です。
+    つまり、そのステップの一つとして、規則自体を呼び出す必要があります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Notice how succinctly the idea of recursion can be used to express
     <INDEX>recursion<SUBINDEX>expressing complicated process</SUBINDEX></INDEX>
     what, in the case of a deeply nested combination, would otherwise be
     viewed as a rather complicated process.  For example, evaluating
+    </EN>
+    <JA>
+    深く入れ子になった組み合わせの場合にはかなり複雑なプロセスと見なされるものを、
+    <INDEX>recursion<SUBINDEX>expressing complicated process</SUBINDEX></INDEX>
+    再帰の考え方を使ってどれほど簡潔に表現できるかに注目してください。例えば、
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <SCHEME>
 (* (+ 2 (* 4 6))
@@ -117,6 +196,8 @@
 (2 + 4 * 6) * (3 + 12);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     requires that the evaluation rule be applied to four different
     combinations.  We can obtain a picture of this process by
     representing the combination in the form of a
@@ -150,6 +231,36 @@
     of process known as
     <INDEX>tree accumulation</INDEX>
     <EM>tree accumulation</EM>.
+    </EN>
+    <JA>
+    の評価には、評価規則を4つの異なる組み合わせに適用する必要があります。
+    この組み合わせを
+    <INDEX>operator combination<SUBINDEX><ORDER>tree</ORDER>as a tree</SUBINDEX></INDEX>
+    <INDEX>tree<SUBINDEX>combination viewed as</SUBINDEX></INDEX>
+    木の形で表現することで、このプロセスの図を得ることができます
+    （<SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:tree-comb_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:tree-comb"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>を参照）。
+    各組み合わせは
+    <INDEX>node of a tree</INDEX>
+    節点で表され、そこから伸びる
+    <INDEX>branch of a tree</INDEX>
+    枝は組み合わせの演算子と被演算子に対応します。
+    <INDEX>terminal node of a tree</INDEX>
+    末端節点（枝が伸びていない節点）は演算子または数を表します。
+    木の観点から評価を見ると、被演算子の値が末端節点から始まり、
+    より高いレベルで次々と結合しながら上方に浸透していくと想像できます。
+    一般に、再帰は階層的な木構造のオブジェクトを扱うための非常に強力な技法であることがわかります。
+    実際、この<QUOTE>値を上方に浸透させる</QUOTE>形の評価規則は、
+    <INDEX>tree accumulation</INDEX>
+    <EM>木の累積</EM>として知られる一般的なプロセスの一例です。
+    </JA>
+    </BILINGUAL>
 
     <SPLIT>
       <SCHEME>
@@ -172,18 +283,20 @@
 
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Next, observe that the repeated application of the first step brings
     us to the point where we need to evaluate, not combinations, but
-    primitive expressions such as 
+    primitive expressions such as
     <SPLITINLINE>
       <SCHEME>
-	numerals, built-in operators, or other names.  
+	numerals, built-in operators, or other names.
       </SCHEME>
       <JAVASCRIPT>
-	numerals or names.  
+	numerals or names.
       </JAVASCRIPT>
     </SPLITINLINE>
-    We take care of the primitive cases 
+    We take care of the primitive cases
     <INDEX>primitive expression<SUBINDEX>evaluation of</SUBINDEX></INDEX>
     <INDEX>evaluation<SUBINDEX>of primitive expression</SUBINDEX></INDEX>
     by stipulating that
@@ -280,8 +393,108 @@
 	<INDEX>evaluation<SUBINDEX>of operator combination</SUBINDEX><CLOSE/></INDEX>
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    次に、最初のステップを繰り返し適用すると、組み合わせではなく、
+    <SPLITINLINE>
+      <SCHEME>
+	数字、組み込み演算子、またはその他の名前
+      </SCHEME>
+      <JAVASCRIPT>
+	数字または名前
+      </JAVASCRIPT>
+    </SPLITINLINE>のような原始式を評価する必要がある段階に到達することに注目してください。
+    <INDEX>primitive expression<SUBINDEX>evaluation of</SUBINDEX></INDEX>
+    <INDEX>evaluation<SUBINDEX>of primitive expression</SUBINDEX></INDEX>
+    原始的な場合は、次のように規定して処理します：
+    <UL>
+      <LI>
+        数字の値は、それが表す数である。
+	<SPLITINLINE><JAVASCRIPT>そして、</JAVASCRIPT></SPLITINLINE>
+      </LI>
+      <SPLITINLINE>
+	<SCHEME>
+          <LI>
+            組み込み演算子の値は、対応する操作を実行する機械命令列である。そして、
+          </LI>
+	</SCHEME>
+      </SPLITINLINE>
+      <COMMENT>
+	Operators are not values in JavaScript, so this item does not apply
+	in the JavaScript version.
+      </COMMENT>
+      <LI>
+        <SPLITINLINE>
+	  <SCHEME>
+	    その他の
+	  </SCHEME>
+	</SPLITINLINE>名前の値は、環境においてその名前に関連付けられたオブジェクトである。
+      </LI>
+    </UL>
+    <SPLITINLINE>
+      <SCHEME>
+        We may regard the second rule as a special case of the third one by
+        stipulating that symbols such as <SCHEMEINLINE>+</SCHEMEINLINE>
+        and <SCHEMEINLINE>*</SCHEMEINLINE> are also included
+        in the global environment, and are associated with the sequences of
+        machine instructions that are their <QUOTE>values.</QUOTE>
+      </SCHEME>
+    </SPLITINLINE>
+    注目すべき重要な点は、式の中の
+    <SPLITINLINE>
+      <SCHEME>
+	記号
+      </SCHEME>
+      <JAVASCRIPT>
+	名前
+      </JAVASCRIPT>
+    </SPLITINLINE>の意味を決定する際の
+    <INDEX>environment<SUBINDEX><ORDER>context</ORDER>as context for evaluation</SUBINDEX></INDEX>
+    環境の役割です。
+    <SPLITINLINE>
+      <SCHEME>
+	Lisp
+      </SCHEME>
+      <JAVASCRIPT>
+	JavaScript
+      </JAVASCRIPT>
+    </SPLITINLINE>のような対話的言語では、
+    <SPLITINLINE>
+      <SCHEME>
+	記号 <SCHEMEINLINE>x</SCHEMEINLINE>（あるいは記号
+        <SCHEMEINLINE>+</SCHEMEINLINE>）
+      </SCHEME>
+      <JAVASCRIPT>
+	名前 <SCHEMEINLINE>x</SCHEMEINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>に意味を与える環境に関する情報を指定せずに、
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>(+ x 1)</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>x + 1</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    のような式の値について語ることは無意味です。
+    第3章で見るように、評価が行われる文脈を提供するものとしての環境の一般的な概念は、
+    プログラムの実行を理解する上で重要な役割を果たします。
+    <SPLITINLINE>
+      <SCHEME>
+	<INDEX>combination<SUBINDEX>evaluation of</SUBINDEX><CLOSE/></INDEX>
+	<INDEX>evaluation<SUBINDEX>of a combination</SUBINDEX><CLOSE/></INDEX>
+      </SCHEME>
+      <JAVASCRIPT>
+	<INDEX>operator combination<SUBINDEX>evaluation of</SUBINDEX><CLOSE/></INDEX>
+	<INDEX>evaluation<SUBINDEX>of operator combination</SUBINDEX><CLOSE/></INDEX>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Notice that the
     evaluation rule given above does not handle
     <SPLITINLINE>
@@ -345,6 +558,69 @@
     </SPLITINLINE>
     is not
     a combination.)
+    </EN>
+    <JA>
+    上で述べた評価規則は
+    <SPLITINLINE>
+      <SCHEME>
+	<INDEX><USE>define</USE><SUBINDEX>why a special form</SUBINDEX></INDEX>
+	定義
+      </SCHEME>
+      <JAVASCRIPT>
+	<INDEX>constant declaration<SUBINDEX>why a syntactic form</SUBINDEX></INDEX>
+	宣言
+      </JAVASCRIPT>
+    </SPLITINLINE>を扱わないことに注意してください。
+    例えば、
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>(define x 3)</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>const x = 3;</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の評価は、
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>define</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	等号演算子 <JAVASCRIPTINLINE>=</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を2つの引数に適用するのではありません。一方の引数は
+    <SPLITINLINE>
+      <SCHEME>
+	記号
+      </SCHEME>
+      <JAVASCRIPT>
+	名前
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>x</SCHEMEINLINE> の値で、もう一方は 3 です。
+    なぜなら、
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>define</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	宣言
+      </JAVASCRIPT>
+    </SPLITINLINE>の目的はまさに
+    <SCHEMEINLINE>x</SCHEMEINLINE> を値に関連付けることだからです。
+    （つまり、
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>(define x 3)</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>const x = 3;</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は組み合わせではありません。）
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
     <SPLIT>
@@ -389,8 +665,10 @@
       </SCHEME>
       <JAVASCRIPT>
         <TEXT>
+          <BILINGUAL>
+          <EN>
 	  <PDF_ONLY>
-            The letters in <JAVASCRIPTINLINE>const</JAVASCRIPTINLINE> are 
+            The letters in <JAVASCRIPTINLINE>const</JAVASCRIPTINLINE> are
             rendered in bold to indicate that it
 	  </PDF_ONLY>
 	  <WEB_ONLY>
@@ -401,13 +679,35 @@
 	  <EM>keyword</EM> in JavaScript. Keywords carry a
 	  particular meaning, and thus cannot be used as names. A keyword or a
 	  combination of keywords in a statement instructs the JavaScript
-	  interpreter to treat the statement in a special way. Each such 
+	  interpreter to treat the statement in a special way. Each such
 	  <INDEX>syntactic form</INDEX>
           <EM>syntactic form</EM> has its own evaluation rule. The
 	  various kinds of statements and expressions (each with its associated
 	  evaluation rule) constitute the
           <INDEX>syntax<SUBINDEX><ORDER>programming</ORDER>of a programming language</SUBINDEX></INDEX>
           syntax of the programming language.
+          </EN>
+          <JA>
+	  <PDF_ONLY>
+            <JAVASCRIPTINLINE>const</JAVASCRIPTINLINE> の文字は太字で表示され、
+            それが
+	  </PDF_ONLY>
+	  <WEB_ONLY>
+            <JAVASCRIPTINLINE>const</JAVASCRIPTINLINE> という語は
+	  </WEB_ONLY>
+	  JavaScript の
+	  <INDEX>keyword</INDEX>
+	  <EM>キーワード</EM>です。キーワードは特定の意味を持ち、
+	  名前として使用することはできません。文中のキーワードまたはキーワードの組み合わせは、
+	  JavaScript インタプリタにその文を特別な方法で扱うよう指示します。
+	  そのような
+	  <INDEX>syntactic form</INDEX>
+          <EM>構文形式</EM>にはそれぞれ独自の評価規則があります。
+	  さまざまな種類の文と式（それぞれに関連する評価規則を持つ）が、
+          <INDEX>syntax<SUBINDEX><ORDER>programming</ORDER>of a programming language</SUBINDEX></INDEX>
+          プログラミング言語の構文を構成します。
+          </JA>
+          </BILINGUAL>
         </TEXT>
       </JAVASCRIPT>
     </SPLIT>
