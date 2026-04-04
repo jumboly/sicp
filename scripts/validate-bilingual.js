@@ -4,6 +4,7 @@
  * TRANSLATION_GUIDE.md の BILINGUAL タグ配置ルールを検証するスクリプト。
  *
  * 検証項目:
+ * 0. U+FFFD（置換文字/文字化け）が含まれていないこと
  * 1. FOOTNOTE が EN/JA の中にネストされていないこと
  * 2. SNIPPET が BILINGUAL の中にネストされていないこと
  * 3. BILINGUAL が EN と JA の両方を持つこと
@@ -103,6 +104,18 @@ function reportError(filePath, content, index, message) {
 
 function validateFile(filePath) {
   const content = fs.readFileSync(filePath, "utf-8");
+
+  // ルール0: U+FFFD（文字化け）がないこと — BILINGUAL の有無に関係なくチェック
+  const fffdRegex = /\uFFFD/g;
+  let fffdMatch;
+  while ((fffdMatch = fffdRegex.exec(content)) !== null) {
+    reportError(
+      filePath,
+      content,
+      fffdMatch.index,
+      "U+FFFD（置換文字）が含まれています。文字化けの可能性があります"
+    );
+  }
 
   // BILINGUAL タグが無いファイルはスキップ
   if (!content.includes("<BILINGUAL>")) return;
