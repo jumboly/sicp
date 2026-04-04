@@ -928,7 +928,19 @@ export const parseXmlHtml = (doc, writeTo, filename) => {
     displayTitle = chapterIndex + "&nbsp;&nbsp;" + chapterTitle;
   }
 
-  pageTitle = displayTitle + " - SICP Comparison Edition";
+  // HTMLタグを除去してプレーンテキストのタイトルを生成（meta/titleタグ用）
+  // BILINGUAL翻訳済みの場合はENテキストのみ抽出する
+  const toPlainTitle = (s: string) => {
+    let text = s;
+    // lang-ja 部分を除去（EN のみ残す）
+    text = text.replace(/<div class="lang-ja"[^>]*>[\s\S]*?<\/div>/g, "");
+    // 残りの HTML タグを除去
+    text = text.replace(/<[^>]*>/g, "");
+    // HTML エンティティと余分な空白を整理
+    text = text.replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
+    return text;
+  };
+  pageTitle = toPlainTitle(displayTitle) + " - SICP Comparison Edition";
 
   //toIndexFolder = tableOfContent[filename].relativePathToMain;
   //console.log(chapterIndex + " " + chapterTitle);
