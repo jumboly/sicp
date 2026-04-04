@@ -1,10 +1,20 @@
     <SECTION>
       <NAME>
-        Formulating Abstractions with Higher-Order 
+        <BILINGUAL>
+        <EN>
+        Formulating Abstractions with Higher-Order
         <SPLITINLINE>
 	  <SCHEME>Procedures</SCHEME>
 	  <JAVASCRIPT>Functions</JAVASCRIPT>
 	</SPLITINLINE>
+        </EN>
+        <JA>
+        高階<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>による抽象の定式化
+        </JA>
+        </BILINGUAL>
       </NAME>
 
       <SECTIONCONTENT/>
@@ -12,6 +22,8 @@
       <LABEL NAME="sec:higher-order-procedures"/>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         We have seen that
         <SPLITINLINE>
 	  <SCHEME>procedures</SCHEME>
@@ -22,6 +34,16 @@
 	<SPLITINLINE>
 	  <JAVASCRIPT>declare</JAVASCRIPT>
 	</SPLITINLINE>
+        </EN>
+        <JA>
+        これまで見てきたように、<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>とは、特定の数値に依存しない、数値に対する複合的な操作を記述する抽象です。例えば、次のように<SPLITINLINE>
+	  <JAVASCRIPT>宣言</JAVASCRIPT>
+	</SPLITINLINE>するとき
+        </JA>
+        </BILINGUAL>
         <SNIPPET PAGE="56">
 	  <INDEX><DECLARATION>cube</DECLARATION></INDEX>
           <NAME>cube_definition</NAME>
@@ -46,19 +68,29 @@ function cube(x) {
 cube(3);
           </JAVASCRIPT>
         </SNIPPET>
+        <BILINGUAL>
+        <EN>
         we are not talking about the cube of a particular number, but rather
         about a method for obtaining the cube of any number.  Of course we could
-	get along without ever 
+	get along without ever
         <SPLITINLINE>
 	  <SCHEME>defining this procedure,</SCHEME>
 	  <JAVASCRIPT>declaring this function,</JAVASCRIPT>
 	</SPLITINLINE>
 	by always writing expressions such as
+        </EN>
+        <JA>
+        私たちは特定の数の3乗について話しているのではなく、任意の数の3乗を求める方法について話しています。もちろん、この<SPLITINLINE>
+	  <SCHEME>手続きを定義</SCHEME>
+	  <JAVASCRIPT>関数を宣言</JAVASCRIPT>
+	</SPLITINLINE>しなくても、常に次のような式を書けばやっていけるでしょう。
+        </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="no">
           <SCHEME>
 (* 3 3 3)
 (* x x x)
-(* y y y)        
+(* y y y)
           </SCHEME>
           <JAVASCRIPT>
 3 * 3 * 3
@@ -66,6 +98,8 @@ x * x * x
 y * y * y
         </JAVASCRIPT>
         </SNIPPET>
+        <BILINGUAL>
+        <EN>
         and never mentioning <SCHEMEINLINE>cube</SCHEMEINLINE> explicitly. This
 	would place us at a serious disadvantage, forcing us to work always at
 	the level of the particular operations that happen to be primitives in
@@ -80,13 +114,26 @@ y * y * y
 	  <JAVASCRIPT>Functions</JAVASCRIPT>
 	</SPLITINLINE>
         provide this ability.  This is why all but the most primitive
-	programming languages include mechanisms for 
+	programming languages include mechanisms for
         <SPLITINLINE>
 	  <SCHEME>defining procedures.</SCHEME>
 	  <JAVASCRIPT>declaring functions.</JAVASCRIPT>
 	</SPLITINLINE>
+        </EN>
+        <JA>
+        そうすれば <SCHEMEINLINE>cube</SCHEMEINLINE> に明示的に言及する必要はありません。しかし、これでは重大な不利を被ることになります。言語のプリミティブである特定の操作（この場合は乗算）のレベルで常に作業せざるを得なくなり、より高レベルの操作で考えることができなくなるからです。プログラムは3乗を計算できても、「3乗する」という概念を表現する能力が言語に欠けてしまいます。強力なプログラミング言語に求めるべきことの一つは、共通のパターンに名前を付けて抽象を構築し、その抽象を直接使って作業できる能力です。<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>はこの能力を提供します。だからこそ、最もプリミティブな言語を除くすべてのプログラミング言語が、<SPLITINLINE>
+	  <SCHEME>手続きを定義する</SCHEME>
+	  <JAVASCRIPT>関数を宣言する</JAVASCRIPT>
+	</SPLITINLINE>メカニズムを備えているのです。
+        </JA>
+        </BILINGUAL>
       </TEXT>
       <TEXT>
+        <BILINGUAL>
+        <EN>
         Yet even in numerical processing we will be severely limited in our
         ability to create abstractions if we are restricted to
         <SPLITINLINE>
@@ -124,7 +171,7 @@ y * y * y
 	  <SCHEME>procedures</SCHEME>
 	  <JAVASCRIPT>functions</JAVASCRIPT>
 	</SPLITINLINE>
-        are called 
+        are called
         <INDEX>higher-order <SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE></INDEX>
         <EM>higher-order <SPLITINLINE><SCHEME>procedures.</SCHEME><JAVASCRIPT>functions.</JAVASCRIPT></SPLITINLINE></EM>
 	This section shows how higher-order
@@ -134,6 +181,37 @@ y * y * y
 	</SPLITINLINE>
         can serve as powerful abstraction mechanisms, vastly increasing the
 	expressive power of our language.
+        </EN>
+        <JA>
+        しかし、数値処理においてさえ、パラメータが数値でなければならない<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>に制限されていては、抽象を作る能力は大きく制限されてしまいます。同じプログラミングパターンが、多くの異なる<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>で使われることがよくあります。そのようなパターンを概念として表現するには、<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>を引数として受け取ったり、<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>を値として返したりできる<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>を構築する必要があります。<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>を操作する<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>は、
+        <INDEX>higher-order <SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE></INDEX>
+        <EM>高階<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE></EM>と呼ばれます。このセクションでは、高階<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>が強力な抽象化メカニズムとして機能し、言語の表現力を大幅に高めることを示します。
+        </JA>
+        </BILINGUAL>
       </TEXT>
 
       <!-- Subsection 1 : Procedures as Arguments -->

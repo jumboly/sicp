@@ -107,6 +107,28 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | branch | 枝 | |
 | nested | 入れ子 | |
 
+### 高階関数・抽象
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| higher-order function | 高階関数 | |
+| higher-order procedure | 高階手続き | Scheme 版 |
+| lambda expression | ラムダ式 | |
+| first-class | 第一級 | |
+| fixed point | 不動点 | |
+| half-interval method | 二分法 | |
+| average damping | 平均減衰 | |
+| Newton's method | ニュートン法 | |
+| derivative | 導関数 | |
+| continued fraction | 連分数 | |
+| composition | 合成 | 関数の合成 |
+| smoothing | 平滑化 | |
+| iterative improvement | 反復的改善 | |
+| summation | 総和 | |
+| sigma notation | シグマ記法 | |
+| conditional statement | 条件文 | |
+| hoisting | ホイスティング / 巻き上げ | 関数宣言の |
+
 ### 評価モデル
 
 | 英語 | 日本語 | 備考 |

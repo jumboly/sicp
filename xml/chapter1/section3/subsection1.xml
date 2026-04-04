@@ -1,16 +1,28 @@
 <SUBSECTION>
   <NAME>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>Procedures</SCHEME>
       <JAVASCRIPT>Functions</JAVASCRIPT>
     </SPLITINLINE>
     as Arguments
+    </EN>
+    <JA>
+    引数としての<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:procedures-as-parameters"/>
   <INDEX>higher-order <SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE><SUBINDEX><SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE> as argument<OPEN/></SUBINDEX></INDEX>
   <INDEX><FUNCTION/><SUBINDEX><ORDER>argument</ORDER>as argument<OPEN/></SUBINDEX></INDEX>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Consider the following three
     <SPLITINLINE>
       <SCHEME>procedures.</SCHEME>
@@ -18,6 +30,14 @@
     </SPLITINLINE>
     The first computes the sum of the integers from
     <SCHEMEINLINE>a</SCHEMEINLINE> through <SCHEMEINLINE>b</SCHEMEINLINE>:
+    </EN>
+    <JA>
+    次の3つの<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を考えてみましょう。最初のものは <SCHEMEINLINE>a</SCHEMEINLINE> から <SCHEMEINLINE>b</SCHEMEINLINE> までの整数の合計を計算します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="57">
       <INDEX><DECLARATION>sum_integers</DECLARATION></INDEX>
       <NAME>sum_integers_definition</NAME>
@@ -49,7 +69,14 @@ function sum_integers(a, b) {
 sum_integers(1, 10);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The second computes the sum of the cubes of the integers in the given range:
+    </EN>
+    <JA>
+    2番目のものは、与えられた範囲の整数の3乗の合計を計算します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="57">
       <INDEX><DECLARATION>sum_cubes</DECLARATION></INDEX>
       <NAME>sum_cubes_definition</NAME>
@@ -79,20 +106,43 @@ function sum_cubes(a, b) {
 sum_cubes(3, 7);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The third computes the sum of a sequence of terms in the series
     <LATEX>
       \[ \frac{1}{1\cdot3}+\frac{1}{5\cdot7}+\frac{1}{9\cdot11}+\cdots \]
     </LATEX>
     which converges to <LATEXINLINE>$\pi/8$</LATEXINLINE> (very
-    slowly):<FOOTNOTE>This series,
+    slowly):
+    </EN>
+    <JA>
+    3番目のものは、級数
+    <LATEX>
+      \[ \frac{1}{1\cdot3}+\frac{1}{5\cdot7}+\frac{1}{9\cdot11}+\cdots \]
+    </LATEX>
+    の項の列の合計を計算します。この級数は <LATEXINLINE>$\pi/8$</LATEXINLINE> に（非常にゆっくりと）収束します：
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>This series,
     <INDEX><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<ORDER>pi</ORDER><SUBINDEX>Leibniz<APOS/>s series for</SUBINDEX></INDEX>
     <INDEX>Leibniz, Baron Gottfried Wilhelm von<SUBINDEX>series for <LATEXINLINE>$\pi$</LATEXINLINE></SUBINDEX></INDEX>
-    usually written in the equivalent form 
+    usually written in the equivalent form
     <LATEXINLINE>$\frac {\pi}{4} = 1-\frac{1}
-    {3}+\frac{1}{5}-\frac{1}{7}+\cdots$</LATEXINLINE>, 
+    {3}+\frac{1}{5}-\frac{1}{7}+\cdots$</LATEXINLINE>,
     is due to Leibniz.  We<APOS/>ll see how to use this as the basis for some
     fancy numerical tricks in
-    section<SPACE/><REF NAME="sec:exploiting-streams"/>.</FOOTNOTE>
+    section<SPACE/><REF NAME="sec:exploiting-streams"/>.</EN>
+    <JA>この級数は、
+    <INDEX><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<ORDER>pi</ORDER><SUBINDEX>Leibniz<APOS/>s series for</SUBINDEX></INDEX>
+    <INDEX>Leibniz, Baron Gottfried Wilhelm von<SUBINDEX>series for <LATEXINLINE>$\pi$</LATEXINLINE></SUBINDEX></INDEX>
+    通常、等価な形
+    <LATEXINLINE>$\frac {\pi}{4} = 1-\frac{1}
+    {3}+\frac{1}{5}-\frac{1}{7}+\cdots$</LATEXINLINE>
+    で書かれ、ライプニッツによるものです。これを基にしたいくつかの巧妙な数値計算のテクニックを
+    <SPACE/><REF NAME="sec:exploiting-streams"/>節で見ることにします。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET PAGE="57">
       <INDEX><DECLARATION>pi_sum</DECLARATION></INDEX>
       <NAME>pi_sum_definition</NAME>
@@ -127,6 +177,8 @@ function pi_sum(a, b) {
     
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     These three
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -146,6 +198,20 @@ function pi_sum(a, b) {
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     by filling in slots in the same template:
+    </EN>
+    <JA>
+    これら3つの<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、明らかに共通の基礎パターンを共有しています。ほとんど同一であり、異なるのは<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の名前、加算する項を計算するための <SCHEMEINLINE>a</SCHEMEINLINE> の関数、そして <SCHEMEINLINE>a</SCHEMEINLINE> の次の値を与える関数だけです。同じテンプレートのスロットを埋めることで、これらの<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>をそれぞれ生成できます：
+    </JA>
+    </BILINGUAL>
 
     <SNIPPET LATEX="yes" EVAL="no">
       <SCHEME>
@@ -166,6 +232,8 @@ function <META>name</META>(a, b) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The presence of such a common pattern is strong evidence that there is a
     useful
     <INDEX>abstraction<SUBINDEX>common pattern and</SUBINDEX></INDEX>
@@ -186,9 +254,29 @@ function <META>name</META>(a, b) {
     mathematicians to deal with the concept of summation itself rather than only
     with particular sums<EMDASH/>for example, to formulate general results about
     sums that are independent of the particular series being summed.
+    </EN>
+    <JA>
+    このような共通パターンが存在するということは、表に引き出すべき有用な
+    <INDEX>abstraction<SUBINDEX>common pattern and</SUBINDEX></INDEX>
+    抽象が存在する強い証拠です。実際、数学者たちはずっと以前に
+    <INDEX>series, summation of</INDEX>
+    <INDEX>summation of a series</INDEX>
+    <INDEX><ORDER>sigma</ORDER>$\Sigma$ (sigma) notation</INDEX>
+    <INDEX><ORDER>0s</ORDER>$\Sigma$ (sigma) notation</INDEX>
+    <EM>級数の総和</EM>という抽象を見出し、この概念を表現するために<QUOTE>シグマ記法</QUOTE>を発明しました。例えば
+    <LATEX>
+      \[\begin{array}{lll}
+      \displaystyle\sum_{n=a}^{b}\ f(n)&amp;=&amp;f(a)+\cdots+f(b)
+      \end{array}\]
+    </LATEX>
+    のように表します。シグマ記法の力は、特定の和だけでなく、総和という概念そのものを扱えるようにすることです。例えば、合計される特定の級数に依存しない、和に関する一般的な結果を定式化することができます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Similarly, as program designers, we would like our language to be powerful
     enough so that we can write a
     <SPLITINLINE>
@@ -213,6 +301,23 @@ function <META>name</META>(a, b) {
       <JAVASCRIPT>parameters:
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    同様に、プログラムの設計者として、特定の和を計算する<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>だけでなく、総和という概念そのものを表現する<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を書けるほど強力な言語が欲しいところです。上に示した共通テンプレートを取り、<QUOTE>スロット</QUOTE>を<SPLITINLINE>
+      <SCHEME>仮パラメータ</SCHEME>
+      <JAVASCRIPT>パラメータ</JAVASCRIPT>
+    </SPLITINLINE>に変換することで、私たちの<SPLITINLINE>
+      <SCHEME>手続き型</SCHEME>
+      <JAVASCRIPT>関数型</JAVASCRIPT>
+    </SPLITINLINE>言語ではこれを容易に行えます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="58" EVAL="no">
       <INDEX><DECLARATION>sum</DECLARATION></INDEX>
       <NAME>sum_definition</NAME>
@@ -231,6 +336,8 @@ function sum(term, a, next, b) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Notice that <SCHEMEINLINE>sum</SCHEMEINLINE> takes as its arguments the
     lower and upper bounds <SCHEMEINLINE>a</SCHEMEINLINE> and
     <SCHEMEINLINE>b</SCHEMEINLINE> together with the
@@ -255,6 +362,23 @@ function sum(term, a, next, b) {
       <JAVASCRIPT>
       <JAVASCRIPTINLINE>sum_cubes</JAVASCRIPTINLINE>:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SCHEMEINLINE>sum</SCHEMEINLINE> は引数として下限と上限の <SCHEMEINLINE>a</SCHEMEINLINE> と <SCHEMEINLINE>b</SCHEMEINLINE> を、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE> <SCHEMEINLINE>term</SCHEMEINLINE> と <SCHEMEINLINE>next</SCHEMEINLINE> とともに受け取ることに注目してください。<SCHEMEINLINE>sum</SCHEMEINLINE> は他の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>と同じように使えます。例えば、引数を1だけ増やす<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE> <SCHEMEINLINE>inc</SCHEMEINLINE> と一緒に使って <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sum-cubes</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sum_cubes</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> を定義できます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="58" HIDE="yes">
       <NAME>inc_definition</NAME>
       <SCHEME>
@@ -289,7 +413,10 @@ function sum_cubes(a, b) {
 }
       </JAVASCRIPT>
     </SNIPPET>
-    Using this, we can compute the sum of the cubes of the integers from 1 to 10:
+    <BILINGUAL>
+    <EN>Using this, we can compute the sum of the cubes of the integers from 1 to 10:</EN>
+    <JA>これを使って、1から10までの整数の3乗の合計を計算できます：</JA>
+    </BILINGUAL>
     <SNIPPET PAGE="59">
       <NAME>sum_example_example</NAME>
       <REQUIRES>sum_example</REQUIRES>
@@ -306,6 +433,8 @@ sum_cubes(1, 10);
 3025
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     With the aid of an identity
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -317,6 +446,17 @@ sum_cubes(1, 10);
       <JAVASCRIPT><JAVASCRIPTINLINE>sum_@integers</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     in terms of <SCHEMEINLINE>sum</SCHEMEINLINE>:
+    </EN>
+    <JA>
+    項を計算する恒等<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を使って、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sum-integers</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sum_@integers</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> を <SCHEMEINLINE>sum</SCHEMEINLINE> で定義できます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="59">
       <INDEX><DECLARATION>identity</DECLARATION></INDEX>
       <NAME>identity</NAME>
@@ -357,7 +497,10 @@ function sum_integers(a, b) {
 }
       </JAVASCRIPT>
     </SNIPPET>
-    Then we can add up the integers from 1 to 10:
+    <BILINGUAL>
+    <EN>Then we can add up the integers from 1 to 10:</EN>
+    <JA>これで1から10までの整数を合計できます：</JA>
+    </BILINGUAL>
     <SNIPPET PAGE="59">
       <NAME>sum_integers_example2</NAME>
       <REQUIRES>sum_integers_definition2</REQUIRES>
@@ -374,20 +517,32 @@ sum_integers(1, 10);
 55
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
-    We can also 
+    <BILINGUAL>
+    <EN>
+    We can also
     <SPLITINLINE>
       <SCHEME>define <SCHEMEINLINE>pi-sum</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>define <JAVASCRIPTINLINE>pi_sum</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    in the same way:<FOOTNOTE>Notice that we have used block structure
-    (section<SPACE/><REF NAME="sec:black-box"/>) to embed the 
+    in the same way:
+    </EN>
+    <JA>
+    同じ方法で <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>pi-sum</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pi_sum</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> も定義できます：
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>Notice that we have used block structure
+    (section<SPACE/><REF NAME="sec:black-box"/>) to embed the
     <SPLITINLINE>
       <SCHEME>definitions of <SCHEMEINLINE>pi-next</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>declarations of <JAVASCRIPTINLINE>pi_next</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    and 
+    and
     <SPLITINLINE><SCHEME><SCHEMEINLINE>pi-term</SCHEMEINLINE></SCHEME>
     <JAVASCRIPT><JAVASCRIPTINLINE>pi_term</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
@@ -402,7 +557,19 @@ sum_integers(1, 10);
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     are unlikely to be useful for any other purpose.  We will see how to get rid
-    of them altogether in section<SPACE/><REF NAME="sec:lambda"/>.</FOOTNOTE>
+    of them altogether in section<SPACE/><REF NAME="sec:lambda"/>.</EN>
+    <JA>ブロック構造（<SPACE/><REF NAME="sec:black-box"/>節）を使って、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>pi-next</SCHEMEINLINE> と <SCHEMEINLINE>pi-term</SCHEMEINLINE> の定義</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pi_next</JAVASCRIPTINLINE> と <JAVASCRIPTINLINE>pi_term</JAVASCRIPTINLINE> の宣言</JAVASCRIPT>
+    </SPLITINLINE>を <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>pi-sum</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pi_sum</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> の内部に埋め込んでいることに注目してください。これらの<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は他の目的に使われることはほぼないからです。<SPACE/><REF NAME="sec:lambda"/>節で、これらを完全に取り除く方法を見ることにします。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET PAGE="59">
       <INDEX><DECLARATION>pi_sum</DECLARATION><SUBINDEX>with higher-order functions<ORDER>higher</ORDER></SUBINDEX></INDEX>
       <NAME>pi_sum_definition2</NAME>
@@ -429,12 +596,22 @@ function pi_sum(a, b) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Using these
     <SPLITINLINE>
       <SCHEME>procedures,</SCHEME>
       <JAVASCRIPT>functions,</JAVASCRIPT>
     </SPLITINLINE>
     we can compute an approximation to <LATEXINLINE>$\pi$</LATEXINLINE>:
+    </EN>
+    <JA>
+    これらの<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を使って、<LATEXINLINE>$\pi$</LATEXINLINE> の近似値を計算できます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="59">
       <NAME>pi_sum_example2</NAME>
       <REQUIRES>pi_sum_definition2</REQUIRES>
@@ -454,12 +631,21 @@ function pi_sum(a, b) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Once we have <SCHEMEINLINE>sum</SCHEMEINLINE>, we can use it as a building
-    block in formulating further concepts.  For instance, the 
+    block in formulating further concepts.  For instance, the
     <INDEX>definite integral<OPEN/></INDEX>
     definite integral of a function <LATEXINLINE>$f$</LATEXINLINE> between the
     limits <LATEXINLINE>$a$</LATEXINLINE> and <LATEXINLINE>$b$</LATEXINLINE> can
     be approximated numerically using the formula
+    </EN>
+    <JA>
+    <SCHEMEINLINE>sum</SCHEMEINLINE> があれば、さらなる概念を定式化するための構成要素として使えます。例えば、関数 <LATEXINLINE>$f$</LATEXINLINE> の <LATEXINLINE>$a$</LATEXINLINE> から <LATEXINLINE>$b$</LATEXINLINE> までの
+    <INDEX>definite integral<OPEN/></INDEX>
+    定積分は、次の公式を使って数値的に近似できます。
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{lll}
@@ -470,12 +656,22 @@ function pi_sum(a, b) {
       \end{array}
       \]
     </LATEX>
+    <BILINGUAL>
+    <EN>
     for small values of <LATEXINLINE>$dx$</LATEXINLINE>. We can express this
     directly as a
     <SPLITINLINE>
       <SCHEME>procedure:</SCHEME>
       <JAVASCRIPT>function:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    ここで <LATEXINLINE>$dx$</LATEXINLINE> は十分に小さい値です。これを直接<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>として表現できます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="60">
       <INDEX><DECLARATION>integral</DECLARATION></INDEX>
       <NAME>integral_definition</NAME>
@@ -536,25 +732,39 @@ integral(cube, 0, 1, 0.002);
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
 
-    (The exact value of the integral of <SCHEMEINLINE>cube</SCHEMEINLINE> between
-    0 and 1 is 1/4.)
+    <BILINGUAL>
+    <EN>(The exact value of the integral of <SCHEMEINLINE>cube</SCHEMEINLINE> between
+    0 and 1 is 1/4.)</EN>
+    <JA>（<SCHEMEINLINE>cube</SCHEMEINLINE> の0から1までの積分の正確な値は 1/4 です。）</JA>
+    </BILINGUAL>
   </TEXT>
 
   <DO_BREAK_PAGE/>
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Simpson<APOS/>s Rule is a more accurate method of numerical integration than
-<LABEL NAME="ex:simpsons-rule"/> 
+<LABEL NAME="ex:simpsons-rule"/>
 <INDEX>Simpson<APOS/>s Rule for numerical integration</INDEX>
     the method illustrated above.  Using Simpson<APOS/>s Rule, the integral of a
     function <LATEXINLINE>$f$</LATEXINLINE> between
     <LATEXINLINE>$a$</LATEXINLINE> and <LATEXINLINE>$b$</LATEXINLINE> is
     approximated as
+    </EN>
+    <JA>
+<LABEL NAME="ex:simpsons-rule"/>
+<INDEX>Simpson<APOS/>s Rule for numerical integration</INDEX>
+    シンプソンの公式は、上に示した方法よりも正確な数値積分法です。シンプソンの公式を使うと、関数 <LATEXINLINE>$f$</LATEXINLINE> の <LATEXINLINE>$a$</LATEXINLINE> から <LATEXINLINE>$b$</LATEXINLINE> までの積分は次のように近似されます。
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \frac{h}{3}[ y_0 +4y_1 +2y_2 +4y_3 +2y_4 +\cdots+2y_{n-2}
       +4y_{n-1}+y_n ]
       \]
     </LATEX>
+    <BILINGUAL>
+    <EN>
     where <LATEXINLINE>$h=(b-a)/n$</LATEXINLINE>, for some even integer
     <LATEXINLINE>$n$</LATEXINLINE>, and
     <LATEXINLINE>$y_k =f(a+kh)$</LATEXINLINE>. (Increasing
@@ -579,6 +789,20 @@ integral(cube, 0, 1, 0.002);
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     shown above.
+    </EN>
+    <JA>
+    ここで <LATEXINLINE>$h=(b-a)/n$</LATEXINLINE>（<LATEXINLINE>$n$</LATEXINLINE> はある偶数）、<LATEXINLINE>$y_k =f(a+kh)$</LATEXINLINE> です。（<LATEXINLINE>$n$</LATEXINLINE> を大きくすると近似の精度が上がります。）<LATEXINLINE>$f$</LATEXINLINE>、<LATEXINLINE>$a$</LATEXINLINE>、<LATEXINLINE>$b$</LATEXINLINE>、<LATEXINLINE>$n$</LATEXINLINE> を引数として受け取り、シンプソンの公式で計算した積分の値を返す<SPLITINLINE>
+      <SCHEME>手続きを定義</SCHEME>
+      <JAVASCRIPT>関数を宣言</JAVASCRIPT>
+    </SPLITINLINE>してください。その<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を使って <SCHEMEINLINE>cube</SCHEMEINLINE> を0から1まで積分し（<LATEXINLINE>$n=100$</LATEXINLINE> と <LATEXINLINE>$n=1000$</LATEXINLINE> で）、上に示した <SCHEMEINLINE>integral</SCHEMEINLINE> <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の結果と比較してください。
+    </JA>
+    </BILINGUAL>
     <SOLUTION>       
       <SNIPPET>
 	<NAME>simpsons_definition</NAME>
@@ -627,6 +851,8 @@ simpsons_rule_integral(cube, 0, 1, 100);
 
   <LONG_PAGE lines="2"/>
   <EXERCISE> 
+    <BILINGUAL>
+    <EN>
     The
     <INDEX><USE>sum</USE><SUBINDEX>iterative version</SUBINDEX></INDEX>
     <SCHEMEINLINE>sum</SCHEMEINLINE>
@@ -645,6 +871,22 @@ simpsons_rule_integral(cube, 0, 1, 100);
       <SCHEME>definition:</SCHEME>
       <JAVASCRIPT>declaration:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    上の
+    <INDEX><USE>sum</USE><SUBINDEX>iterative version</SUBINDEX></INDEX>
+    <SCHEMEINLINE>sum</SCHEMEINLINE> <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は線形再帰を生成します。この<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、合計が反復的に行われるように書き直すことができます。次の<SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>の欠けている式を埋めて、その方法を示してください：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes" POSTPADDING="no">
       <SCHEME>
 (define (sum term a next b)
@@ -708,6 +950,8 @@ sum_cubes(1, 10);
   </EXERCISE>
 
   <EXERCISE> 
+    <BILINGUAL>
+    <EN>
     <OL>
       <LI>
 	The
@@ -718,7 +962,44 @@ sum_cubes(1, 10);
 	</SPLITINLINE>
 	is only the simplest of a vast number of similar abstractions that can
 	be captured as higher-order
-	<SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE>.<FOOTNOTE>The intent of exercises<SPACE/><REF NAME="ex:product"/><ENDASH/><REF NAME="ex:filtered-accumulate"/> is to demonstrate the expressive
+	<SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE>.
+	Write an analogous
+	<SPLITINLINE>
+	  <SCHEME>procedure</SCHEME>
+	  <JAVASCRIPT>function</JAVASCRIPT>
+	</SPLITINLINE>
+	called
+	<INDEX><USE>product</USE></INDEX>
+	<SCHEMEINLINE>product</SCHEMEINLINE> that returns the product of
+	the values of a function at points over a given range. Show how to
+	define
+	<INDEX><USE>factorial</USE><SUBINDEX>with higher-order functions</SUBINDEX></INDEX>
+	<SCHEMEINLINE>factorial</SCHEMEINLINE> in terms of
+	<SCHEMEINLINE>product</SCHEMEINLINE>.  Also use
+	<SCHEMEINLINE>product</SCHEMEINLINE> to compute approximations to
+	<INDEX><ORDER>pi</ORDER><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<SUBINDEX>Wallis<APOS/>s formula for</SUBINDEX></INDEX>
+	<LATEXINLINE>$\pi$</LATEXINLINE> using the formula
+    </EN>
+    <JA>
+    <OL>
+      <LI>
+	<SCHEMEINLINE>sum</SCHEMEINLINE> <SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>は、高階<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>として捉えられる多数の類似した抽象の中で最も単純なものにすぎません。与えられた範囲の各点における関数の値の積を返す、
+	<INDEX><USE>product</USE></INDEX>
+	<SCHEMEINLINE>product</SCHEMEINLINE> という類似の<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>を書いてください。<SCHEMEINLINE>product</SCHEMEINLINE> を使って
+	<INDEX><USE>factorial</USE><SUBINDEX>with higher-order functions</SUBINDEX></INDEX>
+	<SCHEMEINLINE>factorial</SCHEMEINLINE> を定義する方法を示してください。また、<SCHEMEINLINE>product</SCHEMEINLINE> を使って次の公式で
+	<INDEX><ORDER>pi</ORDER><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<SUBINDEX>Wallis<APOS/>s formula for</SUBINDEX></INDEX>
+	<LATEXINLINE>$\pi$</LATEXINLINE> の近似値を計算してください。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>The intent of exercises<SPACE/><REF NAME="ex:product"/><ENDASH/><REF NAME="ex:filtered-accumulate"/> is to demonstrate the expressive
 	power that is attained by using an appropriate abstraction to
 	consolidate many seemingly disparate operations.  However, though
 	accumulation and filtering are elegant ideas, our hands are somewhat
@@ -729,27 +1010,21 @@ sum_cubes(1, 10);
 	we show how to use <EM>sequences</EM> as interfaces for combining
 	filters and accumulators to build even more powerful abstractions.  We
 	will see there how these methods really come into their own as a
-	powerful and elegant approach to designing programs.</FOOTNOTE>  
-	Write an analogous
-	<SPLITINLINE>
-	  <SCHEME>procedure</SCHEME>
-	  <JAVASCRIPT>function</JAVASCRIPT>
-	</SPLITINLINE>
-	called
-	<INDEX><USE>product</USE></INDEX>
-	<SCHEMEINLINE>product</SCHEMEINLINE> that returns the product of
-	the values of a function at points over a given range. Show how to
-	define 
-	<INDEX><USE>factorial</USE><SUBINDEX>with higher-order functions</SUBINDEX></INDEX>
-	<SCHEMEINLINE>factorial</SCHEMEINLINE> in terms of
-	<SCHEMEINLINE>product</SCHEMEINLINE>.  Also use
-	<SCHEMEINLINE>product</SCHEMEINLINE> to compute approximations to
-	<INDEX><ORDER>pi</ORDER><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<SUBINDEX>Wallis<APOS/>s formula for</SUBINDEX></INDEX>
-	<LATEXINLINE>$\pi$</LATEXINLINE> using the formula<FOOTNOTE>This formula
+	powerful and elegant approach to designing programs.</EN>
+    <JA>演習問題<SPACE/><REF NAME="ex:product"/><ENDASH/><REF NAME="ex:filtered-accumulate"/>の意図は、適切な抽象を使って一見異なる多くの操作をまとめることで得られる表現力を示すことです。しかし、累積とフィルタリングは洗練されたアイデアですが、これらの抽象を組み合わせるための適切な手段を提供するデータ構造がまだないため、現時点ではやや制約があります。<SPACE/><REF NAME="sec:sequences-conventional-interfaces"/>節で、フィルタとアキュムレータを組み合わせてさらに強力な抽象を構築するためのインタフェースとして<EM>シーケンス</EM>を使う方法を示すときに、これらのアイデアに戻ります。そこで、これらの手法がプログラム設計への強力でエレガントなアプローチとして真に力を発揮することを見ることになります。</JA>
+    </BILINGUAL>
+    </FOOTNOTE><FOOTNOTE>
+    <BILINGUAL>
+    <EN>This formula
 	was discovered by the seventeenth-century
 	English mathematician
 	<INDEX>Wallis, John</INDEX>
-	John Wallis.</FOOTNOTE>
+	John Wallis.</EN>
+    <JA>この公式は17世紀のイギリスの数学者
+	<INDEX>Wallis, John</INDEX>
+	ジョン・ウォリスによって発見されました。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
 	<LATEX>
           \[
 	  \begin{array}{lll}
@@ -760,6 +1035,8 @@ sum_cubes(1, 10);
 	</LATEX>
       </LI>
       <LI>
+        <BILINGUAL>
+        <EN>
         If your <SCHEMEINLINE>product</SCHEMEINLINE>
         <SPLITINLINE>
 	  <SCHEME>procedure</SCHEME>
@@ -768,6 +1045,14 @@ sum_cubes(1, 10);
         generates a recursive process, write one that generates an iterative
 	process. If it generates an iterative process, write one that generates
         a recursive process.
+        </EN>
+        <JA>
+        あなたの <SCHEMEINLINE>product</SCHEMEINLINE> <SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>が再帰的プロセスを生成する場合は、反復的プロセスを生成するものを書いてください。反復的プロセスを生成する場合は、再帰的プロセスを生成するものを書いてください。
+        </JA>
+        </BILINGUAL>
       </LI>
     </OL>
     <LABEL NAME="ex:product"/>
@@ -850,6 +1135,8 @@ factorial(5);
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     <OL>
       <LI>
         Show that <SCHEMEINLINE>sum</SCHEMEINLINE> and
@@ -862,6 +1149,19 @@ factorial(5);
 	<SCHEMEINLINE>accumulate</SCHEMEINLINE>
 	that combines a collection of terms, using some general accumulation
 	function:
+    </EN>
+    <JA>
+    <OL>
+      <LI>
+        <SCHEMEINLINE>sum</SCHEMEINLINE> と <SCHEMEINLINE>product</SCHEMEINLINE>
+	<INDEX><USE>sum</USE><SUBINDEX>as accumulation<ORDER>accumulation</ORDER></SUBINDEX></INDEX>
+	<INDEX><USE>product</USE><SUBINDEX>as accumulation<ORDER>accumulation</ORDER></SUBINDEX></INDEX>
+        （演習問題<SPACE/><REF NAME="ex:product"/>）が、ある一般的な累積関数を使って項の集まりを結合する、
+	<INDEX><USE>accumulate</USE></INDEX>
+	<SCHEMEINLINE>accumulate</SCHEMEINLINE>
+	と呼ばれるさらに一般的な概念の特殊ケースであることを示してください：
+    </JA>
+    </BILINGUAL>
         <SNIPPET EVAL="no">
           <SCHEME>
 	    (accumulate combiner null-value term a next b)
@@ -870,6 +1170,8 @@ factorial(5);
 	    accumulate(combiner, null_value, term, a, next, b);
           </JAVASCRIPT>
         </SNIPPET>
+        <BILINGUAL>
+        <EN>
         <SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>Accumulate</SCHEMEINLINE></SCHEME>
           <JAVASCRIPT>
@@ -885,7 +1187,7 @@ factorial(5);
 	  <JAVASCRIPT>function</JAVASCRIPT>
 	</SPLITINLINE>
         (of two arguments) that specifies how the current term is to be combined
-	with the accumulation of the preceding terms and a 
+	with the accumulation of the preceding terms and a
         <SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>null-value</SCHEMEINLINE></SCHEME>
           <JAVASCRIPT><JAVASCRIPTINLINE>null_value</JAVASCRIPTINLINE>
@@ -900,8 +1202,29 @@ factorial(5);
 	  <JAVASCRIPT>declared</JAVASCRIPT>
 	</SPLITINLINE>
 	as simple calls to <SCHEMEINLINE>accumulate</SCHEMEINLINE>.
+        </EN>
+        <JA>
+        <SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>Accumulate</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT>
+	    関数 <JAVASCRIPTINLINE>accumulate</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>は、<SCHEMEINLINE>sum</SCHEMEINLINE> や <SCHEMEINLINE>product</SCHEMEINLINE> と同じ項と範囲の指定に加えて、現在の項をそれ以前の項の累積とどのように結合するかを指定する（2引数の）<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE> <SCHEMEINLINE>combiner</SCHEMEINLINE> と、項がなくなったときに使う基底値を指定する <SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>null-value</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>null_value</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE> を引数として受け取ります。<SCHEMEINLINE>accumulate</SCHEMEINLINE> を書き、<SCHEMEINLINE>sum</SCHEMEINLINE> と <SCHEMEINLINE>product</SCHEMEINLINE> の両方が <SCHEMEINLINE>accumulate</SCHEMEINLINE> への単純な呼び出しとして<SPLITINLINE>
+	  <SCHEME>定義</SCHEME>
+	  <JAVASCRIPT>宣言</JAVASCRIPT>
+	</SPLITINLINE>できることを示してください。
+        </JA>
+        </BILINGUAL>
       </LI>
       <LI>
+        <BILINGUAL>
+        <EN>
         If your <SCHEMEINLINE>accumulate</SCHEMEINLINE>
         <SPLITINLINE>
 	  <SCHEME>procedure</SCHEME>
@@ -910,6 +1233,14 @@ factorial(5);
         generates a recursive process, write one that generates an iterative
 	process. If it generates an iterative process, write one that generates
         a recursive process.
+        </EN>
+        <JA>
+        あなたの <SCHEMEINLINE>accumulate</SCHEMEINLINE> <SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>が再帰的プロセスを生成する場合は、反復的プロセスを生成するものを書いてください。反復的プロセスを生成する場合は、再帰的プロセスを生成するものを書いてください。
+        </JA>
+        </BILINGUAL>
       </LI>
     </OL>
     <LABEL NAME="ex:accumulate"/>
@@ -980,6 +1311,8 @@ factorial(5);
   </EXERCISE>
 
   <EXERCISE> 
+    <BILINGUAL>
+    <EN>
     You can
     obtain an even more general version of
     <INDEX><USE>filtered_accumulate</USE></INDEX>
@@ -989,7 +1322,7 @@ factorial(5);
     <INDEX>filter</INDEX>
     <EM>filter</EM> on the terms to be combined.  That is, combine only those
     terms derived from values in the range that satisfy a specified condition.
-    The resulting 
+    The resulting
     <INDEX><USE>filtered_accumulate</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>filtered-accumulate</SCHEMEINLINE></SCHEME>
@@ -1019,15 +1352,15 @@ factorial(5);
     </SPLITINLINE>
     <OL>
       <LI>
-        the sum of the squares of the prime numbers in the interval 
-        <LATEXINLINE>$a$</LATEXINLINE> to <LATEXINLINE>$b$</LATEXINLINE> 
-        (assuming that you have an 
+        the sum of the squares of the prime numbers in the interval
+        <LATEXINLINE>$a$</LATEXINLINE> to <LATEXINLINE>$b$</LATEXINLINE>
+        (assuming that you have an
         <SPLITINLINE>
 	  <SCHEME>
 	  <SCHEMEINLINE>prime?</SCHEMEINLINE></SCHEME>
 	  <JAVASCRIPT><JAVASCRIPTINLINE>is_prime</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
-	</SPLITINLINE> 
+	</SPLITINLINE>
         predicate already written)
       </LI>
       <LI>
@@ -1036,10 +1369,47 @@ factorial(5);
         that are
         <INDEX>relatively prime</INDEX>
 	relatively prime to<SPACE/><LATEXINLINE>$n$</LATEXINLINE> (i.e.,
-	all positive integers <LATEXINLINE>$i &lt; n$</LATEXINLINE> such that 
+	all positive integers <LATEXINLINE>$i &lt; n$</LATEXINLINE> such that
         <LATEXINLINE>$\textrm{GCD}(i,n)=1$</LATEXINLINE>).
       </LI>
     </OL>
+    </EN>
+    <JA>
+    結合する項に
+    <INDEX>filter</INDEX>
+    <EM>フィルタ</EM>の概念を導入することで、
+    <INDEX><USE>filtered_accumulate</USE></INDEX>
+    <SCHEMEINLINE>accumulate</SCHEMEINLINE>（演習問題<SPACE/><REF NAME="ex:accumulate"/>）のさらに一般的なバージョンを得ることができます。つまり、範囲内の値のうち指定された条件を満たすものから導出された項だけを結合します。得られる
+    <INDEX><USE>filtered_accumulate</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>filtered-accumulate</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>filtered_@accumulate</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    という抽象は、accumulate と同じ引数に加えて、フィルタを指定する1引数の述語を受け取ります。<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>filtered-accumulate</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>filtered_@accumulate</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> を<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>として書いてください。<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>filtered-accumulate</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>filtered_@accumulate</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> を使って次のものを表現する方法を示してください：
+    <OL>
+      <LI>
+        区間 <LATEXINLINE>$a$</LATEXINLINE> から <LATEXINLINE>$b$</LATEXINLINE> までの素数の2乗の合計（<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>prime?</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>is_prime</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE> 述語はすでに書かれているものとします）
+      </LI>
+      <LI>
+        <LATEXINLINE>$n$</LATEXINLINE> より小さい正の整数のうち、<LATEXINLINE>$n$</LATEXINLINE> と
+        <INDEX>relatively prime</INDEX>
+	互いに素であるものすべての積（すなわち、<LATEXINLINE>$\textrm{GCD}(i,n)=1$</LATEXINLINE> であるような <LATEXINLINE>$i &lt; n$</LATEXINLINE> のすべての正の整数）
+      </LI>
+    </OL>
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:filtered-accumulate"/>
 
     <SOLUTION>

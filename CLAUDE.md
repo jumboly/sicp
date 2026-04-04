@@ -90,7 +90,11 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 1.2.4 Exponentiation
 - [x] Section 1.2.5 Greatest Common Divisors
 - [x] Section 1.2.6 Example: Testing for Primality
-- [ ] Section 1.3
+- [x] Section 1.3 Formulating Abstractions with Higher-Order Functions (導入部)
+- [x] Section 1.3.1 Functions as Arguments
+- [x] Section 1.3.2 Constructing Functions using Lambda Expressions
+- [x] Section 1.3.3 Functions as General Methods
+- [x] Section 1.3.4 Functions as Returned Values
 - [ ] Chapter 2〜5
 
 ## インライン実行
