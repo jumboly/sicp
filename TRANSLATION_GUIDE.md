@@ -96,6 +96,14 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | functional representation of data | データの関数的表現 | |
 | closure (data combining) | 閉包性 | 関数クロージャとは異なる。データを組み合わせた結果を同じ操作で再び組み合わせられる性質 |
 | conventional interface | 規約インターフェース | |
+| symbolic expression | シンボリック式 | |
+| generic operation | ジェネリック演算 | |
+| data-directed programming | データ指向プログラミング | |
+
+### 数値データ型
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
 | rational number | 有理数 | |
 | numerator | 分子 | |
 | denominator | 分母 | |
@@ -104,11 +112,8 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | interval | 区間 | |
 | tolerance | 公差 | |
 | Church numerals | チャーチ数 | |
-| symbolic expression | シンボリック式 | |
-| generic operation | ジェネリック演算 | |
-| data-directed programming | データ指向プログラミング | |
 
-### データ構造・再帰
+### 再帰・反復・増加のオーダー
 
 | 英語 | 日本語 | 備考 |
 |------|--------|------|
@@ -131,19 +136,19 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | probabilistic algorithm | 確率的アルゴリズム | |
 | Carmichael numbers | カーマイケル数 | |
 | golden ratio | 黄金比 | |
-| tree | ツリー | |
-| tree accumulation | ツリーの累積 | |
-| node | ノード | |
-| terminal node | 末端ノード | |
-| branch | 枝 | |
-| nested | 入れ子 | |
+
+### シーケンス・リスト操作
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
 | sequence | シーケンス | |
 | list | リスト | |
 | list structure | リスト構造 | |
+| empty list | 空リスト | |
+| nested | 入れ子 | |
 | box-and-pointer notation | ボックスとポインタの記法 | |
 | box notation | ボックス記法 | |
 | list notation | リスト記法 | |
-| empty list | 空リスト | |
 | filter | フィルタ | |
 | accumulate / accumulation | 累積 | |
 | enumerate / enumerator | 列挙 / 列挙子 | |
@@ -152,12 +157,36 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | fold-right / fold-left | fold_right / fold_left | そのまま |
 | nested mapping | 入れ子のマッピング | |
 | permutation | 順列 | |
-| painter | ペインタ | 画像言語 |
-| frame (picture language) | フレーム | 画像言語 |
+
+### ツリー構造
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| tree | ツリー | |
+| tree accumulation | ツリーの累積 | |
+| binary tree | 二分木 | |
+| balanced tree | 平衡木 | |
+| unbalanced tree | 不均衡なツリー | |
+| B-tree | B木 | |
+| red-black tree | 赤黒木 | |
+| node | ノード | |
+| terminal node | 末端ノード | |
+| leaf node | 葉ノード | |
+| root | 根 | |
+| branch | 枝 | |
+| left branch / right branch | 左の枝 / 右の枝 | |
+| subtree | 部分木 | |
+
+### 画像言語
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| painter | ペインタ | |
+| frame (picture language) | フレーム | |
 | stratified design | 階層的設計 | |
 | robust | 堅牢 | |
 
-### シンボリックデータ・集合・ツリー
+### シンボリック微分
 
 | 英語 | 日本語 | 備考 |
 |------|--------|------|
@@ -165,13 +194,30 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | symbolic differentiation | シンボリック微分 | |
 | algebraic expression | 代数式 | |
 | deriv | deriv | 関数名そのまま |
-| binary tree | 二分木 | |
-| balanced tree | 平衡木 | |
-| unbalanced tree | 不均衡なツリー | |
+| addend | 加数 | 和の第1項 |
+| augend | 被加数 | 和の第2項 |
+| multiplier | 乗数 | 積の第1項 |
+| multiplicand | 被乗数 | 積の第2項 |
+| reduction rules | 簡約規則 | |
+| simplification | 簡約化 | 代数的簡約化 |
+
+### 集合・情報検索
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
 | set | 集合 | |
 | union set | 和集合 | |
 | intersection set | 共通集合 | |
 | ordered list | 順序付きリスト | |
+| unordered list | 順序なしリスト | |
+| database | データベース | |
+| key | キー | レコードの識別用 |
+| record | レコード | |
+
+### ハフマン符号化
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
 | Huffman code | ハフマンコード | |
 | Huffman encoding tree | ハフマン符号化木 | |
 | fixed-length code | 固定長コード | |
@@ -179,8 +225,13 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | prefix code | プレフィックスコード | |
 | encoding / encode | 符号化 | |
 | decoding / decode | 復号化 | |
-| weight | 重み | ハフマン木のノードの |
+| weight | 重み | ノードの |
 | leaf (Huffman tree) | 葉 | |
+| relative frequency | 相対頻度 | |
+| optimal code | 最適なコード | |
+| merge | マージ | 木構築の |
+| alphabet | アルファベット | 符号化対象のシンボル集合 |
+| weighted elements | 重み付き要素 | |
 | generic function | ジェネリック関数 | |
 
 ### 高階関数・抽象
