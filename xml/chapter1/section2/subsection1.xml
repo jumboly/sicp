@@ -1,14 +1,23 @@
 <SUBSECTION>
-  <NAME>Linear Recursion and Iteration</NAME>
+  <NAME><BILINGUAL><EN>Linear Recursion and Iteration</EN><JA>線形再帰と反復</JA></BILINGUAL></NAME>
 
   <LABEL NAME="sec:recursion-and-iteration"/>
   <INDEX>iterative process<SUBINDEX>recursive process vs.<OPEN/></SUBINDEX></INDEX>
   <INDEX>recursive process<SUBINDEX>iterative process vs.<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We begin by considering the
     <INDEX>factorial</INDEX>
     factorial function, defined by
+    </EN>
+    <JA>
+    まず
+    <INDEX>factorial</INDEX>
+    階乗関数について考えましょう。階乗は次のように定義されます。
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{lll}
@@ -16,10 +25,17 @@
       \end{array}
       \]
     </LATEX>
+    <BILINGUAL>
+    <EN>
     There are many ways to compute factorials.  One way is to make use of
-    the observation that <LATEXINLINE>$n!$</LATEXINLINE> is equal to 
+    the observation that <LATEXINLINE>$n!$</LATEXINLINE> is equal to
     <LATEXINLINE>$n$</LATEXINLINE> times <LATEXINLINE>$(n-1)!$</LATEXINLINE> for
     any positive integer<SPACE/><LATEXINLINE>$n$</LATEXINLINE>:
+    </EN>
+    <JA>
+    階乗を計算する方法はたくさんあります。1つの方法は、任意の正の整数<SPACE/><LATEXINLINE>$n$</LATEXINLINE> について <LATEXINLINE>$n!$</LATEXINLINE> が <LATEXINLINE>$n$</LATEXINLINE> と <LATEXINLINE>$(n-1)!$</LATEXINLINE> の積に等しいという観察を利用することです。
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{lll}
@@ -27,15 +43,22 @@
       \end{array}
       \]
     </LATEX>
-    Thus, we can compute <LATEXINLINE>$n!$</LATEXINLINE> by computing 
+    <BILINGUAL>
+    <EN>
+    Thus, we can compute <LATEXINLINE>$n!$</LATEXINLINE> by computing
     <LATEXINLINE>$(n-1)!$</LATEXINLINE> and multiplying the
-    result by <LATEXINLINE>$n$</LATEXINLINE>.  If we add the stipulation that 1! 
+    result by <LATEXINLINE>$n$</LATEXINLINE>.  If we add the stipulation that 1!
     is equal to 1,
-    this observation translates directly into a 
+    this observation translates directly into a
     <SPLITINLINE>
       <SCHEME>procedure:</SCHEME>
       <JAVASCRIPT>computer function:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    したがって、<LATEXINLINE>$(n-1)!$</LATEXINLINE> を計算し、その結果に <LATEXINLINE>$n$</LATEXINLINE> を掛けることで <LATEXINLINE>$n!$</LATEXINLINE> を計算できます。1! が 1 に等しいという条件を加えれば、この観察はそのまま<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>に変換できます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>factorial</DECLARATION><SUBINDEX>linear recursive version</SUBINDEX></INDEX>
       <NAME>factorial_definition</NAME>
@@ -69,7 +92,7 @@ factorial(5);
     <SPLIT>
       <SCHEME>
           We can use the substitution model of
-          section<SPACE/><REF NAME="sec:substitution-model"/> to watch this 
+          section<SPACE/><REF NAME="sec:substitution-model"/> to watch this
           <INDEX>substitution model of procedure application<SUBINDEX>shape of process<OPEN/></SUBINDEX></INDEX>
 	        procedure in action computing 6!, as shown in
 	        figure<SPACE/><REF NAME="fig:recursive-factorial-scheme"/>.
@@ -80,11 +103,20 @@ factorial(5);
 	</FIGURE>
       </SCHEME>
       <JAVASCRIPT>
+        <BILINGUAL>
+        <EN>
 	      We can use the substitution model of
         section<SPACE/><REF NAME="sec:substitution-model"/> to watch this
         <INDEX>substitution model of function application<SUBINDEX>shape of process<OPEN/></SUBINDEX></INDEX>
         function in action computing 6!, as shown in
 	      figure<SPACE/><REF NAME="fig:recursive-factorial-javascript"/>.
+        </EN>
+        <JA>
+        section<SPACE/><REF NAME="sec:substitution-model"/>の置換モデルを使って、この
+        <INDEX>substitution model of function application<SUBINDEX>shape of process<OPEN/></SUBINDEX></INDEX>
+        関数が 6! を計算する様子を見てみましょう。figure<SPACE/><REF NAME="fig:recursive-factorial-javascript"/>に示します。
+        </JA>
+        </BILINGUAL>
   <WEB_ONLY>
     <!-- Figure moved later for SICP JS pagination -->
     <!-- Figure code is duplicated later in this file in a PDF_ONLY -->
@@ -100,14 +132,21 @@ factorial(5);
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Now let<APOS/>s take a different perspective on computing factorials.  We
-    could describe a rule for computing <LATEXINLINE>$n!$</LATEXINLINE> by 
+    could describe a rule for computing <LATEXINLINE>$n!$</LATEXINLINE> by
     specifying that we first multiply 1 by 2, then multiply the result by 3,
     then by 4, and so on until we reach <LATEXINLINE>$n$</LATEXINLINE>.
     More formally, we maintain a running product, together with a counter
     that counts from 1 up to <LATEXINLINE>$n$</LATEXINLINE>.  We can describe
     the computation by saying that the counter and the product simultaneously
     change from one step to the next according to the rule
+    </EN>
+    <JA>
+    今度は別の視点から階乗の計算を考えましょう。<LATEXINLINE>$n!$</LATEXINLINE> を計算するルールとして、まず 1 に 2 を掛け、次にその結果に 3 を掛け、さらに 4 を掛け、<LATEXINLINE>$n$</LATEXINLINE> に達するまで続けるという方法を記述できます。より形式的に言えば、累積の積（product）と、1 から <LATEXINLINE>$n$</LATEXINLINE> まで数えるカウンター（counter）を管理します。この計算は、カウンターと積が次のルールに従って各ステップで同時に変化するものとして記述できます。
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{lll}
@@ -116,19 +155,32 @@ factorial(5);
       \end{array}
       \]
     </LATEX>
+    <BILINGUAL>
+    <EN>
 and stipulating that <LATEXINLINE>$n!$</LATEXINLINE> is the value of the
     product when the counter exceeds <LATEXINLINE>$n$</LATEXINLINE>.
+    </EN>
+    <JA>
+そして、カウンターが <LATEXINLINE>$n$</LATEXINLINE> を超えたときの積の値が <LATEXINLINE>$n!$</LATEXINLINE> であると定めます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    Once again, we can recast our description as a 
+    <BILINGUAL>
+    <EN>
+    Once again, we can recast our description as a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     for computing
-    factorials:<FOOTNOTE>In a real program we would probably use the
-    block structure introduced in the last section to hide the 
+    factorials:</EN>
+    <JA>
+    ここでもまた、この記述を階乗を計算する<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>として書き換えることができます。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>In a real program we would probably use the
+    block structure introduced in the last section to hide the
     <SPLITINLINE>
       <SCHEME>
 	definition of <SCHEMEINLINE>fact-iter</SCHEMEINLINE>:
@@ -136,7 +188,9 @@ and stipulating that <LATEXINLINE>$n!$</LATEXINLINE> is the value of the
       <JAVASCRIPT>
 	declaration of <JAVASCRIPTINLINE>fact_iter</JAVASCRIPTINLINE>:
       </JAVASCRIPT>
-    </SPLITINLINE>
+    </SPLITINLINE></EN>
+    <JA>実際のプログラムでは、前のセクションで紹介したブロック構造を使って <SPLITINLINE><SCHEME><SCHEMEINLINE>fact-iter</SCHEMEINLINE> の定義</SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>fact_iter</JAVASCRIPTINLINE> の宣言</JAVASCRIPT></SPLITINLINE>を隠すでしょう。</JA>
+    </BILINGUAL>
 
     <SNIPPET PAGE="33">
       <EXAMPLE>factorial_example</EXAMPLE>
@@ -162,9 +216,12 @@ function factorial(n) {
 }
       </JAVASCRIPT>
     </SNIPPET>
-    We avoided doing this here so as to minimize the number of things to
+    <BILINGUAL>
+    <EN>We avoided doing this here so as to minimize the number of things to
     think about at
-    once.<LABEL NAME="foot:block-structured-factorial"/></FOOTNOTE>
+    once.</EN>
+    <JA>ここでは一度に考えることを最小限にするために、そうしませんでした。</JA>
+    </BILINGUAL><LABEL NAME="foot:block-structured-factorial"/></FOOTNOTE>
     <SNIPPET PAGE="34">
       <INDEX><DECLARATION>factorial</DECLARATION><SUBINDEX>linear iterative version</SUBINDEX></INDEX>
       <NAME>factorial_iterative_definition</NAME>
@@ -193,7 +250,10 @@ function fact_iter(product, counter, max_count) {
 }
       </JAVASCRIPT>
     </SNIPPET>
-        As before, we can use the substitution model to visualize the process
+        <BILINGUAL>
+        <EN>As before, we can use the substitution model to visualize the process</EN>
+        <JA>前と同様に、置換モデルを使ってプロセスを可視化できます。</JA>
+        </BILINGUAL>
   <SPLIT>
     <SCHEME>
       <FIGURE  web_scale="0.4"  src="img_original/ch1-Z-G-10.svg">
@@ -223,13 +283,18 @@ function fact_iter(product, counter, max_count) {
 	<LATEXINLINE>$6!$</LATEXINLINE>.
 	</CAPTION>
       </FIGURE>
-        of computing <LATEXINLINE>$6!$</LATEXINLINE>, as shown in
-	figure<SPACE/><REF NAME="fig:iterative-factorial-javascript"/>.
+        <BILINGUAL>
+        <EN>of computing <LATEXINLINE>$6!$</LATEXINLINE>, as shown in
+	figure<SPACE/><REF NAME="fig:iterative-factorial-javascript"/>.</EN>
+        <JA><LATEXINLINE>$6!$</LATEXINLINE> の計算プロセスは figure<SPACE/><REF NAME="fig:iterative-factorial-javascript"/>のとおりです。</JA>
+        </BILINGUAL>
     </JAVASCRIPT>
   </SPLIT>
   </TEXT>
   <LONG_PAGE lines="1"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Compare the two processes.  From one point of view, they seem hardly
     different at all.  Both compute the same mathematical function on the
     same domain, and each requires a number of steps proportional to
@@ -241,13 +306,23 @@ function fact_iter(product, counter, max_count) {
     <INDEX>process<SUBINDEX>shape of</SUBINDEX></INDEX>
     <QUOTE>shapes</QUOTE> of the two processes, we find that they evolve quite
     differently.
+    </EN>
+    <JA>
+    2つのプロセスを比較してみましょう。ある観点からは、ほとんど違いがないように見えます。どちらも同じ定義域で同じ数学的関数を計算し、<LATEXINLINE>$n!$</LATEXINLINE> を計算するのに <LATEXINLINE>$n$</LATEXINLINE> に比例するステップ数を必要とします。実際、どちらのプロセスも同じ掛け算の列を実行し、同じ部分積の列を得ます。しかし一方で、2つのプロセスの
+    <INDEX>shape of a process</INDEX>
+    <INDEX>process<SUBINDEX>shape of</SUBINDEX></INDEX>
+    「形」を考えると、その発展のしかたはまったく異なることがわかります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Consider the first process.  The substitution model reveals a shape of
     expansion followed by contraction, indicated by the arrow in
     figure<SPACE/><REF NAME="fig:recursive-factorial-javascript"/>.
-    The expansion occurs as the process builds up a chain of 
+    The expansion occurs as the process builds up a chain of
     <INDEX>deferred operations</INDEX>
     <EM>deferred operations</EM> (in this case, a chain of multiplications).
     The contraction occurs as the operations are actually performed.  This
@@ -258,7 +333,7 @@ function fact_iter(product, counter, max_count) {
     interpreter keep track of the operations to be performed later on.  In the
     computation of <LATEXINLINE>$n!$</LATEXINLINE>, the length of the chain of
     deferred multiplications, and hence the amount of information needed to
-    keep track of it, 
+    keep track of it,
     <INDEX>linear growth</INDEX>
     grows linearly with <LATEXINLINE>$n$</LATEXINLINE> (is proportional to
     <LATEXINLINE>$n$</LATEXINLINE>), just like the number of steps.
@@ -267,9 +342,27 @@ function fact_iter(product, counter, max_count) {
     <INDEX>linear recursive process</INDEX>
     <INDEX>process<SUBINDEX>linear recursive</SUBINDEX></INDEX>
     <EM>linear recursive process</EM>.
+    </EN>
+    <JA>
+    最初のプロセスを考えましょう。置換モデルは、figure<SPACE/><REF NAME="fig:recursive-factorial-javascript"/>の矢印で示されるように、まず膨張し、その後収縮する形を明らかにします。膨張は、プロセスが
+    <INDEX>deferred operations</INDEX>
+    <EM>遅延された演算</EM>の連鎖（この場合は掛け算の連鎖）を積み上げていくときに起こります。収縮は、その演算が実際に実行されるときに起こります。このような遅延された演算の連鎖で特徴づけられるプロセスを
+    <INDEX>recursive process</INDEX>
+    <INDEX>process<SUBINDEX>recursive</SUBINDEX></INDEX>
+    <EM>再帰的プロセス</EM>と呼びます。このプロセスを実行するには、インタプリタが後で実行すべき演算を追跡し続ける必要があります。<LATEXINLINE>$n!$</LATEXINLINE> の計算では、遅延された掛け算の連鎖の長さ、つまりそれを追跡するために必要な情報量は、ステップ数と同様に <LATEXINLINE>$n$</LATEXINLINE> に対して
+    <INDEX>linear growth</INDEX>
+    線形に増加します（<LATEXINLINE>$n$</LATEXINLINE> に比例します）。このようなプロセスを
+    <INDEX>recursive process<SUBINDEX>linear</SUBINDEX></INDEX>
+    <INDEX>linear recursive process</INDEX>
+    <INDEX>process<SUBINDEX>linear recursive</SUBINDEX></INDEX>
+    <EM>線形再帰的プロセス</EM>と呼びます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     By contrast, the second process does not grow and shrink.  At each
     step, all we need to keep track of, for any <LATEXINLINE>$n$</LATEXINLINE>,
     are the current values of the
@@ -283,7 +376,7 @@ function fact_iter(product, counter, max_count) {
       <SCHEME><SCHEMEINLINE>max-count</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>max_count</JAVASCRIPTINLINE>.</JAVASCRIPT>
     </SPLITINLINE>
-    We call this an 
+    We call this an
     <INDEX>iterative process</INDEX>
     <INDEX>process<SUBINDEX>iterative</SUBINDEX></INDEX>
     <EM>iterative process</EM>.  In general, an iterative process is one whose
@@ -294,15 +387,31 @@ function fact_iter(product, counter, max_count) {
     state and an (optional) end test that specifies conditions under which the
     process should terminate.  In computing <LATEXINLINE>$n!$</LATEXINLINE>, the
     number of steps required grows linearly with <LATEXINLINE>$n$</LATEXINLINE>.
-    Such a process is called a 
+    Such a process is called a
     <INDEX>iterative process<SUBINDEX>linear</SUBINDEX></INDEX>
     <INDEX>linear iterative process</INDEX>
     <INDEX>process<SUBINDEX>linear iterative</SUBINDEX></INDEX>
     <EM>linear iterative process</EM>.
+    </EN>
+    <JA>
+    対照的に、2番目のプロセスは膨張も収縮もしません。任意の <LATEXINLINE>$n$</LATEXINLINE> について、各ステップで追跡する必要があるのは、<SPLITINLINE><SCHEME>変数</SCHEME><JAVASCRIPT>名前</JAVASCRIPT></SPLITINLINE> <SCHEMEINLINE>product</SCHEMEINLINE>、<SCHEMEINLINE>counter</SCHEMEINLINE>、<SPLITINLINE><SCHEME><SCHEMEINLINE>max-count</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>max_count</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> の現在の値だけです。これを
+    <INDEX>iterative process</INDEX>
+    <INDEX>process<SUBINDEX>iterative</SUBINDEX></INDEX>
+    <EM>反復的プロセス</EM>と呼びます。一般に、反復的プロセスとは、固定個数の
+    <INDEX>state variable</INDEX>
+    <EM>状態変数</EM>と、プロセスが状態から状態へ移るときに状態変数がどのように更新されるべきかを記述する固定のルール、そしてプロセスが終了すべき条件を規定する（省略可能な）終了テストによって、その状態を要約できるプロセスのことです。<LATEXINLINE>$n!$</LATEXINLINE> の計算では、必要なステップ数は <LATEXINLINE>$n$</LATEXINLINE> に対して線形に増加します。このようなプロセスを
+    <INDEX>iterative process<SUBINDEX>linear</SUBINDEX></INDEX>
+    <INDEX>linear iterative process</INDEX>
+    <INDEX>process<SUBINDEX>linear iterative</SUBINDEX></INDEX>
+    <EM>線形反復的プロセス</EM>と呼びます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <LONG_PAGE lines="3"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The contrast between the two processes can be seen in another way.
     In the iterative case, the state variables provide a complete description of
     the state of the process at any point. If we stopped the computation between
@@ -312,28 +421,40 @@ function fact_iter(product, counter, max_count) {
     <QUOTE>hidden</QUOTE> information, maintained by the interpreter and not
     contained in the state variables, which indicates <QUOTE>where the process
     is</QUOTE> in negotiating the chain of deferred operations.  The longer the
-    chain, the more information must be maintained.<FOOTNOTE>When we discuss the
+    chain, the more information must be maintained.
+    </EN>
+    <JA>
+    2つのプロセスの違いは別の見方もできます。反復的な場合、状態変数はプロセスの任意の時点の状態を完全に記述します。ステップの間で計算を止めたとしても、計算を再開するには3つの状態変数の値をインタプリタに与えるだけで済みます。再帰的プロセスではそうはいきません。この場合、状態変数には含まれず、インタプリタによって管理される追加の「隠された」情報があり、それが遅延された演算の連鎖のどこにプロセスがいるかを示しています。連鎖が長くなるほど、維持すべき情報も増えます。
+    </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>When we discuss the
     implementation of
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     on register machines in chapter<SPACE/><REF NAME="chap:reg"></REF>, we will see that any iterative
     process can be realized <QUOTE>in hardware</QUOTE> as a machine that has a
     fixed set of registers and no auxiliary memory.  In contrast, realizing a
     recursive process requires a machine that uses an
     auxiliary data structure known as a
     <INDEX>stack</INDEX>
-    <EM>stack</EM>.</FOOTNOTE>
+    <EM>stack</EM>.</EN>
+    <JA>chapter<SPACE/><REF NAME="chap:reg"></REF>でレジスタマシン上への<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>の実装を議論するとき、任意の反復的プロセスは、固定のレジスタセットと補助メモリなしのマシンとして「ハードウェア上に」実現できることがわかります。対照的に、再帰的プロセスの実現には、
+    <INDEX>stack</INDEX>
+    <EM>スタック</EM>と呼ばれる補助データ構造を使用するマシンが必要です。</JA>
+    </BILINGUAL></FOOTNOTE>
     <INDEX>substitution model of <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE> application<SUBINDEX>shape of process<CLOSE/></SUBINDEX></INDEX>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In contrasting iteration and recursion, we must be careful not to
-    confuse the notion of a 
+    confuse the notion of a
     <INDEX>recursive <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE><SUBINDEX>recursive process vs.</SUBINDEX></INDEX>
     <INDEX>recursive process<SUBINDEX>recursive <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE> vs.</SUBINDEX></INDEX>
-    recursive <EM>process</EM> with the notion of a recursive 
+    recursive <EM>process</EM> with the notion of a recursive
     <SPLITINLINE>
       <SCHEME>
 	<EM>procedure</EM>.
@@ -351,7 +472,7 @@ function fact_iter(product, counter, max_count) {
     <SPLITINLINE>
       <SCHEME>procedure definition</SCHEME>
       <JAVASCRIPT>function declaration</JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     refers (either directly or indirectly) to the
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -369,7 +490,7 @@ function fact_iter(product, counter, max_count) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    such as 
+    such as
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>fact-iter</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>fact_iter</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -382,9 +503,19 @@ function fact_iter(product, counter, max_count) {
       <JAVASCRIPT>names</JAVASCRIPT>
     </SPLITINLINE>
     in order to execute the process.
+    </EN>
+    <JA>
+    反復と再帰を対比するとき、再帰的<EM>プロセス</EM>の概念と再帰的
+    <INDEX>recursive <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE><SUBINDEX>recursive process vs.</SUBINDEX></INDEX>
+    <INDEX>recursive process<SUBINDEX>recursive <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE> vs.</SUBINDEX></INDEX>
+    <SPLITINLINE><SCHEME><EM>手続き</EM></SCHEME><JAVASCRIPT><EM>関数</EM></JAVASCRIPT></SPLITINLINE>の概念を混同しないよう注意しなければなりません。<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を再帰的と言うとき、それは<SPLITINLINE><SCHEME>手続きの定義</SCHEME><JAVASCRIPT>関数宣言</JAVASCRIPT></SPLITINLINE>が（直接的または間接的に）その<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>自身を参照しているという構文上の事実を指しています。しかし、プロセスがたとえば線形再帰的なパターンに従うと言うとき、それはプロセスがどのように発展するかについて述べているのであって、<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>がどう書かれているかという構文についてではありません。再帰的な<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>である <SPLITINLINE><SCHEME><SCHEMEINLINE>fact-iter</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>fact_iter</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> が反復的プロセスを生成すると言うのは、違和感があるかもしれません。しかし、そのプロセスは本当に反復的です。その状態は3つの状態変数で完全に捉えられ、インタプリタはプロセスを実行するために3つの<SPLITINLINE><SCHEME>変数</SCHEME><JAVASCRIPT>名前</JAVASCRIPT></SPLITINLINE>だけを追跡すればよいのです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     One reason that the distinction between process and
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -422,7 +553,7 @@ function fact_iter(product, counter, max_count) {
     </SPLITINLINE>
     calls, even when the process described is, in principle, iterative.
     As a consequence, these languages can describe iterative processes only
-    by resorting to special-purpose 
+    by resorting to special-purpose
     <INDEX>looping constructs</INDEX>
     <QUOTE>looping constructs</QUOTE> such as
     <LATEXINLINE>$\texttt{do}$</LATEXINLINE>,
@@ -442,6 +573,13 @@ function fact_iter(product, counter, max_count) {
       <SCHEME>procedure.</SCHEME>
       <JAVASCRIPT>function.</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    プロセスと<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>の区別が混乱を招く理由の1つは、一般的な言語のほとんどの実装（<SPLITINLINE><SCHEME><INDEX>Ada<SUBINDEX>recursive procedures</SUBINDEX></INDEX><INDEX>Pascal<SUBINDEX>recursive procedures</SUBINDEX></INDEX><INDEX>C<SUBINDEX>recursive procedures</SUBINDEX></INDEX>Ada、Pascal、C を含む</SCHEME><JAVASCRIPT><INDEX>C<SUBINDEX>recursive functions in</SUBINDEX></INDEX>C、<INDEX>Java, recursive functions in</INDEX>Java、<INDEX>Python, recursive functions in</INDEX>Python を含む</JAVASCRIPT></SPLITINLINE>）が、再帰的な<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>の解釈において、記述されるプロセスが原理的には反復的であっても、<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>呼び出しの回数に応じてメモリ消費量が増加するように設計されていることにあります。その結果、これらの言語では、反復的プロセスを記述するのに
+    <INDEX>looping constructs</INDEX>
+    <LATEXINLINE>$\texttt{do}$</LATEXINLINE>、<LATEXINLINE>$\texttt{repeat}$</LATEXINLINE>、<LATEXINLINE>$\texttt{until}$</LATEXINLINE>、<LATEXINLINE>$\texttt{for}$</LATEXINLINE>、<LATEXINLINE>$\texttt{while}$</LATEXINLINE> といった専用の「ループ構文」に頼るしかありません。chapter<SPACE/><REF NAME="chap:reg"></REF>で扱う <SPLITINLINE><SCHEME>Scheme</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE> の実装には、この欠点がありません。反復的プロセスが再帰的な<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>で記述されていても、定数空間で実行します。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
 	An implementation with this property is called 
@@ -472,9 +610,15 @@ function fact_iter(product, counter, max_count) {
 	be tail-recursive.</FOOTNOTE>
       </SCHEME>
       <JAVASCRIPT>
-	An implementation with this property is called 
+	<BILINGUAL>
+	<EN>An implementation with this property is called
 	<INDEX>tail recursion</INDEX>
-	<EM>tail-recursive</EM>.<FOOTNOTE>Tail recursion has long been
+	<EM>tail-recursive</EM>.</EN>
+	<JA>このような性質を持つ実装を
+	<INDEX>tail recursion</INDEX>
+	<EM>末尾再帰的</EM>と呼びます。</JA>
+	</BILINGUAL><FOOTNOTE><BILINGUAL>
+	<EN>Tail recursion has long been
 	known as a compiler optimization trick.  A coherent semantic basis for
 	tail recursion was provided by
 	<INDEX>Hewitt, Carl Eddie</INDEX>
@@ -484,9 +628,9 @@ function fact_iter(product, counter, max_count) {
 	shall discuss in chapter<SPACE/><REF NAME="chap:state"></REF>. Inspired by this, Gerald Jay Sussman
 	and
 	<INDEX>Steele, Guy Lewis Jr.</INDEX>
-	Guy Lewis Steele Jr.<SPACE/>(see <CITATION>Steele 1975</CITATION>) 
+	Guy Lewis Steele Jr.<SPACE/>(see <CITATION>Steele 1975</CITATION>)
 	constructed a tail-recursive interpreter for Scheme.  Steele later showed
-	how tail recursion is a consequence of the natural way to compile 
+	how tail recursion is a consequence of the natural way to compile
 	function calls
 	<INDEX>Sussman, Gerald Jay</INDEX>
 	(<CITATION>Steele 1977</CITATION>).
@@ -498,13 +642,36 @@ function fact_iter(product, counter, max_count) {
 	be tail-recursive. The ECMA standard for JavaScript eventually followed
 	suit with ECMAScript 2015 (<CITATION>ECMA 2015</CITATION>). Note, however,
 	that as of this writing (2021), most implementations of JavaScript do
-	not comply with this standard with respect to tail recursion.</FOOTNOTE>
-	With a tail-recursive implementation, 
+	not comply with this standard with respect to tail recursion.</EN>
+	<JA>末尾再帰は、コンパイラの最適化技法として古くから知られていました。末尾再帰の一貫した意味論的基盤は、
+	<INDEX>Hewitt, Carl Eddie</INDEX>
+	Carl Hewitt (1977) によって与えられ、chapter<SPACE/><REF NAME="chap:state"></REF>で議論する
+	<INDEX>message passing<SUBINDEX>tail recursion and</SUBINDEX></INDEX>
+	「メッセージパッシング」計算モデルの観点から説明されました。これに触発されて、Gerald Jay Sussman と
+	<INDEX>Steele, Guy Lewis Jr.</INDEX>
+	Guy Lewis Steele Jr.（<CITATION>Steele 1975</CITATION> 参照）は Scheme の末尾再帰インタプリタを構築しました。Steele は後に、末尾再帰が関数呼び出しをコンパイルする自然な方法の帰結であることを
+	<INDEX>Sussman, Gerald Jay</INDEX>
+	示しました（<CITATION>Steele 1977</CITATION>）。Scheme の IEEE 標準は、Scheme の実装が
+	<INDEX>tail recursion<SUBINDEX><ORDER>Scheme</ORDER>in Scheme</SUBINDEX></INDEX>
+	<INDEX>tail recursion<SUBINDEX><ORDER>JavaScript</ORDER>in JavaScript</SUBINDEX></INDEX>
+	<INDEX>Scheme<SUBINDEX>tail recursion in</SUBINDEX></INDEX>
+	<INDEX>JavaScript<SUBINDEX>tail recursion in</SUBINDEX></INDEX>
+	末尾再帰的であることを要求しています。JavaScript の ECMA 標準も最終的に ECMAScript 2015（<CITATION>ECMA 2015</CITATION>）でこれに続きました。ただし、この執筆時点（2021年）では、ほとんどの JavaScript 実装は末尾再帰に関してこの標準に準拠していません。</JA>
+	</BILINGUAL></FOOTNOTE>
+	<BILINGUAL>
+	<EN>With a tail-recursive implementation,
 	<INDEX>iterative process<SUBINDEX>implemented by function call</SUBINDEX></INDEX>
 	iteration can be expressed using the ordinary function
-	call mechanism, so that special iteration constructs are useful only as 
+	call mechanism, so that special iteration constructs are useful only as
 	<INDEX>syntactic sugar<SUBINDEX>looping constructs as</SUBINDEX></INDEX>
-	syntactic sugar.<FOOTNOTE>Exercise<SPACE/><REF NAME="ex:while_loop"/> 
+	syntactic sugar.</EN>
+	<JA>末尾再帰的な実装があれば、
+	<INDEX>iterative process<SUBINDEX>implemented by function call</SUBINDEX></INDEX>
+	反復は通常の関数呼び出しの仕組みで表現でき、特別な反復構文は
+	<INDEX>syntactic sugar<SUBINDEX>looping constructs as</SUBINDEX></INDEX>
+	糖衣構文としてのみ有用です。</JA>
+	</BILINGUAL><FOOTNOTE><BILINGUAL>
+	<EN>Exercise<SPACE/><REF NAME="ex:while_loop"/>
 	explores JavaScript's while loops as syntactic
 	sugar for functions that give rise to iterative processes.
 	The full language JavaScript, like other conventional languages,
@@ -517,7 +684,12 @@ function fact_iter(product, counter, max_count) {
 	cancer of the semicolon.</QUOTE>
 	<INDEX>syntactic sugar</INDEX>
 	<INDEX>Perlis, Alan J.<SUBINDEX>quips by</SUBINDEX></INDEX>
-	<INDEX>semicolon (<JAVASCRIPTINLINE>;</JAVASCRIPTINLINE>)<SUBINDEX>cancer of</SUBINDEX></INDEX>
+	<INDEX>semicolon (<JAVASCRIPTINLINE>;</JAVASCRIPTINLINE>)<SUBINDEX>cancer of</SUBINDEX></INDEX></EN>
+	<JA>Exercise<SPACE/><REF NAME="ex:while_loop"/>では、JavaScript の while ループが反復的プロセスを生じる関数の糖衣構文であることを探求します。JavaScript は、他の従来の言語と同様に多数の構文形式を備えていますが、それらはすべて Lisp 言語でより統一的に表現できます。このことと、これらの構文にはしばしばセミコロンが伴い、その配置ルールが明らかでない場合があることから、Alan Perlis はこう言いました。「糖衣構文はセミコロンの癌を引き起こす。」
+	<INDEX>syntactic sugar</INDEX>
+	<INDEX>Perlis, Alan J.<SUBINDEX>quips by</SUBINDEX></INDEX>
+	<INDEX>semicolon (<JAVASCRIPTINLINE>;</JAVASCRIPTINLINE>)<SUBINDEX>cancer of</SUBINDEX></INDEX></JA>
+	</BILINGUAL>
       </FOOTNOTE>
       </JAVASCRIPT>
     </SPLIT>
@@ -527,6 +699,8 @@ function fact_iter(product, counter, max_count) {
 
   <EXERCISE>
     <LABEL NAME="ex:addition-procedures"/>
+    <BILINGUAL>
+    <EN>
     Each of the following two
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -539,6 +713,11 @@ function fact_iter(product, counter, max_count) {
     </SPLITINLINE>
     <SCHEMEINLINE>inc</SCHEMEINLINE>, which increments its argument by 1,
     and <SCHEMEINLINE>dec</SCHEMEINLINE>, which decrements its argument by 1.
+    </EN>
+    <JA>
+    以下の2つの<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>は、引数を 1 増やす <SCHEMEINLINE>inc</SCHEMEINLINE> と引数を 1 減らす <SCHEMEINLINE>dec</SCHEMEINLINE> を使って、2つの正の整数を加算する方法を定義しています。
+    </JA>
+    </BILINGUAL>
     <DO_BREAK_PAGE/>
     <SNIPPET PAGE="36" HIDE="yes">
       <NAME>inc_dec_definition</NAME>
@@ -602,6 +781,8 @@ function plus(a, b) {
       </JAVASCRIPT>
     </SNIPPET>
 
+    <BILINGUAL>
+    <EN>
     Using the substitution model, illustrate the process generated by each
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -613,11 +794,19 @@ function plus(a, b) {
       <JAVASCRIPT><JAVASCRIPTINLINE>plus(4, 5);</JAVASCRIPTINLINE>.</JAVASCRIPT>
     </SPLITINLINE>
     Are these processes iterative or recursive?
+    </EN>
+    <JA>
+    置換モデルを使って、<SPLITINLINE><SCHEME><SCHEMEINLINE>(+ 4 5)</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>plus(4, 5);</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> を評価するときに各<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>が生成するプロセスを図示してください。これらのプロセスは反復的ですか、再帰的ですか。
+    </JA>
+    </BILINGUAL>
 
     <SOLUTION>
       <SPLIT>
 	<JAVASCRIPT>
-	  The process generated by the first function is recursive.
+	  <BILINGUAL>
+	  <EN>The process generated by the first function is recursive.</EN>
+	  <JA>最初の関数が生成するプロセスは再帰的です。</JA>
+	  </BILINGUAL>
           <SNIPPET PAGE="36" EVAL="no">
 	    <JAVASCRIPT>
 plus(4, 5)
@@ -639,7 +828,10 @@ inc( 8 )
 9
 	    </JAVASCRIPT>
 	  </SNIPPET>
-	  The process generated by the second function is iterative.
+	  <BILINGUAL>
+	  <EN>The process generated by the second function is iterative.</EN>
+	  <JA>2番目の関数が生成するプロセスは反復的です。</JA>
+	  </BILINGUAL>
           <SNIPPET PAGE="36" EVAL="no">
 	    <JAVASCRIPT>
 plus(4, 5)
@@ -663,6 +855,8 @@ plus(0, 9)
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     The following
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -672,6 +866,14 @@ plus(0, 9)
     <INDEX>Ackermann<APOS/>s function</INDEX>
     <INDEX>function (mathematical)<SUBINDEX>Ackermann<APOS/>s</SUBINDEX></INDEX>
     Ackermann<APOS/>s function.
+    </EN>
+    <JA>
+    次の<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>は、
+    <INDEX>Ackermann<APOS/>s function</INDEX>
+    <INDEX>function (mathematical)<SUBINDEX>Ackermann<APOS/>s</SUBINDEX></INDEX>
+    アッカーマン関数と呼ばれる数学的関数を計算します。
+    </JA>
+    </BILINGUAL>
 
     <SNIPPET PAGE="36">
       <NAME>ackermann_definition</NAME>
@@ -697,6 +899,8 @@ function A(x, y) {
       </JAVASCRIPT>
     </SNIPPET>
 
+    <BILINGUAL>
+    <EN>
     What are the values of the following
     <SPLITINLINE>
       <SCHEME>
@@ -706,6 +910,11 @@ function A(x, y) {
 	statements?
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    次の<SPLITINLINE><SCHEME>式</SCHEME><JAVASCRIPT>文</JAVASCRIPT></SPLITINLINE>の値はいくつですか。
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="36">
       <NAME>ackermann_example</NAME>
       <REQUIRES>ackermann_definition</REQUIRES>
@@ -740,6 +949,8 @@ A(3, 3);
       </JAVASCRIPT>
     </SNIPPET>
 
+    <BILINGUAL>
+    <EN>
     Consider the following
     <SPLITINLINE>
       <SCHEME>procedures,</SCHEME>
@@ -749,8 +960,13 @@ A(3, 3);
     <SPLITINLINE>
       <SCHEME>procedure defined</SCHEME>
       <JAVASCRIPT>function declared</JAVASCRIPT>
-    </SPLITINLINE>  
+    </SPLITINLINE>
     above:
+    </EN>
+    <JA>
+    次の<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を考えてください。ここで <SCHEMEINLINE>A</SCHEMEINLINE> は上で<SPLITINLINE><SCHEME>定義した手続き</SCHEME><JAVASCRIPT>宣言した関数</JAVASCRIPT></SPLITINLINE>です。
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="36">
       <NAME>fghk_definition</NAME>
       <EXAMPLE>fghk_example</EXAMPLE>
@@ -791,6 +1007,8 @@ function k(n) {
 k(4);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Give concise mathematical definitions for the functions computed by
     the
     <SPLITINLINE>
@@ -802,8 +1020,15 @@ k(4);
     <LATEXINLINE>$n$</LATEXINLINE>.  For example,
     <LATEXINLINE>$k(n)$</LATEXINLINE> computes
     <LATEXINLINE>$5n^2$</LATEXINLINE>.
+    </EN>
+    <JA>
+    正の整数 <LATEXINLINE>$n$</LATEXINLINE> について、<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE> <SCHEMEINLINE>f</SCHEMEINLINE>、<SCHEMEINLINE>g</SCHEMEINLINE>、<SCHEMEINLINE>h</SCHEMEINLINE> が計算する関数の簡潔な数学的定義を与えてください。たとえば、<LATEXINLINE>$k(n)$</LATEXINLINE> は <LATEXINLINE>$5n^2$</LATEXINLINE> を計算します。
+    </JA>
+    </BILINGUAL>
 
     <SOLUTION>
+      <BILINGUAL>
+      <EN>
       The function <LATEXINLINE>$f(n)$</LATEXINLINE> computes
       <LATEXINLINE>$2 n$</LATEXINLINE>,
       the function <LATEXINLINE>$g(n)$</LATEXINLINE> computes
@@ -812,6 +1037,11 @@ k(4);
       <LATEXINLINE>$2^{2^{\cdot^{\cdot^{\cdot^2}}}}$</LATEXINLINE>
       where the number of 2s in the chain of exponentiation is
       <LATEXINLINE>$n$</LATEXINLINE>.
+      </EN>
+      <JA>
+      関数 <LATEXINLINE>$f(n)$</LATEXINLINE> は <LATEXINLINE>$2 n$</LATEXINLINE> を計算し、関数 <LATEXINLINE>$g(n)$</LATEXINLINE> は <LATEXINLINE>$2^n$</LATEXINLINE> を計算し、関数 <LATEXINLINE>$h(n)$</LATEXINLINE> は <LATEXINLINE>$2^{2^{\cdot^{\cdot^{\cdot^2}}}}$</LATEXINLINE>（べき乗の連鎖における 2 の個数が <LATEXINLINE>$n$</LATEXINLINE>）を計算します。
+      </JA>
+      </BILINGUAL>
     </SOLUTION>
     <LABEL NAME="ex:1_10"/>
   </EXERCISE>

@@ -82,6 +82,24 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | 英語 | 日本語 | 備考 |
 |------|--------|------|
 | recursion / recursive | 再帰 / 再帰的 | |
+| recursive process | 再帰的プロセス | |
+| iterative process | 反復的プロセス | |
+| linear recursive process | 線形再帰的プロセス | |
+| linear iterative process | 線形反復的プロセス | |
+| tree recursion | ツリー再帰 | |
+| tree-recursive process | ツリー再帰的プロセス | |
+| deferred operations | 遅延された演算 | |
+| state variable | 状態変数 | |
+| tail-recursive | 末尾再帰的 | |
+| order of growth | 増加のオーダー | |
+| successive squaring | 逐次二乗法 | |
+| greatest common divisor (GCD) | 最大公約数（GCD） | |
+| Euclid's Algorithm | ユークリッドの互除法 | |
+| Fermat's Little Theorem | フェルマーの小定理 | |
+| Fermat test | フェルマーテスト | |
+| probabilistic algorithm | 確率的アルゴリズム | |
+| Carmichael numbers | カーマイケル数 | |
+| golden ratio | 黄金比 | |
 | tree | ツリー | |
 | tree accumulation | ツリーの累積 | |
 | node | ノード | |

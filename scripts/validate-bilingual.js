@@ -254,6 +254,33 @@ function validateFile(filePath) {
     }
   }
 
+  // ルール7: BILINGUAL を含むファイルのセクション/サブセクション NAME も BILINGUAL であること
+  // SECTION/SUBSECTION の直下の NAME タグを検出し、BILINGUAL が含まれているか確認
+  const nameRanges = findTagRanges(content, "NAME");
+  const sectionRanges = [
+    ...findTagRanges(content, "SECTION"),
+    ...findTagRanges(content, "SUBSECTION"),
+  ];
+  for (const sec of sectionRanges) {
+    // SECTION/SUBSECTION 直下の最初の NAME を見つける
+    const firstName = nameRanges.find((n) => isInside(n, sec));
+    if (firstName) {
+      const nameContent = content.substring(firstName.contentStart, firstName.contentEnd);
+      if (!/<BILINGUAL[\s>]/.test(nameContent)) {
+        // NAME にテキストがある場合のみ報告（空の NAME は無視）
+        const textOnly = nameContent.replace(/<[^>]+>/g, "").replace(/\s+/g, "").trim();
+        if (textOnly.length > 0) {
+          reportError(
+            filePath,
+            content,
+            firstName.start,
+            "セクション名（NAME）が BILINGUAL で囲まれていません。トップページ・メニューに翻訳を反映するには NAME 内に BILINGUAL を追加してください"
+          );
+        }
+      }
+    }
+  }
+
   // ルール5: BILINGUAL のネストがないこと（FOOTNOTE 内は独立スコープなので除外）
   for (const inner of bilingualRanges) {
     for (const outer of bilingualRanges) {

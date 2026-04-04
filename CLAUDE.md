@@ -37,6 +37,7 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - `<BILINGUAL>` で囲まれていないテキストはそのまま表示される（段階的翻訳が可能）
 - コードブロック (`<SNIPPET>`) は翻訳対象外
 - `<SPLITINLINE>` 内のテキストも `<BILINGUAL>` 内で使用可能
+- セクション名（`<NAME>` タグ）も `<BILINGUAL>` で翻訳する。トップページ（目次）とバーガーメニューに反映される
 
 ### パーサー
 
@@ -82,7 +83,14 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 1.1.6 Conditional Expressions and Predicates
 - [x] Section 1.1.7 Example: Square Roots by Newton's Method
 - [x] Section 1.1.8 Functions as Black-Box Abstractions
-- [ ] Section 1.2〜1.3
+- [x] Section 1.2 Functions and the Processes They Generate (導入部)
+- [x] Section 1.2.1 Linear Recursion and Iteration
+- [x] Section 1.2.2 Tree Recursion
+- [x] Section 1.2.3 Orders of Growth
+- [x] Section 1.2.4 Exponentiation
+- [x] Section 1.2.5 Greatest Common Divisors
+- [x] Section 1.2.6 Example: Testing for Primality
+- [ ] Section 1.3
 - [ ] Chapter 2〜5
 
 ## インライン実行
@@ -115,7 +123,7 @@ yarn validate-bilingual   # BILINGUAL タグ配置ルールを検証
 
 ## 一括翻訳ワークフロー
 
-「〜まで翻訳して」「〜まで一括で」といった指示があった場合、以下を各セクションごとに繰り返す：
+「〜まで翻訳して」「〜まで一括で」といった指示があった場合、以下を各セクションごとに**直列で**繰り返す（並列エージェント不可）：
 
 1. **翻訳**: XMLファイルを読み、TRANSLATION_GUIDE.md に従って BILINGUAL タグで翻訳を追加
 2. **検証**: `yarn validate-bilingual` を実行、エラーがあれば修正
