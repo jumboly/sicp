@@ -30,6 +30,17 @@
       </JAVASCRIPT>
     </SPLITINLINE>
     combinations, the interpreter is itself following a procedure.
+    </EN>
+    <JA>
+    この章の目標の一つは、手続き的に考えることに関する問題を明確にすることです。
+    具体的な例として、
+    <SPLITINLINE>
+      <JAVASCRIPT>
+	演算子の
+      </JAVASCRIPT>
+    </SPLITINLINE>組み合わせを評価する際に、インタプリタ自体が手続きに従っていることを考えてみましょう。
+    </JA>
+    </BILINGUAL>
     <COMMENT>
       Due to the prominence of the keyword
       <JAVASCRIPTINLINE>function</JAVASCRIPTINLINE>, we are generally replacing
@@ -38,6 +49,8 @@
       the terms "thinking procedurally" and "procedure" are perhaps still
       adequate for the JavaScript edition here.
     </COMMENT>
+    <BILINGUAL>
+    <EN>
     <UL>
       <LI>
       To evaluate
@@ -80,47 +93,8 @@
       </OL>
       </LI>
     </UL>
-    <COMMENT>
-      The Scheme version does not distinguish between operator and
-      application combinations. However, due to the infix notation,
-      the JavaScript version needs to describe slightly different
-      rules for those two. This section contains the rule for operator
-      combination, and section 1.1.5 introduces a new rule for function
-      application.
-    </COMMENT>
-    Even this simple rule illustrates some important points about
-    processes in general. First, observe that the first step dictates
-    that in order to accomplish the evaluation process for a
-    combination we must first perform the evaluation process on each
-    operand of the combination. Thus, the evaluation rule is
-    <INDEX>recursion</INDEX>
-    <EM>recursive</EM> in nature;
-    that is, it includes, as one of its steps, the need to invoke the rule
-    itself.<SPLITINLINE><SCHEME><FOOTNOTE>It may seem strange that the evaluation
-    rule says, as part of the first step, that we should evaluate the leftmost
-    element of a combination, since at this point that can only be an operator
-    such as <SCHEMEINLINE>+</SCHEMEINLINE> or <SCHEMEINLINE>*</SCHEMEINLINE>
-    representing a built-in primitive procedure such as addition or
-    multiplication.  We will see later that it is useful to be able to work with
-    combinations whose operators are themselves compound expressions.
-  </FOOTNOTE></SCHEME></SPLITINLINE>
     </EN>
     <JA>
-    この章の目標の一つは、手続き的に考えることに関する問題を明確にすることです。
-    具体的な例として、
-    <SPLITINLINE>
-      <JAVASCRIPT>
-	演算子の
-      </JAVASCRIPT>
-    </SPLITINLINE>組み合わせを評価する際に、インタプリタ自体が手続きに従っていることを考えてみましょう。
-    <COMMENT>
-      Due to the prominence of the keyword
-      <JAVASCRIPTINLINE>function</JAVASCRIPTINLINE>, we are generally replacing
-      references to "procedure/procedural" with references to
-      "function/functional". The above sentences are an exception;
-      the terms "thinking procedurally" and "procedure" are perhaps still
-      adequate for the JavaScript edition here.
-    </COMMENT>
     <UL>
       <LI>
       <SPLITINLINE>
@@ -155,6 +129,8 @@
       </OL>
       </LI>
     </UL>
+    </JA>
+    </BILINGUAL>
     <COMMENT>
       The Scheme version does not distinguish between operator and
       application combinations. However, due to the infix notation,
@@ -163,6 +139,26 @@
       combination, and section 1.1.5 introduces a new rule for function
       application.
     </COMMENT>
+    <BILINGUAL>
+    <EN>
+    Even this simple rule illustrates some important points about
+    processes in general. First, observe that the first step dictates
+    that in order to accomplish the evaluation process for a
+    combination we must first perform the evaluation process on each
+    operand of the combination. Thus, the evaluation rule is
+    <INDEX>recursion</INDEX>
+    <EM>recursive</EM> in nature;
+    that is, it includes, as one of its steps, the need to invoke the rule
+    itself.<SPLITINLINE><SCHEME><FOOTNOTE>It may seem strange that the evaluation
+    rule says, as part of the first step, that we should evaluate the leftmost
+    element of a combination, since at this point that can only be an operator
+    such as <SCHEMEINLINE>+</SCHEMEINLINE> or <SCHEMEINLINE>*</SCHEMEINLINE>
+    representing a built-in primitive procedure such as addition or
+    multiplication.  We will see later that it is useful to be able to work with
+    combinations whose operators are themselves compound expressions.
+  </FOOTNOTE></SCHEME></SPLITINLINE>
+    </EN>
+    <JA>
     この単純な規則でさえ、一般的なプロセスに関するいくつかの重要な点を示しています。
     まず、最初のステップが、組み合わせの評価プロセスを達成するためには、
     まず組み合わせの各オペランドに対して評価プロセスを実行しなければならないことを
@@ -300,6 +296,24 @@
     <INDEX>primitive expression<SUBINDEX>evaluation of</SUBINDEX></INDEX>
     <INDEX>evaluation<SUBINDEX>of primitive expression</SUBINDEX></INDEX>
     by stipulating that
+    </EN>
+    <JA>
+    次に、最初のステップを繰り返し適用すると、組み合わせではなく、
+    <SPLITINLINE>
+      <SCHEME>
+	数字、組み込み演算子、またはその他の名前
+      </SCHEME>
+      <JAVASCRIPT>
+	数字または名前
+      </JAVASCRIPT>
+    </SPLITINLINE>のようなプリミティブな式を評価する必要がある段階に到達することに注目してください。
+    <INDEX>primitive expression<SUBINDEX>evaluation of</SUBINDEX></INDEX>
+    <INDEX>evaluation<SUBINDEX>of primitive expression</SUBINDEX></INDEX>
+    プリミティブなケースは、次のように規定して処理します：
+    </JA>
+    </BILINGUAL>
+    <BILINGUAL>
+    <EN>
     <UL>
       <LI>
         the values of numerals are the numbers that they name,
@@ -329,6 +343,36 @@
         with those names in the environment.
       </LI>
     </UL>
+    </EN>
+    <JA>
+    <UL>
+      <LI>
+        数字の値は、それが表す数である。
+	<SPLITINLINE><JAVASCRIPT>そして、</JAVASCRIPT></SPLITINLINE>
+      </LI>
+      <SPLITINLINE>
+	<SCHEME>
+          <LI>
+            組み込み演算子の値は、対応する操作を実行する機械命令列である。そして、
+          </LI>
+	</SCHEME>
+      </SPLITINLINE>
+      <COMMENT>
+	Operators are not values in JavaScript, so this item does not apply
+	in the JavaScript version.
+      </COMMENT>
+      <LI>
+        <SPLITINLINE>
+	  <SCHEME>
+	    その他の
+	  </SCHEME>
+	</SPLITINLINE>名前の値は、環境においてその名前に関連付けられたオブジェクトである。
+      </LI>
+    </UL>
+    </JA>
+    </BILINGUAL>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
         We may regard the second rule as a special case of the third one by
@@ -395,42 +439,6 @@
     </SPLITINLINE>
     </EN>
     <JA>
-    次に、最初のステップを繰り返し適用すると、組み合わせではなく、
-    <SPLITINLINE>
-      <SCHEME>
-	数字、組み込み演算子、またはその他の名前
-      </SCHEME>
-      <JAVASCRIPT>
-	数字または名前
-      </JAVASCRIPT>
-    </SPLITINLINE>のようなプリミティブな式を評価する必要がある段階に到達することに注目してください。
-    <INDEX>primitive expression<SUBINDEX>evaluation of</SUBINDEX></INDEX>
-    <INDEX>evaluation<SUBINDEX>of primitive expression</SUBINDEX></INDEX>
-    プリミティブなケースは、次のように規定して処理します：
-    <UL>
-      <LI>
-        数字の値は、それが表す数である。
-	<SPLITINLINE><JAVASCRIPT>そして、</JAVASCRIPT></SPLITINLINE>
-      </LI>
-      <SPLITINLINE>
-	<SCHEME>
-          <LI>
-            組み込み演算子の値は、対応する操作を実行する機械命令列である。そして、
-          </LI>
-	</SCHEME>
-      </SPLITINLINE>
-      <COMMENT>
-	Operators are not values in JavaScript, so this item does not apply
-	in the JavaScript version.
-      </COMMENT>
-      <LI>
-        <SPLITINLINE>
-	  <SCHEME>
-	    その他の
-	  </SCHEME>
-	</SPLITINLINE>名前の値は、環境においてその名前に関連付けられたオブジェクトである。
-      </LI>
-    </UL>
     <SPLITINLINE>
       <SCHEME>
         We may regard the second rule as a special case of the third one by

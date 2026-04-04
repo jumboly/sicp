@@ -803,14 +803,14 @@ const processTextFunctionsBilingual = {
     const ja = getChildrenByTagName(node, "JA")[0];
 
     if (en) {
-      writeTo.push(`<span class="lang-en">`);
+      writeTo.push(`<div class="lang-en">`);
       recursiveProcessTextHtml(en.firstChild, writeTo);
-      writeTo.push(`</span>`);
+      writeTo.push(`</div>`);
     }
     if (ja) {
-      writeTo.push(`<span class="lang-ja" style="display:none">`);
+      writeTo.push(`<div class="lang-ja" style="display:none">`);
       recursiveProcessTextHtml(ja.firstChild, writeTo);
-      writeTo.push(`</span>`);
+      writeTo.push(`</div>`);
     }
   }
 };

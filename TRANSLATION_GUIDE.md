@@ -167,8 +167,41 @@ The <SPLITINLINE>
 - BILINGUAL 内では EN と JA の両方に複製する
 - BILINGUAL の外にある INDEX は複製不要
 
+### UL / OL（リスト）
+
+UL・OL は BILINGUAL の中にそのまま入れてよい。パーサーが `<div>` を生成するため、ブロック要素も正しく表示される：
+
+```xml
+<BILINGUAL>
+<EN>
+<UL>
+  <LI>First item.</LI>
+  <LI>Second item.</LI>
+</UL>
+</EN>
+<JA>
+<UL>
+  <LI>最初の項目。</LI>
+  <LI>2番目の項目。</LI>
+</UL>
+</JA>
+</BILINGUAL>
+```
+
 ### FOOTNOTE
 
-- FOOTNOTE 内の SPLITINLINE の JAVASCRIPT テキストを翻訳する
+- FOOTNOTE は BILINGUAL の**外**に置く。BILINGUAL の EN/JA 両方に FOOTNOTE を入れると注釈が重複する
+- FOOTNOTE の中身に BILINGUAL を使って EN/JA を切り替える
 - Scheme テキストは英語のまま残す
-- FOOTNOTE が BILINGUAL 内にある場合は、JA 側も翻訳する
+
+```xml
+<BILINGUAL>
+<EN>Some text.</EN>
+<JA>テキスト。</JA>
+</BILINGUAL><FOOTNOTE>
+<BILINGUAL>
+<EN>Footnote in English.</EN>
+<JA>脚注の日本語。</JA>
+</BILINGUAL>
+</FOOTNOTE>
+```

@@ -41,7 +41,8 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 ### パーサー
 
 - `javascript/parseXmlHtml.tsx` に `processTextFunctionsBilingual` ハンドラがある
-- `<EN>` → `<span class="lang-en">`、`<JA>` → `<span class="lang-ja" style="display:none">`
+- `<EN>` → `<div class="lang-en">`、`<JA>` → `<div class="lang-ja" style="display:none">`
+- `<div>` を使用する理由: `<span>` だと UL/OL などのブロック要素が `<p>` 内で DOM 構造が壊れるため
 - `version == "js"` のときにハンドラが有効化される
 
 ### クライアントサイド
@@ -50,11 +51,18 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - `static/assets/stylesheet.css` 末尾 — `.lang-ja` フォント設定、`body.lang-mode-both` の併記スタイル
 - `javascript/html/Navigation.tsx` — ナビバーの EN/JA/EN+JA ボタングループ
 
-### 注意点
+### ビルド・CSS の注意点
 
 - CSSは `stylesheet.css` に書くこと。`book.css` は HTML から直接リンクされておらず、`application.js` 経由で参照されるのみ
 - `LinksHead.tsx` でローカルアセットの URL にビルド時ハッシュを付与してキャッシュバスティングしている
 - `SCHEME` タグは `tagsToRemove` に追加済み（JS版で Scheme コンテンツを抑制）
+
+### 翻訳タグの注意点
+
+- **FOOTNOTE は BILINGUAL の外に置く**。EN/JA 両方に FOOTNOTE を入れると注釈番号が重複する。FOOTNOTE の中身に BILINGUAL を使って EN/JA を切り替える
+- **SNIPPET は BILINGUAL の外に置く**。テキストが SNIPPET で分断される場合、前後を別の BILINGUAL ブロックにする
+- UL/OL などのブロック要素は BILINGUAL 内にそのまま入れてよい（`<div>` で出力されるため）
+- 詳細なルール・用語集は `TRANSLATION_GUIDE.md` を参照
 
 ## 翻訳ガイド
 
@@ -92,13 +100,15 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - `.github/workflows/deploy-pages.yml` で `yarn web-js && yarn js && yarn json` を実行
 - `peaceiris/actions-gh-pages@v4` で `docs_out/` を `gh-pages` ブランチに公開
 
-## Lint
+## Lint・検証
 
 ```bash
-yarn lint  # prettier で javascript/ ディレクトリをチェック
+yarn lint                 # prettier で javascript/ ディレクトリをチェック
+yarn validate-bilingual   # BILINGUAL タグ配置ルールを検証
 ```
 
-CI で lint が走るので、`javascript/` 配下のファイルを編集したら prettier でフォーマットすること。
+- CI で lint が走るので、`javascript/` 配下のファイルを編集したら prettier でフォーマットすること
+- `validate-bilingual` は翻訳 XML の構造ルール違反を検出する（FOOTNOTE/SNIPPET の配置、EN/JA の対応など）。翻訳作業後に実行すること
 
 ## ライセンス
 
