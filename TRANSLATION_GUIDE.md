@@ -157,6 +157,32 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | stratified design | 階層的設計 | |
 | robust | 堅牢 | |
 
+### シンボリックデータ・集合・ツリー
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| symbolic data | シンボリックデータ | |
+| symbolic differentiation | シンボリック微分 | |
+| algebraic expression | 代数式 | |
+| deriv | deriv | 関数名そのまま |
+| binary tree | 二分木 | |
+| balanced tree | 平衡木 | |
+| unbalanced tree | 不均衡なツリー | |
+| set | 集合 | |
+| union set | 和集合 | |
+| intersection set | 共通集合 | |
+| ordered list | 順序付きリスト | |
+| Huffman code | ハフマンコード | |
+| Huffman encoding tree | ハフマン符号化木 | |
+| fixed-length code | 固定長コード | |
+| variable-length code | 可変長コード | |
+| prefix code | プレフィックスコード | |
+| encoding / encode | 符号化 | |
+| decoding / decode | 復号化 | |
+| weight | 重み | ハフマン木のノードの |
+| leaf (Huffman tree) | 葉 | |
+| generic function | ジェネリック関数 | |
+
 ### 高階関数・抽象
 
 | 英語 | 日本語 | 備考 |

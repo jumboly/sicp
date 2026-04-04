@@ -106,7 +106,12 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 2.2.2 Hierarchical Structures
 - [x] Section 2.2.3 Sequences as Conventional Interfaces
 - [x] Section 2.2.4 Example: A Picture Language
-- [ ] Chapter 2 (Section 2.3〜2.5)
+- [x] Section 2.3 Symbolic Data (導入部)
+- [x] Section 2.3.1 Strings (Quotation)
+- [x] Section 2.3.2 Example: Symbolic Differentiation
+- [x] Section 2.3.3 Example: Representing Sets
+- [x] Section 2.3.4 Example: Huffman Encoding Trees
+- [ ] Chapter 2 (Section 2.4〜2.5)
 - [ ] Chapter 3〜5
 
 ## インライン実行

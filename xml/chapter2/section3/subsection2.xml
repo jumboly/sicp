@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Example: Symbolic Differentiation
+    <BILINGUAL>
+    <EN>Example: Symbolic Differentiation</EN>
+    <JA>例：シンボリック微分</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:symbolic-differentiation"/>
@@ -9,6 +12,8 @@
   <INDEX>algebraic expression<SUBINDEX>differentiating</SUBINDEX><OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     As an illustration of symbol manipulation and a further illustration
     of data abstraction, consider the design of a
     <SPLITINLINE>
@@ -28,7 +33,7 @@
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    are <LATEXINLINE>$ax^2 + bx +c$</LATEXINLINE> 
+    are <LATEXINLINE>$ax^2 + bx +c$</LATEXINLINE>
     and<SPACE/><LATEXINLINE>$x$</LATEXINLINE>, the
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -59,8 +64,15 @@
 	today routinely used by applied mathematicians and physicists.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    シンボル操作の例として、またデータ抽象のさらなる例として、代数式のシンボリック微分を行う<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>の設計を考えてみましょう。この<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>は、代数式と変数を引数として受け取り、その変数に関する式の導関数を返すようにしたいと思います。例えば、<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>への引数が <LATEXINLINE>$ax^2 + bx +c$</LATEXINLINE> と<SPACE/><LATEXINLINE>$x$</LATEXINLINE> であれば、<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>は <LATEXINLINE>$2ax+b$</LATEXINLINE> を返すべきです。シンボリック微分は、<SPLITINLINE><SCHEME>Lisp</SCHEME><JAVASCRIPT>プログラミング言語 Lisp<FOOTNOTE>本書のオリジナル版はプログラミング言語 Scheme（Lisp の方言）を使用していました。</FOOTNOTE></JAVASCRIPT></SPLITINLINE>において特に歴史的に重要な意味を持っています。シンボル操作のためのコンピュータ言語の開発を動機づけた例の一つでした。さらに、シンボリックな数学的作業のための強力なシステムの開発につながった研究の始まりを示すものであり、そのようなシステムは<SPLITINLINE><SCHEME>現在、ますます多くの応用数学者や物理学者に使われています。</SCHEME><JAVASCRIPT>今日では応用数学者や物理学者に日常的に使われています。</JAVASCRIPT></SPLITINLINE>
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In developing the symbolic-differentiation program, we will follow the same
     strategy of data abstraction that we followed in developing the
     rational-number system of section<SPACE/><REF NAME="sec:rationals"/>.  That
@@ -68,13 +80,25 @@
     abstract objects such as <QUOTE>sums,</QUOTE> <QUOTE>products,</QUOTE> and
     <QUOTE>variables</QUOTE> without worrying about how these are to be
     represented.  Only afterward will we address the representation problem.
+    </EN>
+    <JA>
+    シンボリック微分プログラムの開発では、セクション<SPACE/><REF NAME="sec:rationals"/>の有理数システムの開発で従ったのと同じデータ抽象の戦略に従います。つまり、まず<QUOTE>和</QUOTE>、<QUOTE>積</QUOTE>、<QUOTE>変数</QUOTE>といった抽象オブジェクトに対して動作する微分アルゴリズムを定義し、それらがどのように表現されるかについては心配しません。表現の問題に取り組むのはその後です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>The differentiation program with abstract data</NAME>
+    <NAME>
+      <BILINGUAL>
+      <EN>The differentiation program with abstract data</EN>
+      <JA>抽象データを用いた微分プログラム</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	In order to
@@ -90,6 +114,13 @@
     applying the following
     <INDEX>differentiation<SUBINDEX>rules for</SUBINDEX></INDEX>
     reduction rules:
+    </EN>
+    <JA>
+    話を単純にするために、2つの引数に対する加算と乗算の演算のみを使って構成される式を扱う、非常に単純なシンボリック微分プログラムを考えます。そのような式の微分は、次の
+    <INDEX>differentiation<SUBINDEX>rules for</SUBINDEX></INDEX>
+    簡約規則を適用することで実行できます。
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{rll}
@@ -104,6 +135,8 @@
     </LATEX>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
   Observe that the latter two rules are recursive in nature.  That is, to
     obtain the derivative of a sum we first find the derivatives of the terms
     and add them.  Each of the terms may in turn be an expression that needs to
@@ -111,8 +144,15 @@
     produce pieces that are either constants or variables, whose derivatives
     will be either <LATEXINLINE>$0$</LATEXINLINE> or
     <LATEXINLINE>$1$</LATEXINLINE>.
+    </EN>
+    <JA>
+    後の2つの規則は本質的に再帰的であることに注意してください。つまり、和の導関数を得るには、まず各項の導関数を求めてそれらを加えます。各項はさらに分解が必要な式である可能性があります。ますます小さい部分に分解していくと、最終的には定数か変数のいずれかの部分が得られ、その導関数は <LATEXINLINE>$0$</LATEXINLINE> か <LATEXINLINE>$1$</LATEXINLINE> のいずれかになります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To embody these rules in a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -132,6 +172,11 @@
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     to implement the following selectors, constructors, and predicates:
+    </EN>
+    <JA>
+    これらの規則を<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>に組み込むために、有理数の実装を設計したときと同様に、少し<INDEX>wishful thinking</INDEX>希望的思考（wishful thinking）にふけることにしましょう。代数式を表現する手段があれば、式が和なのか、積なのか、定数なのか、変数なのかを判定できるはずです。式の構成部分を取り出すこともできるはずです。例えば和の場合、加数（第1項）と被加数（第2項）を取り出したいと思います。また、構成部分から式を構成できるはずです。次のセレクタ、コンストラクタ、および述語を実装する<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>が既にあると仮定しましょう。
+    </JA>
+    </BILINGUAL>
     <TABLE>
       <TR>
         <TD>
@@ -142,7 +187,10 @@
 	  </SPLITINLINE>
         </TD>
         <TD>
-          Is <SCHEMEINLINE>e</SCHEMEINLINE> a variable?
+	  <BILINGUAL>
+	  <EN>Is <SCHEMEINLINE>e</SCHEMEINLINE> a variable?</EN>
+	  <JA><SCHEMEINLINE>e</SCHEMEINLINE> は変数か？</JA>
+	  </BILINGUAL>
         </TD>
       </TR>
       <TR>
@@ -155,8 +203,11 @@
 	  </SPLITINLINE>
         </TD>
         <TD>
-          Are <SCHEMEINLINE>v1</SCHEMEINLINE> and
-	  <SCHEMEINLINE>v2</SCHEMEINLINE> the same variable?
+	  <BILINGUAL>
+	  <EN>Are <SCHEMEINLINE>v1</SCHEMEINLINE> and
+	  <SCHEMEINLINE>v2</SCHEMEINLINE> the same variable?</EN>
+	  <JA><SCHEMEINLINE>v1</SCHEMEINLINE> と <SCHEMEINLINE>v2</SCHEMEINLINE> は同じ変数か？</JA>
+	  </BILINGUAL>
         </TD>
       </TR>
       <TR DOUBLESPACE="yes">
@@ -168,7 +219,10 @@
 	  </SPLITINLINE>
         </TD>
         <TD>
-          Is <SCHEMEINLINE>e</SCHEMEINLINE> a sum?
+	  <BILINGUAL>
+	  <EN>Is <SCHEMEINLINE>e</SCHEMEINLINE> a sum?</EN>
+	  <JA><SCHEMEINLINE>e</SCHEMEINLINE> は和か？</JA>
+	  </BILINGUAL>
         </TD>
       </TR>
       <TR>
@@ -180,7 +234,10 @@
 	  </SPLITINLINE>
         </TD>
         <TD>
-          Addend of the sum <SCHEMEINLINE>e</SCHEMEINLINE>.
+	  <BILINGUAL>
+	  <EN>Addend of the sum <SCHEMEINLINE>e</SCHEMEINLINE>.</EN>
+	  <JA>和 <SCHEMEINLINE>e</SCHEMEINLINE> の加数。</JA>
+	  </BILINGUAL>
         </TD>
       </TR>
       <TR>
@@ -192,7 +249,10 @@
 	  </SPLITINLINE>
         </TD>
         <TD>
-          Augend of the sum <SCHEMEINLINE>e</SCHEMEINLINE>.
+	  <BILINGUAL>
+	  <EN>Augend of the sum <SCHEMEINLINE>e</SCHEMEINLINE>.</EN>
+	  <JA>和 <SCHEMEINLINE>e</SCHEMEINLINE> の被加数。</JA>
+	  </BILINGUAL>
         </TD>
       </TR>
       <TR>
@@ -204,8 +264,11 @@
 	  </SPLITINLINE>
         </TD>
         <TD>
-          Construct the sum of <SCHEMEINLINE>a1</SCHEMEINLINE> and
-	  <SCHEMEINLINE>a2</SCHEMEINLINE>.
+	  <BILINGUAL>
+	  <EN>Construct the sum of <SCHEMEINLINE>a1</SCHEMEINLINE> and
+	  <SCHEMEINLINE>a2</SCHEMEINLINE>.</EN>
+	  <JA><SCHEMEINLINE>a1</SCHEMEINLINE> と <SCHEMEINLINE>a2</SCHEMEINLINE> の和を構成する。</JA>
+	  </BILINGUAL>
         </TD>
       </TR>
       <TR DOUBLESPACE="yes">
@@ -217,7 +280,10 @@
 	  </SPLITINLINE>
         </TD>
         <TD>
-          Is <SCHEMEINLINE>e</SCHEMEINLINE> a product?
+	  <BILINGUAL>
+	  <EN>Is <SCHEMEINLINE>e</SCHEMEINLINE> a product?</EN>
+	  <JA><SCHEMEINLINE>e</SCHEMEINLINE> は積か？</JA>
+	  </BILINGUAL>
         </TD>
       </TR>
       <TR>
@@ -229,7 +295,10 @@
 	  </SPLITINLINE>
         </TD>
         <TD>
-          Multiplier of the product <SCHEMEINLINE>e</SCHEMEINLINE>.
+	  <BILINGUAL>
+	  <EN>Multiplier of the product <SCHEMEINLINE>e</SCHEMEINLINE>.</EN>
+	  <JA>積 <SCHEMEINLINE>e</SCHEMEINLINE> の乗数。</JA>
+	  </BILINGUAL>
         </TD>
       </TR>
       <TR>
@@ -241,7 +310,10 @@
 	  </SPLITINLINE>
         </TD>
         <TD>
-          Multiplicand of the product <SCHEMEINLINE>e</SCHEMEINLINE>.
+	  <BILINGUAL>
+	  <EN>Multiplicand of the product <SCHEMEINLINE>e</SCHEMEINLINE>.</EN>
+	  <JA>積 <SCHEMEINLINE>e</SCHEMEINLINE> の被乗数。</JA>
+	  </BILINGUAL>
         </TD>
       </TR>
       <TR>
@@ -254,11 +326,16 @@
 	  </SPLITINLINE>
         </TD>
         <TD>
-          Construct the product of <SCHEMEINLINE>m1</SCHEMEINLINE> and
-	  <SCHEMEINLINE>m2</SCHEMEINLINE>.
+	  <BILINGUAL>
+	  <EN>Construct the product of <SCHEMEINLINE>m1</SCHEMEINLINE> and
+	  <SCHEMEINLINE>m2</SCHEMEINLINE>.</EN>
+	  <JA><SCHEMEINLINE>m1</SCHEMEINLINE> と <SCHEMEINLINE>m2</SCHEMEINLINE> の積を構成する。</JA>
+	  </BILINGUAL>
         </TD>
       </TR>
     </TABLE>
+    <BILINGUAL>
+    <EN>
     Using these, and the primitive predicate
     <INDEX><USE>is_number</USE> (primitive function)</INDEX>
     <INDEX><PRIMITIVE/><SUBINDEX><USE>is_number</USE> (\textit{ns})</SUBINDEX></INDEX>
@@ -272,6 +349,18 @@
       <SCHEME>procedure:</SCHEME>
       <JAVASCRIPT>function:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    これらと、数を識別するプリミティブな述語
+    <INDEX><USE>is_number</USE> (primitive function)</INDEX>
+    <INDEX><PRIMITIVE/><SUBINDEX><USE>is_number</USE> (\textit{ns})</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>number?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_number</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使って、微分規則を次の<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>として表現できます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>deriv</DECLARATION> (symbolic)</INDEX>
       <NAME>deriv</NAME>
@@ -323,6 +412,8 @@ function deriv(exp, variable) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     This <SCHEMEINLINE>deriv</SCHEMEINLINE>
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -332,14 +423,26 @@ function deriv(exp, variable) {
     in terms of abstract data, it will work no matter how we choose to
     represent algebraic expressions, as long as we design a proper set of
     selectors and constructors.  This is the issue we must address next.
+    </EN>
+    <JA>
+    この <SCHEMEINLINE>deriv</SCHEMEINLINE> <SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>は完全な微分アルゴリズムを組み込んでいます。抽象データで表現されているため、適切なセレクタとコンストラクタの組を設計する限り、代数式をどのように表現するかに関係なく動作します。これが次に取り組むべき問題です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Representing algebraic expressions</NAME>
+    <NAME>
+      <BILINGUAL>
+      <EN>Representing algebraic expressions</EN>
+      <JA>代数式の表現</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>algebraic expression<SUBINDEX>representing<OPEN/></SUBINDEX></INDEX>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can imagine many ways to use list structure to represent algebraic
     expressions.  For example, we could use lists of symbols that mirror the
     usual algebraic notation, representing <LATEXINLINE>$ax+b$</LATEXINLINE> as
@@ -354,7 +457,7 @@ function deriv(exp, variable) {
 	However, one especially straightforward choice is to use the same
 	parenthesized prefix notation that Lisp uses for combinations; that
 	is, to represent <LATEXINLINE>$ax+b$</LATEXINLINE> as
-	<SCHEMEINLINE>(+ (* a x) b)</SCHEMEINLINE>. Then our 
+	<SCHEMEINLINE>(+ (* a x) b)</SCHEMEINLINE>. Then our
       </SCHEME>
       <JAVASCRIPT>
         However, it will be more convenient if we reflect the mathematical
@@ -362,15 +465,22 @@ function deriv(exp, variable) {
 	that is, to represent <LATEXINLINE>$ax+b$</LATEXINLINE> as
 	<JAVASCRIPTINLINE>list("+", list("*", "a", "x"), "b")</JAVASCRIPTINLINE>.
 	Placing a binary operator in front of its operands is called
-	<INDEX>prefix notation</INDEX>	
+	<INDEX>prefix notation</INDEX>
 	<EM>prefix notation</EM>,
 	in contrast with the infix notation introduced in
 	section<SPACE/><REF NAME="sec:expressions"/>. With prefix notation, our
       </JAVASCRIPT>
     </SPLITINLINE>
     data representation for the differentiation problem is as follows:
+    </EN>
+    <JA>
+    リスト構造を使って代数式を表現する方法は多数考えられます。例えば、通常の代数的記法を反映した<SPLITINLINE><SCHEME>シンボル</SCHEME><JAVASCRIPT>文字列</JAVASCRIPT></SPLITINLINE>のリストを使い、<LATEXINLINE>$ax+b$</LATEXINLINE> を <SPLITINLINE><SCHEME>リスト <SCHEMEINLINE>(a * x + b)</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>list("a", "*", "x", "+", "b")</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> として表現できます。<SPLITINLINE><SCHEME>しかし、特に素直な選択は、Lisp が組み合わせに使うのと同じ括弧付き前置記法を使うことです。つまり、<LATEXINLINE>$ax+b$</LATEXINLINE> を <SCHEMEINLINE>(+ (* a x) b)</SCHEMEINLINE> として表現します。そうすれば、</SCHEME><JAVASCRIPT>しかし、式の数学的構造を、それを表す JavaScript の値に反映させるほうが便利です。つまり、<LATEXINLINE>$ax+b$</LATEXINLINE> を <JAVASCRIPTINLINE>list("+", list("*", "a", "x"), "b")</JAVASCRIPTINLINE> として表現します。二項演算子をそのオペランドの前に置くことを<INDEX>prefix notation</INDEX><EM>前置記法</EM>と呼び、セクション<SPACE/><REF NAME="sec:expressions"/>で導入した中置記法とは対照的です。前置記法を使うと、</JAVASCRIPT></SPLITINLINE>微分問題のためのデータ表現は次のようになります。
+    </JA>
+    </BILINGUAL>
     <UL>
       <LI>
+	<BILINGUAL>
+	<EN>
 	The variables are
 	<SPLITINLINE>
 	  <SCHEME>symbols.</SCHEME>
@@ -384,6 +494,14 @@ function deriv(exp, variable) {
 	  <JAVASCRIPT><JAVASCRIPTINLINE>is_string</JAVASCRIPTINLINE>:
 	  </JAVASCRIPT>
 	</SPLITINLINE>
+	</EN>
+	<JA>
+	変数は単なる<SPLITINLINE><SCHEME>シンボル</SCHEME><JAVASCRIPT>文字列</JAVASCRIPT></SPLITINLINE>です。プリミティブな述語
+	<INDEX><USE>is_string</USE> (primitive function)</INDEX>
+	<INDEX><PRIMITIVE/><SUBINDEX><USE>is_string</USE> (\textit{ns})</SUBINDEX></INDEX>
+	<SPLITINLINE><SCHEME><SCHEMEINLINE>symbol?</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>is_string</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> で識別されます。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET HIDE="yes">
           <NAME>is_variable_example</NAME>
           <SCHEME>
@@ -407,6 +525,8 @@ function is_variable(x) { return is_string(x); }
         </SNIPPET>
       </LI>
       <LI>
+	<BILINGUAL>
+	<EN>
 	Two variables are the same if the
 	<SPLITINLINE>
           <SCHEME>symbols representing them are
@@ -415,6 +535,11 @@ function is_variable(x) { return is_string(x); }
           <JAVASCRIPT>strings representing them are equal:
           </JAVASCRIPT>
 	</SPLITINLINE>
+	</EN>
+	<JA>
+	2つの変数は、それらを表す<SPLITINLINE><SCHEME>シンボルが <SCHEMEINLINE>eq?</SCHEMEINLINE> である</SCHEME><JAVASCRIPT>文字列が等しい</JAVASCRIPT></SPLITINLINE>場合に同じです。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET HIDE="yes">
           <NAME>is_same_variable_example</NAME>
           <SCHEME>
@@ -442,7 +567,10 @@ function is_same_variable(v1, v2) {
 	</SNIPPET>
       </LI>
       <LI>
-	Sums and products are constructed as lists:
+	<BILINGUAL>
+	<EN>Sums and products are constructed as lists:</EN>
+	<JA>和と積はリストとして構成されます。</JA>
+	</BILINGUAL>
 	<SNIPPET HIDE="yes">
           <NAME>make_sum_example</NAME>
           <REQUIRES>make_sum</REQUIRES>
@@ -474,12 +602,19 @@ function make_product(m1, m2) { return list("*", m1, m2); }
 	</SNIPPET>
       </LI>
       <LI>
+	<BILINGUAL>
+	<EN>
 	A sum is a list whose first element is the
         <SPLITINLINE>
           <SCHEME>symbol <SCHEMEINLINE>+</SCHEMEINLINE>:</SCHEME>
           <JAVASCRIPT>string <JAVASCRIPTINLINE>"+"</JAVASCRIPTINLINE>:
 	  </JAVASCRIPT>
         </SPLITINLINE>
+	</EN>
+	<JA>
+	和は最初の要素が<SPLITINLINE><SCHEME>シンボル <SCHEMEINLINE>+</SCHEMEINLINE></SCHEME><JAVASCRIPT>文字列 <JAVASCRIPTINLINE>"+"</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> であるリストです。
+	</JA>
+	</BILINGUAL>
         <SNIPPET HIDE="yes">
           <NAME>is_sum_example</NAME>
           <REQUIRES>make_sum</REQUIRES>
@@ -507,7 +642,10 @@ function is_sum(x) {
         </SNIPPET>
       </LI>
       <LI>
-	The addend is the second item of the sum list:
+	<BILINGUAL>
+	<EN>The addend is the second item of the sum list:</EN>
+	<JA>加数は和リストの2番目の要素です。</JA>
+	</BILINGUAL>
         <SNIPPET HIDE="yes">
           <NAME>addend_example</NAME>
           <REQUIRES>make_sum</REQUIRES>
@@ -532,7 +670,10 @@ function addend(s) { return head(tail(s)); }
         </SNIPPET>
       </LI>
       <LI>
-	The augend is the third item of the sum list:
+	<BILINGUAL>
+	<EN>The augend is the third item of the sum list:</EN>
+	<JA>被加数は和リストの3番目の要素です。</JA>
+	</BILINGUAL>
         <SNIPPET HIDE="yes">
           <NAME>augend_example</NAME>
           <REQUIRES>make_sum</REQUIRES>
@@ -557,12 +698,19 @@ function augend(s) { return head(tail(tail(s))); }
         </SNIPPET>
       </LI>
       <LI>
+	<BILINGUAL>
+	<EN>
 	A product is a list whose first element is the
         <SPLITINLINE>
           <SCHEME>symbol <SCHEMEINLINE>*</SCHEMEINLINE>:</SCHEME>
           <JAVASCRIPT>string <JAVASCRIPTINLINE>"*"</JAVASCRIPTINLINE>:
 	  </JAVASCRIPT>
         </SPLITINLINE>
+	</EN>
+	<JA>
+	積は最初の要素が<SPLITINLINE><SCHEME>シンボル <SCHEMEINLINE>*</SCHEMEINLINE></SCHEME><JAVASCRIPT>文字列 <JAVASCRIPTINLINE>"*"</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> であるリストです。
+	</JA>
+	</BILINGUAL>
         <SNIPPET HIDE="yes">
           <NAME>is_product_example</NAME>
           <REQUIRES>make_sum</REQUIRES>
@@ -590,7 +738,10 @@ function is_product(x) {
         </SNIPPET>
       </LI>
       <LI>
-	The multiplier is the second item of the product list:
+	<BILINGUAL>
+	<EN>The multiplier is the second item of the product list:</EN>
+	<JA>乗数は積リストの2番目の要素です。</JA>
+	</BILINGUAL>
         <SNIPPET HIDE="yes">
           <NAME>multiplier_example</NAME>
           <REQUIRES>make_sum</REQUIRES>
@@ -615,7 +766,10 @@ function multiplier(s) { return head(tail(s)); }
         </SNIPPET>
       </LI>
       <LI>
-	The multiplicand is the third item of the product list:
+	<BILINGUAL>
+	<EN>The multiplicand is the third item of the product list:</EN>
+	<JA>被乗数は積リストの3番目の要素です。</JA>
+	</BILINGUAL>
         <SNIPPET HIDE="yes">
           <NAME>multiplicand_example</NAME>
           <REQUIRES>make_sum</REQUIRES>
@@ -640,10 +794,17 @@ function multiplicand(s) { return head(tail(tail(s))); }
         </SNIPPET>
       </LI>
     </UL>
+    <BILINGUAL>
+    <EN>
     Thus, we need only combine these with the algorithm as embodied by
     <SCHEMEINLINE>deriv</SCHEMEINLINE> in order to have a working
     symbolic-differentiation program.  Let us look at some examples of its
     behavior:
+    </EN>
+    <JA>
+    したがって、これらを <SCHEMEINLINE>deriv</SCHEMEINLINE> に組み込まれたアルゴリズムと組み合わせるだけで、動作するシンボリック微分プログラムが得られます。いくつかの動作例を見てみましょう。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>deriv_example_8</NAME>
       <REQUIRES>deriv</REQUIRES>
@@ -705,8 +866,15 @@ list("+", list("*", list("*", "x", "y"), list("+", 1, 0)),
                     list("+", "x", 3)))
     </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The program produces answers that are correct; however, they are
     unsimplified.  It is true that
+    </EN>
+    <JA>
+    プログラムは正しい答えを生成しますが、簡約化されていません。確かに
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{lll}
@@ -714,6 +882,8 @@ list("+", list("*", list("*", "x", "y"), list("+", 1, 0)),
       \end{array}
       \]
     </LATEX>
+    <BILINGUAL>
+    <EN>
     but we would like the program to know that
     <LATEXINLINE>$x\cdot 0 = 0$</LATEXINLINE>,
     <LATEXINLINE>$1\cdot y = y$</LATEXINLINE>, and
@@ -721,8 +891,15 @@ list("+", list("*", list("*", "x", "y"), list("+", 1, 0)),
     should have been simply<SPACE/><SCHEMEINLINE>y</SCHEMEINLINE>.  As the
     third example shows, this becomes a serious issue when the expressions are
     complex.
+    </EN>
+    <JA>
+    ですが、プログラムには <LATEXINLINE>$x\cdot 0 = 0$</LATEXINLINE>、<LATEXINLINE>$1\cdot y = y$</LATEXINLINE>、そして <LATEXINLINE>$0+y = y$</LATEXINLINE> を知っていてほしいと思います。2番目の例の答えは単に<SPACE/><SCHEMEINLINE>y</SCHEMEINLINE> であるべきでした。3番目の例が示すように、式が複雑になるとこれは深刻な問題になります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Our difficulty is much like the one we encountered with the rational-number
     implementation:
     <INDEX>algebraic expression<SUBINDEX>simplifying<OPEN/></SUBINDEX></INDEX>
@@ -747,6 +924,14 @@ list("+", list("*", list("*", "x", "y"), list("+", 1, 0)),
       <JAVASCRIPT><JAVASCRIPTINLINE>make_sum</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     will return the other summand.
+    </EN>
+    <JA>
+    私たちの困難は、有理数の実装で遭遇したものとよく似ています。
+    <INDEX>algebraic expression<SUBINDEX>simplifying<OPEN/></SUBINDEX></INDEX>
+    <INDEX>simplification of algebraic expressions</INDEX>
+    答えを最も簡単な形に簡約化していないのです。有理数の約分を達成するには、実装のコンストラクタとセレクタを変更するだけで済みました。ここでも同様の戦略を採用できます。<SCHEMEINLINE>deriv</SCHEMEINLINE> はまったく変更しません。代わりに、<SPLITINLINE><SCHEME><SCHEMEINLINE>make-sum</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>make_sum</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> を変更して、両方の加数が数である場合にはそれらを加算してその和を返すようにします。また、加数の一方が 0 であれば、<SPLITINLINE><SCHEME><SCHEMEINLINE>make-sum</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>make_sum</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> はもう一方の加数を返すようにします。
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>make_sum_example_2</NAME>
       <SCHEME>
@@ -781,6 +966,8 @@ function make_sum(a1, a2) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     This uses the
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -791,6 +978,11 @@ function make_sum(a1, a2) {
       <JAVASCRIPT><JAVASCRIPTINLINE>number_equal</JAVASCRIPTINLINE>,
     </JAVASCRIPT></SPLITINLINE>
     which checks whether an expression is equal to a given number:
+    </EN>
+    <JA>
+    これは、式が与えられた数と等しいかどうかをチェックする<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE> <SPLITINLINE><SCHEME><SCHEMEINLINE>=number?</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>number_equal</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> を使用しています。
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>number_equal_example</NAME>
       <SCHEME>
@@ -815,6 +1007,8 @@ function number_equal(exp, num) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Similarly, we will change
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-product</SCHEMEINLINE></SCHEME>
@@ -823,6 +1017,11 @@ function number_equal(exp, num) {
     </SPLITINLINE>
     to build in the rules that 0 times anything is 0 and 1 times anything is
     the thing itself:
+    </EN>
+    <JA>
+    同様に、<SPLITINLINE><SCHEME><SCHEMEINLINE>make-product</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>make_product</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> を変更して、0 に何を掛けても 0、1 に何を掛けてもそのもの自身という規則を組み込みます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>make_product_example_2</NAME>
       <SCHEME>
@@ -909,7 +1108,10 @@ function deriv(exp, variable) {
 }
       </JAVASCRIPT>
     </SNIPPET>
-    Here is how this version works on our three examples:
+    <BILINGUAL>
+    <EN>Here is how this version works on our three examples:</EN>
+    <JA>このバージョンが先の3つの例でどのように動作するか見てみましょう。</JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>here_is_how</NAME>
       <REQUIRES>deriv_2</REQUIRES>
@@ -964,19 +1166,36 @@ head(tail(deriv(list("*", list("*", "x", "y"), list("+", "x", 3)), "x")));
 list("+", list("*", "x", "y"), list("*", "y", list("+", "x", 3)))
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Although this is quite an improvement, the third example shows that there
     is still a long way to go before we get a program that puts expressions
     into a form that we might agree is <QUOTE>simplest.</QUOTE>  The problem
     of algebraic simplification is complex because, among other reasons, a
     form that may be simplest for one purpose may not be for another.
     <INDEX>algebraic expression<SUBINDEX>simplifying<CLOSE/></SUBINDEX></INDEX>
+    </EN>
+    <JA>
+    これはかなりの改善ですが、3番目の例は、式を<QUOTE>最も簡単</QUOTE>と言えるような形にするプログラムを得るまでには、まだ長い道のりがあることを示しています。代数的簡約化の問題が複雑なのは、ある目的にとって最も簡単な形式が別の目的にとってはそうでないかもしれないなど、さまざまな理由があるからです。
+    <INDEX>algebraic expression<SUBINDEX>simplifying<CLOSE/></SUBINDEX></INDEX>
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Show how to extend the basic differentiator to handle more kinds of
     expressions.
     <INDEX>differentiation<SUBINDEX>rules for</SUBINDEX></INDEX>
     For instance, implement the differentiation rule
+    </EN>
+    <JA>
+    基本的な微分器を拡張して、より多くの種類の式を扱えるようにする方法を示しなさい。
+    <INDEX>differentiation<SUBINDEX>rules for</SUBINDEX></INDEX>
+    例えば、次の微分規則を実装しなさい。
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{lll}
@@ -984,6 +1203,8 @@ list("+", list("*", "x", "y"), list("*", "y", list("+", "x", 3)))
       \end{array}
       \]
     </LATEX>
+    <BILINGUAL>
+    <EN>
     by adding a new clause to the <SCHEMEINLINE>deriv</SCHEMEINLINE> program
     and defining appropriate
     <SPLITINLINE>
@@ -1008,6 +1229,11 @@ list("+", list("*", "x", "y"), list("*", "y", list("+", "x", 3)))
     </SPLITINLINE>
     to denote exponentiation.) Build in the rules that anything raised to the
     power 0 is 1 and anything raised to the power 1 is the thing itself.
+    </EN>
+    <JA>
+    <SCHEMEINLINE>deriv</SCHEMEINLINE> プログラムに新しい節を追加し、適切な<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE> <SPLITINLINE><SCHEME><SCHEMEINLINE>exponentiation?</SCHEMEINLINE>、</SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>is_exp</JAVASCRIPTINLINE>、</JAVASCRIPT></SPLITINLINE><SCHEMEINLINE>base</SCHEMEINLINE>、<SCHEMEINLINE>exponent</SCHEMEINLINE>、および <SPLITINLINE><SCHEME><SCHEMEINLINE>make-exponentiation</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>make_exp</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> を定義しなさい。（べき乗を表すために<SPLITINLINE><SCHEME>シンボル <SCHEMEINLINE>**</SCHEMEINLINE></SCHEME><JAVASCRIPT>文字列 <JAVASCRIPTINLINE>"**"</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> を使ってよいです。）何を 0 乗しても 1 になり、何を 1 乗してもそのもの自身になるという規則を組み込みなさい。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:deriv-exponentiation"/>
     <SOLUTION>
       <SNIPPET>
@@ -1083,9 +1309,16 @@ head(tail(head(tail(deriv(list("**", "x", 4), "x")))));
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Extend the differentiation program to handle sums and products of arbitrary
     numbers of (two or more) terms. Then the last example above could be
     expressed as
+    </EN>
+    <JA>
+    微分プログラムを拡張して、任意の個数（2つ以上）の項の和と積を扱えるようにしなさい。そうすれば、上記の最後の例は次のように表現できます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>deriv_3</NAME>
       <REQUIRES>is_variable</REQUIRES>
@@ -1150,6 +1383,8 @@ function deriv(exp, variable) {
 deriv(list("*", "x", "y", list("+", "x", 3)), "x");
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Try to do this by changing only the
     representation for sums and products, without changing the
     <SCHEMEINLINE>deriv</SCHEMEINLINE>
@@ -1160,6 +1395,11 @@ deriv(list("*", "x", "y", list("+", "x", 3)), "x");
     at all.  For example, the <SCHEMEINLINE>addend</SCHEMEINLINE> of a sum would
     be the first term, and the <SCHEMEINLINE>augend</SCHEMEINLINE> would be the
     sum of the rest of the terms.
+    </EN>
+    <JA>
+    <SCHEMEINLINE>deriv</SCHEMEINLINE> <SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>をまったく変更せず、和と積の表現だけを変更してこれを実現してみなさい。例えば、和の <SCHEMEINLINE>addend</SCHEMEINLINE> は最初の項であり、<SCHEMEINLINE>augend</SCHEMEINLINE> は残りの項の和とすればよいでしょう。
+    </JA>
+    </BILINGUAL>
     <SOLUTION>
     <SNIPPET HIDE="yes">
     <NAME>deriv_3_solution_example</NAME>
@@ -1277,6 +1517,8 @@ head(tail(deriv(list("*", "x", "y", list("+", "x", 3)), "x")));
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Suppose we want to modify the differentiation program so that it works
     with ordinary mathematical notation, in which
     <SPLITINLINE>
@@ -1296,8 +1538,18 @@ head(tail(deriv(list("*", "x", "y", list("+", "x", 3)), "x")));
     different representations of expressions solely by changing the predicates,
     selectors, and constructors that define the representation of the algebraic
     expressions on which the differentiator is to operate.
+    </EN>
+    <JA>
+    微分プログラムを修正して、<SPLITINLINE><SCHEME><SCHEMEINLINE>+</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>"+"</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> と <SPLITINLINE><SCHEME><SCHEMEINLINE>*</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>"*"</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> が前置ではなく
+    <INDEX>infix notation<SUBINDEX>prefix notation vs.</SUBINDEX></INDEX>
+    <INDEX>prefix notation<SUBINDEX>infix notation vs.</SUBINDEX></INDEX>
+    中置演算子である通常の数学的記法で動作するようにしたいとします。微分プログラムは抽象データの観点から定義されているため、微分器が操作する代数式の表現を定義する述語、セレクタ、コンストラクタを変更するだけで、異なる表現で動作するように修正できます。
+    </JA>
+    </BILINGUAL>
     <OL>
       <LI>
+	<BILINGUAL>
+	<EN>
         Show how to do this in order to differentiate algebraic expressions
 	presented in infix form,
 	<SPLITINLINE>
@@ -1306,13 +1558,24 @@ head(tail(deriv(list("*", "x", "y", list("+", "x", 3)), "x")));
 	    <SCHEMEINLINE>(x + (3 * (x + (y + 2))))</SCHEMEINLINE>.
 	  </SCHEME>
 	  <JAVASCRIPT>as in this example:
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	</EN>
+	<JA>
+	中置形式で表現された代数式を微分するために、これをどのように行うか示しなさい。<SPLITINLINE><SCHEME>例えば <SCHEMEINLINE>(x + (3 * (x + (y + 2))))</SCHEMEINLINE> のような式です。</SCHEME><JAVASCRIPT>次の例のようにします。</JAVASCRIPT></SPLITINLINE>
+	</JA>
+	</BILINGUAL>
+	<SPLIT>
+	  <JAVASCRIPT>
 	  <SNIPPET EVAL="no">
 	    <JAVASCRIPT>
 list("x", "+", list(3, "*", list("x", "+", list("y", "+", 2))))
 	    </JAVASCRIPT>
 	  </SNIPPET>
 	  </JAVASCRIPT>
-	</SPLITINLINE>
+	</SPLIT>
+	<BILINGUAL>
+	<EN>
         To simplify the task, assume that
 	<SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>+</SCHEMEINLINE></SCHEME>
@@ -1324,8 +1587,15 @@ list("x", "+", list(3, "*", list("x", "+", list("y", "+", 2))))
 	  <JAVASCRIPT><JAVASCRIPTINLINE>"*"</JAVASCRIPTINLINE></JAVASCRIPT>
 	</SPLITINLINE>
 	always take two arguments and that expressions are fully parenthesized.
+	</EN>
+	<JA>
+	課題を簡単にするため、<SPLITINLINE><SCHEME><SCHEMEINLINE>+</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>"+"</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> と <SPLITINLINE><SCHEME><SCHEMEINLINE>*</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>"*"</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> は常に2つの引数を取り、式は完全に括弧付けされていると仮定しなさい。
+	</JA>
+	</BILINGUAL>
       </LI>
       <LI>
+	<BILINGUAL>
+	<EN>
         The problem becomes substantially harder if we allow
         <SPLITINLINE>
           <SCHEME>
@@ -1338,15 +1608,31 @@ list("x", "+", list(3, "*", list("x", "+", list("y", "+", 2))))
 	    parentheses and assumes that
 	    multiplication has higher precedence than addition, as in this
 	    example:
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	</EN>
+	<JA>
+	<SPLITINLINE><SCHEME>不要な括弧を省略し、乗算が加算より先に行われると仮定する標準的な代数記法（例えば <SCHEMEINLINE>(x + 3 * (x + y + 2))</SCHEMEINLINE>）を許可すると、問題はかなり難しくなります。</SCHEME><JAVASCRIPT>不要な括弧を省略し、乗算が加算より高い優先順位を持つと仮定する、通常の中置記法に近い表記を許可すると、問題はかなり難しくなります。次の例のようにします。</JAVASCRIPT></SPLITINLINE>
+	</JA>
+	</BILINGUAL>
+	<SPLIT>
+	  <JAVASCRIPT>
 	    <SNIPPET EVAL="no">
 	      <JAVASCRIPT>
 list("x", "+", 3, "*", list("x", "+", "y", "+", 2))
               </JAVASCRIPT>
 	    </SNIPPET>
 	  </JAVASCRIPT>
-	</SPLITINLINE>
+	</SPLIT>
+	<BILINGUAL>
+	<EN>
         Can you design appropriate predicates, selectors, and constructors for
 	this notation such that our derivative program still works?
+	</EN>
+	<JA>
+	この表記に対して適切な述語、セレクタ、コンストラクタを設計して、微分プログラムが引き続き動作するようにできますか？
+	</JA>
+	</BILINGUAL>
       </LI>
     </OL>
     <SOLUTION>
