@@ -64,10 +64,35 @@ const Navigation: FC = () => {
           ${raw(<NavigationElements />)}
         </span></span
       >
-      <div class="btn-group btn-group-sm" role="group" style="margin-left: auto;">
-        <button id="lang-en" class="btn btn-sm btn-light" onclick="setLang('en')" style="font-size: 0.8rem; padding: 2px 8px;">EN</button>
-        <button id="lang-ja" class="btn btn-sm btn-outline-light" onclick="setLang('ja')" style="font-size: 0.8rem; padding: 2px 8px;">JA</button>
-        <button id="lang-both" class="btn btn-sm btn-outline-light" onclick="setLang('both')" style="font-size: 0.8rem; padding: 2px 8px;">EN/JA</button>
+      <div
+        class="btn-group btn-group-sm"
+        role="group"
+        style="margin-left: auto;"
+      >
+        <button
+          id="lang-en"
+          class="btn btn-sm btn-light"
+          onclick="setLang('en')"
+          style="font-size: 0.8rem; padding: 2px 8px;"
+        >
+          EN
+        </button>
+        <button
+          id="lang-ja"
+          class="btn btn-sm btn-outline-light"
+          onclick="setLang('ja')"
+          style="font-size: 0.8rem; padding: 2px 8px;"
+        >
+          JA
+        </button>
+        <button
+          id="lang-both"
+          class="btn btn-sm btn-outline-light"
+          onclick="setLang('both')"
+          style="font-size: 0.8rem; padding: 2px 8px;"
+        >
+          EN/JA
+        </button>
       </div>
     </nav>`;
 };
