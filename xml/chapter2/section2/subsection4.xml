@@ -1,12 +1,17 @@
 <SUBSECTION>
   <NAME>
-    Example: A Picture Language
+    <BILINGUAL>
+    <EN>Example: A Picture Language</EN>
+    <JA>例：ピクチャー言語</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:graphics"/>
   <INDEX>picture language<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     This section presents a simple language for drawing pictures that
     illustrates the power of data abstraction and closure, and also exploits
     higher-order
@@ -17,7 +22,19 @@
     in an essential way.  The language is designed to make it easy to
     experiment with patterns such as the ones in
     figure<SPACE/><REF NAME="fig:sqlimit-designs"/>, which are composed of
-    repeated elements that are shifted and scaled.<FOOTNOTE>The picture
+    repeated elements that are shifted and scaled.
+    </EN>
+    <JA>
+    この節では、データ抽象と閉包性の力を示し、さらに高階
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を本質的に活用する、絵を描くための簡単な言語を紹介します。この言語は、図<SPACE/><REF NAME="fig:sqlimit-designs"/>に示すような、要素をシフトしたりスケーリングしたりして繰り返すパターンを簡単に試せるように設計されています。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>The picture
     language is based on the language
     <INDEX>Henderson, Peter</INDEX>
     Peter Henderson created to construct images like
@@ -33,7 +50,26 @@
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    in this section.</FOOTNOTE> In this language, the data objects being
+    in this section.</EN>
+    <JA>このピクチャー言語は、
+    <INDEX>Henderson, Peter</INDEX>
+    Peter Henderson が
+    <INDEX>Escher, Maurits Cornelis</INDEX>
+    M.C. エッシャーの木版画<QUOTE>Square Limit</QUOTE>のような画像を作るために考案した言語に基づいています（<CITATION>Henderson 1982</CITATION> 参照）。この木版画は繰り返しスケーリングされたパターンを含んでおり、この節の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>square-limit</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>square_limit</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を使って描かれる配置と似ています。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    In this language, the data objects being
     combined are represented as
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -49,9 +85,30 @@
     closure property, allowed us to easily build arbitrarily complicated list
     structure, the operations in this language, which also satisfy the closure
     property, allow us to easily build arbitrarily complicated patterns.
+    </EN>
+    <JA>
+    この言語では、組み合わせるデータオブジェクトはリスト構造ではなく
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    として表現されます。
+    <INDEX>closure<SUBINDEX><ORDER>closurepict</ORDER>closure property of picture-language operations</SUBINDEX></INDEX>
+    閉包性を満たす
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    によって任意に複雑なリスト構造を簡単に構築できたのと同様に、やはり閉包性を満たすこの言語の演算によって、任意に複雑なパターンを簡単に構築できます。
+    </JA>
+    </BILINGUAL>
     <FIGURE scale="0.5" src="img_original/2.9.svg">
       <LABEL NAME="fig:sqlimit-designs"/>
-      <CAPTION>Designs generated with the picture language.
+      <CAPTION>
+      <BILINGUAL>
+      <EN>Designs generated with the picture language.</EN>
+      <JA>ピクチャー言語で生成されたデザイン。</JA>
+      </BILINGUAL>
       </CAPTION>
     </FIGURE>
 
@@ -71,19 +128,28 @@
   </TEXT>
 
   <SUBHEADING>
-    <NAME>The picture language</NAME>
+    <NAME><BILINGUAL><EN>The picture language</EN><JA>ピクチャー言語</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <SHORT_PAGE lines="4"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     When we began our study of programming in
     section<SPACE/><REF NAME="sec:elements-of-programming"/>, we emphasized the
     importance of describing a language by focusing on the language<APOS/>s
     primitives, its means of combination, and its means of abstraction.
     We<APOS/>ll follow that framework here.
+    </EN>
+    <JA>
+    セクション<SPACE/><REF NAME="sec:elements-of-programming"/>でプログラミングの学習を始めたとき、言語のプリミティブ、組み合わせの手段、抽象化の手段に着目して言語を記述することの重要性を強調しました。ここでもその枠組みに従います。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Part of the elegance of this picture language is that there is only one
     kind of element, called a
     <INDEX>painter(s)</INDEX>
@@ -94,11 +160,24 @@
     we<APOS/>ll call <SCHEMEINLINE>wave</SCHEMEINLINE>
     that makes a crude line drawing,
     as shown in figure<SPACE/><REF NAME="fig:wave"/>.
+    </EN>
+    <JA>
+    このピクチャー言語の優雅さの一つは、要素が
+    <INDEX>painter(s)</INDEX>
+    <EM>ペインタ</EM>と呼ばれる1種類しかないことです。ペインタは、指定された
+    <INDEX>frame (picture language)</INDEX>
+    平行四辺形のフレームに収まるようにシフト・スケーリングされた画像を描きます。たとえば、<SCHEMEINLINE>wave</SCHEMEINLINE> というプリミティブなペインタがあり、図<SPACE/><REF NAME="fig:wave"/>に示すような大まかな線画を描きます。
+    </JA>
+    </BILINGUAL>
     <FIGURE  web_scale="0.6" scale="1" src="img_original/2.10.svg">
       <LABEL NAME="fig:wave"/>
-      <CAPTION>Images produced by the <SCHEMEINLINE>wave</SCHEMEINLINE>
+      <CAPTION>
+      <BILINGUAL>
+      <EN>Images produced by the <SCHEMEINLINE>wave</SCHEMEINLINE>
       painter, with respect to four different frames.  The frames, shown
-      with dashed lines, are not part of the images.
+      with dashed lines, are not part of the images.</EN>
+      <JA><SCHEMEINLINE>wave</SCHEMEINLINE> ペインタが4つの異なるフレームに対して生成した画像。破線で示されたフレームは画像の一部ではない。</JA>
+      </BILINGUAL>
       </CAPTION>
     </FIGURE>
 
@@ -115,13 +194,22 @@
           </FIGURE>
         </JAVASCRIPT>
     -->
+    <BILINGUAL>
+    <EN>
     The actual shape of the drawing depends on the frame<EMDASH/>all four
     images in figure<SPACE/><REF NAME="fig:wave"/> are produced by the same
     <SCHEMEINLINE>wave</SCHEMEINLINE> painter, but with respect to four
     different frames. Painters can be more elaborate than this: The primitive
     painter called <SCHEMEINLINE>rogers</SCHEMEINLINE> paints a picture of
     MIT<APOS/>s founder, William Barton Rogers, as shown in
-    figure<SPACE/><REF NAME="fig:rogers"/>.<FOOTNOTE>
+    figure<SPACE/><REF NAME="fig:rogers"/>.
+    </EN>
+    <JA>
+    描画の実際の形はフレームに依存します——図<SPACE/><REF NAME="fig:wave"/>の4つの画像はすべて同じ <SCHEMEINLINE>wave</SCHEMEINLINE> ペインタで生成されていますが、4つの異なるフレームに対して描かれています。ペインタはもっと手の込んだものにもできます。<SCHEMEINLINE>rogers</SCHEMEINLINE> というプリミティブなペインタは、MIT の創設者 William Barton Rogers の肖像を描きます（図<SPACE/><REF NAME="fig:rogers"/>参照）。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     <INDEX>MIT<SUBINDEX>early history of</SUBINDEX></INDEX>
     <INDEX>Rogers, William Barton</INDEX>
       William Barton Rogers (1804<ENDASH/>1882) was the founder and first
@@ -181,56 +269,131 @@
 	and he died as so good a knight would surely have wished, in
 	harness, at his post, and in the very part and act of public duty.
       </BLOCKQUOTE>
+    </EN>
+    <JA>
+    <INDEX>MIT<SUBINDEX>early history of</SUBINDEX></INDEX>
+    <INDEX>Rogers, William Barton</INDEX>
+      William Barton Rogers（1804<ENDASH/>1882）は MIT の創設者であり初代学長でした。地質学者で優れた教育者であった彼は、ウィリアム・アンド・メアリー大学とバージニア大学で教鞭を執りました。1859年にボストンに移り、研究により多くの時間を割き、<QUOTE>工科大学</QUOTE>設立の計画に取り組み、マサチューセッツ州初のガスメーター検査官を務めました。
+      <P/>
+      1861年に MIT が設立されると、Rogers は初代学長に選出されました。Rogers は当時の大学教育、すなわち古典を過度に重視する教育とは異なる<QUOTE>有用な学問</QUOTE>の理想を掲げました。彼が書いたように、古典は<QUOTE>自然科学と社会科学のより広く、より高度で、より実践的な教育と訓練の妨げになっている</QUOTE>のです。この教育はまた、狭い職業訓練学校の教育とも異なるものでした。Rogers の言葉を借りれば：
+      <BLOCKQUOTE>
+        実務家と科学者の間に世間が押しつけた区別はまったく無益であり、近代のあらゆる経験がその全くの無価値さを証明している。
+      </BLOCKQUOTE>
+      Rogers は1870年に健康上の理由で辞任するまで MIT の学長を務めました。1878年、MIT の第2代学長
+      <INDEX>Runkle, John Daniel</INDEX>
+      John Runkle は、1873年の恐慌による財政危機と、ハーバードによる MIT 吸収合併の試みと戦うストレスのもとで辞任しました。Rogers は1881年まで学長職に復帰しました。
+      <P/>
+      Rogers は1882年の卒業式で卒業生に向けて演説中に倒れ、亡くなりました。Runkle は同年に行われた追悼演説で Rogers の最後の言葉を引用しています：
+      <BLOCKQUOTE>
+        <QUOTE>今日ここに立ち、この学院が何であるかを見るにつけ、<ELLIPSIS/><SPACE/>科学の始まりに思いを馳せます。150年前、Stephen Hales が照明用ガスに関する小冊子を出版し、その研究により128グレインの瀝青炭が——</QUOTE>
+        <P/>
+          <INDEX>coal, bituminous</INDEX>
+          <QUOTE>瀝青炭</QUOTE>——これが彼のこの世での最後の言葉でした。ここで彼は前かがみになり、目の前のテーブルのメモを確認するかのようでしたが、ゆっくりと姿勢を正し、両手を挙げ、地上での労苦と勝利の場から<QUOTE>死の明日</QUOTE>へと移されました。そこでは生の謎が解かれ、肉体を離れた精神は、無限の未来のなお計り知れない新たな謎を思索することに尽きることのない満足を見出すのです。
+      </BLOCKQUOTE>
+      Francis A. Walker
+      <INDEX>Walker, Francis Amasa</INDEX>
+      （MIT 第3代学長）の言葉によれば：
+      <BLOCKQUOTE>
+        生涯を通じて彼はこの上なく誠実に、そして英雄的に身を処し、立派な騎士が願うであろうまさにその通りに、甲冑に身を包み、持ち場で、公務のまさにその最中に亡くなったのである。
+      </BLOCKQUOTE>
+    </JA>
+    </BILINGUAL>
       </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     The four images in figure<SPACE/><REF NAME="fig:rogers"/>
     are drawn with respect to the same four frames
     as the <SCHEMEINLINE>wave</SCHEMEINLINE> images in
     figure<SPACE/><REF NAME="fig:wave"/>.
+    </EN>
+    <JA>
+    図<SPACE/><REF NAME="fig:rogers"/>の4つの画像は、図<SPACE/><REF NAME="fig:wave"/>の <SCHEMEINLINE>wave</SCHEMEINLINE> の画像と同じ4つのフレームに対して描かれています。
+    </JA>
+    </BILINGUAL>
     <FIGURE  web_scale="0.6" scale="1" src="img_original/2.11.svg">
       <LABEL NAME="fig:rogers"/>
       <CAPTION>
+      <BILINGUAL>
+      <EN>
 	Images of William Barton Rogers, founder and first
         president of MIT, painted with respect to the same four frames as in
 	figure<SPACE/><REF NAME="fig:wave"/> (original image courtesy MIT Museum).
+      </EN>
+      <JA>
+	MIT の創設者で初代学長の William Barton Rogers の肖像。図<SPACE/><REF NAME="fig:wave"/>と同じ4つのフレームに対して描かれている（原画像は MIT Museum 提供）。
+      </JA>
+      </BILINGUAL>
       </CAPTION>
     </FIGURE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To combine images, we use various
     <INDEX>painter(s)<SUBINDEX>operations</SUBINDEX></INDEX>
     operations that construct new painters
     from given painters. For example, the
-     <INDEX><USE>beside</USE></INDEX> 
+     <INDEX><USE>beside</USE></INDEX>
     <SCHEMEINLINE>beside</SCHEMEINLINE> operation takes two painters and
     produces a new, compound painter that draws the first painter<APOS/>s image
     in the left half of the frame and the second painter<APOS/>s image in the
     right half of the frame. Similarly,
-     <INDEX><USE>below</USE></INDEX> 
+     <INDEX><USE>below</USE></INDEX>
     <SCHEMEINLINE>below</SCHEMEINLINE> takes two painters and produces a
     compound painter that draws the first painter<APOS/>s image below the
     second painter<APOS/>s image. Some operations transform a single painter
     to produce a new painter.  For example,
-     <INDEX><USE>flip_vert</USE></INDEX> 
+     <INDEX><USE>flip_vert</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>flip-vert</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>flip_vert</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     takes a painter and produces a painter that draws its image upside-down, and
-     <INDEX><USE>flip_horiz</USE></INDEX> 
+     <INDEX><USE>flip_horiz</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>flip-horiz</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>flip_horiz</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     produces a painter that draws the original painter<APOS/>s image
     left-to-right reversed.
+    </EN>
+    <JA>
+    画像を組み合わせるには、与えられたペインタから新しいペインタを構築するさまざまな
+    <INDEX>painter(s)<SUBINDEX>operations</SUBINDEX></INDEX>
+    演算を使います。たとえば、
+     <INDEX><USE>beside</USE></INDEX>
+    <SCHEMEINLINE>beside</SCHEMEINLINE> 演算は2つのペインタを受け取り、最初のペインタの画像をフレームの左半分に、2番目のペインタの画像を右半分に描く新しい複合ペインタを生成します。同様に、
+     <INDEX><USE>below</USE></INDEX>
+    <SCHEMEINLINE>below</SCHEMEINLINE> は2つのペインタを受け取り、最初のペインタの画像を2番目のペインタの画像の下に描く複合ペインタを生成します。一部の演算は単一のペインタを変換して新しいペインタを生成します。たとえば、
+     <INDEX><USE>flip_vert</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>flip-vert</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>flip_vert</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    はペインタを受け取り、その画像を上下反転して描くペインタを生成し、
+     <INDEX><USE>flip_horiz</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>flip-horiz</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>flip_horiz</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は元のペインタの画像を左右反転して描くペインタを生成します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Figure<SPACE/><REF NAME="fig:build-up-wave"/> shows the drawing of a
     painter called <SCHEMEINLINE>wave4</SCHEMEINLINE>
     that is built up in two stages starting from
     <SCHEMEINLINE>wave</SCHEMEINLINE>:
+    </EN>
+    <JA>
+    図<SPACE/><REF NAME="fig:build-up-wave"/>は、<SCHEMEINLINE>wave</SCHEMEINLINE> から2段階で構築された <SCHEMEINLINE>wave4</SCHEMEINLINE> というペインタの描画を示しています：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EXT="RUNES">
       <NAME>wave2</NAME>
       <EXAMPLE>wave2_example</EXAMPLE>
@@ -259,6 +422,8 @@ show(heart2);
 // show(heart4);
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     In building up a complex image in this manner we are exploiting the fact
     that painters are
     <INDEX>closure<SUBINDEX><ORDER>closurepict</ORDER>closure property of picture-language operations</SUBINDEX></INDEX>
@@ -273,6 +438,18 @@ show(heart2);
     </SPLITINLINE>
     the closure of our data under the means of combination is crucial to the
     ability to create complex structures while using only a few operations.
+    </EN>
+    <JA>
+    このようにして複雑な画像を構築する際、ペインタがこの言語の組み合わせの手段のもとで
+    <INDEX>closure<SUBINDEX><ORDER>closurepict</ORDER>closure property of picture-language operations</SUBINDEX></INDEX>
+    閉じているという事実を利用しています。2つのペインタの <SCHEMEINLINE>beside</SCHEMEINLINE> や <SCHEMEINLINE>below</SCHEMEINLINE> はそれ自体がペインタであるため、より複雑なペインタを作る要素として使えます。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使ってリスト構造を構築する場合と同様に、組み合わせの手段のもとでのデータの閉包性は、わずかな演算だけで複雑な構造を作成する能力にとって極めて重要です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
     <FIGURE scale="0.5" src="img_original/2.12.svg">
@@ -297,22 +474,28 @@ const heart2 = beside(heart, flip_vert(heart));
 // const heart4 = stack(heart2, heart2);
       </JAVASCRIPT_RUN>
     </SNIPPET>
-    <CAPTION>Creating a complex figure,
+    <CAPTION>
+    <BILINGUAL>
+    <EN>Creating a complex figure,
     starting from the <SCHEMEINLINE>wave</SCHEMEINLINE> painter of
-    figure<SPACE/><REF NAME="fig:wave"/>.
+    figure<SPACE/><REF NAME="fig:wave"/>.</EN>
+    <JA>図<SPACE/><REF NAME="fig:wave"/>の <SCHEMEINLINE>wave</SCHEMEINLINE> ペインタから始めて複雑な図を作成する。</JA>
+    </BILINGUAL>
     </CAPTION>
     </FIGURE>
   
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Once we can combine painters, we would like to be able to abstract typical
-    patterns of combining painters. We will implement the painter operations as 
+    patterns of combining painters. We will implement the painter operations as
     <SPLITINLINE>
       <SCHEME>Scheme procedures.</SCHEME>
       <JAVASCRIPT>JavaScript functions.</JAVASCRIPT>
     </SPLITINLINE>
     This means that we don<APOS/>t need a special abstraction mechanism in the
-    picture language: Since the means of combination are ordinary 
+    picture language: Since the means of combination are ordinary
     <SPLITINLINE><SCHEME>Scheme procedures,</SCHEME>
     <JAVASCRIPT>JavaScript functions,</JAVASCRIPT></SPLITINLINE>
     we automatically have the capability to do anything with painter operations
@@ -323,6 +506,24 @@ const heart2 = beside(heart, flip_vert(heart));
     </SPLITINLINE>
     For example, we can abstract the pattern in
     <SCHEMEINLINE>wave4</SCHEMEINLINE> as
+    </EN>
+    <JA>
+    ペインタを組み合わせられるようになったら、ペインタを組み合わせる典型的なパターンを抽象化できるようにしたいところです。ペインタの演算を
+    <SPLITINLINE>
+      <SCHEME>Scheme の手続き</SCHEME>
+      <JAVASCRIPT>JavaScript の関数</JAVASCRIPT>
+    </SPLITINLINE>
+    として実装します。これは、ピクチャー言語に特別な抽象化メカニズムは必要ないことを意味します。組み合わせの手段が通常の
+    <SPLITINLINE><SCHEME>Scheme の手続き</SCHEME>
+    <JAVASCRIPT>JavaScript の関数</JAVASCRIPT></SPLITINLINE>
+    なので、
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    で行えることは何でもペインタの演算で自動的に行えます。たとえば、<SCHEMEINLINE>wave4</SCHEMEINLINE> のパターンを次のように抽象化できます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EXT="RUNES">
       <INDEX><DECLARATION>flipped_pairs</DECLARATION></INDEX> 
       <NAME>flipped_pairs</NAME>
@@ -345,6 +546,8 @@ function flipped_pairs(painter) {
 }
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     and
     <SPLITINLINE>
       <SCHEME>define</SCHEME>
@@ -352,6 +555,16 @@ function flipped_pairs(painter) {
     </SPLITINLINE>
     <SCHEMEINLINE>wave4</SCHEMEINLINE> as an instance of this
     pattern:
+    </EN>
+    <JA>
+    そして <SCHEMEINLINE>wave4</SCHEMEINLINE> をこのパターンのインスタンスとして
+    <SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EXT="RUNES">
       <NAME>wave4_2</NAME>
       <REQUIRES>flipped_pairs</REQUIRES>
@@ -380,12 +593,19 @@ show(heart4);
       <JAVASCRIPT>
         <FIGURE scale="0.59" src="img_javascript/ch2-Z-G-37.svg">
           <LABEL NAME="fig:split-plans"/>
-          <CAPTION>Recursive plans for
+          <CAPTION>
+          <BILINGUAL>
+          <EN>Recursive plans for
 	  <JAVASCRIPTINLINE>right_split</JAVASCRIPTINLINE> and
-	  <JAVASCRIPTINLINE>corner_split</JAVASCRIPTINLINE>.</CAPTION>
+	  <JAVASCRIPTINLINE>corner_split</JAVASCRIPTINLINE>.</EN>
+          <JA><JAVASCRIPTINLINE>right_split</JAVASCRIPTINLINE> と <JAVASCRIPTINLINE>corner_split</JAVASCRIPTINLINE> の再帰的な計画。</JA>
+          </BILINGUAL>
+          </CAPTION>
         </FIGURE>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     We can also define recursive operations. Here<APOS/>s one that makes
     painters split and branch towards the right as shown in
     <SPLITINLINE>
@@ -405,6 +625,29 @@ show(heart4);
 	<REF NAME="fig:split-plans-2"/>:
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    再帰的な演算を定義することもできます。以下は、
+    <SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:split-plans_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:split-plans"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME>
+	<REF NAME="fig:split-plans-2_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	<REF NAME="fig:split-plans-2"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に示すように、ペインタを分割して右に枝分かれさせるものです：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EXT="RUNES">
       <INDEX><DECLARATION>right_split</DECLARATION></INDEX> 
       <NAME>right_split</NAME>
@@ -437,10 +680,17 @@ function right_split(painter, n) {
 }
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     We can produce balanced patterns by branching upwards as well as towards
     the right (see exercise<SPACE/><REF NAME="ex:up-split"/> and
     figures<SPACE/><REF NAME="fig:split-plans"/>
     and<SPACE/><REF  NAME="fig:split-plans-2"/>):
+    </EN>
+    <JA>
+    右方向だけでなく上方向にも枝分かれさせることで、均衡のとれたパターンを生成できます（演習<SPACE/><REF NAME="ex:up-split"/>および図<SPACE/><REF NAME="fig:split-plans"/>と<SPACE/><REF  NAME="fig:split-plans-2"/>を参照）：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EXT="RUNES">
       <INDEX><DECLARATION>corner_split</DECLARATION></INDEX> 
       <NAME>corner_split</NAME>
@@ -538,7 +788,9 @@ show(corner_split(heart, 4));
       <JAVASCRIPT>
 	<FIGURE web_scale="0.7" scale="0.45" src="img_javascript/2.14.svg">
           <LABEL NAME="fig:split-plans-2"/>
-          <CAPTION>The recursive operation
+          <CAPTION>
+          <BILINGUAL>
+          <EN>The recursive operation
           <JAVASCRIPTINLINE>right_split</JAVASCRIPTINLINE> applied to the
 	  painters <JAVASCRIPTINLINE>wave</JAVASCRIPTINLINE> and
           <JAVASCRIPTINLINE>rogers</JAVASCRIPTINLINE>.
@@ -546,11 +798,15 @@ show(corner_split(heart, 4));
           <JAVASCRIPTINLINE>corner_split</JAVASCRIPTINLINE> figures
 	  produces symmetric
 	  <JAVASCRIPTINLINE>square_limit</JAVASCRIPTINLINE>
-          as shown in figure<SPACE/><REF NAME="fig:sqlimit-designs"/>.
+          as shown in figure<SPACE/><REF NAME="fig:sqlimit-designs"/>.</EN>
+          <JA>再帰的演算 <JAVASCRIPTINLINE>right_split</JAVASCRIPTINLINE> をペインタ <JAVASCRIPTINLINE>wave</JAVASCRIPTINLINE> と <JAVASCRIPTINLINE>rogers</JAVASCRIPTINLINE> に適用した結果。4つの <JAVASCRIPTINLINE>corner_split</JAVASCRIPTINLINE> 図を組み合わせると、図<SPACE/><REF NAME="fig:sqlimit-designs"/>に示すような対称的な <JAVASCRIPTINLINE>square_limit</JAVASCRIPTINLINE> が得られる。</JA>
+          </BILINGUAL>
           </CAPTION>
 	</FIGURE>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     By placing four copies of a
     <SPLITINLINE><SCHEME><SCHEMEINLINE>corner-split</SCHEMEINLINE></SCHEME>
     <JAVASCRIPT><JAVASCRIPTINLINE>corner_split</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -564,6 +820,19 @@ show(corner_split(heart, 4));
     whose application to <SCHEMEINLINE>wave</SCHEMEINLINE> and
     <SCHEMEINLINE>rogers</SCHEMEINLINE> is shown in
     figure<SPACE/><REF NAME="fig:sqlimit-designs"/>:
+    </EN>
+    <JA>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>corner-split</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>corner_split</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の4つのコピーを適切に配置することで、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>square-limit</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>square_limit</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    というパターンが得られます。<SCHEMEINLINE>wave</SCHEMEINLINE> と <SCHEMEINLINE>rogers</SCHEMEINLINE> への適用は図<SPACE/><REF NAME="fig:sqlimit-designs"/>に示されています：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EXT="RUNES" POSTPADDING="no">
       <INDEX><DECLARATION>square_limit</DECLARATION></INDEX> 
       <NAME>square_limit</NAME>
@@ -604,11 +873,13 @@ show(square_limit(heart, 4));
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>Define the procedure</SCHEME>
       <JAVASCRIPT>Declare the function</JAVASCRIPT>
     </SPLITINLINE>
-     <INDEX><USE>up_split</USE></INDEX> 
+     <INDEX><USE>up_split</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>up-split</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>up_split</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -627,6 +898,31 @@ show(square_limit(heart, 4));
     </SPLITINLINE>
     except that it switches the roles of <SCHEMEINLINE>below</SCHEMEINLINE>
     and <SCHEMEINLINE>beside</SCHEMEINLINE>.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>corner-split</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>corner_split</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    で使われる
+     <INDEX><USE>up_split</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>up-split</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>up_split</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を
+    <SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    してください。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>right-split</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>right_split</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と似ていますが、<SCHEMEINLINE>below</SCHEMEINLINE> と <SCHEMEINLINE>beside</SCHEMEINLINE> の役割が入れ替わっています。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:up-split"/>
     <SOLUTION>
       <SNIPPET EXT="RUNES">
@@ -659,12 +955,14 @@ show(up_split(heart, 4));
   </EXERCISE>
 
   <SUBHEADING>
-    <NAME>Higher-order operations</NAME>
+    <NAME><BILINGUAL><EN>Higher-order operations</EN><JA>高階演算</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>painter(s)<SUBINDEX>higher-order operations</SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In addition to abstracting patterns of combining painters, we can work at a
     higher level, abstracting patterns of combining painter operations. That
     is, we can view the painter operations as elements to manipulate and can
@@ -673,10 +971,21 @@ show(up_split(heart, 4));
       <SCHEME>elements<EMDASH/>procedures</SCHEME>
     <JAVASCRIPT>elements<EMDASH/>functions</JAVASCRIPT></SPLITINLINE>
     that take painter operations as arguments and create new painter operations.
+    </EN>
+    <JA>
+    ペインタを組み合わせるパターンを抽象化することに加えて、さらに高いレベルで、ペインタの演算を組み合わせるパターンを抽象化することもできます。つまり、ペインタの演算を操作する要素として捉え、これらの要素——ペインタの演算を引数に取り、新しいペインタの演算を作り出す
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    ——に対する組み合わせの手段を書くことができます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SHORT_PAGE lines="4"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     For example,
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>flipped-pairs</SCHEMEINLINE></SCHEME>
@@ -698,7 +1007,31 @@ show(up_split(heart, 4));
     </SPLITINLINE>
     which takes four one-argument painter operations and produces a painter
     operation that transforms a given painter with those four operations and
-    arranges the results in a square.<SPLITINLINE><JAVASCRIPT><FOOTNOTE>
+    arranges the results in a square.
+    </EN>
+    <JA>
+    たとえば、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>flipped-pairs</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>flipped_pairs</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>square-limit</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>square_limit</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    はそれぞれペインタの画像の4つのコピーを正方形のパターンに配置しますが、コピーの向きの付け方だけが異なります。このペインタの組み合わせパターンを抽象化する一つの方法は、次の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    です。これは1引数のペインタ演算を4つ受け取り、与えられたペインタにそれら4つの演算を適用して結果を正方形に配置するペインタ演算を生成し���す。
+    </JA>
+    </BILINGUAL><SPLITINLINE><JAVASCRIPT><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     In <JAVASCRIPTINLINE>square_of_four</JAVASCRIPTINLINE>,
     we use an extension of the syntax of lambda expressions that was introduced
     in section<SPACE/><REF NAME="sec:lambda"/>: The body of a lambda
@@ -708,8 +1041,20 @@ show(up_split(heart, 4));
     Such a lambda expression has the shape
     <JAVASCRIPTINLINE>(</JAVASCRIPTINLINE><META>parameters</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE><FIXED_SPACE/><JAVASCRIPTINLINE>=&gt;</JAVASCRIPTINLINE><FIXED_SPACE/><JAVASCRIPTINLINE>{</JAVASCRIPTINLINE><FIXED_SPACE/><META>statements</META><FIXED_SPACE/><JAVASCRIPTINLINE>}</JAVASCRIPTINLINE> or
     <META>parameter</META><FIXED_SPACE/><JAVASCRIPTINLINE>=&gt;</JAVASCRIPTINLINE><FIXED_SPACE/><JAVASCRIPTINLINE>{</JAVASCRIPTINLINE><FIXED_SPACE/><META>statements</META><FIXED_SPACE/><JAVASCRIPTINLINE>}</JAVASCRIPTINLINE>.
+    </EN>
+    <JA>
+    <JAVASCRIPTINLINE>square_of_four</JAVASCRIPTINLINE> では、セ���ション<SPACE/><REF NAME="sec:lambda"/>で導入したラムダ式の構文の拡張を使用しています。ラムダ式の本体は return 式だけでなく、ブロックにもできます。
+    <INDEX>sequence of statements<SUBINDEX><ORDER>lambda</ORDER>as body of lambda expression</SUBINDEX></INDEX>
+    <INDEX>lambda expression<SUBINDEX>block as body of</SUBINDEX></INDEX>
+    このようなラムダ式は
+    <JAVASCRIPTINLINE>(</JAVASCRIPTINLINE><META>parameters</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE><FIXED_SPACE/><JAVASCRIPTINLINE>=&gt;</JAVASCRIPTINLINE><FIXED_SPACE/><JAVASCRIPTINLINE>{</JAVASCRIPTINLINE><FIXED_SPACE/><META>statements</META><FIXED_SPACE/><JAVASCRIPTINLINE>}</JAVASCRIPTINLINE> または
+    <META>parameter</META><FIXED_SPACE/><JAVASCRIPTINLINE>=&gt;</JAVASCRIPTINLINE><FIXED_SPACE/><JAVASCRIPTINLINE>{</JAVASCRIPTINLINE><FIXED_SPACE/><META>statements</META><FIXED_SPACE/><JAVASCRIPTINLINE>}</JAVASCRIPTINLINE> という形をとります。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="foot:lambda_with_block"/>
     </FOOTNOTE></JAVASCRIPT></SPLITINLINE>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Tl</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT>The functions <JAVASCRIPTINLINE>tl</JAVASCRIPTINLINE>,
@@ -719,6 +1064,15 @@ show(up_split(heart, 4));
     <SCHEMEINLINE>br</SCHEMEINLINE> are the transformations to apply to the
     top left copy, the top right copy, the bottom left copy, and the bottom
     right copy, respectively.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>tl</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>tl</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>tr</SCHEMEINLINE>、<SCHEMEINLINE>bl</SCHEMEINLINE>、<SCHEMEINLINE>br</SCHEMEINLINE> は、それぞれ左上のコピー、右上のコピー、左下のコピー、右下のコピーに適用する変換です。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EXT="RUNES">
       <INDEX><DECLARATION>square_of_four</DECLARATION></INDEX> 
       <NAME>square_of_four</NAME>
@@ -760,6 +1114,8 @@ show(square_of_four(turn_upside_down, identity,
     );
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Then
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>flipped-pairs</SCHEMEINLINE>
@@ -773,8 +1129,27 @@ show(square_of_four(turn_upside_down, identity,
       <SCHEME><SCHEMEINLINE>square-of-four</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>square_of_four</JAVASCRIPTINLINE>
       </JAVASCRIPT>
-      </SPLITINLINE> as follows:<FOOTNOTE>Equivalently, we could
-    write
+      </SPLITINLINE> as follows:
+    </EN>
+    <JA>
+    すると、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>flipped-pairs</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>flipped_pairs</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>square-of-four</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>square_of_four</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使って次のように定義できます：
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>Equivalently, we could
+    write</EN>
+    <JA>等価な書き方として、次のようにも書けます。</JA>
+    </BILINGUAL>
     <SNIPPET EXT="RUNES" POSTPADDING="no">
       <INDEX><DECLARATION>flipped_pairs</DECLARATION></INDEX> 
       <NAME>flipped_pairs_call</NAME>
@@ -834,13 +1209,28 @@ flipped_pairs(rogers);
 show(flipped_pairs(heart));
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     and
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>square-limit</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>square_limit</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    can be expressed as<FOOTNOTE>
+    can be expressed as
+    </EN>
+    <JA>
+    また、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>square-limit</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>square_limit</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は次のように表現できます。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Rotate180</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>
@@ -865,7 +1255,31 @@ show(flipped_pairs(heart));
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    from exercise<SPACE/><REF NAME="ex:compose"/>.</FOOTNOTE>
+    from exercise<SPACE/><REF NAME="ex:compose"/>.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rotate180</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>rotate180</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    はペインタを180度回転させます。<SCHEMEINLINE>rotate180</SCHEMEINLINE> の代わりに、演習<SPACE/><REF NAME="ex:compose"/>の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>compose</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>compose</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を使って
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(compose flip-vert flip-horiz)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>compose(flip_vert, flip_horiz)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と書くこともできます。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET POSTPADDING="no" EXT="RUNES">
       <INDEX><DECLARATION>square_limit</DECLARATION></INDEX> 
       <NAME>square_limit_2</NAME>
@@ -909,6 +1323,8 @@ show(square_limit(heart, 4));
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Right-split</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>
@@ -921,13 +1337,27 @@ show(square_limit(heart, 4));
       <SCHEME><SCHEMEINLINE>up-split</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>up_split</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    can be expressed as instances of a general splitting operation. 
+    can be expressed as instances of a general splitting operation.
     <SPLITINLINE>
       <SCHEME>Define a procedure</SCHEME>
       <JAVASCRIPT>Declare a function</JAVASCRIPT>
     </SPLITINLINE>
-     <INDEX><USE>split</USE></INDEX> 
+     <INDEX><USE>split</USE></INDEX>
     <SCHEMEINLINE>split</SCHEMEINLINE> with the property that evaluating
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>right-split</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>right_split</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>up-split</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>up_split</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は一般的な分割演算のインスタンスとして表現できます。次の式を評価すると
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>split</NAME>
       <JAVASCRIPT>
@@ -946,6 +1376,8 @@ const right_split = split(beside, below);
 const up_split = split(below, beside);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     produces
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -964,6 +1396,37 @@ const up_split = split(below, beside);
       with the same behaviors as the ones already declared.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    すでに
+    <SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    したものと同じ動作の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>right-split</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>right_split</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>up-split</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>up_split</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が生成されるような
+     <INDEX><USE>split</USE></INDEX>
+    <SCHEMEINLINE>split</SCHEMEINLINE> を
+    <SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:splitting"/>
     <SOLUTION>
       <SNIPPET EXT="RUNES">
@@ -1004,11 +1467,13 @@ show(right_split(heart, 4));
   </EXERCISE>
       
   <SUBHEADING>
-    <NAME>Frames</NAME>
+    <NAME><BILINGUAL><EN>Frames</EN><JA>フレーム</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>frame (picture language)</INDEX>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Before we can show how to implement painters and their means of
     combination, we must first consider
     <INDEX>vector (mathematical)<SUBINDEX><ORDER>picture</ORDER>in picture-language frame</SUBINDEX></INDEX>
@@ -1018,34 +1483,43 @@ show(right_split(heart, 4));
     vectors specify the offsets of the frame<APOS/>s corners from its origin.
     If the edges are perpendicular, the frame will be rectangular.
     Otherwise the frame will be a more general parallelogram.
+    </EN>
+    <JA>
+    ペインタとその組み合わせの手段をどのように実装するかを示す前に、まず
+    <INDEX>vector (mathematical)<SUBINDEX><ORDER>picture</ORDER>in picture-language frame</SUBINDEX></INDEX>
+    フレームについて考えなければなりません。フレームは3つのベクトル——原点ベクトルと2つの辺ベクトル——で記述できます。原点ベクトルは、平面上のある絶対原点からのフレームの原点のオフセットを指定し、辺ベクトルはフレームの原点からその角へのオフセットを指定します。辺が直交していればフレームは長方形になり、そうでなければより一般的な平行四辺形になります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Figure<SPACE/><REF NAME="fig:frame"/> shows a frame and its associated
     vectors.  In accordance with data abstraction, we need not be specific yet
     about how frames are represented, other than to say that there is a
     constructor
-      <INDEX><USE>make_frame</USE></INDEX> 
+      <INDEX><USE>make_frame</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-frame</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_frame</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
     which takes three vectors and produces a frame, and three corresponding
     selectors
-      <INDEX><USE>origin_frame</USE></INDEX> 
+      <INDEX><USE>origin_frame</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>origin-frame</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>origin_frame</JAVASCRIPTINLINE>,
       </JAVASCRIPT>
     </SPLITINLINE>
-      <INDEX><USE>edge1_frame</USE></INDEX> 
+      <INDEX><USE>edge1_frame</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>edge1-frame</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>edge1_frame</JAVASCRIPTINLINE>,
       </JAVASCRIPT>
     </SPLITINLINE>
     and
-      <INDEX><USE>edge2_frame</USE></INDEX> 
+      <INDEX><USE>edge2_frame</USE></INDEX>
     <SPLITINLINE>
       <SCHEME>
       <SCHEMEINLINE>edge2-frame</SCHEMEINLINE></SCHEME>
@@ -1053,16 +1527,49 @@ show(right_split(heart, 4));
       </JAVASCRIPT>
     </SPLITINLINE>
     (see exercise<SPACE/><REF NAME="ex:implement-frames"/>).
+    </EN>
+    <JA>
+    図<SPACE/><REF NAME="fig:frame"/>はフレームとそれに関連するベクトルを示しています。データ抽象に従い、フレームがどのように表現されるかをまだ具体的に述べる必要はなく、3つのベクトルを受け取ってフレームを生成するコンストラクタ
+      <INDEX><USE>make_frame</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-frame</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_frame</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と、対応する3つのセレクタ
+      <INDEX><USE>origin_frame</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>origin-frame</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>origin_frame</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+      <INDEX><USE>edge1_frame</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>edge1-frame</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>edge1_frame</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+      <INDEX><USE>edge2_frame</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>edge2-frame</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>edge2_frame</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    があるということだけで十分です（演習<SPACE/><REF NAME="ex:implement-frames"/>参照）。
+    </JA>
+    </BILINGUAL>
 
     <FIGURE>
       <FIGURE scale="0.7" src="img_original/ch2-Z-G-42.svg"></FIGURE>
-      <CAPTION>A frame is described by three vectors<EMDASH/>an origin and two edges.
+      <CAPTION>
+      <BILINGUAL>
+      <EN>A frame is described by three vectors<EMDASH/>an origin and two edges.</EN>
+      <JA>フレームは3つのベクトル——原点と2つの辺——で記述される。</JA>
+      </BILINGUAL>
       </CAPTION>
       <LABEL NAME="fig:frame"/>
     </FIGURE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We will use coordinates in the
     <INDEX>unit square</INDEX>
     unit square
@@ -1073,18 +1580,36 @@ show(right_split(heart, 4));
     to fit the frame.  The map transforms the unit square into the frame by
     mapping the vector <LATEXINLINE>$\mathbf{v}=(x, y)$</LATEXINLINE> to the
     vector sum
+    </EN>
+    <JA>
+    画像を指定するのに、
+    <INDEX>unit square</INDEX>
+    単位正方形（<LATEXINLINE>$0\leq x, y\leq 1$</LATEXINLINE>）の座標を使います。各フレームには
+    <INDEX>frame (picture language)<SUBINDEX>coordinate map</SUBINDEX></INDEX>
+    <EM>フレーム座標マップ</EM>を関連付けます。これは画像をシフトしスケーリングしてフレームに収めるために使われます。このマップは、ベクトル <LATEXINLINE>$\mathbf{v}=(x, y)$</LATEXINLINE> を次のベクトル和に写像することで、単位正方形をフレームに変換します。
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \text{Origin(Frame)} + x\cdot \text{ Edge}_1\text{ (Frame)}
       + y\cdot \text{ Edge}_2\text{ (Frame)}
       \]
     </LATEX>
+    <BILINGUAL>
+    <EN>
     For example, <LATEXINLINE>$(0, 0)$</LATEXINLINE> is mapped to the origin of
     the frame, <LATEXINLINE>$(1, 1)$</LATEXINLINE> to the vertex diagonally
     opposite the origin, and <LATEXINLINE>$(0.5, 0.5)$</LATEXINLINE> to the
     center of the frame.  We can create a frame<APOS/>s coordinate map with
     the following
-    <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>:<FOOTNOTE>
+    <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>:
+    </EN>
+    <JA>
+    たとえば、<LATEXINLINE>$(0, 0)$</LATEXINLINE> はフレームの原点に、<LATEXINLINE>$(1, 1)$</LATEXINLINE> は原点の対角にある頂点に、<LATEXINLINE>$(0.5, 0.5)$</LATEXINLINE> はフレームの中心に写像されます。フレームの座標マップは次の<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>で作成できます：
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Frame-coord-map</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>
@@ -1096,7 +1621,17 @@ show(right_split(heart, 4));
     exercise<SPACE/><REF NAME="ex:vectors"/> below, which we assume have been
     implemented using some representation for vectors. Because of data
     abstraction, it doesn<APOS/>t matter what this vector representation is,
-    so long as the vector operations behave correctly.</FOOTNOTE>
+    so long as the vector operations behave correctly.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>frame-coord-map</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>frame_coord_map</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は、以下の演習<SPACE/><REF NAME="ex:vectors"/>で記述されるベクトル演算を使用しており、何らかのベクトル表現を使って実装されていると仮定します。データ抽象のおかげで、ベクトル演算が正しく動作する限り、このベクトル表現が何であるかは問題になりません。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET>
       <INDEX><DECLARATION>frame_coord_map</DECLARATION></INDEX> 
       <NAME>frame_coord_map</NAME>
@@ -1137,6 +1672,8 @@ const my_mapped_vector = my_coord_map(my_vector);
 my_mapped_vector;
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Observe that applying
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>frame-coord-map</SCHEMEINLINE></SCHEME>
@@ -1149,7 +1686,21 @@ my_mapped_vector;
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     that, given a vector, returns a vector. If the argument vector is in the
-    unit square, the result vector will be in the frame.  For example, 
+    unit square, the result vector will be in the frame.  For example,
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>frame-coord-map</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>frame_coord_map</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    をフレームに適用すると、ベクトルを受け取ってベクトルを返す
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    が返されることに注目してください。引数のベクトルが単位正方形内にあれば、結果のベクトルはフレーム内になります。たとえば、
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <NAME>vector_example</NAME>
       <REQUIRES>frame_functions</REQUIRES>
@@ -1169,7 +1720,10 @@ const a_frame = make_frame(make_vect(1, 2),
 frame_coord_map(a_frame)(make_vect(0, 0));
       </JAVASCRIPT_RUN>
     </SNIPPET>
-    returns the same vector as
+    <BILINGUAL>
+    <EN>returns the same vector as</EN>
+    <JA>は次と同じベクトルを返します。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes" POSTPADDING="no">
       <NAME>vector_example_2</NAME>
       <REQUIRES>frame_functions</REQUIRES>
@@ -1192,6 +1746,8 @@ origin_frame(a_frame);
   <SHORT_PAGE lines="2"/>
   <EXERCISE>
     <LABEL NAME="ex:vectors"/>
+    <BILINGUAL>
+    <EN>
     A two-dimensional
     <INDEX>vector (mathematical)<SUBINDEX>represented as pair</SUBINDEX></INDEX>
     <INDEX>vector (mathematical)<SUBINDEX>operations on</SUBINDEX></INDEX>
@@ -1200,19 +1756,19 @@ origin_frame(a_frame);
     <LATEXINLINE>$x$</LATEXINLINE>-coordinate and a
     <LATEXINLINE>$y$</LATEXINLINE>-coordinate.  Implement a data abstraction
     for vectors by giving a constructor
-    <INDEX><USE>make_vect</USE></INDEX> 
+    <INDEX><USE>make_vect</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-vect</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_vect</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     and corresponding selectors
-    <INDEX><USE>xcor_vect</USE></INDEX> 
+    <INDEX><USE>xcor_vect</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>xcor-vect</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>xcor_vect</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     and
-    <INDEX><USE>ycor_vect</USE></INDEX> 
+    <INDEX><USE>ycor_vect</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>ycor-vect</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>ycor_vect</JAVASCRIPTINLINE>.</JAVASCRIPT>
@@ -1222,24 +1778,70 @@ origin_frame(a_frame);
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX><USE>add_vect</USE></INDEX> 
+    <INDEX><USE>add_vect</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>add-vect</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>add_vect</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX><USE>sub_vect</USE></INDEX> 
+    <INDEX><USE>sub_vect</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>sub-vect</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>sub_vect</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
     and
-    <INDEX><USE>scale_vect</USE></INDEX> 
+    <INDEX><USE>scale_vect</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>scale-vect</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>scale_vect</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     that perform the operations vector addition, vector subtraction, and
     multiplying a vector by a scalar:
+    </EN>
+    <JA>
+    原点からある点への2次元
+    <INDEX>vector (mathematical)<SUBINDEX>represented as pair</SUBINDEX></INDEX>
+    <INDEX>vector (mathematical)<SUBINDEX>operations on</SUBINDEX></INDEX>
+    ベクトル <LATEXINLINE>$v$</LATEXINLINE> は、<LATEXINLINE>$x$</LATEXINLINE> 座標と <LATEXINLINE>$y$</LATEXINLINE> 座標からなるペアとして表現できます。コンストラクタ
+    <INDEX><USE>make_vect</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-vect</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_vect</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と対応するセレクタ
+    <INDEX><USE>xcor_vect</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>xcor-vect</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>xcor_vect</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    および
+    <INDEX><USE>ycor_vect</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>ycor-vect</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>ycor_vect</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を与えて、ベクトルのデータ抽象を実装してください。そのセレクタとコンストラクタを使って、ベクトルの加算、ベクトルの減算、ベクトルのスカラー倍を行う
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>add_vect</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-vect</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_vect</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>sub_vect</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sub-vect</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sub_vect</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>scale_vect</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>scale-vect</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>scale_vect</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を実装してください：
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[\begin{array}{lll}
       (x_1, y_1)+(x_2, y_2) &amp;=&amp; (x_1+x_2, y_1+y_2)\\
@@ -1292,7 +1894,10 @@ add_vect(my_vector_1, my_vector_2);
   </EXERCISE>
 
   <EXERCISE>
-    Here are two possible constructors for frames:
+    <BILINGUAL>
+    <EN>Here are two possible constructors for frames:</EN>
+    <JA>以下はフレームの2つの可能なコンストラクタです：</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>make_frame</DECLARATION><FRAGILE/></INDEX> 
       <SCHEME>
@@ -1312,8 +1917,12 @@ function make_frame(origin, edge1, edge2) {
 }
       </JAVASCRIPT>
     </SNIPPET>
-    For each constructor supply the appropriate selectors to produce an
-    implementation for frames.<LABEL NAME="ex:implement-frames"/>
+    <BILINGUAL>
+    <EN>For each constructor supply the appropriate selectors to produce an
+    implementation for frames.</EN>
+    <JA>各コンストラクタに対して、フレームの実装を完成させるための適切なセレクタを提供してください。</JA>
+    </BILINGUAL>
+    <LABEL NAME="ex:implement-frames"/>
     <SOLUTION>
       <OL>
 	<LI>
@@ -1378,10 +1987,12 @@ function edge2_frame(frame) {
   </EXERCISE>
 
   <SUBHEADING>
-    <NAME>Painters</NAME>
+    <NAME><BILINGUAL><EN>Painters</EN><JA>ペインタ</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     A painter is represented as a
     <INDEX>painter(s)<SUBINDEX>represented as <SPLITINLINE> <SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
     <SPLITINLINE>
@@ -1395,10 +2006,23 @@ function edge2_frame(frame) {
     <SCHEMEINLINE>p</SCHEMEINLINE><APOS/>s image in
     <SCHEMEINLINE>f</SCHEMEINLINE> by calling <SCHEMEINLINE>p</SCHEMEINLINE>
     with <SCHEMEINLINE>f</SCHEMEINLINE> as argument.
+    </EN>
+    <JA>
+    ペインタは、フレームを引数として受け取り、フレームに収まるようにシフト・スケーリングされた特定の画像を描く
+    <INDEX>painter(s)<SUBINDEX>represented as <SPLITINLINE> <SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    として表現されます。つまり、<SCHEMEINLINE>p</SCHEMEINLINE> がペインタで <SCHEMEINLINE>f</SCHEMEINLINE> がフレームであれば、<SCHEMEINLINE>p</SCHEMEINLINE> を引数 <SCHEMEINLINE>f</SCHEMEINLINE> で呼び出すことで、<SCHEMEINLINE>f</SCHEMEINLINE> 内に <SCHEMEINLINE>p</SCHEMEINLINE> の画像を生成します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SHORT_PAGE lines="3"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The details of how primitive painters are implemented depend on the
     particular characteristics of the graphics system and the type of image to
     be drawn.  For instance, suppose we have a
@@ -1406,7 +2030,7 @@ function edge2_frame(frame) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX><USE>draw_line</USE></INDEX> 
+    <INDEX><USE>draw_line</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>draw-line</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>draw_line</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -1418,7 +2042,29 @@ function edge2_frame(frame) {
       <JAVASCRIPT><JAVASCRIPTINLINE>wave</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     painter in figure<SPACE/><REF NAME="fig:wave"/>, from lists of line
-    segments as follows:<FOOTNOTE>
+    segments as follows:
+    </EN>
+    <JA>
+    プリミティブなペインタの実装の詳細は、グラフィックスシステムの特定の特性と描画する画像の種類に依存します。たとえば、画面上の2つの指定された点の間に線を引く
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>draw_line</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>draw-line</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>draw_line</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    があるとします。すると、図<SPACE/><REF NAME="fig:wave"/>の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>wave</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>wave</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    ペインタのような線画のペインタを、線分のリストから次のように作成できます：
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Segments-&gt;painter</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>
@@ -1435,7 +2081,25 @@ function edge2_frame(frame) {
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
     <JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>
-    described in exercise<SPACE/><REF NAME="ex:for-each"/>.</FOOTNOTE>
+    described in exercise<SPACE/><REF NAME="ex:for-each"/>.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>segments-&gt;painter</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>segments_to_painter</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は、以下の演習<SPACE/><REF NAME="ex:segments2"/>で記述される線分の表現を使用します。また、演習<SPACE/><REF NAME="ex:for-each"/>で記述される
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>for-each</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>for_each</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    も使用します。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET HIDE="yes">
       <NAME>draw_line</NAME>
       <JAVASCRIPT>
@@ -1502,13 +2166,22 @@ const my_painter = segments_to_painter(
 my_painter(my_frame);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The segments are given using coordinates with respect to the unit square.
     For each segment in the list, the painter transforms the segment endpoints
     with the frame coordinate map and draws a line between the transformed
     points.
+    </EN>
+    <JA>
+    線分は単位正方形に対する座標で与えられます。リスト内の各線分について、ペインタはフレーム座標マップで線分の端点を変換し、変換された点の間に線を描きます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Representing painters as
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -1523,7 +2196,24 @@ my_painter(my_frame);
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     can serve as a painter, provided that it takes a frame as argument and
-    draws something scaled to fit the frame.<FOOTNOTE>
+    draws something scaled to fit the frame.
+    </EN>
+    <JA>
+    ペインタを
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    として表現することで、ピクチャー言語に強力な抽象バリアが設けられます。さまざまなグラフィックス機能に基づいて、あらゆる種類のプリミティブなペインタを作成し、混在させることができます。それらの実装の詳細は問題になりません。フレームを引数として受け取り、フレームに収まるように何かを描く
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    であれば、何でもペインタとして機能できます。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     For example, the <SCHEMEINLINE>rogers</SCHEMEINLINE> painter of
     figure<SPACE/><REF NAME="fig:rogers"/> was constructed from a gray-level
     image. For each point in a given frame, the
@@ -1562,10 +2252,41 @@ my_painter(my_frame);
         functional
       </JAVASCRIPT>
     </SPLITINLINE>
-    representation for data.</FOOTNOTE>
+    representation for data.
+    </EN>
+    <JA>
+    たとえば、図<SPACE/><REF NAME="fig:rogers"/>の <SCHEMEINLINE>rogers</SCHEMEINLINE> ペインタはグレースケール画像から構築されました。与えられたフレーム内の各点について、<SCHEMEINLINE>rogers</SCHEMEINLINE> ペインタはフレーム座標マップのもとでその点に写像される画像内の点を決定し、それに応じて陰影をつけます。
+    <!--
+      <JAVASCRIPT>
+	For example, the <JAVASCRIPTINLINE>rogers</JAVASCRIPTINLINE> painter of
+	figure<SPACE/><REF NAME="fig:wave"/> was constructed from a gray-level
+	image. For each point in a given frame, the
+	<SCHEMEINLINE>heart</SCHEMEINLINE> painter determines the point in the
+	image that is mapped to it under the frame coordinate map, and shades
+	it accordingly.
+      </JAVASCRIPT>
+    -->
+    異なる種類のペインタを許容することで、セクション<SPACE/><REF NAME="sec:data?"/>で議論した抽象データのアイデアを活用しています。そこでは有理数の表現は適切な条件を満たすものであれば何でもよいと主張しました。ここでは、指定されたフレーム内に何かを描く限り、ペインタはどのような方法で実装してもよいという事実を利用しています。
+    <SHRINK_PARAGRAPH lines="1"/>
+    セクション<SPACE/><REF NAME="sec:data?"/>では、ペアを
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    として実装する方法も示しました。ペインタは、データの
+    <SPLITINLINE>
+      <SCHEME>手続き的</SCHEME>
+      <JAVASCRIPT>関数的</JAVASCRIPT>
+    </SPLITINLINE>
+    表現の2番目の例です。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     A directed line segment in the plane can be represented as a pair of
     <INDEX>line segment<SUBINDEX>represented as pair of vectors</SUBINDEX></INDEX>
     vectors<EMDASH/>the vector running from the origin to the start-point of
@@ -1573,26 +2294,51 @@ my_painter(my_frame);
     the segment. Use your vector representation from
     exercise<SPACE/><REF NAME="ex:vectors"/> to define a representation for
     segments with a constructor
-    <INDEX><USE>make_segment</USE></INDEX> 
+    <INDEX><USE>make_segment</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-segment</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_segment</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
     and selectors
-    <INDEX><USE>start_segment</USE></INDEX> 
+    <INDEX><USE>start_segment</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>start-segment</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>start_segment</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
     and
-    <INDEX><USE>end_segment</USE></INDEX> 
+    <INDEX><USE>end_segment</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>end-segment</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>end_segment</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    平面上の有向線分は、
+    <INDEX>line segment<SUBINDEX>represented as pair of vectors</SUBINDEX></INDEX>
+    ベクトルのペア——原点から線分の始点へのベクトルと、原点から線分の終点へのベクトル——として表現できます。演習<SPACE/><REF NAME="ex:vectors"/>のベクトル表現を使って、コンストラクタ
+    <INDEX><USE>make_segment</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-segment</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_segment</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    とセレクタ
+    <INDEX><USE>start_segment</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>start-segment</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>start_segment</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    および
+    <INDEX><USE>end_segment</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>end-segment</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>end_segment</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を持つ線分の表現を定義してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:segments2"/>
     <SOLUTION>
       <SNIPPET>
@@ -1629,6 +2375,8 @@ my_segment;
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Use
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>segments-&gt;painter</SCHEMEINLINE></SCHEME>
@@ -1652,6 +2400,29 @@ my_segment;
         The <SCHEMEINLINE>wave</SCHEMEINLINE> painter.
       </LI>
     </OL>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>segments-&gt;painter</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>segments_to_painter</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使って、以下のプリミティブなペインタを定義してください：
+    <OL>
+      <LI>
+        指定されたフレームの輪郭を描くペインタ。
+      </LI>
+      <LI>
+        フレームの対角の角を結んで<QUOTE>X</QUOTE>を描くペインタ。
+      </LI>
+      <LI>
+        フレームの各辺の中点を結んでひし形を描くペインタ。
+      </LI>
+      <LI>
+        <SCHEMEINLINE>wave</SCHEMEINLINE> ペインタ。
+      </LI>
+    </OL>
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:making-wave"/>
     <SOLUTION>
       <OL>
@@ -1785,12 +2556,14 @@ diamond_painter(unit_frame);
   </EXERCISE>
 
   <SUBHEADING>
-    <NAME>Transforming and combining painters</NAME>
+    <NAME><BILINGUAL><EN>Transforming and combining painters</EN><JA>ペインタの変換と組み合わせ</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>painter(s)<SUBINDEX>transforming and combining</SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     An operation on painters (such as
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>flip-vert</SCHEMEINLINE></SCHEME>
@@ -1806,9 +2579,26 @@ diamond_painter(unit_frame);
     doesn<APOS/>t have to know how a painter works in order to flip
     it<EMDASH/>it just has to know how to turn a frame upside down: The flipped
     painter just uses the original painter, but in the inverted frame.
+    </EN>
+    <JA>
+    ペインタに対する演算（
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>flip-vert</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>flip_vert</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    や <SCHEMEINLINE>beside</SCHEMEINLINE> など）は、引数のフレームから導出されたフレームに対して元のペインタを呼び出すペインタを作成することで動作します。したがって、たとえば
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>flip-vert</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>flip_vert</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は、ペインタを反転させるためにペインタがどのように動作するかを知る必要はありません——フレームを上下反転する方法を知っていれば十分です。反転されたペインタは単に元のペインタを使いますが、反転されたフレームで使うのです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Painter operations are based on the
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -1833,6 +2623,25 @@ diamond_painter(unit_frame);
     frame<APOS/>s origin and the other two specify the ends of its edge vectors.
     Thus, arguments within the unit square specify a frame contained within the
     original frame.
+    </EN>
+    <JA>
+    ペインタの演算は
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>transform-painter</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>transform_painter</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    に基づいています。これはペインタとフレームの変換方法に関する情報を引数として受け取り、新しいペインタを生成します。変換されたペインタは、フレームに対して呼び出されると、そのフレームを変換し、変換されたフレームに対して元のペインタを呼び出します。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>transform-painter</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>transform_painter</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    への引数は、新しいフレームの角を指定する点（ベクトルとして表現）です。フレーム内に写像されたとき、最初の点が新しいフレームの原点を指定し、残り2つがその辺ベクトルの端点を指定します。したがって、単位正方形内の引数は元のフレーム内に含まれるフレームを指定します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>transform_painter</DECLARATION></INDEX> 
       <NAME>transform_painter</NAME>
@@ -1865,7 +2674,10 @@ function transform_painter(painter, origin, corner1, corner2) {
     </SNIPPET>
   </TEXT>
   <TEXT>
-    Here<APOS/>s how to flip painter images vertically:
+    <BILINGUAL>
+    <EN>Here<APOS/>s how to flip painter images vertically:</EN>
+    <JA>ペインタの画像を垂直に反転する方法は次の通りです：</JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>flip_vert</DECLARATION></INDEX> 
       <NAME>flip_vert</NAME>
@@ -1899,6 +2711,8 @@ const flipped_outline_painter =
 flipped_outline_painter(unit_frame);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Using
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>transform-painter</SCHEMEINLINE>,
@@ -1908,12 +2722,26 @@ flipped_outline_painter(unit_frame);
       is given:
       </SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>transform_painter</JAVASCRIPTINLINE>,
-      we can easily define new transformations.      
+      we can easily define new transformations.
       For example, we can declare a
       painter that shrinks its image to the upper-right quarter of the frame
       it is given:
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>transform-painter</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>transform_painter</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使えば、新しい変換を簡単に定義できます。たとえば、画像を与えられたフレームの右上の4分の1に縮小するペインタを
+    <SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    できます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>shrink_to_upper_right</DECLARATION></INDEX> 
       <NAME>shrink_to_upper_right</NAME>
@@ -1946,15 +2774,34 @@ const shrunk_outline_painter =
 shrunk_outline_painter(unit_frame);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Other transformations rotate images counterclockwise by 90
-    degrees<FOOTNOTE>
+    degrees
+    </EN>
+    <JA>
+    他の変換は画像を反時計回りに90度回転させたり、
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Rotate90</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The function <JAVASCRIPTINLINE>rotate90</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
     is a pure rotation only for square frames, because it also stretches and
-    shrinks the image to fit into the rotated frame.</FOOTNOTE>
+    shrinks the image to fit into the rotated frame.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rotate90</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>rotate90</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は正方形のフレームに対してのみ純粋な回転になります。回転されたフレームに収まるように画像を伸縮もさせるためです。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET>
       <INDEX><DECLARATION>rotate90</DECLARATION></INDEX> 
       <NAME>rotate90</NAME>
@@ -1987,7 +2834,12 @@ const rotated_outline_painter =
 rotated_outline_painter(unit_frame);
       </JAVASCRIPT>
     </SNIPPET>
-    or squash images towards the center of the frame:<FOOTNOTE>
+    <BILINGUAL>
+    <EN>or squash images towards the center of the frame:</EN>
+    <JA>画像をフレームの中心に向かって圧縮したりします：</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     The diamond-shaped images in
     figures<SPACE/><REF NAME="fig:wave"/>
     and<SPACE/><REF NAME="fig:rogers"/> were created with
@@ -2004,7 +2856,25 @@ rotated_outline_painter(unit_frame);
 	were created with <JAVASCRIPTINLINE>squash_inwards</JAVASCRIPTINLINE>
 	applied to <JAVASCRIPTINLINE>heart</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
-    --> </FOOTNOTE>
+    -->
+    </EN>
+    <JA>
+    図<SPACE/><REF NAME="fig:wave"/>と<SPACE/><REF NAME="fig:rogers"/>のひし形の画像は、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>squash-inwards</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>squash_inwards</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を <SCHEMEINLINE>wave</SCHEMEINLINE> と <SCHEMEINLINE>rogers</SCHEMEINLINE> に適用して作成されました。
+    <!--
+      <JAVASCRIPT>
+	The diamond-shaped images in figure<SPACE/><REF NAME="fig:wave"/>
+	were created with <JAVASCRIPTINLINE>squash_inwards</JAVASCRIPTINLINE>
+	applied to <JAVASCRIPTINLINE>heart</JAVASCRIPTINLINE>.
+      </JAVASCRIPT>
+    -->
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET>
       <INDEX><DECLARATION>squash_inwards</DECLARATION></INDEX> 
       <NAME>squash_inwards</NAME>
@@ -2040,6 +2910,8 @@ squashed_outline_painter(unit_frame);
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Frame transformation is also the key to
     defining means of combining two or more painters.
     The <SCHEMEINLINE>beside</SCHEMEINLINE>
@@ -2052,6 +2924,16 @@ squashed_outline_painter(unit_frame);
     compound painter. When the compound painter is given a frame, it calls the
     first transformed painter to paint in the left half of the frame and calls
     the second transformed painter to paint in the right half of the frame:
+    </EN>
+    <JA>
+    フレーム変換は、2つ以上のペインタの組み合わせの手段を定義する鍵でもあります。たとえば、<SCHEMEINLINE>beside</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は2つのペインタを受け取り、それぞれを引数のフレームの左半分と右半分に描くように変換し、新しい複合ペインタを生成します。この複合ペインタにフレームが与えられると、最初の変換されたペインタを呼び出してフレームの左半分に描き、2番目の変換されたペインタを呼び出してフレームの右半分に描きます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>beside</DECLARATION></INDEX> 
       <NAME>beside</NAME>
@@ -2103,6 +2985,8 @@ beside(x_painter, x_painter)(unit_frame);
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Observe how the painter data abstraction, and in particular the
     representation of painters as
     <SPLITINLINE>
@@ -2118,21 +3002,54 @@ beside(x_painter, x_painter)(unit_frame);
     </SPLITINLINE>
     need not know anything about the details of the component painters other
     than that each painter will draw something in its designated frame.
+    </EN>
+    <JA>
+    ペインタのデータ抽象、特にペインタを
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    として表現することが、<SCHEMEINLINE>beside</SCHEMEINLINE> の実装をいかに容易にしているかに注目してください。<SCHEMEINLINE>beside</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、各ペインタが指定されたフレーム内に何かを描くということ以外、構成要素のペインタの詳細について何も知る必要がありません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>Define</SCHEME>
       <JAVASCRIPT>Declare</JAVASCRIPT>
     </SPLITINLINE>
     the transformation
-    <INDEX><USE>flip_horiz</USE></INDEX> 
+    <INDEX><USE>flip_horiz</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>flip-horiz</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>flip_horiz</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
     which flips painters horizontally, and transformations that rotate painters
     counterclockwise by 180 degrees and 270 degrees.
+    </EN>
+    <JA>
+    ペイ���タを水平方向に反転する変換
+    <INDEX><USE>flip_horiz</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>flip-horiz</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>flip_horiz</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と、ペインタを反時計回りに180度および270度回転させる変換を
+    <SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:rotate"/>
     <SOLUTION>
       <OL>
@@ -2248,19 +3165,21 @@ rotate270(x_painter)(unit_frame);
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>Define</SCHEME>
       <JAVASCRIPT>Declare</JAVASCRIPT>
     </SPLITINLINE>
     the
-     <INDEX><USE>below</USE></INDEX> 
+     <INDEX><USE>below</USE></INDEX>
     <SCHEMEINLINE>below</SCHEMEINLINE> operation for painters.
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Below</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The function <JAVASCRIPTINLINE>below</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    takes two painters as arguments. The resulting painter, given a frame, 
+    takes two painters as arguments. The resulting painter, given a frame,
 	draws with the first painter in the bottom of the frame and with the
 	second painter in the top.
     Define <SCHEMEINLINE>below</SCHEMEINLINE> in two different
@@ -2277,6 +3196,33 @@ rotate270(x_painter)(unit_frame);
     </SPLITINLINE>
     given above, and again in terms of <SCHEMEINLINE>beside</SCHEMEINLINE> and
     suitable rotation operations (from exercise<SPACE/><REF NAME="ex:rotate"/>).
+    </EN>
+    <JA>
+    ペインタに対する
+     <INDEX><USE>below</USE></INDEX>
+    <SCHEMEINLINE>below</SCHEMEINLINE> 演算を
+    <SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    してください。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>below</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>below</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は2つのペインタを引数として受け取ります。結果のペインタは、フレームが与えられると、最初のペインタでフレームの下半分に描き、2番目のペインタで上半分に描きます。<SCHEMEINLINE>below</SCHEMEINLINE> を2つの異なる方法で定義してください——まず上の <SCHEMEINLINE>beside</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    と類似した
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を書き、次に <SCHEMEINLINE>beside</SCHEMEINLINE> と適切な回転演算（演習<SPACE/><REF NAME="ex:rotate"/>から）を使って定義してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:below"/>
     <SOLUTION>
       <OL>
@@ -2357,11 +3303,13 @@ function below(painter1, painter2) {
   </EXERCISE>
 
   <SUBHEADING>
-    <NAME>Levels of language for robust design</NAME>
+    <NAME><BILINGUAL><EN>Levels of language for robust design</EN><JA>堅牢な設計のための言語のレベル</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <SHORT_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The picture language exploits some of the critical ideas we<APOS/>ve
     introduced about abstraction with
     <SPLITINLINE>
@@ -2387,9 +3335,31 @@ function below(painter1, painter2) {
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     are available to us for abstracting means of combination for painters.
+    </EN>
+    <JA>
+    このピクチャー言語は、
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    とデータによる抽象化について導入した重要なアイデアのいくつかを活用しています。基本的なデータ抽象であるペインタは、
+    <SPLITINLINE>
+      <SCHEME>手続き的</SCHEME>
+      <JAVASCRIPT>関数的</JAVASCRIPT>
+    </SPLITINLINE>
+    表現を使って実装されており、これにより言語はさまざまな基本的な描画機能を統一的に扱えます。組み合わせの手段は閉包性を満たしており、複雑なデザインを簡単に構築できます。最後に、
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を抽象化するためのすべてのツールが、ペインタの組み合わせの手段を抽象化するために利用できます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We have also obtained a glimpse of another crucial idea about languages and
     program design.  This is the approach of
     <INDEX>stratified design</INDEX>
@@ -2401,24 +3371,53 @@ function below(painter1, painter2) {
     used as primitives at the next level.  The language used at each level
     of a stratified design has primitives, means of combination, and means
     of abstraction appropriate to that level of detail.
+    </EN>
+    <JA>
+    言語とプログラム設計に関するもう一つの重要なアイデアの一端も見ることができました。それは
+    <INDEX>stratified design</INDEX>
+    <INDEX>design, stratified</INDEX>
+    <EM>階層的設計</EM>のアプローチです。複雑なシステムは、一連の言語を使って記述される一連のレベルとして構造化すべきだという考え方です。各レベルは、そのレベルでプリミティブとみなされる部品を組み合わせて構築され、各レベルで構築された部品は次のレベルでプリミティブとして使われます。階層的設計の各レベルで使われる言語は、そのレベルの詳細さに適したプリミティブ、組み合わせの手段、抽象化の手段を持っています。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Stratified design pervades the engineering of complex systems.  For
     example, in computer engineering, resistors and transistors are
     combined (and described using a language of analog circuits) to
     produce parts such as and-gates and or-gates, which form the
-    primitives of a language for digital-circuit design.<FOOTNOTE>
-    Section<SPACE/><REF NAME="sec:circuit-simulator"/> describes one such
-    language.</FOOTNOTE> These parts are combined to build
+    primitives of a language for digital-circuit design.
+    </EN>
+    <JA>
+    階層的設計は複雑なシステムの工学に広く浸透しています。たとえばコンピュータ工学では、抵抗器やトランジスタが組み合わされ（アナログ回路の言語を使って記述され）、AND ゲートや OR ゲートなどの部品が作られます。これらはデジタル回路設計の言語のプリミティブを形成します。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>Section<SPACE/><REF NAME="sec:circuit-simulator"/> describes one such
+    language.</EN>
+    <JA>セクション<SPACE/><REF NAME="sec:circuit-simulator"/>でそのような言語の一つを記述しています。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    These parts are combined to build
     processors, bus structures, and memory systems, which are in turn
     combined to form computers, using languages appropriate to computer
     architecture.  Computers are combined to form distributed systems,
     using languages appropriate for describing network interconnections,
     and so on.
+    </EN>
+    <JA>
+    これらの部品を組み合わせてプロセッサ、バス構造、メモリシステムが構築され、さらにそれらがコンピュータアーキテクチャに適した言語を使ってコンピュータに組み合わされます。コンピュータはネットワーク接続を記述するための適切な言語を使って分散システムに組み合わされ、以下同様に続きます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     As a tiny example of stratification, our picture language uses primitive
     elements (primitive painters) that specify points and lines to provide the
     shapes of a painter like <SCHEMEINLINE>rogers</SCHEMEINLINE>. The bulk of
@@ -2434,9 +3433,21 @@ function below(painter1, painter2) {
       </JAVASCRIPT>
     </SPLITINLINE>
     capture common patterns of combining geometric combiners.
+    </EN>
+    <JA>
+    階層化の小さな例として、私たちのピクチャー言語は、<SCHEMEINLINE>rogers</SCHEMEINLINE> のようなペインタの形状を提供するために点や線を指定するプリミティブな要素（プリミティブなペインタ）を使っています。ピクチャー言語の説明の大部分は、<SCHEMEINLINE>beside</SCHEMEINLINE> や <SCHEMEINLINE>below</SCHEMEINLINE> のような幾何学的な結合子を使って、これらのプリミティブを組み合わせることに焦点を当てました。さらに高いレベルでも作業し、<SCHEMEINLINE>beside</SCHEMEINLINE> や <SCHEMEINLINE>below</SCHEMEINLINE> をプリミティブとみなし、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>square-of-four</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>square_of_four</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    のような演算が幾何学的な結合子を組み合わせる共通パターンを捉える言語で操作しました。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Stratified design helps make programs
     <INDEX>robustness</INDEX>
     <EM>robust</EM>, that is, it makes
@@ -2461,9 +3472,28 @@ function below(painter1, painter2) {
     arranges the four copies of the corner. In general, each level of a
     stratified design provides a different vocabulary for expressing the
     characteristics of the system, and a different kind of ability to change it.
+    </EN>
+    <JA>
+    階層的設計はプログラムを
+    <INDEX>robustness</INDEX>
+    <EM>堅牢</EM>にするのに役立ちます。つまり、仕様の小さな変更はプログラムのそれに応じた小さな変更で済む可能性が高くなります。たとえば、図<SPACE/><REF NAME="fig:sqlimit-designs"/>に示された <SCHEMEINLINE>wave</SCHEMEINLINE> に基づく画像を変更したいとします。最も低いレベルで作業して <SCHEMEINLINE>wave</SCHEMEINLINE> 要素の詳細な外観を変更することもできますし、中間レベルで
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>corner-split</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>corner_split</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が <SCHEMEINLINE>wave</SCHEMEINLINE> を複製する方法を変更することもできますし、最も高いレベルで
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>square-limit</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>square_limit</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が角の4つのコピーを配置する方法を変更することもできます。一般に、階層的設計の各レベルは、システムの特性を表現するための異なる語彙と、それを変更するための異なる種類の能力を提供します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Make changes to the square limit of <SCHEMEINLINE>wave</SCHEMEINLINE>
     shown in figure<SPACE/><REF NAME="fig:sqlimit-designs"/> by working at
     each of the levels described above.  In particular:
@@ -2497,24 +3527,65 @@ function below(painter1, painter2) {
       </LI>
       <LI>
         Modify the version of
-	<INDEX><USE>square_limit</USE></INDEX> 
+	<INDEX><USE>square_limit</USE></INDEX>
 	<SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>square-limit</SCHEMEINLINE></SCHEME>
 	  <JAVASCRIPT><JAVASCRIPTINLINE>square_limit</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
 	</SPLITINLINE>
 	that uses
-	<INDEX><USE>square_of_four</USE></INDEX> 
+	<INDEX><USE>square_of_four</USE></INDEX>
         <SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>square-of-four</SCHEMEINLINE></SCHEME>
 	  <JAVASCRIPT><JAVASCRIPTINLINE>square_of_four</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
 	</SPLITINLINE>
         so as to assemble the corners in a different pattern.
-	(For example, you might make the big Mr. Rogers look outward 
+	(For example, you might make the big Mr. Rogers look outward
 	from each corner of the square.)
       </LI>
     </OL>
+    </EN>
+    <JA>
+    上で述べた各レベルで作業して、図<SPACE/><REF NAME="fig:sqlimit-designs"/>に示された <SCHEMEINLINE>wave</SCHEMEINLINE> の square limit を変更してください。具体的には：
+    <OL>
+      <LI>
+        演習<SPACE/><REF NAME="ex:making-wave"/>のプリミティブな <SCHEMEINLINE>wave</SCHEMEINLINE> ペインタにいくつかの線分を追加してください（たとえば笑顔を追加するなど）。
+      </LI>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>corner-split</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>corner_split</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>
+        で構築されるパターンを変更してください（たとえば、
+        <SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>up-split</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>up_split</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>
+	と
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>right-split</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>right_split</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>
+	の画像を2つではなく1つだけ使うなど）。
+      </LI>
+      <LI>
+	<INDEX><USE>square_of_four</USE></INDEX>
+        <SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>square-of-four</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>square_of_four</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>
+        を使う
+	<INDEX><USE>square_limit</USE></INDEX>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>square-limit</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>square_limit</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>
+	のバージョンを変更して、角を異なるパターンで組み立てるようにしてください（たとえば、大きな Mr. Rogers が正方形の各角から外側を向くようにするなど）。
+      </LI>
+    </OL>
+    </JA>
+    </BILINGUAL>
     <SOLUTION>
       <SNIPPET EXT="RUNES">
 	<NAME>combine4_click_here</NAME>

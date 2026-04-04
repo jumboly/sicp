@@ -137,6 +137,25 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | terminal node | 末端ノード | |
 | branch | 枝 | |
 | nested | 入れ子 | |
+| sequence | シーケンス | |
+| list | リスト | |
+| list structure | リスト構造 | |
+| box-and-pointer notation | ボックスとポインタの記法 | |
+| box notation | ボックス記法 | |
+| list notation | リスト記法 | |
+| empty list | 空リスト | |
+| filter | フィルタ | |
+| accumulate / accumulation | 累積 | |
+| enumerate / enumerator | 列挙 / 列挙子 | |
+| signal-flow diagram | 信号フロー図 | |
+| flatmap | flatmap | そのまま |
+| fold-right / fold-left | fold_right / fold_left | そのまま |
+| nested mapping | 入れ子のマッピング | |
+| permutation | 順列 | |
+| painter | ペインタ | 画像言語 |
+| frame (picture language) | フレーム | 画像言語 |
+| stratified design | 階層的設計 | |
+| robust | 堅牢 | |
 
 ### 高階関数・抽象
 

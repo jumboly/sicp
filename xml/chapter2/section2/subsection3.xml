@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Sequences as Conventional Interfaces
+    <BILINGUAL>
+    <EN>Sequences as Conventional Interfaces</EN>
+    <JA>規約インターフェースとしてのシーケンス</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:sequences-conventional-interfaces"/>
@@ -8,15 +11,24 @@
   <INDEX>conventional interface<SUBINDEX>sequence as</SUBINDEX><OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In working with compound data, we<APOS/>ve stressed how data abstraction
     permits us to design programs without becoming enmeshed in the details
     of data representations, and how abstraction preserves for us the
     flexibility to experiment with alternative representations.  In this
     section, we introduce another powerful design principle for working
     with data structures<EMDASH/>the use of <EM>conventional interfaces</EM>.
+    </EN>
+    <JA>
+    複合データを扱う中で、データ抽象がデータ表現の詳細に巻き込まれずにプログラムを設計することを可能にすること、そして抽象化が代替表現を試す柔軟性を保ってくれることを強調してきました。この節では、データ構造を扱うためのもう一つの強力な設計原理——<EM>規約インターフェース</EM>の使用——を導入します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In section<SPACE/><REF NAME="sec:higher-order-procedures"/> we saw how
     program abstractions, implemented as higher-order
     <SPLITINLINE>
@@ -41,6 +53,29 @@
     </SPLITINLINE>
     of section<SPACE/><REF NAME="sec:trees"/>, which takes a tree as argument
     and computes the sum of the squares of the leaves that are odd:
+    </EN>
+    <JA>
+    節<SPACE/><REF NAME="sec:higher-order-procedures"/>では、高階
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    として実装されたプログラム抽象が、数値データを扱うプログラムの共通パターンを捉えられることを見ました。複合データを扱うための類似の操作を定式化する能力は、データ構造を操作するスタイルに大きく依存します。たとえば、節<SPACE/><REF NAME="sec:trees"/>の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>count-leaves</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>count_leaves</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    に類似した次の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を考えてみましょう。これはツリーを引数として取り、奇数の葉の二乗の和を計算します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>odd_definition</NAME>
       <SCHEME>
@@ -54,14 +89,14 @@ function is_odd(n) {
       </JAVASCRIPT>
     </SNIPPET>
     <SNIPPET>
-      <INDEX><DECLARATION>sum_odd_squares</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>sum_odd_squares</DECLARATION></INDEX>
       <REQUIRES>square_definition</REQUIRES>
       <REQUIRES>odd_definition</REQUIRES>
       <EXAMPLE>sum_odd_squares_example</EXAMPLE>
       <EXPECTED>34</EXPECTED>
       <SCHEME>
 (define (sum-odd-squares tree)
-  (cond ((null? tree) 0)  
+  (cond ((null? tree) 0)
         ((not (pair? tree))
           (if (odd? tree) (square tree) 0))
         (else (+ (sum-odd-squares (car tree))
@@ -87,6 +122,8 @@ function sum_odd_squares(tree) {
 sum_odd_squares(list(list(2, 3), list(4, 5)));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     On the surface, this
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -97,8 +134,23 @@ sum_odd_squares(list(list(2, 3), list(4, 5)));
     <LATEXINLINE>${\textrm{Fib}}(k)$</LATEXINLINE>, where
     <LATEXINLINE>$k$</LATEXINLINE> is less than or equal to a given integer
     <LATEXINLINE>$n$</LATEXINLINE>:
+    </EN>
+    <JA>
+    一見すると、この
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、与えられた整数 <LATEXINLINE>$n$</LATEXINLINE> 以下の <LATEXINLINE>$k$</LATEXINLINE> に対するすべての偶数フィボナッチ数 <LATEXINLINE>${\textrm{Fib}}(k)$</LATEXINLINE> のリストを構築する次の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    とは大きく異なります：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
-      <INDEX><DECLARATION>even_fibs</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>even_fibs</DECLARATION></INDEX>
       <REQUIRES>even_definition</REQUIRES>
       <REQUIRES>fib_definition</REQUIRES>
       <EXAMPLE>even_fibs_example</EXAMPLE>
@@ -144,6 +196,8 @@ tail(even_fibs(9));
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Despite the fact that these two
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -190,6 +244,55 @@ tail(even_fibs(9));
 	starting with the empty list.
       </LI>
     </UL>
+    </EN>
+    <JA>
+    この2つの
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は構造的に大きく異なりますが、2つの計算をより抽象的に記述すると多くの類似性が明らかになります。最初のプログラムは
+    <UL>
+      <LI>
+	ツリーの葉を列挙し、
+      </LI>
+      <LI>
+	奇数のものを選んでフィルタリングし、
+      </LI>
+      <LI>
+	選ばれた各要素を二乗し、
+      </LI>
+      <LI>
+	0 から始めて
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>+</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>+</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>
+	を使って結果を累積します。
+      </LI>
+    </UL>
+    2番目のプログラムは
+    <UL>
+      <LI>
+	0 から <LATEXINLINE>$n$</LATEXINLINE> までの整数を列挙し、
+      </LI>
+      <LI>
+	各整数のフィボナッチ数を計算し、
+      </LI>
+      <LI>
+	偶数のものを選んでフィルタリングし、
+      </LI>
+      <LI>
+	空リストから始めて
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>
+	を使って結果を累積します。
+      </LI>
+    </UL>
+    </JA>
+    </BILINGUAL>
   </TEXT>
     <PDF_ONLY>
       <!-- Figure moved here for SICP JS pagination -->
@@ -208,18 +311,24 @@ tail(even_fibs(9));
       <JAVASCRIPT>
         <FIGURE src="img_javascript/ch2-Z-G-17.svg">
           <LABEL NAME="fig:signal-flow-plans"/>
-          <CAPTION>The signal-flow plans for the
+          <CAPTION><BILINGUAL>
+          <EN>The signal-flow plans for the
           functions
           <JAVASCRIPTINLINE>sum_odd_squares</JAVASCRIPTINLINE> (top) and
 	  <JAVASCRIPTINLINE>even_fibs</JAVASCRIPTINLINE> (bottom) reveal the
-          commonality between the two programs.
-          </CAPTION>
+          commonality between the two programs.</EN>
+          <JA>関数
+          <JAVASCRIPTINLINE>sum_odd_squares</JAVASCRIPTINLINE>（上）と
+	  <JAVASCRIPTINLINE>even_fibs</JAVASCRIPTINLINE>（下）の信号フロー図は、2つのプログラム間の共通性を明らかにします。</JA>
+          </BILINGUAL></CAPTION>
         </FIGURE>
       </JAVASCRIPT>
     </SPLIT>
     </PDF_ONLY>
     <SHORT_PAGE lines="4"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     A signal-processing engineer would find it natural to conceptualize these
     processes in terms of
     <INDEX>signal-processing view of computation</INDEX>
@@ -237,13 +346,13 @@ tail(even_fibs(9));
       <JAVASCRIPT><JAVASCRIPTINLINE>sum_odd_squares</JAVASCRIPTINLINE>,
       </JAVASCRIPT>
     </SPLITINLINE>
-    we begin with an 
+    we begin with an
     <INDEX>enumerator</INDEX>
     <EM>enumerator</EM>, which generates a <QUOTE>signal</QUOTE> consisting of
-    the leaves of a given tree.  This signal is passed through a 
+    the leaves of a given tree.  This signal is passed through a
     <INDEX>filter</INDEX>
     <EM>filter</EM>, which eliminates all but the odd elements. The resulting
-    signal is in turn passed through a 
+    signal is in turn passed through a
     <INDEX>mapping<SUBINDEX><ORDER>trans</ORDER>as a transducer</SUBINDEX></INDEX>
     <EM>map</EM>, which is a <QUOTE>transducer</QUOTE> that applies the
     <SCHEMEINLINE>square</SCHEMEINLINE>
@@ -251,7 +360,7 @@ tail(even_fibs(9));
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    to each element.  The output of the map is then fed to an 
+    to each element.  The output of the map is then fed to an
     <INDEX>accumulator</INDEX>
     <EM>accumulator</EM>, which combines the elements using
     <SPLITINLINE>
@@ -264,6 +373,49 @@ tail(even_fibs(9));
       <JAVASCRIPT><JAVASCRIPTINLINE>even_fibs</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     is analogous.
+    </EN>
+    <JA>
+    信号処理のエンジニアなら、これらのプロセスを、
+    <INDEX>signal-processing view of computation</INDEX>
+    <INDEX>signal-flow diagram</INDEX>
+    <SPLITINLINE>
+      <SCHEME>図<SPACE/><REF NAME="fig:signal-flow-plans_scheme"/></SCHEME>
+      <JAVASCRIPT>図<SPACE/><REF NAME="fig:signal-flow-plans"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に示すように、プログラム計画の各部分を実装するステージのカスケードを流れる信号として概念化するのが自然でしょう。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sum-odd-squares</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sum_odd_squares</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    では、与えられたツリーの葉からなる「信号」を生成する
+    <INDEX>enumerator</INDEX>
+    <EM>列挙子</EM>から始まります。この信号は奇数の要素以外をすべて除去する
+    <INDEX>filter</INDEX>
+    <EM>フィルタ</EM>を通過します。結果の信号は次に、各要素に
+    <SCHEMEINLINE>square</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を適用する「トランスデューサ」である
+    <INDEX>mapping<SUBINDEX><ORDER>trans</ORDER>as a transducer</SUBINDEX></INDEX>
+    <EM>マップ</EM>を通過します。マップの出力は
+    <INDEX>accumulator</INDEX>
+    <EM>アキュムレータ</EM>に渡され、初期値 0 から始めて
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>+</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>+</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使って要素を組み合わせます。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>even-fibs</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>even_fibs</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の計画も同様です。
+    </JA>
+    </BILINGUAL>
     <WEB_ONLY>
       <!-- Figure code appears earlier in this file in a PDF_ONLY for SICP JS pagination -->
     <SPLIT>
@@ -280,18 +432,24 @@ tail(even_fibs(9));
       <JAVASCRIPT>
         <FIGURE src="img_javascript/ch2-Z-G-17.svg">
           <LABEL NAME="fig:signal-flow-plans"/>
-          <CAPTION>The signal-flow plans for the
+          <CAPTION><BILINGUAL>
+          <EN>The signal-flow plans for the
           functions
           <JAVASCRIPTINLINE>sum_odd_squares</JAVASCRIPTINLINE> (top) and
 	  <JAVASCRIPTINLINE>even_fibs</JAVASCRIPTINLINE> (bottom) reveal the
-          commonality between the two programs.
-          </CAPTION>
+          commonality between the two programs.</EN>
+          <JA>関数
+          <JAVASCRIPTINLINE>sum_odd_squares</JAVASCRIPTINLINE>（上）と
+	  <JAVASCRIPTINLINE>even_fibs</JAVASCRIPTINLINE>（下）の信号フロー図は、2つのプログラム間の共通性を明らかにします。</JA>
+          </BILINGUAL></CAPTION>
         </FIGURE>
       </JAVASCRIPT>
     </SPLIT>
     </WEB_ONLY>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Unfortunately, the two
     <SPLITINLINE>
       <SCHEME>procedure definitions</SCHEME>
@@ -348,10 +506,68 @@ tail(even_fibs(9));
       <SCHEME>code.</SCHEME>
       <JAVASCRIPT>program.</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    残念ながら、上の2つの
+    <SPLITINLINE>
+      <SCHEME>手続きの定義</SCHEME>
+      <JAVASCRIPT>関数宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    はこの信号フロー構造を示していません。たとえば、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sum-odd-squares</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sum_odd_squares</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を調べると、列挙は部分的に
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>null?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_null</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>pair?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_pair</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    のテストで、部分的に
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    のツリー再帰的構造で実装されていることがわかります。同様に、累積は部分的にテストの中に、部分的に再帰で使われる加算の中に見出されます。一般に、どちらの
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    にも、信号フローの記述の各要素に対応する明確な部分がありません。2つの
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は計算を異なる方法で分解し、列挙をプログラム全体に分散させ、マップ、フィルタ、累積と混ぜ合わせています。書く
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の中で信号フロー構造を明示的にするようにプログラムを組織化できれば、結果の
+    <SPLITINLINE>
+      <SCHEME>コード</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>
+    の概念的明確さが増すでしょう。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Sequence Operations</NAME>
+    <NAME><BILINGUAL>
+    <EN>Sequence Operations</EN>
+    <JA>シーケンス操作</JA>
+    </BILINGUAL></NAME>
   </SUBHEADING>
 
   <LABEL NAME="sec:sequence-operations"/>
@@ -359,6 +575,8 @@ tail(even_fibs(9));
 
   <LONG_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The key to organizing programs so as to more clearly reflect the
     signal-flow structure is to concentrate on the <QUOTE>signals</QUOTE> that
     flow from one stage in the process to the next.  If we represent these
@@ -371,6 +589,17 @@ tail(even_fibs(9));
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     from section<SPACE/><REF NAME="sec:sequences"/>:
+    </EN>
+    <JA>
+    信号フロー構造をより明確に反映するようにプログラムを組織化する鍵は、プロセスのあるステージから次のステージへ流れる「信号」に注目することです。これらの信号をリストとして表現すれば、各ステージの処理をリスト操作で実装できます。たとえば、信号フロー図のマッピングステージは、節<SPACE/><REF NAME="sec:sequences"/>の
+    <SCHEMEINLINE>map</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を使って実装できます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <REQUIRES>square_definition</REQUIRES>
       <REQUIRES>map</REQUIRES>
@@ -387,17 +616,24 @@ map(square, list(1, 2, 3, 4, 5));
       <JAVASCRIPT_TEST>
 list_ref(map(square, list(1, 2, 3, 4, 5)), 4);
       </JAVASCRIPT_TEST>
-      <JAVASCRIPT_OUTPUT>      
+      <JAVASCRIPT_OUTPUT>
 list(1, 4, 9, 16, 25)
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Filtering a sequence to select only those elements that satisfy a given
     predicate is accomplished by
+    </EN>
+    <JA>
+    与えられた述語を満たす要素だけを選択するためのシーケンスのフィルタリングは、次のようにして実現されます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
-      <INDEX><DECLARATION>filter</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>filter</DECLARATION></INDEX>
       <NAME>filter</NAME>
       <EXAMPLE>filter_odd</EXAMPLE>
       <EXPECTED>[ 1, [ 3, [ 5, null ] ] ]</EXPECTED>
@@ -414,7 +650,7 @@ function filter(predicate, sequence) {
     return is_null(sequence)
            ? null
            : predicate(head(sequence))
-           ? pair(head(sequence), 
+           ? pair(head(sequence),
                   filter(predicate, tail(sequence)))
            : filter(predicate, tail(sequence));
 }
@@ -436,7 +672,14 @@ function is_odd(n) {
 filter(is_odd, list(1, 2, 3, 4, 5));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     For example,
+    </EN>
+    <JA>
+    たとえば、
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <REQUIRES>filter</REQUIRES>
       <REQUIRES>odd_definition</REQUIRES>
@@ -444,18 +687,25 @@ filter(is_odd, list(1, 2, 3, 4, 5));
 (filter odd? (list 1 2 3 4 5))
       </SCHEME>
       <SCHEMEOUTPUT>
-            (1 3 5)
+(1 3 5)
       </SCHEMEOUTPUT>
       <JAVASCRIPT>
 filter(is_odd, list(1, 2, 3, 4, 5));
       </JAVASCRIPT>
-      <JAVASCRIPT_OUTPUT>      
+      <JAVASCRIPT_OUTPUT>
 list(1, 3, 5)
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
   </TEXT>
   <TEXT>
+  <BILINGUAL>
+  <EN>
   Accumulations can be implemented by
+  </EN>
+  <JA>
+  累積は次のようにして実装できます。
+  </JA>
+  </BILINGUAL>
     <SNIPPET POSTPADDING="no">
       <INDEX><DECLARATION>accumulate</DECLARATION></INDEX>
       <NAME>accumulate</NAME>
@@ -470,7 +720,7 @@ list(1, 3, 5)
 function accumulate(op, initial, sequence) {
     return is_null(sequence)
            ? initial
-           : op(head(sequence), 
+           : op(head(sequence),
                 accumulate(op, initial, tail(sequence)));
 }
       </JAVASCRIPT>
@@ -528,7 +778,7 @@ function times(x, y) {
 accumulate(times, 1, list(1, 2, 3, 4, 5));
       </JAVASCRIPT>
       <JAVASCRIPT_OUTPUT>
-120	
+120
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
     <SNIPPET>
@@ -552,6 +802,8 @@ list(1, 2, 3, 4, 5)
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     All that remains to implement signal-flow diagrams is to enumerate the
     sequence of elements to be processed.  For
     <SPLITINLINE>
@@ -560,8 +812,18 @@ list(1, 2, 3, 4, 5)
     </SPLITINLINE>
     we need to generate the sequence of integers in a given range, which we
     can do as follows:
+    </EN>
+    <JA>
+    信号フロー図を実装するために残っているのは、処理する要素のシーケンスを列挙することだけです。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>even-fibs</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>even_fibs</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    では、与えられた範囲の整数のシーケンスを生成する必要があり、次のようにして行えます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
-      <INDEX><DECLARATION>enumerate_interval</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>enumerate_interval</DECLARATION></INDEX>
       <NAME>enumerate_interval</NAME>
       <EXAMPLE>enumerate_interval_example</EXAMPLE>
       <EXPECTED>[ 5, [ 6, [ 7, null ] ] ]</EXPECTED>
@@ -599,9 +861,16 @@ tail(tail(tail(enumerate_interval(2, 7))));
 list(2, 3, 4, 5, 6, 7)
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
-    To enumerate the leaves of a tree, we can use<FOOTNOTE>This is, in fact,
-    precisely the 
-     <INDEX><USE>fringe</USE><SUBINDEX>as a tree enumeration</SUBINDEX></INDEX> 
+    <BILINGUAL>
+    <EN>
+    To enumerate the leaves of a tree, we can use</EN>
+    <JA>
+    ツリーの葉を列挙するには、次を使えます。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>This is, in fact,
+    precisely the
+     <INDEX><USE>fringe</USE><SUBINDEX>as a tree enumeration</SUBINDEX></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>fringe</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>fringe</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -614,10 +883,27 @@ list(2, 3, 4, 5, 6, 7)
     <SPLITINLINE>
       <SCHEME>procedures.</SCHEME>
       <JAVASCRIPT>functions.</JAVASCRIPT>
-    </SPLITINLINE></FOOTNOTE>
+    </SPLITINLINE></EN>
+    <JA>これは実際、練習問題<SPACE/><REF NAME="ex:fringe"/>の
+     <INDEX><USE>fringe</USE><SUBINDEX>as a tree enumeration</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>fringe</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fringe</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE><SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    そのものです。ここでは、汎用的なシーケンス操作
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    のファミリーの一部であることを強調するために名前を変更しています。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET>
       <INDEX>tree<SUBINDEX>enumerating leaves of</SUBINDEX></INDEX>
-      <INDEX><DECLARATION>enumerate_tree</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>enumerate_tree</DECLARATION></INDEX>
       <NAME>enumerate_tree</NAME>
       <EXAMPLE>enumerate_tree_example</EXAMPLE>
       <EXPECTED>[ 3, [ 4, [ 5, null ] ] ]</EXPECTED>
@@ -660,6 +946,8 @@ list(1, 2, 3, 4, 5)
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Now we can reformulate
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>sum-odd-squares</SCHEMEINLINE></SCHEME>
@@ -678,8 +966,29 @@ list(1, 2, 3, 4, 5)
     </JAVASCRIPT></SPLITINLINE>
     we enumerate the sequence of leaves of the tree, filter this to keep only
     the odd numbers in the sequence, square each element, and sum the results:
+    </EN>
+    <JA>
+    これで
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sum-odd-squares</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sum_odd_squares</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>even-fibs</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>even_fibs</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を信号フロー図のように再定式化できます。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sum-odd-squares</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sum_odd_squares</JAVASCRIPTINLINE>
+    </JAVASCRIPT></SPLITINLINE>
+    では、ツリーの葉のシーケンスを列挙し、シーケンス内の奇数だけを残すようにフィルタリングし、各要素を二乗して結果を合計します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
-      <INDEX><DECLARATION>sum_odd_squares</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>sum_odd_squares</DECLARATION></INDEX>
       <REQUIRES>square_definition</REQUIRES>
       <REQUIRES>simple_plus</REQUIRES>
       <REQUIRES>odd_definition</REQUIRES>
@@ -696,14 +1005,16 @@ list(1, 2, 3, 4, 5)
       </SCHEME>
       <JAVASCRIPT>
 function sum_odd_squares(tree) {
-    return accumulate(plus, 
-                      0, 
-                      map(square, 
-                          filter(is_odd, 
+    return accumulate(plus,
+                      0,
+                      map(square,
+                          filter(is_odd,
                                  enumerate_tree(tree))));
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     For
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>even-fibs</SCHEMEINLINE>,</SCHEME>
@@ -713,9 +1024,18 @@ function sum_odd_squares(tree) {
     the Fibonacci number for each of these integers, filter the resulting
     sequence to keep only the even elements, and accumulate the results
     into a list:
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>even-fibs</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>even_fibs</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    では、0 から <LATEXINLINE>$n$</LATEXINLINE> までの整数を列挙し、各整数のフィボナッチ数を生成し、結果のシーケンスをフィルタリングして偶数の要素だけを残し、結果をリストに累積します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
-      <INDEX><DECLARATION>even_fibs</DECLARATION></INDEX> 
-      <REQUIRES>even_definition</REQUIRES>        
+      <INDEX><DECLARATION>even_fibs</DECLARATION></INDEX>
+      <REQUIRES>even_definition</REQUIRES>
       <REQUIRES>fib_definition</REQUIRES>
       <REQUIRES>enumerate_interval</REQUIRES>
       <EXAMPLE>even_fibs_example</EXAMPLE>
@@ -730,10 +1050,10 @@ function sum_odd_squares(tree) {
       </SCHEME>
       <JAVASCRIPT>
 function even_fibs(n) {
-    return accumulate(pair, 
-                      null, 
-                      filter(is_even, 
-                             map(fib, 
+    return accumulate(pair,
+                      null,
+                      filter(is_even,
+                             map(fib,
                                  enumerate_interval(0, n))));
 }
       </JAVASCRIPT>
@@ -741,15 +1061,24 @@ function even_fibs(n) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The value of expressing programs as sequence operations is that this
     helps us make program designs that are modular, that is, designs that
     are constructed by combining relatively independent pieces.  We can
     encourage modular design by providing a library of standard components
     together with a conventional interface for connecting the components
     in flexible ways.
+    </EN>
+    <JA>
+    プログラムをシーケンス操作として表現することの価値は、モジュール的なプログラム設計——比較的独立した部品を組み合わせて構築される設計——を行う助けになることです。標準的な部品のライブラリと、部品を柔軟に接続するための規約インターフェースを提供することで、モジュール的な設計を促進できます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Modular construction
     <INDEX>modularity</INDEX>
     <INDEX>sequence(s)<SUBINDEX>as source of modularity</SUBINDEX></INDEX>
@@ -779,6 +1108,33 @@ function even_fibs(n) {
     </SPLITINLINE>
     in a program that constructs a list of the squares of the first
     <LATEXINLINE>$n+1$</LATEXINLINE> Fibonacci numbers:
+    </EN>
+    <JA>
+    モジュール的な構築は、
+    <INDEX>modularity</INDEX>
+    <INDEX>sequence(s)<SUBINDEX>as source of modularity</SUBINDEX></INDEX>
+    工学設計において複雑さを制御するための強力な戦略です。たとえば、実際の信号処理応用では、設計者は標準化されたフィルタとトランスデューサのファミリーから選んだ要素をカスケード接続してシステムを構築するのが常です。同様に、シーケンス操作は標準的なプログラム要素のライブラリを提供し、自由に組み合わせることができます。たとえば、最初の <LATEXINLINE>$n+1$</LATEXINLINE> 個のフィボナッチ数の二乗のリストを構築するプログラムで、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sum-odd-squares</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sum_odd_squares</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    や
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>even-fibs</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>even_fibs</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の部品を再利用できます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>list_fib_squares</NAME>
       <REQUIRES>square_definition</REQUIRES>
@@ -796,12 +1152,12 @@ function even_fibs(n) {
       </SCHEME>
       <JAVASCRIPT>
 function list_fib_squares(n) {
-    return accumulate(pair, 
-                      null, 
-                      map(square, 
-                          map(fib, 
+    return accumulate(pair,
+                      null,
+                      map(square,
+                          map(fib,
                               enumerate_interval(0, n))));
-}                         
+}
       </JAVASCRIPT>
     </SNIPPET>
     <SNIPPET>
@@ -823,8 +1179,15 @@ length(list_fib_squares(10));
 list(0, 1, 1, 4, 9, 25, 64, 169, 441, 1156, 3025)
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     We can rearrange the pieces and use them in computing the product of the
     squares of the odd integers in a sequence:
+    </EN>
+    <JA>
+    部品を並べ替えて、シーケンス内の奇数の二乗の積を計算するのに使うこともできます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>product_of_squares_of_odd_elements</NAME>
       <REQUIRES>square_definition</REQUIRES>
@@ -841,9 +1204,9 @@ list(0, 1, 1, 4, 9, 25, 64, 169, 441, 1156, 3025)
       </SCHEME>
       <JAVASCRIPT>
 function product_of_squares_of_odd_elements(sequence) {
-    return accumulate(times, 
-                      1, 
-                      map(square, 
+    return accumulate(times,
+                      1,
+                      map(square,
                           filter(is_odd, sequence)));
 }
       </JAVASCRIPT>
@@ -866,6 +1229,8 @@ product_of_squares_of_odd_elements(list(1, 2, 3, 4, 5));
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can also formulate conventional data-processing applications in terms of
     sequence operations.  Suppose we have a sequence of personnel records and
     we want to find the salary of the highest-paid programmer. Assume that we
@@ -877,6 +1242,17 @@ product_of_squares_of_odd_elements(list(1, 2, 3, 4, 5));
       </JAVASCRIPT>
     </SPLITINLINE>
     that tests if a record is for a programmer.  Then we can write
+    </EN>
+    <JA>
+    従来のデータ処理アプリケーションもシーケンス操作で定式化できます。人事記録のシーケンスがあり、最も高給のプログラマーの給与を見つけたいとしましょう。記録の給与を返すセレクタ <SCHEMEINLINE>salary</SCHEMEINLINE> と、記録がプログラマーのものかどうかをテストする述語
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>programmer?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_programmer</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    があるとすると、次のように書けます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>linus</NAME>
       <SCHEME>
@@ -906,18 +1282,25 @@ salary_of_highest_paid_programmer(my_records);
       </SCHEME>
       <JAVASCRIPT>
 function salary_of_highest_paid_programmer(records) {
-    return accumulate(math_max, 
-                      0, 
-                      map(salary, 
+    return accumulate(math_max,
+                      0,
+                      map(salary,
                           filter(is_programmer, records)));
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     These examples give just a hint of the vast range of operations that
-    can be expressed as sequence operations.<FOOTNOTE>
+    can be expressed as sequence operations.</EN>
+    <JA>
+    これらの例は、シーケンス操作として表現できる膨大な範囲の操作のほんの一端を示しているにすぎません。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     <INDEX>Waters, Richard C.</INDEX>
     Richard Waters (1979) developed a program that automatically analyzes
-    traditional 
+    traditional
     <INDEX>Fortran</INDEX>
     Fortran programs, viewing them in terms of maps, filters, and accumulations.
     He found that fully 90 percent of the code in the Fortran Scientific
@@ -925,9 +1308,18 @@ function salary_of_highest_paid_programmer(records) {
     for the success of Lisp as a programming language is that lists provide a
     standard medium for expressing ordered collections so that they can be
     manipulated using higher-order operations. Many modern languages, such as
-    Python, have learned this lesson.</FOOTNOTE>
+    Python, have learned this lesson.</EN>
+    <JA>
+    <INDEX>Waters, Richard C.</INDEX>
+    Richard Waters（1979）は、従来の
+    <INDEX>Fortran</INDEX>
+    Fortran プログラムをマップ、フィルタ、累積の観点から自動的に分析するプログラムを開発しました。彼は、Fortran Scientific Subroutine Package のコードの実に90パーセントがこのパラダイムにきれいに当てはまることを発見しました。Lisp がプログラミング言語として成功した理由の一つは、リストが順序付きの集まりを表現する標準的な媒体を提供し、高階操作を使って操作できるようにしていることです。Python など多くの現代の言語がこの教訓を学んでいます。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Sequences, implemented here as lists, serve as a conventional interface
     that permits us to combine processing modules.  Additionally, when we
     uniformly represent structures as sequences, we have localized the
@@ -937,11 +1329,23 @@ function salary_of_highest_paid_programmer(records) {
     programs intact.  We will exploit this capability in
     section<SPACE/><REF NAME="sec:streams"/>, when we generalize the
     sequence-processing paradigm to admit infinite sequences.
+    </EN>
+    <JA>
+    ここでリストとして実装されたシーケンスは、処理モジュールを組み合わせることを可能にする規約インターフェースとして機能します。さらに、構造をシーケンスとして一様に表現すると、プログラム内のデータ構造への依存を少数のシーケンス操作に局所化できます。これらを変更することで、プログラムの全体設計はそのままに、シーケンスの代替表現を試すことができます。この機能は節<SPACE/><REF NAME="sec:streams"/>でシーケンス処理パラダイムを無限シーケンスに対応するように一般化する際に活用します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Fill in the missing expressions to complete the following definitions of
     some basic list-manipulation operations as accumulations:
+    </EN>
+    <JA>
+    欠けている式を埋めて、いくつかの基本的なリスト操作を累積として定義する次の定義を完成させてください：
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>map_append_length_example</NAME>
       <SCHEME>
@@ -972,7 +1376,7 @@ tail(map(math_sqrt, list(1, 2, 3, 4)));
       </SCHEME>
       <JAVASCRIPT>
 function map(f, sequence) {
-    return accumulate((x, y) => <METAPHRASE>??</METAPHRASE>, 
+    return accumulate((x, y) => <METAPHRASE>??</METAPHRASE>,
                       null, sequence);
 }
 function append(seq1, seq2) {
@@ -990,7 +1394,7 @@ function length(sequence) {
 	<JAVASCRIPT>
 function map(f, sequence) {
     return accumulate((x, y) => pair(f(x), y),
-                      null, 
+                      null,
                       sequence);
 }
 function append(seq1, seq2) {
@@ -998,7 +1402,7 @@ function append(seq1, seq2) {
 }
 function length(sequence) {
     return accumulate((x, y) => y + 1,
-                      0, 
+                      0,
                       sequence);
 }
 	</JAVASCRIPT>
@@ -1011,6 +1415,8 @@ function length(sequence) {
 
   <EXERCISE>
     <LABEL NAME="ex:horner"/>
+    <BILINGUAL>
+    <EN>
     Evaluating a
     polynomial in <LATEXINLINE>$x$</LATEXINLINE> at a given value
     of <LATEXINLINE>$x$</LATEXINLINE> can be formulated as an accumulation.
@@ -1018,7 +1424,7 @@ function length(sequence) {
     <LATEX>
       \[ a_{n} x^n +a_{n-1}x^{n-1}+\cdots + a_{1} x+a_{0} \]
     </LATEX>
-    using a well-known algorithm called 
+    using a well-known algorithm called
     <INDEX>polynomial(s)<SUBINDEX>evaluating with Horner<APOS/>s rule</SUBINDEX></INDEX>
     <INDEX>Horner<APOS/>s rule</INDEX>
     <EM>Horner<APOS/>s rule</EM>, which structures the computation as
@@ -1028,7 +1434,23 @@ function length(sequence) {
     In other words, we start with <LATEXINLINE>$a_{n}$</LATEXINLINE>, multiply
     by <LATEXINLINE>$x$</LATEXINLINE>, add <LATEXINLINE>$a_{n-1}$</LATEXINLINE>,
     multiply by <LATEXINLINE>$x$</LATEXINLINE>, and so on, until we reach
-    <LATEXINLINE>$a_{0}$</LATEXINLINE>.<FOOTNOTE>According to 
+    <LATEXINLINE>$a_{0}$</LATEXINLINE>.</EN>
+    <JA>
+    <LATEXINLINE>$x$</LATEXINLINE> の多項式を与えられた <LATEXINLINE>$x$</LATEXINLINE> の値で評価することは、累積として定式化できます。多項式
+    <LATEX>
+      \[ a_{n} x^n +a_{n-1}x^{n-1}+\cdots + a_{1} x+a_{0} \]
+    </LATEX>
+    を
+    <INDEX>polynomial(s)<SUBINDEX>evaluating with Horner<APOS/>s rule</SUBINDEX></INDEX>
+    <INDEX>Horner<APOS/>s rule</INDEX>
+    <EM>ホーナーの方法</EM>と呼ばれるよく知られたアルゴリズムを使って評価します。これは計算を次のように構造化します：
+    <LATEX>
+      \[ \left(\cdots (a_{n}  x+a_{n-1})x+\cdots +a_{1}\right) x+a_{0} \]
+    </LATEX>
+    つまり、<LATEXINLINE>$a_{n}$</LATEXINLINE> から始めて、<LATEXINLINE>$x$</LATEXINLINE> を掛け、<LATEXINLINE>$a_{n-1}$</LATEXINLINE> を足し、<LATEXINLINE>$x$</LATEXINLINE> を掛け、というように <LATEXINLINE>$a_{0}$</LATEXINLINE> に達するまで続けます。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>According to
     <INDEX>Knuth, Donald E.</INDEX>
     Knuth (1997b), this rule was formulated by
     <INDEX><ORDER>Horner</ORDER>Horner, W. G.</INDEX>
@@ -1040,7 +1462,7 @@ function length(sequence) {
     <LATEXINLINE>$a_{n-1}x^{n-1}$</LATEXINLINE>, and so on.  In fact, it is
     possible to prove that any algorithm for evaluating arbitrary polynomials
     must use at least as many additions and multiplications as does
-    Horner<APOS/>s rule, and thus Horner<APOS/>s rule is an 
+    Horner<APOS/>s rule, and thus Horner<APOS/>s rule is an
     <INDEX>algorithm<SUBINDEX>optimal</SUBINDEX></INDEX>
     <INDEX>optimality<SUBINDEX>of Horner<APOS/>s rule</SUBINDEX></INDEX>
     optimal algorithm for polynomial evaluation.  This was proved (for the
@@ -1048,16 +1470,38 @@ function length(sequence) {
     <INDEX>Ostrowski, A. M.</INDEX>
     A. M. Ostrowski in a 1954 paper that essentially founded the modern study
     of optimal algorithms.  The analogous statement for multiplications was
-    proved by 
+    proved by
     <INDEX>Pan, V. Y.</INDEX>
-    V. Y. Pan in 1966.  The book by 
+    V. Y. Pan in 1966.  The book by
     <INDEX>Borodin, Alan</INDEX>
     <INDEX>Munro, Ian</INDEX>
     <CITATION>
       Borodin and Munro (1975)
-    </CITATION> 
+    </CITATION>
     provides an overview of these and other results about optimal
-    algorithms.</FOOTNOTE>
+    algorithms.</EN>
+    <JA>
+    <INDEX>Knuth, Donald E.</INDEX>
+    Knuth（1997b）によれば、この規則は19世紀初頭に
+    <INDEX><ORDER>Horner</ORDER>Horner, W. G.</INDEX>
+    W. G. Horner によって定式化されましたが、この方法は実際にはそれより100年以上前に Newton によって使われていました。ホーナーの方法は、まず <LATEXINLINE>$a_{n} x^n$</LATEXINLINE> を計算し、次に <LATEXINLINE>$a_{n-1}x^{n-1}$</LATEXINLINE> を足すという素朴な方法よりも少ない加算と乗算で多項式を評価します。実際、任意の多項式を評価するいかなるアルゴリズムもホーナーの方法と少なくとも同じ数の加算と乗算を使わなければならないことが証明でき、したがってホーナーの方法は多項式評価の
+    <INDEX>algorithm<SUBINDEX>optimal</SUBINDEX></INDEX>
+    <INDEX>optimality<SUBINDEX>of Horner<APOS/>s rule</SUBINDEX></INDEX>
+    最適アルゴリズムです。これは（加算の数について）
+    <INDEX>Ostrowski, A. M.</INDEX>
+    A. M. Ostrowski が1954年の論文で証明し、その論文は本質的に最適アルゴリズムの現代的研究を創始しました。乗算についての類似の命題は
+    <INDEX>Pan, V. Y.</INDEX>
+    V. Y. Pan が1966年に証明しました。
+    <INDEX>Borodin, Alan</INDEX>
+    <INDEX>Munro, Ian</INDEX>
+    <CITATION>
+      Borodin and Munro (1975)
+    </CITATION>
+    の本は、これらおよびその他の最適アルゴリズムに関する結果の概要を提供しています。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     Fill in the following template to produce a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -1067,6 +1511,16 @@ function length(sequence) {
     coefficients of the polynomial are arranged in a sequence, from
     <LATEXINLINE>$a_{0}$</LATEXINLINE> through
     <LATEXINLINE>$a_{n}$</LATEXINLINE>.
+    </EN>
+    <JA>
+    ホーナーの方法を使って多項式を評価する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を作るために、次のテンプレートを埋めてください。多項式の係数は <LATEXINLINE>$a_{0}$</LATEXINLINE> から <LATEXINLINE>$a_{n}$</LATEXINLINE> までシーケンスに並んでいるものとします。
+    </JA>
+    </BILINGUAL>
     <SNIPPET LATEX="yes">
       <NAME>horner</NAME>
       <EXAMPLE>horner_eval_example</EXAMPLE>
@@ -1079,13 +1533,20 @@ function length(sequence) {
       <JAVASCRIPT>
 function horner_eval(x, coefficient_sequence) {
     return accumulate((this_coeff, higher_terms) => <METAPHRASE>??</METAPHRASE>,
-                      0, 
+                      0,
                       coefficient_sequence);
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     For example, to compute <LATEXINLINE>$1+3x+5x^3+x^5$</LATEXINLINE> at
     <LATEXINLINE>$x=2$</LATEXINLINE> you would evaluate
+    </EN>
+    <JA>
+    たとえば、<LATEXINLINE>$x=2$</LATEXINLINE> で <LATEXINLINE>$1+3x+5x^3+x^5$</LATEXINLINE> を計算するには、次を評価します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET POSTPADDING="no">
       <NAME>horner_eval_example</NAME>
       <REQUIRES>horner</REQUIRES>
@@ -1103,9 +1564,9 @@ horner_eval(2, list(1, 3, 0, 5, 0, 1));
 	<EXPECTED>79</EXPECTED>
 	<JAVASCRIPT>
 function horner_eval(x, coefficient_sequence) {
-    return accumulate((this_coeff, higher_terms) => 
+    return accumulate((this_coeff, higher_terms) =>
                       x * higher_terms + this_coeff,
-                      0, 
+                      0,
                       coefficient_sequence);
 }
 	</JAVASCRIPT>
@@ -1128,6 +1589,8 @@ horner_eval(2, list(1, 3, 0, 5, 0, 1));
 
   <EXERCISE>
     <LABEL NAME="ex:countleaves-as-accumulation"/>
+    <BILINGUAL>
+    <EN>
     Redefine
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>count-leaves</SCHEMEINLINE></SCHEME>
@@ -1135,6 +1598,17 @@ horner_eval(2, list(1, 3, 0, 5, 0, 1));
       </JAVASCRIPT>
     </SPLITINLINE>
     from section<SPACE/><REF NAME="sec:trees"/> as an accumulation:
+    </EN>
+    <JA>
+    節<SPACE/><REF NAME="sec:trees"/>の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>count-leaves</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>count_leaves</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を累積として再定義してください：
+    </JA>
+    </BILINGUAL>
     <SNIPPET POSTPADDING="no" LATEX="yes">
       <INDEX><USE>count_leaves</USE><SUBINDEX><ORDER>accumulation</ORDER>as accumulation</SUBINDEX><FRAGILE/></INDEX>
       <EXAMPLE>count_leaves_example</EXAMPLE>
@@ -1155,7 +1629,7 @@ function count_leaves(t) {
 	<JAVASCRIPT>
 function count_leaves(t) {
     return accumulate((leaves, total) => leaves + total,
-                      0, 
+                      0,
 		      map(sub_tree => is_pair(sub_tree)
 		                      ? count_leaves(sub_tree)
                                       : 1,
@@ -1169,6 +1643,8 @@ function count_leaves(t) {
 
   <EXERCISE>
     <LABEL NAME="ex:accumulate-n"/>
+    <BILINGUAL>
+    <EN>
     The
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -1196,6 +1672,31 @@ function count_leaves(t) {
     of the sequences, and so on, and returns a sequence of the results.  For
     instance, if <SCHEMEINLINE>s</SCHEMEINLINE> is a sequence containing four
     sequences
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>accumulate-n</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>accumulate_n</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は
+    <SPLITINLINE>
+      <SCHEME>
+      <SCHEMEINLINE>accumulate</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>accumulate</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    に似ていますが、第3引数としてシーケンスのシーケンスを取ります。すべてのシーケンスは同じ数の要素を持つものとします。指定された累積
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を使って、すべてのシーケンスの最初の要素を組み合わせ、すべてのシーケンスの2番目の要素を組み合わせ、というように処理し、結果のシーケンスを返します。たとえば、<SCHEMEINLINE>s</SCHEMEINLINE> が4つのシーケンスを含むシーケンスで
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 ((1 2 3) (4 5 6) (7 8 9) (10 11 12))
@@ -1204,6 +1705,8 @@ function count_leaves(t) {
 list(list(1, 2, 3), list(4, 5, 6), list(7, 8, 9), list(10, 11, 12))
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     then the value of
     <SPLITINLINE>
       <SCHEME>
@@ -1225,8 +1728,34 @@ list(list(1, 2, 3), list(4, 5, 6), list(7, 8, 9), list(10, 11, 12))
       <JAVASCRIPT><JAVASCRIPTINLINE>accumulate_n</JAVASCRIPTINLINE>:
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    なら、
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>(accumulate-n + 0 s)</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>accumulate_n(plus, 0, s)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の値はシーケンス
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(22 26 30)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>list(22, 26, 30)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    になるはずです。次の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>accumulate-n</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>accumulate_n</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の定義の欠けている式を埋めてください：
+    </JA>
+    </BILINGUAL>
     <SNIPPET LATEX="yes">
-      <INDEX><USE>accumulate_n</USE><FRAGILE/></INDEX> 
+      <INDEX><USE>accumulate_n</USE><FRAGILE/></INDEX>
       <EXAMPLE>example_2.36</EXAMPLE>
       <SCHEME>
 (define (accumulate-n op init seqs)
@@ -1239,7 +1768,7 @@ list(list(1, 2, 3), list(4, 5, 6), list(7, 8, 9), list(10, 11, 12))
 function accumulate_n(op, init, seqs) {
     return is_null(head(seqs))
            ? null
-           : pair(accumulate(op, init, <METAPHRASE>??</METAPHRASE>), 
+           : pair(accumulate(op, init, <METAPHRASE>??</METAPHRASE>),
                   accumulate_n(op, init, <METAPHRASE>??</METAPHRASE>));
 }
       </JAVASCRIPT>
@@ -1259,20 +1788,26 @@ function accumulate_n(op, init, seqs) {
 	</JAVASCRIPT>
 	<SCHEME>
 	</SCHEME>
-    </SNIPPET></SOLUTION>
-    <SNIPPET HIDE="yes">
-      <NAME>example_2.36</NAME>
-      <REQUIRES>simple_plus</REQUIRES>
-      <JAVASCRIPT>
-const seq_seq = list(list(1, 2, 3), list(4, 5, 6), 
-                     list(7, 8, 9), list(10, 11, 12));
-accumulate_n(plus, 0, seq_seq);
-      </JAVASCRIPT>
-    </SNIPPET>
+      </SNIPPET>
+      <SNIPPET HIDE="yes">
+	<NAME>example_2.36</NAME>
+	<SCHEME>
+      (accumulate-n + 0 (list (list 1 2 3) (list 4 5 6) (list 7 8 9) (list 10 11 12)))
+	</SCHEME>
+	<JAVASCRIPT>
+function plus(x, y) {
+    return x + y;
+}
+accumulate_n(plus, 0, list(list(1, 2, 3), list(4, 5, 6), list(7, 8, 9), list(10, 11, 12)));
+	</JAVASCRIPT>
+      </SNIPPET>
+    </SOLUTION>
   </EXERCISE>
 
   <EXERCISE>
     <LABEL NAME="ex:matrix-ops"/>
+    <BILINGUAL>
+    <EN>
     Suppose we represent vectors <LATEXINLINE>$v=(v_{i})$</LATEXINLINE> as
     <INDEX>matrix, represented as sequence</INDEX>
     <INDEX>vector (mathematical)<SUBINDEX>represented as sequence</SUBINDEX></INDEX>
@@ -1280,7 +1815,7 @@ accumulate_n(plus, 0, seq_seq);
     sequences of numbers, and matrices <LATEXINLINE>$m=(m_{ij})$</LATEXINLINE>
     as sequences of vectors (the rows of the matrix). For example, the matrix
     <LATEX>
-      \[ \left[ 
+      \[ \left[
       \begin{array}{llll}
       1 &amp; 2 &amp; 3 &amp; 4\\
       4 &amp; 5 &amp; 6 &amp; 6\\
@@ -1288,13 +1823,38 @@ accumulate_n(plus, 0, seq_seq);
       \end{array}
       \right] \]
     </LATEX>
+    </EN>
+    <JA>
+    ベクトル <LATEXINLINE>$v=(v_{i})$</LATEXINLINE> を
+    <INDEX>matrix, represented as sequence</INDEX>
+    <INDEX>vector (mathematical)<SUBINDEX>represented as sequence</SUBINDEX></INDEX>
+    <INDEX>vector (mathematical)<SUBINDEX>operations on</SUBINDEX></INDEX>
+    数のシーケンスとして、行列 <LATEXINLINE>$m=(m_{ij})$</LATEXINLINE> をベクトルのシーケンス（行列の行）として表現するとしましょう。たとえば、行列
+    <LATEX>
+      \[ \left[
+      \begin{array}{llll}
+      1 &amp; 2 &amp; 3 &amp; 4\\
+      4 &amp; 5 &amp; 6 &amp; 6\\
+      6 &amp; 7 &amp; 8 &amp; 9\\
+      \end{array}
+      \right] \]
+    </LATEX>
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
         is represented as the sequence
 	<SCHEMEINLINE>((1 2 3 4) (4 5 6 6) (6 7 8 9))</SCHEMEINLINE>.
       </SCHEME>
       <JAVASCRIPT>
+        <BILINGUAL>
+        <EN>
 	is represented as the following sequence:
+        </EN>
+        <JA>
+	は次のシーケンスで表現されます：
+        </JA>
+        </BILINGUAL>
 	<SNIPPET EVAL="no">
 	  <JAVASCRIPT>
 list(list(1, 2, 3, 4),
@@ -1304,9 +1864,16 @@ list(list(1, 2, 3, 4),
 	</SNIPPET>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     With this representation, we can use sequence operations to concisely
     express the basic matrix and vector operations.  These operations
     (which are described in any book on matrix algebra) are the following:
+    </EN>
+    <JA>
+    この表現を使えば、シーケンス操作を使って基本的な行列とベクトルの演算を簡潔に表現できます。これらの演算（線形代数のどの教科書にも記載されています）は次の通りです：
+    </JA>
+    </BILINGUAL>
     <TABLE>
       <TR>
 	<TD>
@@ -1321,7 +1888,10 @@ list(list(1, 2, 3, 4),
 	</SPLITINLINE>
 	</TD>
 	<TD>
-	returns the sum <LATEXINLINE>$\sum_{i}v_{i} w_{i}$</LATEXINLINE>;
+	<BILINGUAL>
+	<EN>returns the sum <LATEXINLINE>$\sum_{i}v_{i} w_{i}$</LATEXINLINE>;</EN>
+	<JA>和 <LATEXINLINE>$\sum_{i}v_{i} w_{i}$</LATEXINLINE> を返す；</JA>
+	</BILINGUAL>
 	</TD>
       </TR>
       <TR>
@@ -1335,8 +1905,12 @@ list(list(1, 2, 3, 4),
 	</SPLITINLINE>
 	</TD>
 	<TD>
-	returns the vector <LATEXINLINE>$t$</LATEXINLINE>, where
-	<LATEXINLINE>$t_{i} =\sum_{j}m_{ij}v_{j}$</LATEXINLINE>;
+	<BILINGUAL>
+	<EN>returns the vector <LATEXINLINE>$t$</LATEXINLINE>, where
+	<LATEXINLINE>$t_{i} =\sum_{j}m_{ij}v_{j}$</LATEXINLINE>;</EN>
+	<JA>ベクトル <LATEXINLINE>$t$</LATEXINLINE> を返す。ここで
+	<LATEXINLINE>$t_{i} =\sum_{j}m_{ij}v_{j}$</LATEXINLINE>；</JA>
+	</BILINGUAL>
 	</TD>
       </TR>
       <TR>
@@ -1352,8 +1926,12 @@ list(list(1, 2, 3, 4),
 	</SPLITINLINE>
 	</TD>
 	<TD>
-	returns the matrix <LATEXINLINE>$p$</LATEXINLINE>, where
-	<LATEXINLINE>$p_{ij}=\sum_{k} m_{ik}n_{kj}$</LATEXINLINE>;
+	<BILINGUAL>
+	<EN>returns the matrix <LATEXINLINE>$p$</LATEXINLINE>, where
+	<LATEXINLINE>$p_{ij}=\sum_{k} m_{ik}n_{kj}$</LATEXINLINE>;</EN>
+	<JA>行列 <LATEXINLINE>$p$</LATEXINLINE> を返す。ここで
+	<LATEXINLINE>$p_{ij}=\sum_{k} m_{ik}n_{kj}$</LATEXINLINE>；</JA>
+	</BILINGUAL>
 	</TD>
       </TR>
       <TR>
@@ -1365,12 +1943,23 @@ list(list(1, 2, 3, 4),
 	</SPLITINLINE>
 	</TD>
 	<TD>
-	returns the matrix <LATEXINLINE>$n$</LATEXINLINE>, where
-	<LATEXINLINE>$n_{ij}=m_{ji}$</LATEXINLINE>.
+	<BILINGUAL>
+	<EN>returns the matrix <LATEXINLINE>$n$</LATEXINLINE>, where
+	<LATEXINLINE>$n_{ij}=m_{ji}$</LATEXINLINE>.</EN>
+	<JA>行列 <LATEXINLINE>$n$</LATEXINLINE> を返す。ここで
+	<LATEXINLINE>$n_{ij}=m_{ji}$</LATEXINLINE>。</JA>
+	</BILINGUAL>
 	</TD>
       </TR>
     </TABLE>
-    We can define the dot product as<FOOTNOTE>This definition uses
+    <BILINGUAL>
+    <EN>
+    We can define the dot product as</EN>
+    <JA>
+    内積は次のように定義できます。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>This definition uses
     <SPLITINLINE>
       <SCHEME>
 	the extended version of <SCHEMEINLINE>map</SCHEMEINLINE>
@@ -1380,9 +1969,20 @@ list(list(1, 2, 3, 4),
 	the function <JAVASCRIPTINLINE>accumulate_n</JAVASCRIPTINLINE>
 	from exercise<SPACE/><REF NAME="ex:accumulate-n"/>.
       </JAVASCRIPT>
-    </SPLITINLINE></FOOTNOTE>
+    </SPLITINLINE></EN>
+    <JA>この定義は
+    <SPLITINLINE>
+      <SCHEME>
+	脚注<SPACE/><REF NAME="foot:generalmap"/>で説明した <SCHEMEINLINE>map</SCHEMEINLINE> の拡張版を使っています。
+      </SCHEME>
+      <JAVASCRIPT>
+	練習問題<SPACE/><REF NAME="ex:accumulate-n"/>の関数 <JAVASCRIPTINLINE>accumulate_n</JAVASCRIPTINLINE> を使っています。
+      </JAVASCRIPT>
+    </SPLITINLINE></JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET EVAL="yes">
-      <INDEX><DECLARATION>dot_product</DECLARATION><FRAGILE/></INDEX> 
+      <INDEX><DECLARATION>dot_product</DECLARATION><FRAGILE/></INDEX>
       <NAME>dot_product</NAME>
       <EXAMPLE>dot_product_example</EXAMPLE>
       <EXPECTED>11</EXPECTED>
@@ -1408,6 +2008,8 @@ function dot_product(v, w) {
 dot_product(list(1, 2), list(3, 4));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Fill in the missing expressions in the following
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -1421,17 +2023,42 @@ dot_product(list(1, 2), list(3, 4));
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>accumulate-n</SCHEMEINLINE>
-	is defined in 	
+	is defined in
       </SCHEME>
       <JAVASCRIPT>
 	<JAVASCRIPTINLINE>accumulate_n</JAVASCRIPTINLINE>
-	is declared in       
+	is declared in
       </JAVASCRIPT>
     </SPLITINLINE>
     exercise<SPACE/><REF NAME="ex:accumulate-n"/>.)
+    </EN>
+    <JA>
+    他の行列演算を計算する次の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の欠けている式を埋めてください（
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>accumulate-n</SCHEMEINLINE>
+	は
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>accumulate_n</JAVASCRIPTINLINE>
+	は
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    練習問題<SPACE/><REF NAME="ex:accumulate-n"/>で定義されています）。
+    </JA>
+    </BILINGUAL>
     <SNIPPET POSTPADDING="no" LATEX="yes">
-      <INDEX><USE>matrix_times_vector</USE><FRAGILE/></INDEX> 
-      <INDEX><USE>matrix_times_matrix</USE><FRAGILE/></INDEX> 
+      <INDEX><USE>matrix_times_vector</USE><FRAGILE/></INDEX>
+      <INDEX><USE>matrix_times_matrix</USE><FRAGILE/></INDEX>
       <INDEX><USE>transpose</USE> a matrix<FRAGILE/></INDEX>
       <SCHEME>
 (define (matrix-*-vector m v)
@@ -1498,9 +2125,11 @@ matrix_times_vector(m1, v);
 
   <EXERCISE>
     <LABEL NAME="ex:fold-right-left"/>
+    <BILINGUAL>
+    <EN>
     The
      <INDEX><USE>accumulate</USE><SUBINDEX><ORDER>same as fold right</ORDER>same as <SCHEMEINLINE>fold_right</SCHEMEINLINE></SUBINDEX></INDEX>
-     <INDEX><USE>fold_right</USE></INDEX> 
+     <INDEX><USE>fold_right</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>accumulate</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>accumulate</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -1527,8 +2156,39 @@ matrix_times_vector(m1, v);
       <JAVASCRIPT><JAVASCRIPTINLINE>fold_right</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
     except that it combines elements working in the opposite direction:
+    </EN>
+    <JA>
+     <INDEX><USE>accumulate</USE><SUBINDEX><ORDER>same as fold right</ORDER>same as <SCHEMEINLINE>fold_right</SCHEMEINLINE></SUBINDEX></INDEX>
+     <INDEX><USE>fold_right</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>accumulate</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>accumulate</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は
+    <SPLITINLINE>
+      <SCHEME>
+      <SCHEMEINLINE>fold-right</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fold_right</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    としても知られています。シーケンスの最初の要素を、右側のすべての要素を組み合わせた結果と組み合わせるからです。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>fold-right</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fold_right</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    に似ていますが逆方向に要素を組み合わせる
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>fold-left</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fold_left</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    もあります：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
-      <INDEX><DECLARATION>fold_left</DECLARATION><FRAGILE/></INDEX> 
+      <INDEX><DECLARATION>fold_left</DECLARATION><FRAGILE/></INDEX>
       <NAME>fold_left</NAME>
       <EXAMPLE>fold_left_example</EXAMPLE>
       <EXPECTED>[ [ [ null, [ 1, null ] ], [ 2, null ] ], [ 3, null ] ]</EXPECTED>
@@ -1546,7 +2206,7 @@ function fold_left(op, initial, sequence) {
     function iter(result, rest) {
         return is_null(rest)
                ? result
-               : iter(op(result, head(rest)), 
+               : iter(op(result, head(rest)),
                       tail(rest));
     }
     return iter(initial, sequence);
@@ -1565,7 +2225,14 @@ function fold_left(op, initial, sequence) {
 const fold_right = accumulate;
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     What are the values of
+    </EN>
+    <JA>
+    次の各式の値は何ですか？
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>simple_divide</NAME>
       <SCHEME>
@@ -1622,6 +2289,8 @@ length(fold_right(list, null, list(1, 2, 3)));
 fold_left(list, null, list(1, 2, 3));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Give a property that
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>op</SCHEMEINLINE></SCHEME>
@@ -1638,6 +2307,26 @@ fold_left(list, null, list(1, 2, 3));
       <JAVASCRIPT><JAVASCRIPTINLINE>fold_left</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     will produce the same values for any sequence.
+    </EN>
+    <JA>
+    任意のシーケンスに対して
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>fold-right</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fold_right</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>fold-left</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fold_left</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が同じ値を生成することを保証するために
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>op</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>op</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が満たすべき性質を示してください。
+    </JA>
+    </BILINGUAL>
     <SOLUTION>
       <OL>
 	<LI>
@@ -1701,6 +2390,8 @@ fold_left(list, null, list(1, 2, 3));
           </SNIPPET>
 	</LI>
       </OL>
+      <BILINGUAL>
+      <EN>
       We can guarantee that <JAVASCRIPTINLINE>fold_right</JAVASCRIPTINLINE>
       and <JAVASCRIPTINLINE>fold_left</JAVASCRIPTINLINE> produce
       the same values for any sequence, if we require that
@@ -1709,6 +2400,11 @@ fold_left(list, null, list(1, 2, 3));
       <JAVASCRIPTINLINE>op</JAVASCRIPTINLINE> is just associative and the
       argument <JAVASCRIPTINLINE>initial</JAVASCRIPTINLINE> is a left and right
       neutral element with respect to <JAVASCRIPTINLINE>op</JAVASCRIPTINLINE>.
+      </EN>
+      <JA>
+      <JAVASCRIPTINLINE>op</JAVASCRIPTINLINE> が可換かつ結合的であれば、任意のシーケンスに対して <JAVASCRIPTINLINE>fold_right</JAVASCRIPTINLINE> と <JAVASCRIPTINLINE>fold_left</JAVASCRIPTINLINE> が同じ値を生成することを保証できます。<JAVASCRIPTINLINE>op</JAVASCRIPTINLINE> が結合的であるだけでも、引数 <JAVASCRIPTINLINE>initial</JAVASCRIPTINLINE> が <JAVASCRIPTINLINE>op</JAVASCRIPTINLINE> に関する左右の単位元であれば同じ値を生成します。
+      </JA>
+      </BILINGUAL>
       <SNIPPET>
 	<REQUIRES>simple_plus</REQUIRES>
 	<REQUIRES>fold_right</REQUIRES>
@@ -1729,6 +2425,8 @@ fold_left(plus, 0, list(1, 2, 3));
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Complete the following definitions of <SCHEMEINLINE>reverse</SCHEMEINLINE>
      <INDEX><USE>reverse</USE><SUBINDEX><ORDER>folding</ORDER>as folding</SUBINDEX></INDEX>
     (exercise<SPACE/><REF NAME="ex:reverse"/>) in terms of
@@ -1742,6 +2440,23 @@ fold_left(plus, 0, list(1, 2, 3));
       <JAVASCRIPT><JAVASCRIPTINLINE>fold_left</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     from exercise<SPACE/><REF NAME="ex:fold-right-left"/>:
+    </EN>
+    <JA>
+    練習問題<SPACE/><REF NAME="ex:fold-right-left"/>の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>fold-right</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fold_right</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>fold-left</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fold_left</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使った <SCHEMEINLINE>reverse</SCHEMEINLINE>
+     <INDEX><USE>reverse</USE><SUBINDEX><ORDER>folding</ORDER>as folding</SUBINDEX></INDEX>
+    （練習問題<SPACE/><REF NAME="ex:reverse"/>）の次の定義を完成させてください：
+    </JA>
+    </BILINGUAL>
     <SNIPPET LATEX="yes">
       <EXAMPLE>reverse_example</EXAMPLE>
       <SCHEME>
@@ -1768,26 +2483,19 @@ function reverse(sequence) {
     </SNIPPET>
     <SOLUTION>
       <SNIPPET>
-	<NAME>reverse_example_2</NAME>
-	<JAVASCRIPT>
-reverse(list(1, 4, 5, 9, 16, 25));
-	</JAVASCRIPT>
-	<JAVASCRIPT_TEST>
-head(reverse(list(1, 4, 5, 9, 16, 25)));
-	</JAVASCRIPT_TEST>
-      </SNIPPET>
-      <SNIPPET>
+	<NAME>reverse_right</NAME>
 	<REQUIRES>fold_right</REQUIRES>
 	<EXAMPLE>reverse_example_2</EXAMPLE>
 	<EXPECTED>25</EXPECTED>
 	<JAVASCRIPT>
 function reverse(sequence) {
-    return fold_right((x, y) => append(y, list(x)), 
+    return fold_right((x, y) => append(y, list(x)),
                       null, sequence);
 }
 	</JAVASCRIPT>
       </SNIPPET>
       <SNIPPET>
+	<NAME>reverse_left</NAME>
 	<REQUIRES>fold_left</REQUIRES>
 	<EXAMPLE>reverse_example_2</EXAMPLE>
 	<EXPECTED>25</EXPECTED>
@@ -1804,26 +2512,47 @@ function reverse(sequence) {
   <INDEX>sequence(s)<SUBINDEX>operations on</SUBINDEX><CLOSE/></INDEX>
 
   <SUBHEADING>
-    <NAME>Nested Mappings</NAME>
+    <NAME><BILINGUAL>
+    <EN>Nested Mappings</EN>
+    <JA>入れ子のマッピング</JA>
+    </BILINGUAL></NAME>
   </SUBHEADING>
 
   <LABEL NAME="sec:nested-mappings"/>
   <INDEX>mapping<SUBINDEX>nested</SUBINDEX><OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can extend the sequence paradigm to include many computations that are
-    commonly expressed using nested loops.<FOOTNOTE>This approach to nested
-    mappings was shown to us by 
+    commonly expressed using nested loops.</EN>
+    <JA>
+    シーケンスパラダイムを拡張して、入れ子のループで一般的に表現される多くの計算を含めることができます。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>This approach to nested
+    mappings was shown to us by
     <INDEX>Turner, David</INDEX>
-    David Turner, whose languages 
+    David Turner, whose languages
     <INDEX>KRC</INDEX>
-    KRC and 
+    KRC and
     <INDEX>Miranda</INDEX>
     Miranda provide elegant formalisms for dealing with these constructs.  The
     examples in this section (see also
     exercise<SPACE/><REF NAME="ex:8queens"/>) are adapted from Turner 1981.
     In section<SPACE/><REF NAME="sec:exploiting-streams"/>, we<APOS/>ll see
-    how this approach generalizes to infinite sequences.</FOOTNOTE>
+    how this approach generalizes to infinite sequences.</EN>
+    <JA>入れ子のマッピングへのこのアプローチは
+    <INDEX>Turner, David</INDEX>
+    David Turner に教えてもらいました。彼の言語
+    <INDEX>KRC</INDEX>
+    KRC と
+    <INDEX>Miranda</INDEX>
+    Miranda はこれらの構文を扱うためのエレガントな形式を提供しています。この節の例（練習問題<SPACE/><REF NAME="ex:8queens"/>も参照）は Turner 1981 から改作したものです。節<SPACE/><REF NAME="sec:exploiting-streams"/>では、このアプローチが無限シーケンスにどのように一般化されるかを見ます。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     Consider this problem: Given a positive integer
     <LATEXINLINE>$n$</LATEXINLINE>, find all ordered pairs of distinct positive
     integers <LATEXINLINE>$i$</LATEXINLINE> and <LATEXINLINE>$j$</LATEXINLINE>,
@@ -1846,9 +2575,27 @@ function reverse(sequence) {
     prime, and then, for each pair <LATEXINLINE>$(i, j)$</LATEXINLINE> that
     passes through the filter, produce the triple
     <LATEXINLINE>$(i, j, i+j)$</LATEXINLINE>.
+    </EN>
+    <JA>
+    次の問題を考えてみましょう：正の整数 <LATEXINLINE>$n$</LATEXINLINE> が与えられたとき、<LATEXINLINE>$1\leq j &lt; i\leq n$</LATEXINLINE> で <LATEXINLINE>$i +j$</LATEXINLINE> が素数であるような、異なる正の整数の順序付きペア <LATEXINLINE>$i$</LATEXINLINE> と <LATEXINLINE>$j$</LATEXINLINE> をすべて見つけてください。たとえば、<LATEXINLINE>$n$</LATEXINLINE> が 6 なら、ペアは次の通りです：
+    <LATEX>
+      \[
+      \begin{array}{c|ccccccc}
+      i     &amp; 2 &amp; 3 &amp; 4 &amp; 4 &amp; 5 &amp; 6 &amp; 6 \\
+      j     &amp; 1 &amp; 2 &amp; 1 &amp; 3 &amp; 2 &amp; 1 &amp; 5 \\
+      \hline
+      i+j   &amp; 3 &amp; 5 &amp; 5 &amp; 7 &amp; 7 &amp; 7 &amp; 11
+      \end{array}
+      \]
+    </LATEX>
+    この計算を組織化する自然な方法は、<LATEXINLINE>$n$</LATEXINLINE> 以下の正の整数のすべての順序付きペアのシーケンスを生成し、和が素数であるペアを選択するようにフィルタリングし、フィルタを通過した各ペア <LATEXINLINE>$(i, j)$</LATEXINLINE> に対して三つ組 <LATEXINLINE>$(i, j, i+j)$</LATEXINLINE> を生成することです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Here is a way to generate the sequence of pairs: For each integer
     <LATEXINLINE>$i\leq n$</LATEXINLINE>, enumerate the integers
     <LATEXINLINE>$j &lt; i$</LATEXINLINE>, and for each such
@@ -1878,7 +2625,31 @@ function reverse(sequence) {
     This gives us a sequence of pairs for each <LATEXINLINE>$i$</LATEXINLINE>.
     Combining all the sequences for all the <LATEXINLINE>$i$</LATEXINLINE> (by
     accumulating with <SCHEMEINLINE>append</SCHEMEINLINE>) produces the
-    required sequence of pairs:<FOOTNOTE>We<APOS/>re representing a pair here
+    required sequence of pairs:</EN>
+    <JA>
+    ペアのシーケンスを生成する方法はこうです：各整数 <LATEXINLINE>$i\leq n$</LATEXINLINE> に対して、整数 <LATEXINLINE>$j &lt; i$</LATEXINLINE> を列挙し、各 <LATEXINLINE>$i$</LATEXINLINE> と <LATEXINLINE>$j$</LATEXINLINE> に対してペア <LATEXINLINE>$(i, j)$</LATEXINLINE> を生成します。シーケンス操作の観点では、シーケンス
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(enumerate-interval 1 n)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>enumerate_interval(1, n)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に沿ってマップします。このシーケンスの各 <LATEXINLINE>$i$</LATEXINLINE> に対して、シーケンス
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(enumerate-interval 1 (- i 1))</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>enumerate_interval(1, i - 1)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に沿ってマップします。この後者のシーケンスの各 <LATEXINLINE>$j$</LATEXINLINE> に対して、ペア
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(list i j)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>list(i, j)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を生成します。これにより各 <LATEXINLINE>$i$</LATEXINLINE> に対するペアのシーケンスが得られます。すべての <LATEXINLINE>$i$</LATEXINLINE> に対するすべてのシーケンスを（<SCHEMEINLINE>append</SCHEMEINLINE> で累積して）結合すると、必要なペアのシーケンスが得られます：</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>We<APOS/>re representing a pair here
     as a list of two elements rather than as
     <SPLITINLINE>
       <SCHEME>a Lisp pair.</SCHEME>
@@ -1893,7 +2664,24 @@ function reverse(sequence) {
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>(cons i j)</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>pair(i, j)</JAVASCRIPTINLINE>.</JAVASCRIPT>
-    </SPLITINLINE></FOOTNOTE>
+    </SPLITINLINE></EN>
+    <JA>ここではペアを
+    <SPLITINLINE>
+      <SCHEME>Lisp のペア</SCHEME>
+    <JAVASCRIPT>通常のペア</JAVASCRIPT></SPLITINLINE>
+    ではなく2要素のリストとして表現しています。したがって、「ペア」<LATEXINLINE>$(i, j)$</LATEXINLINE> は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(cons i j)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pair(i, j)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    ではなく
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(list i j)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>list(i, j)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    で表現されます。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET HIDE="yes">
       <NAME>enumerate_interval_n</NAME>
       <SCHEME>
@@ -1916,20 +2704,22 @@ const n = 6;
        (enumerate-interval 1 n)))
       </SCHEME>
       <JAVASCRIPT>
-accumulate(append, 
-           null, 
+accumulate(append,
+           null,
            map(i => map(j => list(i, j),
                         enumerate_interval(1, i - 1)),
                enumerate_interval(1, n)));
       </JAVASCRIPT>
       <JAVASCRIPT_TEST>
-length(accumulate(append, 
-           null, 
+length(accumulate(append,
+           null,
            map(i => map(j => list(i, j),
                         enumerate_interval(1, i - 1)),
                enumerate_interval(1, n))));
       </JAVASCRIPT_TEST>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The combination of mapping and accumulating with
     <SCHEMEINLINE>append</SCHEMEINLINE> is so common in this sort of program
     that we will isolate it as a separate
@@ -1937,6 +2727,16 @@ length(accumulate(append,
       <SCHEME>procedure:</SCHEME>
       <JAVASCRIPT>function:</JAVASCRIPT>
       </SPLITINLINE>
+    </EN>
+    <JA>
+    マッピングと <SCHEMEINLINE>append</SCHEMEINLINE> による累積の組み合わせはこの種のプログラムでは非常に一般的なので、別の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+      </SPLITINLINE>
+    として分離します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>flatmap</DECLARATION></INDEX>
       <NAME>flatmap</NAME>
@@ -1963,10 +2763,17 @@ flatmap(x => list(x, x), list(1, 2, 3, 4));
 length(flatmap(x => list(x, x), list(1, 2, 3, 4)));
       </JAVASCRIPT_TEST>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Now filter this sequence of pairs to find those whose sum is prime. The
     filter predicate is called for each element of the sequence; its argument
     is a pair and it must extract the integers from the pair. Thus, the
     predicate to apply to each element in the sequence is
+    </EN>
+    <JA>
+    次に、このペアのシーケンスをフィルタリングして和が素数であるものを見つけます。フィルタの述語はシーケンスの各要素に対して呼び出されます。引数はペアで、ペアから整数を取り出す必要があります。したがって、シーケンスの各要素に適用する述語は次の通りです。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>prime_sum</NAME>
       <REQUIRES>prime_definition</REQUIRES>
@@ -1991,6 +2798,8 @@ function is_prime_sum(pair) {
 is_prime_sum(list(8, 9));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Finally, generate the sequence of results by mapping over the filtered
     pairs using the following
     <SPLITINLINE>
@@ -1999,6 +2808,16 @@ is_prime_sum(list(8, 9));
     </SPLITINLINE>
     which constructs a triple consisting of the two elements of the pair along
     with their sum:
+    </EN>
+    <JA>
+    最後に、フィルタリングされたペアに対して次の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を使ってマッピングすることで結果のシーケンスを生成します。この関数はペアの2つの要素とその和からなる三つ組を構築します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>make_pair_sum</NAME>
       <EXAMPLE>make_pair_sum_example</EXAMPLE>
@@ -2009,7 +2828,7 @@ is_prime_sum(list(8, 9));
       </SCHEME>
       <JAVASCRIPT>
 function make_pair_sum(pair) {
-    return list(head(pair), head(tail(pair)), 
+    return list(head(pair), head(tail(pair)),
                 head(pair) + head(tail(pair)));
 }
       </JAVASCRIPT>
@@ -2023,13 +2842,25 @@ function make_pair_sum(pair) {
 make_pair_sum(list(8, 9));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Combining all these steps yields the complete
     <SPLITINLINE>
       <SCHEME>procedure:</SCHEME>
       <JAVASCRIPT>function:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    これらのステップをすべて組み合わせると、完全な
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    が得られます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
-      <INDEX><DECLARATION>prime_sum_pairs</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>prime_sum_pairs</DECLARATION></INDEX>
       <NAME>prime_sum_pairs</NAME>
       <REQUIRES>make_pair_sum</REQUIRES>
       <REQUIRES>prime_sum</REQUIRES>
@@ -2049,9 +2880,9 @@ make_pair_sum(list(8, 9));
       </SCHEME>
       <JAVASCRIPT>
 function prime_sum_pairs(n) {
-    return map(make_pair_sum, 
-               filter(is_prime_sum, 
-                      flatmap(i => map(j => list(i, j), 
+    return map(make_pair_sum,
+               filter(is_prime_sum,
+                      flatmap(i => map(j => list(i, j),
                                        enumerate_interval(1, i - 1)),
                               enumerate_interval(1, n))));
 }
@@ -2072,8 +2903,10 @@ length(prime_sum_pairs(6));
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Nested mappings are also useful for sequences other than those that
-    enumerate intervals.  Suppose we wish to generate all the 
+    enumerate intervals.  Suppose we wish to generate all the
     <INDEX>set<SUBINDEX>permutations of</SUBINDEX></INDEX>
     <INDEX>permutations of a set</INDEX>
     permutations
@@ -2089,16 +2922,41 @@ length(prime_sum_pairs(6));
     the permutations of<SPACE/><LATEXINLINE>$S$</LATEXINLINE>: For each item
     <LATEXINLINE>$x$</LATEXINLINE> in <LATEXINLINE>$S$</LATEXINLINE>,
     recursively generate the sequence of permutations of
-    <LATEXINLINE>$S-x$</LATEXINLINE>,<FOOTNOTE>The set
+    <LATEXINLINE>$S-x$</LATEXINLINE>,</EN>
+    <JA>
+    入れ子のマッピングは、区間を列挙するシーケンス以外にも有用です。集合 <LATEXINLINE>$S$</LATEXINLINE> のすべての
+    <INDEX>set<SUBINDEX>permutations of</SUBINDEX></INDEX>
+    <INDEX>permutations of a set</INDEX>
+    順列——集合の要素を並べるすべての方法——を生成したいとしましょう。たとえば、<LATEXINLINE>$\{1, 2, 3\}$</LATEXINLINE> の順列は
+    <LATEXINLINE>$\{1, 2, 3\}$</LATEXINLINE>、
+    <LATEXINLINE>$\{ 1, 3, 2\}$</LATEXINLINE>、
+    <LATEXINLINE>$\{2, 1, 3\}$</LATEXINLINE>、
+    <LATEXINLINE>$\{ 2, 3, 1\}$</LATEXINLINE>、
+    <LATEXINLINE>$\{ 3, 1, 2\}$</LATEXINLINE>、
+    <LATEXINLINE>$\{ 3, 2, 1\}$</LATEXINLINE> です。<LATEXINLINE>$S$</LATEXINLINE> の順列を生成する計画はこうです：<LATEXINLINE>$S$</LATEXINLINE> の各要素 <LATEXINLINE>$x$</LATEXINLINE> に対して、<LATEXINLINE>$S-x$</LATEXINLINE> の順列のシーケンスを再帰的に生成し、</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>The set
     <LATEXINLINE>$S-x$</LATEXINLINE> is the set of all elements of
     <LATEXINLINE>$S$</LATEXINLINE>, excluding
-    <LATEXINLINE>$x$</LATEXINLINE>.</FOOTNOTE> and adjoin
+    <LATEXINLINE>$x$</LATEXINLINE>.</EN>
+    <JA>集合 <LATEXINLINE>$S-x$</LATEXINLINE> は <LATEXINLINE>$S$</LATEXINLINE> のすべての要素から <LATEXINLINE>$x$</LATEXINLINE> を除いた集合です。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    and adjoin
     <LATEXINLINE>$x$</LATEXINLINE> to the front of each one.  This yields, for
     each <LATEXINLINE>$x$</LATEXINLINE> in <LATEXINLINE>$S$</LATEXINLINE>, the
     sequence of permutations of <LATEXINLINE>$S$</LATEXINLINE> that begin
     with<SPACE/><LATEXINLINE>$x$</LATEXINLINE>.  Combining these sequences for
     all <LATEXINLINE>$x$</LATEXINLINE> gives all the permutations
-    of<SPACE/><LATEXINLINE>$S$</LATEXINLINE>:<FOOTNOTE>
+    of<SPACE/><LATEXINLINE>$S$</LATEXINLINE>:</EN>
+    <JA>
+    各順列の先頭に <LATEXINLINE>$x$</LATEXINLINE> を付加します。これにより、<LATEXINLINE>$S$</LATEXINLINE> の各 <LATEXINLINE>$x$</LATEXINLINE> に対して、<LATEXINLINE>$x$</LATEXINLINE> で始まる <LATEXINLINE>$S$</LATEXINLINE> の順列のシーケンスが得られます。すべての <LATEXINLINE>$x$</LATEXINLINE> に対するこれらのシーケンスを結合すると、<LATEXINLINE>$S$</LATEXINLINE> のすべての順列が得られます：</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     <INDEX><ORDER>0a5</ORDER><JAVASCRIPTINLINE>//</JAVASCRIPTINLINE> (for comments in programs)</INDEX>
     <INDEX>comments in programs</INDEX>
     <INDEX>program<SUBINDEX>comments in</SUBINDEX></INDEX>
@@ -2115,7 +2973,24 @@ length(prime_sum_pairs(6));
     </SPLITINLINE>
     to the end of the line is ignored by the interpreter.  In this book we
     don<APOS/>t use many comments; we try to make our programs self-documenting
-    by using descriptive names.</FOOTNOTE>
+    by using descriptive names.</EN>
+    <JA>
+    <INDEX><ORDER>0a5</ORDER><JAVASCRIPTINLINE>//</JAVASCRIPTINLINE> (for comments in programs)</INDEX>
+    <INDEX>comments in programs</INDEX>
+    <INDEX>program<SUBINDEX>comments in</SUBINDEX></INDEX>
+    <INDEX>slash (double slash <JAVASCRIPTINLINE>//</JAVASCRIPTINLINE> for comments in programs)</INDEX>
+    <SPLITINLINE>
+      <SCHEME>Scheme コードのセミコロンは</SCHEME>
+      <JAVASCRIPT>JavaScript プログラムの文字列 <JAVASCRIPTINLINE>//</JAVASCRIPTINLINE> は</JAVASCRIPT>
+    </SPLITINLINE>
+    <EM>コメント</EM>を導入するために使われます。
+    <SPLITINLINE>
+      <SCHEME>セミコロン</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>//</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    から行末までのすべてはインタプリタによって無視されます。本書ではコメントをあまり使いません。説明的な名前を使ってプログラムを自己文書化するようにしています。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <INDEX>permutations of a set<SUBINDEX><DECLARATION>permutations</DECLARATION></SUBINDEX></INDEX>
     <SNIPPET>
       <REQUIRES>flatmap</REQUIRES>
@@ -2152,6 +3027,8 @@ permutations(list(1, 2, 3));
 length(permutations(list(1, 2, 3)));
       </JAVASCRIPT_TEST>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Notice how this strategy reduces the problem of generating permutations of
     <LATEXINLINE>$S$</LATEXINLINE> to the problem of generating the
     permutations of sets with fewer elements than
@@ -2174,8 +3051,27 @@ length(permutations(list(1, 2, 3)));
     used in <SCHEMEINLINE>permutations</SCHEMEINLINE> returns all the items in
     a given sequence except for a given item.  This can be expressed as a
     simple filter:
+    </EN>
+    <JA>
+    この戦略が <LATEXINLINE>$S$</LATEXINLINE> の順列を生成する問題を、<LATEXINLINE>$S$</LATEXINLINE> より少ない要素を持つ集合の順列を生成する問題に帰着させていることに注目してください。終端ケースでは、空リストに至ります。空リストは要素のない集合を表します。これに対しては、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(list nil)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>list(null)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を生成します。これは1つの要素——要素のない集合——を持つシーケンスです。<SCHEMEINLINE>permutations</SCHEMEINLINE> で使われている
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>remove</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>remove</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、与えられたシーケンスから特定の要素を除いたすべての要素を返します。これは単純なフィルタとして表現できます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET POSTPADDING="no">
-      <INDEX><DECLARATION>remove</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>remove</DECLARATION></INDEX>
       <NAME>remove</NAME>
       <EXAMPLE>remove_example</EXAMPLE>
       <EXPECTED>4</EXPECTED>
@@ -2206,12 +3102,14 @@ length(remove(3, list(1, 2, 3, 4, 5)));
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Write a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-     <INDEX><USE>unique_pairs</USE></INDEX> 
+     <INDEX><USE>unique_pairs</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>unique-pairs</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>unique_pairs</JAVASCRIPTINLINE>
@@ -2232,6 +3130,34 @@ length(remove(3, list(1, 2, 3, 4, 5)));
       </JAVASCRIPT>
     </SPLITINLINE>
     given above.
+    </EN>
+    <JA>
+    整数 <LATEXINLINE>$n$</LATEXINLINE> が与えられたとき、<LATEXINLINE>$1\leq j &lt; i\leq n$</LATEXINLINE> であるペア <LATEXINLINE>$(i, j)$</LATEXINLINE> のシーケンスを生成する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+     <INDEX><USE>unique_pairs</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>unique-pairs</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>unique_pairs</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を書いてください。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>unique-pairs</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>unique_pairs</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を使って上で示した
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>prime-sum-pairs</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>prime_sum_pairs</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の定義を簡略化してください。
+    </JA>
+    </BILINGUAL>
     <SOLUTION>
       <SNIPPET>
 	<NAME>solution_2.40</NAME>
@@ -2243,13 +3169,13 @@ length(remove(3, list(1, 2, 3, 4, 5)));
 	<EXPECTED>7</EXPECTED>
 	<JAVASCRIPT>
 function unique_pairs(n) {
-    return flatmap(i => map(j => list(i, j), 
-                            enumerate_interval(1, i - 1)), 
+    return flatmap(i => map(j => list(i, j),
+                            enumerate_interval(1, i - 1)),
                    enumerate_interval(1, n));
 }
 function prime_sum_pairs(n) {
-    return map(make_pair_sum, 
-               filter(is_prime_sum, 
+    return map(make_pair_sum,
+               filter(is_prime_sum,
                       unique_pairs(n)));
 }
 	</JAVASCRIPT>
@@ -2272,6 +3198,8 @@ length(prime_sum_pairs(6));
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Write a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -2282,6 +3210,16 @@ length(prime_sum_pairs(6));
     and<SPACE/><LATEXINLINE>$k$</LATEXINLINE> less than or equal to a given
     integer <LATEXINLINE>$n$</LATEXINLINE> that sum to a given integer
     <LATEXINLINE>$s$</LATEXINLINE>.
+    </EN>
+    <JA>
+    与えられた整数 <LATEXINLINE>$n$</LATEXINLINE> 以下の異なる正の整数 <LATEXINLINE>$i$</LATEXINLINE>、<LATEXINLINE>$j$</LATEXINLINE>、<LATEXINLINE>$k$</LATEXINLINE> のすべての順序付き三つ組で、和が与えられた整数 <LATEXINLINE>$s$</LATEXINLINE> になるものを見つける
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を書いてください。
+    </JA>
+    </BILINGUAL>
     <SOLUTION>
       <SNIPPET>
 	<REQUIRES>enumerate_interval</REQUIRES>
@@ -2322,12 +3260,16 @@ length(triples_that_sum_to(10, 6));
   </EXERCISE>
       <FIGURE  web_scale="0.6" src="img_original/ch2-Z-G-23.svg">
 	<LABEL NAME="fig:8queens"/>
-	<CAPTION>A solution to the eight-queens puzzle.
-	</CAPTION>
+	<CAPTION><BILINGUAL>
+	<EN>A solution to the eight-queens puzzle.</EN>
+	<JA>8クイーン問題の一つの解。</JA>
+	</BILINGUAL></CAPTION>
       </FIGURE>
   <EXERCISE>
       <LABEL NAME="ex:8queens"/>
-      The 
+      <BILINGUAL>
+      <EN>
+      The
       <INDEX>eight-queens puzzle</INDEX>
       <INDEX>chess, eight-queens puzzle</INDEX>
       <INDEX>puzzles<SUBINDEX>eight-queens puzzle</SUBINDEX></INDEX>
@@ -2350,7 +3292,17 @@ length(triples_that_sum_to(10, 6));
       <LATEXINLINE>$k$</LATEXINLINE> queens in the first
       <LATEXINLINE>$k$</LATEXINLINE> columns.  By continuing this process, we
       will produce not only one solution, but all solutions to the puzzle.
+      </EN>
+      <JA>
+      <INDEX>eight-queens puzzle</INDEX>
+      <INDEX>chess, eight-queens puzzle</INDEX>
+      <INDEX>puzzles<SUBINDEX>eight-queens puzzle</SUBINDEX></INDEX>
+      「8クイーン問題」は、8つのクイーンをチェス盤上に、どのクイーンも他のクイーンに攻撃されないように（つまり、2つのクイーンが同じ行、列、または対角線上にないように）配置する方法を問うものです。一つの解が図<SPACE/><REF NAME="fig:8queens"/>に示されています。この問題を解く一つの方法は、盤を横に進みながら各列にクイーンを配置することです。<LATEXINLINE>$k-1$</LATEXINLINE> 個のクイーンを配置したら、<LATEXINLINE>$k$</LATEXINLINE> 番目のクイーンをすでに盤上にあるどのクイーンも攻撃しない位置に配置しなければなりません。このアプローチを再帰的に定式化できます：盤の最初の <LATEXINLINE>$k-1$</LATEXINLINE> 列に <LATEXINLINE>$k-1$</LATEXINLINE> 個のクイーンを配置するすべての可能な方法のシーケンスをすでに生成したと仮定します。これらの各方法に対して、<LATEXINLINE>$k$</LATEXINLINE> 列目の各行にクイーンを配置することで、位置の拡張された集合を生成します。次に、<LATEXINLINE>$k$</LATEXINLINE> 列目のクイーンが他のクイーンに対して安全である位置だけを残すようにフィルタリングします。これにより、最初の <LATEXINLINE>$k$</LATEXINLINE> 列に <LATEXINLINE>$k$</LATEXINLINE> 個のクイーンを配置するすべての方法のシーケンスが得られます。このプロセスを続けることで、1つの解だけでなくパズルのすべての解が生成されます。
+      </JA>
+      </BILINGUAL>
       <TEXT>
+      <BILINGUAL>
+      <EN>
       We implement this solution as a
       <SPLITINLINE>
 	<SCHEME>procedure</SCHEME>
@@ -2379,6 +3331,35 @@ length(triples_that_sum_to(10, 6));
       </SPLITINLINE>
       that returns the sequence of all ways to place queens in the first
       <LATEXINLINE>$k$</LATEXINLINE> columns of the board.
+      </EN>
+      <JA>
+      この解を、<LATEXINLINE>$n\times n$</LATEXINLINE> のチェス盤上に <LATEXINLINE>$n$</LATEXINLINE> 個のクイーンを配置する問題のすべての解のシーケンスを返す
+      <SPLITINLINE>
+	<SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+      <SPLITINLINE>
+	<SCHEME><SCHEMEINLINE>queens</SCHEMEINLINE></SCHEME>
+	<JAVASCRIPT><JAVASCRIPTINLINE>queens</JAVASCRIPTINLINE></JAVASCRIPT>
+      </SPLITINLINE>
+      として実装します。
+      <SPLITINLINE>
+	<SCHEME><SCHEMEINLINE>queens</SCHEMEINLINE></SCHEME>
+	<JAVASCRIPT>関数 <JAVASCRIPTINLINE>queens</JAVASCRIPTINLINE>
+	</JAVASCRIPT>
+      </SPLITINLINE>
+      は、盤の最初の <LATEXINLINE>$k$</LATEXINLINE> 列にクイーンを配置するすべての方法のシーケンスを返す内部
+      <SPLITINLINE>
+	<SCHEME>手続き</SCHEME>
+	<JAVASCRIPT>関数</JAVASCRIPT>
+      </SPLITINLINE>
+      <SPLITINLINE>
+	<SCHEME><SCHEMEINLINE>queen-cols</SCHEMEINLINE></SCHEME>
+	<JAVASCRIPT><JAVASCRIPTINLINE>queens_cols</JAVASCRIPTINLINE>
+	</JAVASCRIPT>
+      </SPLITINLINE>
+      を持っています。
+      </JA>
+      </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>example_queens</NAME>
       <SCHEME>
@@ -2391,7 +3372,7 @@ length(queens(8));
       </JAVASCRIPT_TEST>
     </SNIPPET>
     <SNIPPET>
-      <INDEX><DECLARATION>queens</DECLARATION><FRAGILE/></INDEX> 
+      <INDEX><DECLARATION>queens</DECLARATION><FRAGILE/></INDEX>
       <NAME>queens</NAME>
       <REQUIRES>flatmap</REQUIRES>
       <REQUIRES>enumerate_interval</REQUIRES>
@@ -2428,6 +3409,8 @@ function queens(board_size) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     In this
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -2475,6 +3458,52 @@ function queens(board_size) {
     <LATEXINLINE>$k$</LATEXINLINE>th column is safe with respect to the others.
     (Note that we need only check whether the new queen is safe<EMDASH/>the
     other queens are already guaranteed safe with respect to each other.)
+    </EN>
+    <JA>
+    この
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    では、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rest-of-queens</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>rest_of_queens</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は最初の <LATEXINLINE>$k-1$</LATEXINLINE> 列に <LATEXINLINE>$k-1$</LATEXINLINE> 個のクイーンを配置する方法で、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>new-row</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>new_row</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は <LATEXINLINE>$k$</LATEXINLINE> 列目のクイーンを配置する行の候補です。盤上の位置の集合の表現を実装してプログラムを完成させてください。これには、新しい行-列の位置を位置の集合に付加する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>adjoin-position</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>adjoin_position</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と、空の位置集合を表す
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>empty-board</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>empty_board</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    が含まれます。また、位置の集合に対して <LATEXINLINE>$k$</LATEXINLINE> 列目のクイーンが他のクイーンに対して安全かどうかを判定する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>safe?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_safe</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    も書く必要があります（新しいクイーンが安全かどうかだけをチェックすればよいことに注意してください。他のクイーン同士はすでに安全であることが保証されています）。
+    </JA>
+    </BILINGUAL>
       </TEXT>
     <SOLUTION>
       <SNIPPET>
@@ -2513,12 +3542,15 @@ function is_safe(k, positions) {
                                 row + col &amp;&amp;
                                 first_row !== row;
                       },
-                      true, 
+                      true,
                       tail(positions));
-}   
+}
         </JAVASCRIPT>
       </SNIPPET>
-      Putting it all together:
+      <BILINGUAL>
+      <EN>Putting it all together:</EN>
+      <JA>すべてを組み合わせると：</JA>
+      </BILINGUAL>
       <SNIPPET>
         <NAME>queens_solution</NAME>
 	<REQUIRES>adjoin_position</REQUIRES>
@@ -2539,6 +3571,8 @@ function is_safe(k, positions) {
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Louis Reasoner is having a terrible time doing
     exercise<SPACE/><REF NAME="ex:8queens"/>.  His
     <SPLITINLINE>
@@ -2559,6 +3593,25 @@ function is_safe(k, positions) {
       <JAVASCRIPT><JAVASCRIPTINLINE>flatmap</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
     writing it as
+    </EN>
+    <JA>
+    Louis Reasoner は練習問題<SPACE/><REF NAME="ex:8queens"/>にとても苦労しています。彼の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>queens</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>queens</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は正しく動くようですが、極端に遅く動作します（Louis は <LATEXINLINE>$6\times 6$</LATEXINLINE> の場合ですら解けるまで待てませんでした）。Louis が Eva Lu Ator に助けを求めると、彼女は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>flatmap</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>flatmap</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    内の入れ子のマッピングの順序を入れ替えていることを指摘します。彼は次のように書いていました：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (flatmap
@@ -2570,18 +3623,27 @@ function is_safe(k, positions) {
       </SCHEME>
       <JAVASCRIPT>
 flatmap(new_row =>
-          map(rest_of_queens => 
-                adjoin_position(new_row, k, rest_of_queens), 
-              queen_cols(k - 1)), 
+          map(rest_of_queens =>
+                adjoin_position(new_row, k, rest_of_queens),
+              queen_cols(k - 1)),
         enumerate_interval(1, board_size));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Explain why this interchange makes the program run slowly.  Estimate
     how long it will take Louis<APOS/>s program to solve the eight-queens
     puzzle, assuming that the program in
     exercise<SPACE/><REF NAME="ex:8queens"/> solves the puzzle in time
     <LATEXINLINE>$T$</LATEXINLINE>.
+    </EN>
+    <JA>
+    この入れ替えによってプログラムが遅くなる理由を説明してください。練習問題<SPACE/><REF NAME="ex:8queens"/>のプログラムが時間 <LATEXINLINE>$T$</LATEXINLINE> でパズルを解くと仮定して、Louis のプログラムが8クイーン問題を解くのにどれくらいの時間がかかるか推定してください。
+    </JA>
+    </BILINGUAL>
     <SOLUTION>
+      <BILINGUAL>
+      <EN>
       Louis's program re-evaluates the application
       <JAVASCRIPTINLINE>queen_cols(k - 1))</JAVASCRIPTINLINE> in each iteration
       of <JAVASCRIPTINLINE>flatmap</JAVASCRIPTINLINE>, which happens
@@ -2590,6 +3652,11 @@ flatmap(new_row =>
       solve the puzzle in a time of about <LATEXINLINE>$n^n T$</LATEXINLINE>
       if the program in exercise<SPACE/><REF NAME="ex:8queens"/> solves the
       puzzle in time <LATEXINLINE>$T$</LATEXINLINE>.
+      </EN>
+      <JA>
+      Louis のプログラムは <JAVASCRIPTINLINE>flatmap</JAVASCRIPTINLINE> の各反復で <JAVASCRIPTINLINE>queen_cols(k - 1))</JAVASCRIPTINLINE> の適用を再評価します。これは各 <LATEXINLINE>$k$</LATEXINLINE> に対して <LATEXINLINE>$n$</LATEXINLINE> 回発生します。つまり、練習問題<SPACE/><REF NAME="ex:8queens"/>のプログラムが時間 <LATEXINLINE>$T$</LATEXINLINE> でパズルを解くなら、Louis のプログラムは全体で約 <LATEXINLINE>$n^n T$</LATEXINLINE> の時間でパズルを解くことになります。
+      </JA>
+      </BILINGUAL>
     </SOLUTION>
     <LABEL NAME="ex:2_43"/>
   </EXERCISE>
