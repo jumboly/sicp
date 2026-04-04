@@ -28,8 +28,8 @@ const Licences: FC = () => {
       >, based on the
       <a href="https://github.com/source-academy/sicp" rel="nofollow"
         >original source</a
-      >. The Japanese translation was produced with the assistance of AI
-      (Claude by Anthropic) and is licensed under
+      >. The Japanese translation was produced with the assistance of AI (Claude
+      by Anthropic) and is licensed under
       <a href="http://creativecommons.org/licenses/by-sa/4.0/" rel="nofollow"
         >CC BY-SA 4.0</a
       >.

@@ -234,7 +234,9 @@ export const indexHtml = (writeToIndex: WriteBuffer) => {
   indexPage(writeToIndex);
 
   // TOC at index page
-  writeToIndex.push("<h2><span class='lang-en'>Content</span><span class='lang-ja' style='display:none'>目次</span></h2>");
+  writeToIndex.push(
+    "<h2><span class='lang-en'>Content</span><span class='lang-ja' style='display:none'>目次</span></h2>"
+  );
   writeToIndex.push("\n<div class='nav-index'>");
   recursiveProcessTOC(0, writeToIndex, "index", "./chapters/");
   writeToIndex.push("</div>\n"); // <div class='nav-index'>

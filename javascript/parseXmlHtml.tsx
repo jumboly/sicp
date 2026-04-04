@@ -798,6 +798,12 @@ const processTextFunctionsSplit = {
 };
 
 const processTextFunctionsBilingual = {
+  // WEB_ONLY is in tagsToRemove, so without an explicit handler its content
+  // (e.g. the entire "About" / making-of page) would be silently dropped.
+  WEB_ONLY: (node, writeTo) => {
+    recursiveProcessTextHtml(node.firstChild, writeTo);
+  },
+
   BILINGUAL: (node, writeTo) => {
     const en = getChildrenByTagName(node, "EN")[0];
     const ja = getChildrenByTagName(node, "JA")[0];
