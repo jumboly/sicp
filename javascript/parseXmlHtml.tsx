@@ -937,7 +937,10 @@ export const parseXmlHtml = (doc, writeTo, filename) => {
     // 残りの HTML タグを除去
     text = text.replace(/<[^>]*>/g, "");
     // HTML エンティティと余分な空白を整理
-    text = text.replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
+    text = text
+      .replace(/&nbsp;/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
     return text;
   };
   pageTitle = toPlainTitle(displayTitle) + " - SICP Comparison Edition";
