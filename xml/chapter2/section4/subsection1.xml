@@ -1,30 +1,57 @@
 <SUBSECTION>
   <SHORT_PAGE lines="1"/>
   <NAME>
-    Representations for Complex Numbers
+    <BILINGUAL>
+    <EN>Representations for Complex Numbers</EN>
+    <JA>複素数の表現</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:representations-complex-numbers"/>
   <INDEX>complex numbers<SUBINDEX>rectangular vs.<SPACE/>polar form</SUBINDEX><OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We will develop a system that performs arithmetic operations on complex
     numbers as a simple but unrealistic example of a program that uses generic
     operations.  We begin by discussing two plausible representations for
     complex numbers as ordered pairs: rectangular form (real part and imaginary
-    part) and polar form (magnitude and angle).<FOOTNOTE>In actual computational
+    part) and polar form (magnitude and angle).
+    </EN>
+    <JA>
+    ジェネリック演算を使うプログラムの簡単だが非現実的な例として、複素数に対して算術演算を行うシステムを開発します。まず、複素数を順序対として表現する二つのもっともらしい方法について議論します。直交形式（実部と虚部）と極形式（絶対値と偏角）です。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>In actual computational
     systems, rectangular form is preferable to polar form most of the time
-    because of 
+    because of
     <INDEX>roundoff error</INDEX>
     roundoff errors in conversion between rectangular and polar form.  This is
     why the complex-number example is unrealistic.  Nevertheless, it provides a
     clear illustration of the design of a system using generic operations and a
     good introduction to the more substantial systems to be developed later in
-    this chapter.</FOOTNOTE> Section<SPACE/><REF NAME="sec:manifest-types"/>
+    this chapter.</EN>
+    <JA>実際の計算システムでは、直交形式と極形式の間の変換における
+    <INDEX>roundoff error</INDEX>
+    丸め誤差のため、ほとんどの場合、直交形式の方が極形式よりも好ましいです。これが、この複素数の例が非現実的である理由です。それにもかかわらず、ジェネリック演算を使ったシステム設計の明快な例示を提供し、この章の後半で開発されるより本格的なシステムへの良い導入となります。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    Section<SPACE/><REF NAME="sec:manifest-types"/>
     will show how both representations can be made to coexist in a single
     system through the use of type tags and generic operations.
+    </EN>
+    <JA>
+    セクション<SPACE/><REF NAME="sec:manifest-types"/>では、型タグとジェネリック演算を使って、両方の表現を単一のシステム内で共存させる方法を示します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Like rational numbers, complex numbers are naturally represented as ordered
     pairs.  The set of complex numbers can be thought of as a two-dimensional
     space with two orthogonal axes, the <QUOTE>real</QUOTE> axis and the
@@ -35,6 +62,11 @@
     the plane whose real coordinate is <LATEXINLINE>$x$</LATEXINLINE> and whose
     imaginary coordinate is <LATEXINLINE>$y$</LATEXINLINE>. Addition of complex
     numbers reduces in this representation to addition of coordinates:
+    </EN>
+    <JA>
+    有理数と同様に、複素数は自然に順序対として表現されます。複素数の集合は、<QUOTE>実</QUOTE>軸と<QUOTE>虚</QUOTE>軸という二つの直交する軸を持つ二次元空間として考えることができます（図<SPACE/><REF NAME="fig:complex-plane"/>を参照）。この観点から、複素数<LATEXINLINE>$z=x+iy$</LATEXINLINE>（ここで<LATEXINLINE>$i^{2} =-1$</LATEXINLINE>）は、実座標が<LATEXINLINE>$x$</LATEXINLINE>で虚座標が<LATEXINLINE>$y$</LATEXINLINE>である平面上の点として考えることができます。この表現では、複素数の加算は座標の加算に帰着します：
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[
         \begin{array}{lll}
@@ -47,6 +79,8 @@
     </LATEX>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     When multiplying complex numbers, it is more natural to think in terms
     of representing a complex number in polar form, as a magnitude and an
     angle (<LATEXINLINE>$r$</LATEXINLINE> and <LATEXINLINE>$A$</LATEXINLINE>
@@ -54,6 +88,12 @@
     complex numbers is the vector obtained by stretching one complex number by
     <INDEX>complex numbers<SUBINDEX>rectangular vs.<SPACE/>polar form</SUBINDEX><CLOSE/></INDEX>
     the length of the other and then rotating it through the angle of the other:
+    </EN>
+    <JA>
+    複素数を掛け算するときは、複素数を極形式、つまり絶対値と偏角（図<SPACE/><REF NAME="fig:complex-plane"/>の<LATEXINLINE>$r$</LATEXINLINE>と<LATEXINLINE>$A$</LATEXINLINE>）で表現すると考える方が自然です。二つの複素数の積は、一方の複素数を他方の長さだけ引き伸ばし、他方の角度だけ回転させて得られるベクトルです：
+    <INDEX>complex numbers<SUBINDEX>rectangular vs.<SPACE/>polar form</SUBINDEX><CLOSE/></INDEX>
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[
         \begin{array}{lll}
@@ -66,6 +106,8 @@
     </LATEX>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Thus, there are two different representations for complex numbers,
     which are appropriate for different operations.  Yet, from the
     viewpoint of someone writing a program that uses complex numbers, the
@@ -76,15 +118,27 @@
     specified by rectangular coordinates.  Similarly, it is often useful
     to be able to determine the real part of a complex number that is
     specified by polar coordinates.
+    </EN>
+    <JA>
+    このように、複素数には二つの異なる表現があり、それぞれ異なる演算に適しています。しかし、複素数を使うプログラムを書く人の観点からは、データ抽象の原則により、コンピュータがどの表現を使っているかに関係なく、複素数を操作するすべての演算が利用可能であるべきです。たとえば、直交座標で指定された複素数の絶対値を求められると便利なことがよくあります。同様に、極座標で指定された複素数の実部を求められると便利なことがよくあります。
+    </JA>
+    </BILINGUAL>
     <FIGURE>
       <FIGURE split_scale="0.5" web_scale="0.6" scale="0.59" src="img_original/ch2-Z-G-59.svg"></FIGURE>
-      <CAPTION>Complex numbers as points in the plane.</CAPTION>
+      <CAPTION>
+        <BILINGUAL>
+        <EN>Complex numbers as points in the plane.</EN>
+        <JA>平面上の点としての複素数。</JA>
+        </BILINGUAL>
+      </CAPTION>
       <LABEL NAME="fig:complex-plane"/>
     </FIGURE>
   </TEXT>
   <SHORT_PAGE lines="2"/>
   <TEXT>
-    To design such a system, we can follow the same 
+    <BILINGUAL>
+    <EN>
+    To design such a system, we can follow the same
     <INDEX>data abstraction</INDEX>
     data-abstraction strategy we followed in designing the rational-number
     package in section<SPACE/><REF NAME="sec:rationals"/>.  Assume that the
@@ -129,6 +183,38 @@
     </SPLITINLINE>
     have the property that, for any complex number
     <SCHEMEINLINE>z</SCHEMEINLINE>, both
+    </EN>
+    <JA>
+    このようなシステムを設計するために、セクション<SPACE/><REF NAME="sec:rationals"/>で有理数パッケージを設計したときと同じ
+    <INDEX>data abstraction</INDEX>
+    データ抽象の戦略に従うことができます。複素数に対する演算が、4つのセレクタ
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>real-part</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>real_part</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>imag-part</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>imag_part</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>magnitude</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>magnitude</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>angle</SCHEMEINLINE>を使って実装されているとします。また、複素数を構築するための2つの<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>があるとします。<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-from-real-imag</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_from_real_imag</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>は指定された実部と虚部を持つ複素数を返し、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-from-mag-ang</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_from_mag_ang</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>は指定された絶対値と偏角を持つ複素数を返します。これらの<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、任意の複素数<SCHEMEINLINE>z</SCHEMEINLINE>に対して、
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (make-from-real-imag (real-part z) (imag-part z))
@@ -146,10 +232,15 @@ make_from_real_imag(real_part(z), imag_part(z));
 make_from_mag_ang(magnitude(z), angle(z));
       </JAVASCRIPT>
     </SNIPPET>
-    produce complex numbers that are equal to <SCHEMEINLINE>z</SCHEMEINLINE>.
+    <BILINGUAL>
+    <EN>produce complex numbers that are equal to <SCHEMEINLINE>z</SCHEMEINLINE>.</EN>
+    <JA>のどちらも<SCHEMEINLINE>z</SCHEMEINLINE>と等しい複素数を生成するという性質を持ちます。</JA>
+    </BILINGUAL>
   </TEXT>
   <LONG_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Using these constructors and selectors, we can implement arithmetic on
     complex numbers using the <QUOTE>abstract data</QUOTE> specified by the
     constructors and selectors, just as we did for rational numbers in
@@ -157,6 +248,11 @@ make_from_mag_ang(magnitude(z), angle(z));
     above, we can add and subtract complex numbers in terms of real and
     imaginary parts while multiplying and dividing complex numbers in terms of
     magnitudes and angles:
+    </EN>
+    <JA>
+    これらのコンストラクタとセレクタを使って、セクション<SPACE/><REF NAME="sec:rationals"/>で有理数に対して行ったのと同様に、コンストラクタとセレクタによって指定される<QUOTE>抽象データ</QUOTE>を使って複素数の算術演算を実装できます。上の公式に示されるように、実部と虚部を使って複素数の加減算を行い、絶対値と偏角を使って複素数の乗除算を行うことができます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>add_complex</DECLARATION></INDEX> 
       <INDEX><DECLARATION>sub_complex</DECLARATION></INDEX> 
@@ -201,14 +297,23 @@ function div_complex(z1, z2) {
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To complete the complex-number package, we must choose a representation and
     we must implement the constructors and selectors in terms of primitive
     numbers and primitive list structure. There are two obvious ways to do
     this: We can represent a complex number in <QUOTE>rectangular form</QUOTE>
     as a pair (real part, imaginary part) or in <QUOTE>polar form</QUOTE> as a
     pair (magnitude, angle).  Which shall we choose?
+    </EN>
+    <JA>
+    複素数パッケージを完成させるには、表現を選択し、プリミティブな数とプリミティブなリスト構造を使ってコンストラクタとセレクタを実装しなければなりません。これには二つの明白な方法があります。複素数を<QUOTE>直交形式</QUOTE>でペア（実部、虚部）として表現するか、<QUOTE>極形式</QUOTE>でペア（絶対値、偏角）として表現するかです。どちらを選ぶべきでしょうか？
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In order to make the different choices concrete, imagine that there are two
     programmers, Ben Bitdiddle and Alyssa P. Hacker, who are independently
     designing representations for the complex-number system.
@@ -220,6 +325,14 @@ function div_complex(z1, z2) {
     imaginary parts.  To find the magnitude and the angle, or to construct a
     complex number with a given magnitude and angle, he uses the trigonometric
     relations
+    </EN>
+    <JA>
+    異なる選択を具体的にするために、Ben BitdiddleとAlyssa P. Hackerという二人のプログラマが、複素数システムの表現を独立に設計していると想像してください。
+    Benは
+    <INDEX>complex numbers<SUBINDEX>rectangular representation</SUBINDEX></INDEX>
+    複素数を直交形式で表現することを選びます。この選択では、複素数の実部と虚部の選択は簡単で、与えられた実部と虚部から複素数を構築するのも同様です。絶対値と偏角を求めたり、与えられた絶対値と偏角から複素数を構築するためには、三角関数の関係式
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{lllllll}
@@ -228,9 +341,18 @@ function div_complex(z1, z2) {
       \end{array}
       \]
     </LATEX>
+    <BILINGUAL>
+    <EN>
     which relate the real and imaginary parts (<LATEXINLINE>$x$</LATEXINLINE>,
     <LATEXINLINE>$y$</LATEXINLINE>) to the magnitude and the angle
-    <LATEXINLINE>$(r, A)$</LATEXINLINE>.<FOOTNOTE>The arctangent function
+    <LATEXINLINE>$(r, A)$</LATEXINLINE>.
+    </EN>
+    <JA>
+    を使います。これは実部と虚部（<LATEXINLINE>$x$</LATEXINLINE>、<LATEXINLINE>$y$</LATEXINLINE>）を絶対値と偏角<LATEXINLINE>$(r, A)$</LATEXINLINE>に関係づけます。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>The arctangent function
     referred to
     here,
     <SPLITINLINE>
@@ -252,9 +374,34 @@ function div_complex(z1, z2) {
     is defined so as to take two arguments
     <LATEXINLINE>$y$</LATEXINLINE><SPACE/>and <LATEXINLINE>$x$</LATEXINLINE>
     and to return the angle whose tangent is <LATEXINLINE>$y/x$</LATEXINLINE>.
-    The signs of the arguments determine the quadrant of the angle.</FOOTNOTE>
+    The signs of the arguments determine the quadrant of the angle.</EN>
+    <JA>ここで言及しているアークタンジェント関数は、<SPLITINLINE>
+      <SCHEME>
+	Schemeの
+	<INDEX>arctangent</INDEX>
+	<INDEX><USE>math_atan2</USE> (primitive function)</INDEX>
+	<INDEX><PRIMITIVE/><SUBINDEX><USE>math_atan2</USE><ECMA>Math.atan2</ECMA></SUBINDEX></INDEX>
+	<SCHEMEINLINE>atan</SCHEMEINLINE>手続き
+      </SCHEME>
+      <JAVASCRIPT>
+	JavaScriptの
+	<INDEX>arctangent</INDEX>
+	<INDEX><USE>math_atan2</USE> (primitive function)</INDEX>
+	<INDEX><PRIMITIVE/><SUBINDEX><USE>math_atan2</USE><ECMA>Math.atan2</ECMA></SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>math_atan2</JAVASCRIPTINLINE>関数
+      </JAVASCRIPT>
+    </SPLITINLINE>によって計算され、2つの引数<LATEXINLINE>$y$</LATEXINLINE>と<LATEXINLINE>$x$</LATEXINLINE>を取り、タンジェントが<LATEXINLINE>$y/x$</LATEXINLINE>であるような角度を返すように定義されています。引数の符号が角度の象限を決定します。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     Ben<APOS/>s representation is therefore given by the following selectors
     and constructors:
+    </EN>
+    <JA>
+    したがって、Benの表現は以下のセレクタとコンストラクタで与えられます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>real_part</DECLARATION><SUBINDEX>rectangular representation</SUBINDEX></INDEX>
       <INDEX><DECLARATION>imag_part</DECLARATION><SUBINDEX>rectangular representation</SUBINDEX></INDEX>
@@ -319,15 +466,29 @@ imag_part(result);
 
   <LONG_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Alyssa, in contrast, chooses to represent complex numbers in
     <INDEX>complex numbers<SUBINDEX>polar representation</SUBINDEX></INDEX>
     polar form.
     <SHRINK_PARAGRAPH lines="1"/>
     For her, selecting the magnitude and angle is straightforward, but she has
-    to use the 
+    to use the
     <INDEX>trigonometric relations</INDEX>
     trigonometric relations to obtain the real and imaginary parts.
     Alyssa<APOS/>s representation is:
+    </EN>
+    <JA>
+    一方、Alyssaは複素数を
+    <INDEX>complex numbers<SUBINDEX>polar representation</SUBINDEX></INDEX>
+    極形式で表現することを選びます。
+    <SHRINK_PARAGRAPH lines="1"/>
+    彼女にとって、絶対値と偏角の選択は簡単ですが、実部と虚部を得るには
+    <INDEX>trigonometric relations</INDEX>
+    三角関数の関係式を使う必要があります。
+    Alyssaの表現は次のとおりです：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>real_part</DECLARATION><SUBINDEX>polar representation</SUBINDEX></INDEX>
       <INDEX><DECLARATION>imag_part</DECLARATION><SUBINDEX>polar representation</SUBINDEX></INDEX>
@@ -377,6 +538,8 @@ function make_from_mag_ang(r, a) { return pair(r, a); }
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The discipline of data abstraction ensures that the same implementation of
     <SPLITINLINE>
       <SCHEME>
@@ -412,6 +575,23 @@ function make_from_mag_ang(r, a) { return pair(r, a); }
       </JAVASCRIPT>
     </SPLITINLINE>
     will work with either Ben<APOS/>s representation or Alyssa<APOS/>s
-    representation. 
+    representation.
+    </EN>
+    <JA>
+    データ抽象の規律により、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-complex</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_@complex</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sub-complex</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sub_complex</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-complex</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_complex</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-complex</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_complex</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>の同じ実装が、Benの表現でもAlyssaの表現でも動作することが保証されます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 </SUBSECTION>

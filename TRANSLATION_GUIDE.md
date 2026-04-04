@@ -98,7 +98,15 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | conventional interface | 規約インターフェース | |
 | symbolic expression | シンボリック式 | |
 | generic operation | ジェネリック演算 | |
+| generic selector | ジェネリックセレクタ | |
 | data-directed programming | データ指向プログラミング | |
+| dispatching on type | 型によるディスパッチ | |
+| type tag | 型タグ | |
+| tagged data | タグ付きデータ | |
+| package | パッケージ | 表現パッケージ |
+| additivity / additive | 加法性 / 加法的 | |
+| principle of least commitment | 最小コミットメントの原則 | |
+| operation-and-type table | 演算と型のテーブル | |
 
 ### 数値データ型
 
@@ -112,6 +120,13 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | interval | 区間 | |
 | tolerance | 公差 | |
 | Church numerals | チャーチ数 | |
+| complex number | 複素数 | |
+| rectangular form | 直交形式 | 実部と虚部 |
+| polar form | 極形式 | 絶対値と偏角 |
+| real part | 実部 | |
+| imaginary part | 虚部 | |
+| magnitude | 絶対値 | 複素数の |
+| angle | 偏角 | 複素数の |
 
 ### 再帰・反復・増加のオーダー
 

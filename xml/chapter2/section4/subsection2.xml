@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Tagged data
+    <BILINGUAL>
+    <EN>Tagged data</EN>
+    <JA>タグ付きデータ</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:manifest-types"/>
@@ -9,6 +12,8 @@
   <INDEX>data<SUBINDEX>tagged</SUBINDEX><OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     One way to view data abstraction is as an application of the
     <INDEX>principle of least commitment</INDEX>
     <INDEX>least commitment, principle of</INDEX>
@@ -20,8 +25,18 @@
     constructors permits us to defer to the last possible moment the choice of
     a concrete representation for our data objects and thus retain maximum
     flexibility in our system design.
+    </EN>
+    <JA>
+    データ抽象を見る一つの方法は、
+    <INDEX>principle of least commitment</INDEX>
+    <INDEX>least commitment, principle of</INDEX>
+    <QUOTE>最小コミットメントの原則</QUOTE>の応用として捉えることです。セクション<SPACE/><REF NAME="sec:representations-complex-numbers"/>の複素数システムの実装では、Benの直交表現かAlyssaの極表現のどちらかを使うことができます。セレクタとコンストラクタによって形成される抽象バリアにより、データオブジェクトの具体的な表現の選択を可能な限り遅らせることができ、システム設計において最大限の柔軟性を保つことができます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The principle of least commitment can be carried to even further extremes.
     If we desire, we can maintain the ambiguity of representation even
     <EM>after</EM> we have designed the selectors and constructors, and elect
@@ -50,8 +65,23 @@
     </SPLITINLINE>
     part of each complex number.  Then when we need to manipulate a complex
     number we can use the tag to decide which selector to apply.
+    </EN>
+    <JA>
+    最小コミットメントの原則はさらに極端にまで押し進めることができます。望むなら、セレクタとコンストラクタを設計した<EM>後でも</EM>表現の曖昧さを維持し、Benの表現<EM>と</EM>Alyssaの表現の両方を使うことを選ぶことができます。しかし、両方の表現が単一のシステムに含まれる場合、極形式のデータと直交形式のデータを区別する何らかの方法が必要になります。さもなければ、たとえばペア<LATEXINLINE>$(3,4)$</LATEXINLINE>の<SCHEMEINLINE>magnitude</SCHEMEINLINE>を求めるように言われた場合、5と答えるべきか（数を直交形式と解釈して）、3と答えるべきか（数を極形式と解釈して）が分かりません。この区別を実現する素直な方法は、
+    <INDEX>type tag</INDEX>
+    <EM>型タグ</EM><EMDASH/><SPLITINLINE>
+      <SCHEME>シンボル<SCHEMEINLINE>rectangular</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>文字列<JAVASCRIPTINLINE>"rectangular"</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>または<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>polar</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>"polar"</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE><EMDASH/>を各複素数の一部として含めることです。そうすれば、複素数を操作する必要があるとき、タグを使ってどのセレクタを適用するかを決定できます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In order to manipulate tagged data, we will assume that we have
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -74,6 +104,25 @@
     </SPLITINLINE>
     that takes a tag and contents and produces a tagged data object.  A
     straightforward way to implement this is to use ordinary list structure:
+    </EN>
+    <JA>
+    タグ付きデータを操作するために、データオブジェクトからタグと実際の中身（複素数の場合は極座標または直交座標）を取り出す<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>type-tag</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>type_tag</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>と<SCHEMEINLINE>contents</SCHEMEINLINE>があるとします。また、タグと中身を受け取ってタグ付きデータオブジェクトを生成する<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>attach-tag</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>attach_tag</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>を仮定します。これを実装する素直な方法は、通常のリスト構造を使うことです：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>attach_tag</DECLARATION></INDEX> 
       <INDEX><DECLARATION>type_tag</DECLARATION></INDEX> 
@@ -123,6 +172,8 @@ type_tag(my_frequency_1);
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
         Using these procedures,
@@ -145,6 +196,26 @@ type_tag(my_frequency_1);
       <JAVASCRIPT><JAVASCRIPTINLINE>is_polar</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
     which recognize rectangular and polar numbers, respectively:
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+        これらの手続きを使って、
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>type_tag</JAVASCRIPTINLINE>を使って、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    直交数と極数をそれぞれ認識する述語
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rectangular?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_rectangular</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>と<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>polar?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_polar</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>を定義できます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>is_rectangular</DECLARATION></INDEX> 
       <INDEX><DECLARATION>is_polar</DECLARATION></INDEX> 
@@ -169,6 +240,8 @@ function is_polar(z) {
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     With type tags, Ben and Alyssa can now modify their code so that their two
     different representations can coexist in the same system. Whenever Ben
     constructs a complex number, he tags it as rectangular. Whenever Alyssa
@@ -188,6 +261,17 @@ function is_polar(z) {
     and for Alyssa to append <SCHEMEINLINE>polar</SCHEMEINLINE> to the names of
     hers. Here is Ben<APOS/>s revised rectangular representation from
     section<SPACE/><REF NAME="sec:representations-complex-numbers"/>:
+    </EN>
+    <JA>
+    型タグを使えば、BenとAlyssaは二つの異なる表現が同じシステム内で共存できるようにコードを修正できます。Benが複素数を構築するときは必ず直交のタグを付けます。Alyssaが複素数を構築するときは必ず極のタグを付けます。さらに、BenとAlyssaは自分たちの<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の名前が衝突しないようにしなければなりません。その一つの方法は、Benが自分の表現<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>のそれぞれの名前にサフィックス<SCHEMEINLINE>rectangular</SCHEMEINLINE>を付け、Alyssaが自分のものに<SCHEMEINLINE>polar</SCHEMEINLINE>を付けることです。以下は、セクション<SPACE/><REF NAME="sec:representations-complex-numbers"/>のBenの改訂版直交表現です：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>real_part_rectangular</DECLARATION></INDEX> 
       <INDEX><DECLARATION>imag_part_rectangular</DECLARATION></INDEX> 
@@ -251,7 +335,10 @@ const bens_co_num = make_from_mag_ang_rectangular(
 imag_part_rectangular(contents(bens_co_num));
       </JAVASCRIPT>
     </SNIPPET>
-    and here is Alyssa<APOS/>s revised polar representation:
+    <BILINGUAL>
+    <EN>and here is Alyssa<APOS/>s revised polar representation:</EN>
+    <JA>そしてAlyssaの改訂版極表現は次のとおりです：</JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>real_part_polar</DECLARATION></INDEX> 
       <INDEX><DECLARATION>imag_part_polar</DECLARATION></INDEX> 
@@ -318,6 +405,8 @@ imag_part_polar(contents(alyssas_co_num));
   <TEXT>
     <INDEX>selector<SUBINDEX>generic</SUBINDEX></INDEX>
     <INDEX>generic <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE><SUBINDEX>generic selector</SUBINDEX></INDEX>
+    <BILINGUAL>
+    <EN>
     Each generic selector is implemented as a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -353,6 +442,29 @@ imag_part_polar(contents(alyssas_co_num));
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     as required:
+    </EN>
+    <JA>
+    各ジェネリックセレクタは、引数のタグをチェックし、その型のデータを処理するための適切な<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を呼び出す<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>として実装されます。たとえば、複素数の実部を得るために、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>real-part</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>real_part</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>はタグを調べて、Benの<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>real-part-rectangular</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>real_part_rectangular</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>を使うか、Alyssaの<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>real-part-polar</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>real_@part_@polar</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>を使うかを決定します。どちらの場合も、<SCHEMEINLINE>contents</SCHEMEINLINE>を使ってタグなしの生のデータを取り出し、必要に応じて直交または極の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>に送ります：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>real_part</DECLARATION><SUBINDEX>with tagged data</SUBINDEX></INDEX>
       <INDEX><DECLARATION>imag_part</DECLARATION><SUBINDEX>with tagged data</SUBINDEX></INDEX>
@@ -435,6 +547,8 @@ imag_part(alyssas_co_num);
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To implement the complex-number arithmetic operations, we can use the same
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -472,6 +586,34 @@ imag_part(alyssas_co_num);
       <JAVASCRIPT><JAVASCRIPTINLINE>add_complex</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     is still
+    </EN>
+    <JA>
+    複素数の算術演算を実装するために、セクション<SPACE/><REF NAME="sec:representations-complex-numbers"/>と同じ<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-complex</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_complex</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sub-complex</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sub_complex</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-complex</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_complex</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-complex</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_complex</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>を使うことができます。それらが呼び出すセレクタはジェネリックであり、どちらの表現でも動作するからです。たとえば、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-complex</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_complex</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>は依然として次のようになります。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (define (add-complex z1 z2)
@@ -487,11 +629,18 @@ function add_complex(z1, z2) {
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Finally, we must choose whether to construct complex numbers using
     Ben<APOS/>s representation or Alyssa<APOS/>s representation.  One
     reasonable choice is to construct rectangular numbers whenever we have
     real and imaginary parts and to construct polar numbers whenever we have
     magnitudes and angles:
+    </EN>
+    <JA>
+    最後に、Benの表現とAlyssaの表現のどちらを使って複素数を構築するかを選ばなければなりません。一つの合理的な選択は、実部と虚部がある場合は常に直交数を構築し、絶対値と偏角がある場合は常に極数を構築することです：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>make_from_real_imag</DECLARATION></INDEX> 
       <INDEX><DECLARATION>make_from_mag_ang</DECLARATION></INDEX> 
@@ -548,7 +697,8 @@ imag_part(alyssas_co_num);
         </FIGURE>
       </JAVASCRIPT>
     </SPLIT>
-    <PDF_ONLY>$\!$</PDF_ONLY>The resulting complex-number system has the structure shown in
+    <PDF_ONLY>$\!$</PDF_ONLY><BILINGUAL>
+    <EN>The resulting complex-number system has the structure shown in
     <SPLITINLINE>
       <SCHEME>
 	figure<SPACE/><REF NAME="fig:generic-complex-system_scheme"/>.
@@ -568,12 +718,28 @@ imag_part(alyssas_co_num);
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     in terms of the abstract constructor/selector interface.
+    </EN>
+    <JA>得られる複素数システムは、<SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:generic-complex-system_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:generic-complex-system"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>に示す構造を持ちます。このシステムは、比較的独立した三つの部分に分解されています。複素数の算術演算、Alyssaの極実装、そしてBenの直交実装です。極と直交の実装はBenとAlyssaが別々に作業して書くことができ、どちらも、抽象的なコンストラクタ/セレクタインターフェースを使って複素数の算術<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を実装する第三のプログラマによって、内部表現として使うことができます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
-    Since each data object is tagged with its type, the selectors operate on
-    the data in a
     <INDEX>selector<SUBINDEX>generic</SUBINDEX></INDEX>
     <INDEX>generic <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE><SUBINDEX>generic selector</SUBINDEX></INDEX>
+    <BILINGUAL>
+    <EN>
+    Since each data object is tagged with its type, the selectors operate on
+    the data in a
     generic manner.  That is, each selector is defined to have a
     behavior that depends upon the particular type of data it is applied to.
     Notice the general mechanism for interfacing the separate representations:
@@ -591,6 +757,14 @@ imag_part(alyssas_co_num);
     This discipline of stripping off and attaching tags as data objects are
     passed from level to level can be an important organizational strategy,
     as we shall see in section<SPACE/><REF NAME="sec:generic-operators"/>.
+    </EN>
+    <JA>
+    各データオブジェクトにはその型がタグ付けされているため、セレクタはジェネリックな方法でデータに対して動作します。つまり、各セレクタは、適用されるデータの特定の型に依存する振る舞いを持つように定義されています。異なる表現を接続するための一般的なメカニズムに注目してください。ある表現の実装（たとえばAlyssaの極パッケージ）の中では、複素数は型なしのペア（絶対値、偏角）です。ジェネリックセレクタが<SCHEMEINLINE>polar</SCHEMEINLINE>型の数に対して動作するとき、タグを剥がしてその中身をAlyssaのコードに渡します。逆に、Alyssaが一般的な使用のために数を構築するとき、上位の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>によって適切に認識されるよう、型でタグ付けします。データオブジェクトがレベル間で渡されるときにタグを剥がしたり付けたりするこの規律は、セクション<SPACE/><REF NAME="sec:generic-operators"/>で見るように、重要な組織化戦略となりえます。
+    </JA>
+    </BILINGUAL>
     <INDEX>complex numbers<SUBINDEX>represented as tagged data</SUBINDEX><CLOSE/></INDEX>
     <INDEX>tagged data<CLOSE/></INDEX>
     <INDEX>data<SUBINDEX>tagged</SUBINDEX><CLOSE/></INDEX>

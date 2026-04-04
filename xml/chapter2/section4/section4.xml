@@ -1,5 +1,10 @@
 <SECTION>
-  <NAME>Multiple Representations for Abstract Data</NAME>
+  <NAME>
+    <BILINGUAL>
+    <EN>Multiple Representations for Abstract Data</EN>
+    <JA>抽象データの多重表現</JA>
+    </BILINGUAL>
+  </NAME>
 
   <SECTIONCONTENT/>
 
@@ -8,6 +13,8 @@
   <INDEX>data abstraction</INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We have introduced data abstraction, a methodology for structuring systems
     in such a way that much of a program can be specified independent of the
     choices involved in implementing the data objects that the program
@@ -56,8 +63,38 @@
     </SPLITINLINE>
     that use rational numbers.  The resulting program has the structure shown
     in figure<SPACE/><REF NAME="fig:abstraction-barriers"/>.
+    </EN>
+    <JA>
+    私たちはデータ抽象を導入しました。これは、プログラムが操作するデータオブジェクトの実装に関する選択とは独立して、プログラムの大部分を記述できるようにシステムを構造化する方法論です。たとえば、セクション<SPACE/><REF NAME="sec:rationals"/>では、有理数を使うプログラムの設計という課題を、複合データを構成するための言語のプリミティブな仕組みを使った有理数の実装という課題から分離する方法を見ました。その鍵となるアイデアは、
+    <INDEX>abstraction barriers</INDEX>
+    抽象バリア<EMDASH/>この場合は有理数のセレクタとコンストラクタ（<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-rat</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_rat</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SCHEMEINLINE>numer</SCHEMEINLINE>、<SCHEMEINLINE>denom</SCHEMEINLINE>）<EMDASH/>を設けて、有理数の使い方をリスト構造による内部表現から隔離することでした。同様の抽象バリアが、有理数の算術演算を行う<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>（<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-rat</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_rat</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sub-rat</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sub_rat</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-rat</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_rat</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-rat</SCHEMEINLINE>）</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_rat</JAVASCRIPTINLINE>）</JAVASCRIPT>
+    </SPLITINLINE>の詳細を、有理数を使う<QUOTE>より高水準の</QUOTE><SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>から隔離しています。結果として得られるプログラムは、図<SPACE/><REF NAME="fig:abstraction-barriers"/>に示す構造を持ちます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     These data-abstraction barriers are powerful tools for controlling
     complexity.  By isolating the underlying representations of data
     objects, we can divide the task of designing a large program into
@@ -65,8 +102,15 @@
     abstraction is not yet powerful enough, because it may not always make
     sense to speak of <QUOTE>the underlying representation</QUOTE> for a
     data object.
+    </EN>
+    <JA>
+    これらのデータ抽象バリアは、複雑さを制御するための強力なツールです。データオブジェクトの内部表現を隔離することで、大きなプログラムを設計する課題を、個別に遂行できるより小さな課題に分割できます。しかし、この種のデータ抽象はまだ十分に強力ではありません。データオブジェクトの<QUOTE>内部表現</QUOTE>について語ることが常に意味をなすとは限らないからです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     For one thing, there might be more than one useful representation for
     a data object, and we might like to design systems that can deal with
     multiple representations.  To take a simple example, complex numbers
@@ -81,8 +125,18 @@
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     for manipulating complex numbers work with either representation.
+    </EN>
+    <JA>
+    一つには、データオブジェクトに対して有用な表現が複数存在する場合があり、多重表現を扱えるシステムを設計したいかもしれません。簡単な例として、複素数はほぼ同等な二つの方法で表現できます。直交形式（実部と虚部）と極形式（絶対値と偏角）です。直交形式が適切な場合もあれば、極形式が適切な場合もあります。実際、複素数が両方の方法で表現され、複素数を操作する<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>がどちらの表現でも動作するシステムを想像するのは完全に妥当です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     More importantly, programming systems are often designed by many
     people working over extended periods of time, subject to requirements
     that change over time.  In such an environment, it is simply not
@@ -98,15 +152,24 @@
     </SPLITINLINE>
     modules that were
     designed in isolation, we need conventions that permit programmers to
-    incorporate modules into larger systems 
+    incorporate modules into larger systems
     <INDEX>additivity</INDEX>
     <EM>additively</EM>, that is,
     without having to redesign or reimplement these modules.
+    </EN>
+    <JA>
+    さらに重要なことに、プログラミングシステムは多くの人が長期間にわたって作業し、時間とともに変化する要件に従って設計されることがよくあります。そのような環境では、データ表現の選択について全員が事前に合意することは単純に不可能です。そこで、表現と使用を隔離するデータ抽象バリアに加えて、異なる設計上の選択を互いに隔離し、異なる選択が単一のプログラム内で共存できるようにする抽象バリアが必要です。さらに、大規模なプログラムは、独立して設計された既存のモジュールを組み合わせて作られることが多いため、プログラマがモジュールをより大きなシステムに
+    <INDEX>additivity</INDEX>
+    <EM>加法的に</EM>（つまり、これらのモジュールを再設計したり再実装したりすることなく）組み込めるような規約が必要です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In this section, we will learn how to cope with data that may be
     represented in different ways by different parts of a program.  This
-    requires constructing 
+    requires constructing
     <INDEX>generic <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE></INDEX>
     <INDEX><FUNCTION/><SUBINDEX>generic</SUBINDEX></INDEX>
     <EM>generic <SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE></EM><EMDASH/><SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE>
@@ -116,16 +179,33 @@
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
-    will be to work in terms of data objects that have 
+    will be to work in terms of data objects that have
     <INDEX>type tag</INDEX>
     <EM>type tags</EM>, that is, data objects that include explicit information
-    about how they are to be processed. We will also discuss 
+    about how they are to be processed. We will also discuss
     <INDEX>data-directed programming</INDEX>
     <EM>data-directed</EM> programming, a powerful and convenient
     implementation strategy for additively assembling systems with generic
     operations.
+    </EN>
+    <JA>
+    このセクションでは、プログラムの異なる部分で異なる方法で表現されうるデータに対処する方法を学びます。これには、
+    <INDEX>generic <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE></INDEX>
+    <INDEX><FUNCTION/><SUBINDEX>generic</SUBINDEX></INDEX>
+    <EM>ジェネリック<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE></EM><EMDASH/>複数の方法で表現されうるデータに対して操作できる<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を構築する必要があります。ジェネリック<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を構築するための主な技法は、
+    <INDEX>type tag</INDEX>
+    <EM>型タグ</EM>を持つデータオブジェクト、つまり、どのように処理されるべきかについての明示的な情報を含むデータオブジェクトを扱うことです。また、
+    <INDEX>data-directed programming</INDEX>
+    <EM>データ指向</EM>プログラミングについても議論します。これは、ジェネリック演算を持つシステムを加法的に組み立てるための強力で便利な実装戦略です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We begin with the simple complex-number example. We will see how
     type tags and data-directed style enable us to design separate
     rectangular and polar representations for complex numbers while
@@ -181,6 +261,38 @@
     representations.  In addition, there is a <QUOTE>vertical</QUOTE> barrier
     that gives us the ability to separately design and install alternative
     representations.
+    </EN>
+    <JA>
+    まず、簡単な複素数の例から始めます。型タグとデータ指向スタイルによって、抽象的な
+    <INDEX>complex-number arithmetic</INDEX>
+    <INDEX>arithmetic<SUBINDEX>on complex numbers</SUBINDEX></INDEX>
+    <QUOTE>複素数</QUOTE>データオブジェクトの概念を維持しながら、複素数の直交表現と極表現を別々に設計できることを見ていきます。これは、複素数がどのように表現されているかに依存しないジェネリックセレクタを使って、複素数の算術<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>（<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-complex</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_complex</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sub-complex</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sub_complex</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-complex</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_complex</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-complex</SCHEMEINLINE>）</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_complex</JAVASCRIPTINLINE>）</JAVASCRIPT>
+    </SPLITINLINE>を定義することで実現します。得られる複素数システムは、<SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:complex-system_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:complex-system"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>に示すように、二種類の
+    <INDEX>abstraction barriers<SUBINDEX>in complex-number system</SUBINDEX></INDEX>
+    抽象バリアを含んでいます。<QUOTE>水平方向の</QUOTE>抽象バリアは、図<SPACE/><REF NAME="fig:abstraction-barriers"/>のものと同じ役割を果たし、<QUOTE>高水準の</QUOTE>演算を<QUOTE>低水準の</QUOTE>表現から隔離します。さらに、<QUOTE>垂直方向の</QUOTE>バリアがあり、代替の表現を別々に設計し導入する能力を与えてくれます。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
 	<FIGURE>
@@ -204,6 +316,8 @@
     </SPLIT>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In section<SPACE/><REF NAME="sec:generic-operators"/> we will show how to
     use type tags and data-directed style to develop a generic arithmetic
     package.  This provides
@@ -216,6 +330,14 @@
     can be easily extended when a new kind of number is needed. In
     section<SPACE/><REF NAME="sec:symbolic-algebra"/>, we<APOS/>ll show how to
     use generic arithmetic in a system that performs symbolic algebra.
+    </EN>
+    <JA>
+    セクション<SPACE/><REF NAME="sec:generic-operators"/>では、型タグとデータ指向スタイルを使ってジェネリック算術パッケージを開発する方法を示します。これにより、あらゆる種類の<QUOTE>数</QUOTE>を操作でき、新しい種類の数が必要になったときに容易に拡張できる<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>（<SCHEMEINLINE>add</SCHEMEINLINE>、<SCHEMEINLINE>mul</SCHEMEINLINE>など）が提供されます。セクション<SPACE/><REF NAME="sec:symbolic-algebra"/>では、記号代数を行うシステムでジェネリック算術を使う方法を示します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <!-- Subsection 1 : Representations for Complex Numbers -->

@@ -111,7 +111,11 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 2.3.2 Example: Symbolic Differentiation
 - [x] Section 2.3.3 Example: Representing Sets
 - [x] Section 2.3.4 Example: Huffman Encoding Trees
-- [ ] Chapter 2 (Section 2.4〜2.5)
+- [x] Section 2.4 Multiple Representations for Abstract Data (導入部)
+- [x] Section 2.4.1 Representations for Complex Numbers
+- [x] Section 2.4.2 Tagged data
+- [x] Section 2.4.3 Data-Directed Programming and Additivity
+- [ ] Chapter 2 (Section 2.5)
 - [ ] Chapter 3〜5
 
 ## インライン実行

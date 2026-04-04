@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Data-Directed Programming and Additivity
+    <BILINGUAL>
+    <EN>Data-Directed Programming and Additivity</EN>
+    <JA>データ指向プログラミングと加法性</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:data-directed"/>
@@ -8,6 +11,8 @@
   <INDEX>additivity<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The general strategy of checking the type of a datum and calling an
     appropriate
     <SPLITINLINE>
@@ -46,8 +51,34 @@
     </SPLITINLINE>
     to check for the new type and apply the appropriate selector for that
     representation.
+    </EN>
+    <JA>
+    データの型をチェックして適切な<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を呼び出すという一般的な戦略は、
+    <INDEX>modularity<SUBINDEX>through dispatching on type</SUBINDEX></INDEX>
+    <INDEX>dispatching<SUBINDEX>on type</SUBINDEX></INDEX>
+    <INDEX>type(s)<SUBINDEX>dispatching on</SUBINDEX></INDEX>
+    <EM>型によるディスパッチ</EM>と呼ばれます。これはシステム設計においてモジュール性を得るための強力な戦略です。一方で、セクション<SPACE/><REF NAME="sec:manifest-types"/>のようにディスパッチを実装すると、二つの大きな弱点があります。一つ目の弱点は、ジェネリックインターフェース<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>（<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>real-part</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>real_part</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>imag-part</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>imag_part</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SCHEMEINLINE>magnitude</SCHEMEINLINE>、<SCHEMEINLINE>angle</SCHEMEINLINE>）がすべての異なる表現について知っていなければならないことです。たとえば、複素数システムに新しい表現を組み込みたいとします。この新しい表現を型で識別し、各ジェネリックインターフェース<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>に、新しい型をチェックしてその表現に適切なセレクタを適用する節を追加する必要があります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Another weakness of the technique is that even though the individual
     representations can be designed separately, we must guarantee that no two
     <SPLITINLINE>
@@ -61,8 +92,21 @@
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     from section<SPACE/><REF NAME="sec:representations-complex-numbers"/>.
+    </EN>
+    <JA>
+    この技法のもう一つの弱点は、個々の表現を別々に設計できるにもかかわらず、システム全体で同じ名前を持つ<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が二つとないことを保証しなければならないことです。これが、BenとAlyssaがセクション<SPACE/><REF NAME="sec:representations-complex-numbers"/>の元の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の名前を変更しなければならなかった理由です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The issue underlying both of these weaknesses is that the technique for
     implementing generic interfaces is not <EM>additive</EM>.  The person
     implementing the generic selector
@@ -92,8 +136,24 @@
     or all the representations.  The problem is real and must
     be addressed in such programs as
     large-scale data-base-management systems.
+    </EN>
+    <JA>
+    これらの弱点の両方に共通する問題は、ジェネリックインターフェースを実装する技法が<EM>加法的</EM>でないことです。ジェネリックセレクタ<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を実装する人は、新しい表現が導入されるたびにそれらの<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を修正しなければならず、個々の表現を接続する人は名前の衝突を避けるために自分のコードを修正しなければなりません。いずれの場合も、コードに加えなければならない変更は簡単ですが、それでも変更は必要であり、不便さとエラーの元になります。現状の複素数システムではこれは大きな問題ではありませんが、複素数の異なる表現が二つではなく数百あったとしたらどうでしょう。そして、抽象データインターフェースで維持すべきジェネリックセレクタが多数あったとしたら。実際、すべてのインターフェース<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>やすべての表現を知っているプログラマが一人もいないとしたら。この問題は現実的であり、大規模データベース管理システムのようなプログラムでは対処しなければなりません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     What we need is a means for modularizing the system design even
     further.  This is provided by the programming technique known as <EM>
     data-directed programming</EM>.  To understand how data-directed
@@ -128,9 +188,32 @@
 	figure<SPACE/><REF NAME="fig:operator-table"/>.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    私たちに必要なのは、システム設計をさらにモジュール化する手段です。これを提供するのが、<EM>データ指向プログラミング</EM>として知られるプログラミング技法です。データ指向プログラミングがどのように機能するかを理解するために、まず次の観察から始めましょう。異なる型の集合に共通するジェネリック演算の集合を扱うとき、実質的には、一方の軸に可能な演算を、もう一方の軸に可能な型を含む二次元テーブルを扱っていることになります。テーブルの各エントリは、提示される各型の引数に対して各演算を実装する<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>です。前のセクションで開発した複素数システムでは、演算名、データ型、そして実際の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の間の対応関係は、ジェネリックインターフェース<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の様々な条件節に散らばっていました。しかし、同じ情報は、<SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:operator-table_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:operator-table"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>に示すように、テーブルにまとめることもできたはずです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <DO_BREAK_PAGE/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Data-directed programming is the technique of designing programs to work
     with such a
     <INDEX>table<SUBINDEX>for data-directed programming</SUBINDEX></INDEX>
@@ -161,6 +244,25 @@
       <JAVASCRIPT>functions;</JAVASCRIPT>
     </SPLITINLINE>
     we need only add new entries to the table.
+    </EN>
+    <JA>
+    データ指向プログラミングとは、このような
+    <INDEX>table<SUBINDEX>for data-directed programming</SUBINDEX></INDEX>
+    テーブルを直接扱うようにプログラムを設計する技法です。以前は、複素数の算術コードと二つの表現パッケージを接続するメカニズムを、それぞれ型に対して明示的なディスパッチを行う<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の集合として実装しました。ここでは、テーブル内で演算名と引数の型の組み合わせを検索して適用すべき正しい<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を見つけ、それを引数の中身に適用する、単一の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>としてインターフェースを実装します。こうすれば、新しい表現パッケージをシステムに追加するとき、既存の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を変更する必要はなく、テーブルに新しいエントリを追加するだけで済みます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
     <SPLIT>
@@ -177,6 +279,8 @@
 	</FIGURE>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     To implement this plan, assume that we have two
     <SPLITINLINE>
       <SCHEME>procedures,</SCHEME>
@@ -186,6 +290,17 @@
     manipulating the
     <INDEX>operation-and-type table</INDEX>
     operation-and-type table:
+    </EN>
+    <JA>
+    この計画を実装するために、
+    <INDEX>operation-and-type table</INDEX>
+    演算と型のテーブルを操作するための二つの<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>put</SCHEMEINLINE>と<SCHEMEINLINE>get</SCHEMEINLINE>があると仮定します：
+    </JA>
+    </BILINGUAL>
     <UL>
       <LI>
        <INDEX><USE>put</USE></INDEX> 
@@ -208,7 +323,8 @@
 	  </JAVASCRIPT>
 	</SPLITINLINE>
 	<BR/>
-	installs the
+	<BILINGUAL>
+	<EN>installs the
 	<SPLITINLINE>
 	  <SCHEME>
 	    <LATEXINLINE>$\langle \textit{item} \rangle$</LATEXINLINE>
@@ -227,7 +343,23 @@
 	    <META>op</META> and the
 	    <META>type</META>.
 	  </JAVASCRIPT>
-	</SPLITINLINE>
+	</SPLITINLINE></EN>
+	<JA><SPLITINLINE>
+	  <SCHEME>
+	    <LATEXINLINE>$\langle \textit{op} \rangle$</LATEXINLINE>と<LATEXINLINE>$\langle \textit{type} \rangle$</LATEXINLINE>
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    <META>op</META>と<META>type</META>
+	  </JAVASCRIPT>
+	</SPLITINLINE>をインデックスとして、<SPLITINLINE>
+	  <SCHEME>
+	    <LATEXINLINE>$\langle \textit{item} \rangle$</LATEXINLINE>
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    <META>item</META>
+	  </JAVASCRIPT>
+	</SPLITINLINE>をテーブルに登録します。</JA>
+	</BILINGUAL>
       </LI>
       <LI>
 	<INDEX><USE>get</USE></INDEX> 
@@ -247,7 +379,8 @@
 	  </JAVASCRIPT>
 	</SPLITINLINE>
 	<BR/>
-	looks up the
+	<BILINGUAL>
+	<EN>looks up the
 	<SPLITINLINE>
 	  <SCHEME>
 	    <LATEXINLINE>$\langle \textit{op} \rangle$</LATEXINLINE>,
@@ -270,21 +403,51 @@
 	    by the primitive predicate
 	    <INDEX><USE>is_undefined</USE> (primitive function)</INDEX>
 	    <INDEX><PRIMITIVE/><SUBINDEX><USE>is_undefined</USE></SUBINDEX></INDEX>
-	    <JAVASCRIPTINLINE>is_undefined</JAVASCRIPTINLINE>.<FOOTNOTE>
-	    The name <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE>
-	    is predeclared in any JavaScript implementation and should
-	    not be used other than to refer to that primitive value.
-	  </FOOTNOTE>
+	    <JAVASCRIPTINLINE>is_undefined</JAVASCRIPTINLINE>.
 	  </JAVASCRIPT>
-	</SPLITINLINE>
+	</SPLITINLINE></EN>
+	<JA>テーブル内の<SPLITINLINE>
+	  <SCHEME>
+	    <LATEXINLINE>$\langle \textit{op} \rangle$</LATEXINLINE>、<LATEXINLINE>$\langle \textit{type} \rangle$</LATEXINLINE>
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    <META>op</META>、<META>type</META>
+	  </JAVASCRIPT>
+	</SPLITINLINE>のエントリを検索し、見つかった項目を返します。項目が見つからない場合、<SCHEMEINLINE>get</SCHEMEINLINE>は<SPLITINLINE>
+	  <SCHEME>偽を返します。</SCHEME>
+	  <JAVASCRIPT>
+	    <INDEX><USE>undefined</USE> (predeclared name)</INDEX>
+	    <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE>という名前で参照され、プリミティブな述語
+	    <INDEX><USE>is_undefined</USE> (primitive function)</INDEX>
+	    <INDEX><PRIMITIVE/><SUBINDEX><USE>is_undefined</USE></SUBINDEX></INDEX>
+	    <JAVASCRIPTINLINE>is_undefined</JAVASCRIPTINLINE>によって認識される、一意のプリミティブ値を返します。
+	  </JAVASCRIPT>
+	</SPLITINLINE></JA>
+	</BILINGUAL><FOOTNOTE>
+	    <BILINGUAL>
+	    <EN>The name <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE>
+	    is predeclared in any JavaScript implementation and should
+	    not be used other than to refer to that primitive value.</EN>
+	    <JA><JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE>という名前は、あらゆるJavaScript実装で事��宣言されており、そのプリミティブ値を参照する以外の目的で使用すべきではありません。</JA>
+	    </BILINGUAL>
+	  </FOOTNOTE>
       </LI>
     </UL>
+    <BILINGUAL>
+    <EN>
     For now, we can assume that <SCHEMEINLINE>put</SCHEMEINLINE> and
     <SCHEMEINLINE>get</SCHEMEINLINE> are included in our language.  In
     chapter<SPACE/><REF NAME="chap:state"></REF> (section<SPACE/><REF NAME="sec:tables"/>) we will see
     how to implement these and other operations for manipulating tables.
+    </EN>
+    <JA>
+    今のところ、<SCHEMEINLINE>put</SCHEMEINLINE>と<SCHEMEINLINE>get</SCHEMEINLINE>は言語に含まれていると仮定できます。第<SPACE/><REF NAME="chap:state"></REF>章（セクション<SPACE/><REF NAME="sec:tables"/>）で、これらおよびテーブルを操作するための他の演算の実装方法を見ます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Here is how data-directed programming can be used in the complex-number
     system.  Ben, who developed the rectangular representation, implements his
     code just as he did originally.  He defines a collection of
@@ -303,6 +466,21 @@
       <SCHEME>procedure:</SCHEME>
       <JAVASCRIPT>function:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    以下に、データ指向プログラミングを複素数システムにどのように使えるかを示します。直交表現を開発したBenは、元々と同じようにコードを実装します。彼は<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>のコレクション、つまり
+    <INDEX>package</INDEX>
+    <INDEX>package<SUBINDEX>rectangular representation</SUBINDEX></INDEX>
+    <INDEX><USE>rectangular</USE> package</INDEX>
+    <EM>パッケージ</EM>を定義し、直交数に対する操作方法をシステムに伝��るエントリをテーブルに追加することで、これらをシステムの残りの部分と接続します。これは以下の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を呼び出すことで実現されます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>operation_table_from_chapter_3</NAME>
       <JAVASCRIPT>
@@ -384,6 +562,8 @@ function install_rectangular_package() {
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Notice that the internal
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -433,7 +613,42 @@ function install_rectangular_package() {
       <JAVASCRIPT><JAVASCRIPTINLINE>list("rectangular")</JAVASCRIPTINLINE>,
       </JAVASCRIPT>
     </SPLITINLINE>
-    and similarly for the other selectors.<FOOTNOTE>We use the list
+    and similarly for the other selectors.
+    </EN>
+    <JA>
+    ここでの内部<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、Benが独立して作業していたときにセクション<SPACE/><REF NAME="sec:representations-complex-numbers"/>で書いたものと同じ<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>であることに注目してください。システムの残りの部分と接続するために変更を加える必要はありません。さらに、これらの<SPLITINLINE>
+      <SCHEME>手続き定義</SCHEME>
+      <JAVASCRIPT>関数宣言</JAVASCRIPT>
+    </SPLITINLINE>はインストール<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の内部にあるため、Benは直交パッケージの外にある他の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>との名前の衝突を心配する必要がありません。これらをシステムの残りの部分と接続するために、Benは自分の<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>real-part</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>real_part</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を、演算名<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>real-part</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>real_part</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>と型<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(rectangular)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>list("rectangular")</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>の下にインストールし、他のセレクタも同様にします。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>We use the list
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>(rectangular)</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>list("rectangular")</JAVASCRIPTINLINE>
@@ -446,19 +661,51 @@ function install_rectangular_package() {
       </JAVASCRIPT>
     </SPLITINLINE>
     to allow for the possibility of operations with multiple arguments, not
-    all of the same type.</FOOTNOTE>  The interface also defines the
-    constructors to be used by the external system.<FOOTNOTE>The type the
+    all of the same type.</EN>
+    <JA>リスト<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(rectangular)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>list("rectangular")</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>を<SPLITINLINE>
+      <SCHEME>シンボル<SCHEMEINLINE>rectangular</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>文字列<JAVASCRIPTINLINE>"rectangular"</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>ではなく使うのは、すべてが同じ型ではない複数の引数を持つ演算の可能性に対応するためです。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>The interface also defines the
+    constructors to be used by the external system.</EN>
+    <JA>インターフェースはまた、外部システムが使うコンストラクタも定義します。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>The type the
     constructors are installed under needn<APOS/>t be a list because a
     constructor is always used to make an object of one particular
-    type.</FOOTNOTE> These are identical to Ben<APOS/>s internally defined
-    constructors, except that they attach the tag.
+    type.</EN>
+    <JA>コンストラクタがインストールされる型はリストである必要はありません。コンストラクタは常に特定の一つの型のオブジェクトを作るために使われるからです。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>These are identical to Ben<APOS/>s internally defined
+    constructors, except that they attach the tag.</EN>
+    <JA>これらはBenが内部で定義したコンストラクタと同一ですが、タグを付ける点が異なります。</JA>
+    </BILINGUAL>
   </TEXT>
   <DO_BREAK_PAGE/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Alyssa<APOS/>s
     <INDEX>package<SUBINDEX>polar representation</SUBINDEX></INDEX>
     <INDEX><USE>polar</USE> package</INDEX>
     polar package is analogous:
+    </EN>
+    <JA>
+    Alyssaの
+    <INDEX>package<SUBINDEX>polar representation</SUBINDEX></INDEX>
+    <INDEX><USE>polar</USE> package</INDEX>
+    極パッケージも同様です：
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="4">
       <INDEX><DECLARATION>install_polar_package</DECLARATION></INDEX> 
       <NAME>install_polar_package</NAME>
@@ -534,6 +781,8 @@ install_polar_package();
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Even though Ben and Alyssa both still use their original
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -551,8 +800,24 @@ install_polar_package();
     </SPLITINLINE>
     (see section<SPACE/><REF NAME="sec:block-structure"/>), so there is no name
     conflict.
+    </EN>
+    <JA>
+    BenとAlyssaがどちらもまだ互いと同じ名前で定義された元の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>（たとえば<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>real-part</SCHEMEINLINE>）</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>real_part</JAVASCRIPTINLINE>）</JAVASCRIPT>
+    </SPLITINLINE>を使っていても、これらの宣言は異なる<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の内部にあるため（セクション<SPACE/><REF NAME="sec:block-structure"/>を参照）、名前の衝突はありません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The complex-arithmetic selectors access the table by means of a general
     <QUOTE>operation</QUOTE>
     <SPLITINLINE>
@@ -579,7 +844,25 @@ install_polar_package();
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    if one is present:<FOOTNOTE>
+    if one is present:
+    </EN>
+    <JA>
+    複素数の算術セレクタは、ジェネリック演算をいくつかの引数に適用する汎用の<QUOTE>演算</QUOTE><SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>を介してテーブルにアクセスします。<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Apply-generic</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数<JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>は、演算の名前と引数の型の下でテーブルを検索し、見つかった<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>があればそれを適用します：
+    </JA>
+    </BILINGUAL><FOOTNOTE>
     <SPLIT>
       <SCHEME>
 	<SCHEMEINLINE>Apply-generic</SCHEMEINLINE>
@@ -736,16 +1019,26 @@ const result =
 imag_part(result);		
       </JAVASCRIPT>
     </SNIPPET>
-    Observe that these do not change at all if a new representation is
-    added to the system.
+    <BILINGUAL>
+    <EN>Observe that these do not change at all if a new representation is
+    added to the system.</EN>
+    <JA>新しい表現がシステムに追加されても、これらはまったく変更されないことに注目してください。</JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can also extract from the table the constructors to be used by the
     programs external to the packages in making complex numbers from real and
     imaginary parts and from magnitudes and angles. As in
     section<SPACE/><REF NAME="sec:manifest-types"/>, we construct rectangular
     numbers whenever we have real and imaginary parts, and polar numbers
     whenever we have magnitudes and angles:
+    </EN>
+    <JA>
+    テーブルから、パッケージの外部のプログラムが実部と虚部から、また絶対値と偏角から複素数を作るために使うコンストラクタを取り出すこともできます。セクション<SPACE/><REF NAME="sec:manifest-types"/>と同様に、実部と虚部がある場合は直交数を構築し、絶対値と偏角がある場合は極数を構築します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="4" POSTPADDING="no">
       <INDEX><DECLARATION>make_from_real_imag</DECLARATION></INDEX> 
       <INDEX><DECLARATION>make_from_mag_ang</DECLARATION></INDEX> 
@@ -848,6 +1141,8 @@ list("+", list("*", list("*", x, y), list("+", 1, 0)),
                     list("+",  x, 4)))
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     We can regard this program as performing a dispatch on the type of the
     expression to be differentiated.  In this situation the
     <QUOTE>type tag</QUOTE> of the datum is the algebraic operator symbol
@@ -863,6 +1158,17 @@ list("+", list("*", list("*", x, y), list("+", 1, 0)),
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     as
+    </EN>
+    <JA>
+    このプログラムは、微分される式の型に対してディスパッチを行っていると見なせます。この状況では、データの<QUOTE>型タグ</QUOTE>は代数演算子のシンボル<SPLITINLINE>
+      <SCHEME>（<LATEXINLINE>+</LATEXINLINE>など）</SCHEME>
+      <JAVASCRIPT>（<LATEXINLINE>"+"</LATEXINLINE>など）</JAVASCRIPT>
+    </SPLITINLINE>であり、実行される演算は<SCHEMEINLINE>deriv</SCHEMEINLINE>です。基本的な微分<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を次のように書き換えることで、このプログラムをデータ指向スタイルに変換できます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>deriv</DECLARATION> (symbolic)<SUBINDEX>data-directed</SUBINDEX><FRAGILE/></INDEX>
       <NAME>deriv_generic</NAME>
@@ -908,7 +1214,8 @@ deriv("x", "x");
     </SNIPPET>
     <OL>
       <LI>
-	Explain what was done above. Why can<APOS/>t we assimilate the
+	<BILINGUAL>
+	<EN>Explain what was done above. Why can<APOS/>t we assimilate the
 	predicates
 	<SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>number?</SCHEMEINLINE></SCHEME>
@@ -920,25 +1227,43 @@ deriv("x", "x");
 	  <JAVASCRIPT><JAVASCRIPTINLINE>is_variable</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-	into the data-directed dispatch?
+	into the data-directed dispatch?</EN>
+	<JA>上で何が行われたかを説明してください。なぜ述語<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>number?</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>is_number</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>と<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>variable?</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>is_variable</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>をデータ指向ディスパッチに組み込めないのですか？</JA>
+	</BILINGUAL>
       </LI>
       <LI>
-	Write the
+	<BILINGUAL>
+	<EN>Write the
 	<SPLITINLINE>
 	  <SCHEME>procedures</SCHEME>
 	  <JAVASCRIPT>functions</JAVASCRIPT>
 	</SPLITINLINE>
 	for derivatives of sums and products, and the auxiliary code required
-	to install them in the table used by the program above.
+	to install them in the table used by the program above.</EN>
+	<JA>和と積の導関数のための<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>と、それらを上のプログラムで使われるテーブルにインストールするために必要な補助コードを書いてください。</JA>
+	</BILINGUAL>
       </LI>
       <LI>
-	Choose any additional differentiation rule that you like, such as the
+	<BILINGUAL>
+	<EN>Choose any additional differentiation rule that you like, such as the
 	one for exponents
 	(exercise<SPACE/><REF NAME="ex:deriv-exponentiation"/>), and install it
-	in this data-directed system.
+	in this data-directed system.</EN>
+	<JA>お好みの追加の微分規則（たとえば練習問題<SPACE/><REF NAME="ex:deriv-exponentiation"/>のべき乗の規則など）を選び、このデータ指向システムにインストールしてください。</JA>
+	</BILINGUAL>
       </LI>
       <LI>
-	In this simple algebraic manipulator the type of an expression is the
+	<BILINGUAL>
+	<EN>In this simple algebraic manipulator the type of an expression is the
 	algebraic operator that binds it together.  Suppose, however, we
 	indexed the
 	<SPLITINLINE>
@@ -946,7 +1271,12 @@ deriv("x", "x");
 	  <JAVASCRIPT>functions</JAVASCRIPT>
 	</SPLITINLINE>
 	in the opposite way, so that the dispatch line
-	in <SCHEMEINLINE>deriv</SCHEMEINLINE> looked like
+	in <SCHEMEINLINE>deriv</SCHEMEINLINE> looked like</EN>
+	<JA>この単純な代数操作プログラムでは、式の型はそれをまとめる代数演算子です。しかし、<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>を逆の方法でインデックスし、<SCHEMEINLINE>deriv</SCHEMEINLINE>のディスパッチ行が次のようになるとしたら</JA>
+	</BILINGUAL>
 	<SNIPPET EVAL="no">
           <SCHEME>
 ((get (operator exp) 'deriv) (operands exp) var)
@@ -955,7 +1285,10 @@ deriv("x", "x");
 get(operator(exp), "deriv")(operands(exp), variable);
           </JAVASCRIPT>
 	</SNIPPET>
-	What corresponding changes to the derivative system are required?
+	<BILINGUAL>
+	<EN>What corresponding changes to the derivative system are required?</EN>
+	<JA>微分システムにどのような対応する変更が必要ですか？</JA>
+	</BILINGUAL>
       </LI>
     </OL>
     <LABEL NAME="ex:data-directed-differentiation"/>
@@ -1204,6 +1537,8 @@ put("**", "deriv", deriv_exponentiation);
     </SOLUTION>
   </EXERCISE>
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Insatiable
     <INDEX>data base<SUBINDEX>Insatiable Enterprises personnel</SUBINDEX></INDEX>
     Enterprises, Inc., is a highly decentralized conglomerate company
@@ -1240,9 +1575,25 @@ put("**", "deriv", deriv_exponentiation);
     information keyed under identifiers such as
     <SCHEMEINLINE>address</SCHEMEINLINE> and
     <SCHEMEINLINE>salary</SCHEMEINLINE>.  In particular:
+    </EN>
+    <JA>
+    Insatiable
+    <INDEX>data base<SUBINDEX>Insatiable Enterprises personnel</SUBINDEX></INDEX>
+    Enterprises社は、世界中に散らばる多数の独立した事業部から成る、非常に分散化されたコングロマリット企業です。同社のコンピュータ設備は、巧妙なネットワークインターフェーススキームによって相互接続されたばかりで、ネットワーク全体がどのユーザーにも単一のコンピュータに見えるようになっています。Insatiable社の社長は、事業部のファイルから管理情報を抽出するというネットワークの能力を活用する最初の試みで、すべての事業部のファイルが<SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>のデータ構造として実装されているものの、使用されている具体的なデータ構造は事業部ごとに異なることを知り、がっかりしました。事業部の自律性を維持しつつ本社のニーズを満たすファイル統合戦略を探るために、事業部長会議が急きょ招集されました。
+    <P/>
+    <DO_BREAK_PAGE/>
+    このような戦略を
+    <INDEX>data base<SUBINDEX>data-directed programming and</SUBINDEX></INDEX>
+    データ指向プログラミングでどのように実装できるかを示してください。例として、各事業部の人事記録が単一のファイルから成り、従業員名をキーとするレコードの集合を含むとします。集合の構造は事業部ごとに異なります。さらに、各従業員のレコード自体が（事業部ごとに異なる構造の）集合であり、<SCHEMEINLINE>address</SCHEMEINLINE>や<SCHEMEINLINE>salary</SCHEMEINLINE>などの識別子をキーとする情報を含みます。特に：
+    </JA>
+    </BILINGUAL>
     <OL>
       <LI>
-        Implement for headquarters a
+	<BILINGUAL>
+	<EN>Implement for headquarters a
 	<SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>get-record</SCHEMEINLINE></SCHEME>
 	  <JAVASCRIPT><JAVASCRIPTINLINE>get_record</JAVASCRIPTINLINE>
@@ -1259,10 +1610,23 @@ put("**", "deriv", deriv_exponentiation);
 	</SPLITINLINE>
         should be applicable to any division<APOS/>s file. Explain how the
 	individual divisions<APOS/> files should be structured.  In particular,
-	what type information must be supplied?
+	what type information must be supplied?</EN>
+	<JA>指定された人事ファイルから指定された従業員のレコードを取り出す<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>get-record</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>get_record</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>を本社用に実装してください。この<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>はどの事業部のファイルにも適用できるべきです。個々の事業部のファイルがどのように構造化されるべきか説明してください。特に、どのような型情報が提供されなければなりませんか？</JA>
+	</BILINGUAL>
       </LI>
       <LI>
-        Implement for headquarters a
+	<BILINGUAL>
+	<EN>Implement for headquarters a
 	<SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>get-salary</SCHEMEINLINE></SCHEME>
 	  <JAVASCRIPT><JAVASCRIPTINLINE>get_salary</JAVASCRIPTINLINE>
@@ -1273,10 +1637,20 @@ put("**", "deriv", deriv_exponentiation);
 	</SPLITINLINE>
         that returns the salary information from a given employee<APOS/>s
 	record from any division<APOS/>s personnel file.  How should the record
-	be structured in order to make this operation work?
+	be structured in order to make this operation work?</EN>
+	<JA>任意の事業部の人事ファイルから、与えられた従業員のレコードの給与情報を返す<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>get-salary</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>get_salary</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>を本社用に実装してください。この演算を機能させるために、レコードはどのように構造化されるべきですか？</JA>
+	</BILINGUAL>
       </LI>
       <LI>
-        Implement for headquarters a
+	<BILINGUAL>
+	<EN>Implement for headquarters a
 	<SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>find-employee-record</SCHEMEINLINE></SCHEME>
 	  <JAVASCRIPT><JAVASCRIPTINLINE>find_employee_record</JAVASCRIPTINLINE>
@@ -1293,12 +1667,27 @@ put("**", "deriv", deriv_exponentiation);
 	  <JAVASCRIPT>function</JAVASCRIPT>
 	</SPLITINLINE>
         takes as arguments an employee<APOS/>s name and a list of all the
-	divisions<APOS/> files.
+	divisions<APOS/> files.</EN>
+	<JA>本社用の<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>find-employee-record</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>find_employee_record</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>を実装してください。これはすべての事業部のファイルから与えられた従業員のレコードを検索して返すべきです。この<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>は、従業員名とすべての事業部のファイルのリストを引数として取ると仮定してください。</JA>
+	</BILINGUAL>
       </LI>
       <LI>
-        When Insatiable takes over a new company, what changes must be made in
+	<BILINGUAL>
+	<EN>When Insatiable takes over a new company, what changes must be made in
 	order to incorporate the new personnel information into the central
-	system?
+	system?</EN>
+	<JA>Insatiable社が新しい会社を買収したとき、新しい人事情報を中央システムに組み込むためにどのような変更が必要ですか？</JA>
+	</BILINGUAL>
       </LI>
     </OL>
     <SOLUTION>
@@ -1476,12 +1865,19 @@ function find_employee_record(employee_name,
   <INDEX>additivity<CLOSE/></INDEX>
 
   <SUBHEADING>
-    <NAME>Message passing</NAME>
+    <NAME>
+      <BILINGUAL>
+      <EN>Message passing</EN>
+      <JA>メッセージパッシング</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>message passing<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The key idea of data-directed programming is to handle generic operations
     in programs by dealing explicitly with operation-and-type tables, such as
     the table in
@@ -1503,8 +1899,25 @@ function find_employee_record(employee_name,
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     representing a row of the table.
+    </EN>
+    <JA>
+    データ指向プログラミングの鍵となるアイデアは、<SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:operator-table_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:operator-table"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>のテーブルのような、演算と型のテーブルを明示的に扱うことで、プログラム内のジェネリック演算を処理することです。セクション<SPACE/><REF NAME="sec:manifest-types"/>で使ったプログラミングスタイルは、各演算が自身のディスパッチを担当するようにして、型に対する必要なディスパッチを組織化しました。実質的に、これは演算と型のテーブルを行に分解し、各ジェネリック演算<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>がテーブルの一行を表すようにしています。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     An alternative implementation strategy is to decompose the table into
     columns and, instead of using <QUOTE>intelligent operations</QUOTE> that
     dispatch on data types, to work with <QUOTE>intelligent data
@@ -1523,6 +1936,17 @@ function find_employee_record(employee_name,
       </JAVASCRIPT>
     </SPLITINLINE>
     could be written as
+    </EN>
+    <JA>
+    代替の実装戦略は、テーブルを列に分解し、データ型に対してディスパッチする<QUOTE>賢い演算</QUOTE>を使う代わりに、演算名に対してディスパッチする<QUOTE>賢いデータオブジェクト</QUOTE>を使うことです。これは、直交数のようなデータオブジェクトを、必要な演算名を入力として受け取り、指定された演算を実行する<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>として表現するようにすれば実現できます。この方式では、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-from-real-imag</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_from_real_imag</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>は次のように書けるでしょう。
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="3">
       <INDEX><DECLARATION>make_from_real_imag</DECLARATION><SUBINDEX>message-passing</SUBINDEX></INDEX>
       <NAME>make_from_real_imag_message_passing</NAME>
@@ -1749,6 +2173,8 @@ function install_polar_package() {
 install_polar_package();	
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The corresponding
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
@@ -1761,13 +2187,33 @@ install_polar_package();
     </SPLITINLINE>
     which applies a generic operation to an argument, now simply feeds the
     operation<APOS/>s name to the data object and lets the object do the
-    work:<FOOTNOTE>One limitation of this organization is it permits only
+    work:
+    </EN>
+    <JA>
+    対応する<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、ジェネリック演算を引数に適用するもので、今や単に演算の名前をデータオブジェクトに渡し、オブジェクトに仕事をさせるだけです：
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>One limitation of this organization is it permits only
     generic
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
-    of one argument.</FOOTNOTE>
+    of one argument.</EN>
+    <JA>この組織化の一つの制限は、引数が一つのジェネリック<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>しか許さないことです。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET CHAP="3">
       <INDEX><DECLARATION>apply_generic</DECLARATION><SUBINDEX>with message passing</SUBINDEX></INDEX>
       <NAME>apply_generic_message_passing</NAME>
@@ -1820,6 +2266,8 @@ function angle(z) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Note that the value returned by
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-from-real-imag</SCHEMEINLINE></SCHEME>
@@ -1848,8 +2296,30 @@ function angle(z) {
       </JAVASCRIPT>
     </SPLITINLINE>
     requests an operation to be performed.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-from-real-imag</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_from_real_imag</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>が返す値は<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE><EMDASH/>内部の<SCHEMEINLINE>dispatch</SCHEMEINLINE><SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>であることに注目してください。これは<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>apply-generic</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_generic</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>が演算の実行を要求するときに呼び出される<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     This style of programming is called <EM>message passing</EM>.  The name
     comes from the image that a data object is an entity that receives the
     requested operation name as a <QUOTE>message.</QUOTE>  We have already seen
@@ -1879,9 +2349,28 @@ function angle(z) {
     than message passing, to discuss generic arithmetic operations.  In
     chapter<SPACE/><REF NAME="chap:state"></REF> we will return to message passing, and we will see that
     it can be a powerful tool for structuring simulation programs.
+    </EN>
+    <JA>
+    このプログラミングスタイルは<EM>メッセージパッシング</EM>と呼ばれます。この名前は、データオブジェクトが要求された演算名を<QUOTE>メッセージ</QUOTE>として受け取るエンティティであるというイメージに由来します。メッセージパッシングの例はすでにセクション<SPACE/><REF NAME="sec:data?"/>で見ました。そこでは、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>をデータオブジェクトなしに<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>だけで定義できることを見ました。ここでは、メッセージパッシングが数学的なトリックではなく、ジェネリック演算を持つシステムを組織化するための有用な技法であることが分かります。この章の残りでは、ジェネリック算術演算を議論するために、メッセージパッシングではなくデータ指向プログラミングを引き続き使います。第<SPACE/><REF NAME="chap:state"></REF>章ではメッセージパッシングに戻り、シミュレーションプログラムを構造化するための強力なツールとなりうることを見ます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Implement the constructor
      <INDEX><USE>make_from_mag_ang</USE><SUBINDEX>message-passing</SUBINDEX></INDEX>
     <SPLITINLINE>
@@ -1905,6 +2394,26 @@ function angle(z) {
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     given above.
+    </EN>
+    <JA>
+    コンストラクタ
+     <INDEX><USE>make_from_mag_ang</USE><SUBINDEX>message-passing</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-from-mag-ang</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_from_mag_ang</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>をメッセージパッシングスタイルで実装してください。この<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、上で与えられた<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-from-real-imag</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_from_real_imag</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>と類似のものにすべきです。
+    </JA>
+    </BILINGUAL>
     <SOLUTION>
       <SNIPPET CHAP="3">
 	<NAME>make_from_mag_ang_message_passing</NAME>
@@ -1951,6 +2460,8 @@ real_part(result);
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     As a large system with generic operations evolves, new types of data
     objects or new operations may be needed.  For each of the three
     strategies<EMDASH/>generic operations with explicit
@@ -1961,6 +2472,13 @@ real_part(result);
     organization would be most appropriate for a system in which new types must
     often be added?  Which would be most appropriate for a system in which new
     operations must often be added?
+    </EN>
+    <JA>
+    ジェネリック演算を持つ大規模なシステムが進化するにつれて、新しい型のデータオブジェクトや新しい演算が必要になることがあります。三つの戦略<EMDASH/>明示的な
+    <INDEX>dispatching<SUBINDEX>comparing different styles</SUBINDEX></INDEX>
+    ディスパッチによるジェネリック演算、データ指向スタイル、メッセージパッシングスタイル<EMDASH/>のそれぞれについて、新しい型や新しい演算を追加するためにシステムに加えなければならない変更を説明してください。新しい型を頻繁に追加しなければならないシステムには、どの組織化が最も適切ですか？ 新しい演算を頻繁に追加しなければならないシステムには、どれが最も適切ですか？
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:extend-generic"/>
     <SOLUTION>
       <UL>
