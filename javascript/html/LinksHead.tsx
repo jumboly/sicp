@@ -71,7 +71,7 @@ const HtmlHeadPart2: FC<HtmlHeadPart2Props> = ({ toIndexFolder }) => {
       src="${toIndexFolder}MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full">
     </script> -->
     <script src="${toIndexFolder}assets/application.js"></script>
-    <script src="${toIndexFolder}assets/lang-toggle.js"></script>
+    <script src="${toIndexFolder}assets/lang-toggle.js?v=2"></script>
 
     <!-- Rendering inline LaTeX -->
     <script type="text/x-mathjax-config">
