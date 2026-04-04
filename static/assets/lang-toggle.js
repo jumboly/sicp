@@ -1,30 +1,43 @@
 (function () {
   var STORAGE_KEY = "sicp-lang";
+  var MODES = ["en", "ja", "both"];
+  var LABELS = { en: "EN", ja: "JA", both: "EN/JA" };
 
-  function setLanguage(lang) {
+  function setLanguage(mode) {
     var enElements = document.querySelectorAll(".lang-en");
     var jaElements = document.querySelectorAll(".lang-ja");
 
+    var showEn = mode === "en" || mode === "both";
+    var showJa = mode === "ja" || mode === "both";
+
     for (var i = 0; i < enElements.length; i++) {
-      enElements[i].style.display = lang === "en" ? "" : "none";
+      enElements[i].style.display = showEn ? "" : "none";
     }
     for (var i = 0; i < jaElements.length; i++) {
-      jaElements[i].style.display = lang === "ja" ? "" : "none";
+      jaElements[i].style.display = showJa ? "" : "none";
     }
 
-    var btn = document.getElementById("lang-toggle");
-    if (btn) {
-      btn.textContent = lang === "en" ? "JA に切替" : "Switch to EN";
+    // Update button states
+    for (var j = 0; j < MODES.length; j++) {
+      var btn = document.getElementById("lang-" + MODES[j]);
+      if (btn) {
+        if (MODES[j] === mode) {
+          btn.classList.remove("btn-outline-light");
+          btn.classList.add("btn-light");
+        } else {
+          btn.classList.remove("btn-light");
+          btn.classList.add("btn-outline-light");
+        }
+      }
     }
 
     try {
-      localStorage.setItem(STORAGE_KEY, lang);
+      localStorage.setItem(STORAGE_KEY, mode);
     } catch (e) {}
   }
 
-  window.toggleLanguage = function () {
-    var current = localStorage.getItem(STORAGE_KEY) || "en";
-    setLanguage(current === "en" ? "ja" : "en");
+  window.setLang = function (mode) {
+    setLanguage(mode);
   };
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -32,8 +45,6 @@
     try {
       saved = localStorage.getItem(STORAGE_KEY) || "en";
     } catch (e) {}
-    if (saved === "ja") {
-      setLanguage("ja");
-    }
+    setLanguage(saved);
   });
 })();
