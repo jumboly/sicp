@@ -89,6 +89,17 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | branch | 枝 | |
 | nested | 入れ子 | |
 
+### 評価モデル
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| substitution model | 置換モデル | |
+| substitution / substitute | 置換 / 置換する | 「代入」は assignment の訳なので混同しない |
+| applicative-order evaluation | 適用順序の評価 | |
+| normal-order evaluation | 正規順序の評価 | |
+| mutable data | ミュータブルなデータ | |
+| stream processing | ストリーム処理 | |
+
 ### その他
 
 | 英語 | 日本語 | 備考 |

@@ -78,7 +78,8 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 1.1.2 Naming and the Environment
 - [x] Section 1.1.3 Evaluating Operator Combinations
 - [x] Section 1.1.4 Compound Functions
-- [ ] Section 1.1.5〜1.1.8
+- [x] Section 1.1.5 The Substitution Model for Function Application
+- [ ] Section 1.1.6〜1.1.8
 - [ ] Section 1.2〜1.3
 - [ ] Chapter 2〜5
 
