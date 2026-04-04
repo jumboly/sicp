@@ -215,8 +215,17 @@ export const processSnippetHtml = (node, writeTo, split) => {
       const chunks = (codeStr + "\n").match(
         /^((?:.*?[\r\n]+){1,6})((?:.|\n|\r)*)$/
       );
+      // data-preamble: 依存コード（非表示）、data-url: Source Academy URL
+      const preamble =
+        "// SICP JS " + chapterIndex + importStatement + reqStr + exampleStr;
+      const escape = s =>
+        s
+          .replace(/&/g, "&amp;")
+          .replace(/"/g, "&quot;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
       // 6 lines plus rest
-      writeTo.push(`onclick="window.open('${url}')">`);
+      writeTo.push(`data-preamble="${escape(preamble)}" data-url="${url}">`);
       writeTo.push(chunks[1]);
 
       if (chunks[2]) {
