@@ -10,7 +10,7 @@ const Licences: FC = () => {
       /></a>
       <p />
       The text of the original SICP 2nd edition is licensed by Harold Abelson
-      and Gerald Jay Sussman under a
+      and Gerald Jay Sussman with Julie Sussman under a
       <a href="http://creativecommons.org/licenses/by-sa/4.0/" rel="nofollow"
         >Creative Commons Attribution-ShareAlike 4.0 International License</a
       >
@@ -22,7 +22,7 @@ const Licences: FC = () => {
     </div>
 
     <div class="title-text-LICENCE">
-      This is a Japanese translation of
+      This is a Japanese translation (adapted work) of
       <a href="https://sourceacademy.org/sicpjs/" rel="nofollow"
         >SICP JavaScript Edition</a
       >, based on the

@@ -1,5 +1,7 @@
 # SICP JavaScript Edition
 
+> **Note:** This fork provides a Japanese translation of SICP JS. The translation was produced with the assistance of AI (Claude). See [the published site](https://www.jumboly.jp/sicp/) for the bilingual (EN/JA) version.
+
 This repository contains processing scripts and sources for the textbook SICP JS: *Structure and Interpretation of Computer Programs, JavaScript Edition* (SICP JS). See [Preface](https://sourceacademy.org/sicpjs/prefaces03) for background.
 
 Available versions:

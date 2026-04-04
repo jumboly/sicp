@@ -86,6 +86,10 @@ export const indexPage = (writeTo: WriteBuffer) => {
       </TR>
     </TABLE>`);
   writeTo.push(<Attribution />);
+  writeTo.push(`
+  <div class="title-text-ATTRIBUTION" style="margin-top: 1em; font-style: italic;">
+    This Japanese translation was produced with the assistance of AI (Claude).
+  </div>`);
 };
 
 export const beforeContentWrapper = `<div id='permalink-msg'>
