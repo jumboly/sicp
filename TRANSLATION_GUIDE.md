@@ -94,7 +94,7 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | wishful thinking | 希望的思考（wishful thinking） | |
 | message passing | メッセージパッシング | |
 | functional representation of data | データの関数的表現 | |
-| closure (data combining) | 閉包 | 関数クロージャではなく閉包性 |
+| closure (data combining) | 閉包性 | 関数クロージャとは異なる。データを組み合わせた結果を同じ操作で再び組み合わせられる性質 |
 | conventional interface | 規約インターフェース | |
 | rational number | 有理数 | |
 | numerator | 分子 | |
