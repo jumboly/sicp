@@ -1,20 +1,29 @@
 <SUBSECTION>
   <NAME>
-    Extended Exercise: Interval Arithmetic
+    <BILINGUAL><EN>Extended Exercise: Interval Arithmetic</EN><JA>拡張演習：区間算術</JA></BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:interval-arith"/>
   <INDEX>interval arithmetic<OPEN/></INDEX>
   <INDEX>arithmetic<SUBINDEX>on intervals</SUBINDEX><OPEN/></INDEX>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Alyssa P. Hacker is designing a system to help people solve
     engineering problems.  One feature she wants to provide in her system
     is the ability to manipulate inexact quantities (such as measured
     parameters of physical devices) with known precision, so that when
     computations are done with such approximate quantities the results
     will be numbers of known precision.
+    </EN>
+    <JA>
+    Alyssa P. Hacker は、工学の問題を解決するのを助けるシステムを設計しています。彼女がシステムに提供したい機能の一つは、精度が既知の不正確な量（物理デバイスの測定パラメータなど）を操作する能力です。そうすれば、そのような近似量で計算を行ったとき、結果は精度が既知の数値になります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Electrical engineers will be using Alyssa<APOS/>s system to compute
     electrical quantities.  It is sometimes necessary for them to compute
     the value of a parallel equivalent resistance
@@ -22,6 +31,15 @@
     <LATEXINLINE>$R_{1}$</LATEXINLINE> and <LATEXINLINE>$R_{2}$</LATEXINLINE>
     <INDEX>resistance<SUBINDEX>formula for parallel resistors</SUBINDEX></INDEX>
     using the formula
+    </EN>
+    <JA>
+    電気技術者が Alyssa のシステムを使って電気的な量を計算するとします。2つの抵抗
+    <LATEXINLINE>$R_{1}$</LATEXINLINE>と<LATEXINLINE>$R_{2}$</LATEXINLINE>の並列等価抵抗
+    <LATEXINLINE>$R_{p}$</LATEXINLINE>の値を
+    <INDEX>resistance<SUBINDEX>formula for parallel resistors</SUBINDEX></INDEX>
+    次の公式を使って計算する必要があることがあります。
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{lll}
@@ -29,7 +47,9 @@
       \end{array}
       \]
     </LATEX>
-    Resistance values are usually known only up to some 
+    <BILINGUAL>
+    <EN>
+    Resistance values are usually known only up to some
     <INDEX>resistance<SUBINDEX>tolerance of resistors</SUBINDEX></INDEX>
     tolerance guaranteed by the manufacturer of the resistor.  For example, if
     you buy a resistor labeled <QUOTE>6.8 ohms with 10% tolerance</QUOTE> you can
@@ -40,20 +60,36 @@
     5%<SPACE/>resistor, the resistance of the combination can range from about
     2.58 ohms (if the two resistors are at the lower bounds) to about 2.97 ohms
     (if the two resistors are at the upper bounds).
+    </EN>
+    <JA>
+    抵抗値は通常、抵抗器メーカーが保証する
+    <INDEX>resistance<SUBINDEX>tolerance of resistors</SUBINDEX></INDEX>
+    公差までしか知ることができません。たとえば、<QUOTE>6.8オーム、公差10%</QUOTE>と表示された抵抗器を買った場合、その抵抗が<LATEXINLINE>$6.8-0.68=6.12$</LATEXINLINE>から<LATEXINLINE>$6.8+0.68=7.48$</LATEXINLINE>オームの間にあることしか確信できません。したがって、6.8オーム 10%の抵抗器と4.7オーム 5%の抵抗器を並列にした場合、その組み合わせの抵抗は約2.58オーム（両方の抵抗器が下限値の場合）から約2.97オーム（両方の抵抗器が上限値の場合）の範囲になりえます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Alyssa<APOS/>s idea is to implement <QUOTE>interval arithmetic</QUOTE> as a
     set of arithmetic operations for combining <QUOTE>intervals</QUOTE> (objects
     that represent the range of possible values of an inexact quantity). The
     result of adding, subtracting, multiplying, or dividing two intervals is
     itself an interval, representing the range of the result.
+    </EN>
+    <JA>
+    Alyssa のアイデアは、<QUOTE>区間</QUOTE>（不正確な量の取りうる値の範囲を表すオブジェクト）を組み合わせる算術演算の集合として<QUOTE>区間算術</QUOTE>を実装することです。2つの区間を加算、減算、乗算、除算した結果は、それ自体が区間であり、結果の範囲を表します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Alyssa postulates the existence of an abstract object called an
     <QUOTE>interval</QUOTE> that has two endpoints: a lower bound and an upper bound.
     She also presumes that, given the endpoints of an interval, she can
-    construct the interval using the data constructor 
-     <INDEX><USE>make_interval</USE></INDEX> 
+    construct the interval using the data constructor
+     <INDEX><USE>make_interval</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-interval</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_interval</JAVASCRIPTINLINE>.
@@ -67,6 +103,13 @@
     for adding two intervals.  She reasons that the minimum value the sum could
     be is the sum of the two lower bounds and the maximum value it could be is
     the sum of the two upper bounds:
+    </EN>
+    <JA>
+    Alyssa は、下限と上限の2つの端点を持つ<QUOTE>区間</QUOTE>と呼ばれる抽象オブジェクトの存在を仮定します。また、区間の端点が与えられれば、データコンストラクタ
+     <INDEX><USE>make_interval</USE></INDEX>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>make-interval</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>make_interval</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を使って区間を構築できると想定します。Alyssa はまず、2つの区間を加算する<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を書きます。和の最小値は2つの下限の和であり、最大値は2つの上限の和であると推論します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="94">
       <INDEX><DECLARATION>add_interval</DECLARATION></INDEX>
       <NAME>add_interval</NAME>
@@ -86,6 +129,8 @@ function add_interval(x, y) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Alyssa also works out the product of two intervals by finding the
     minimum and the maximum of the products of the bounds and using them
     as the bounds of the resulting interval.
@@ -104,6 +149,17 @@ function add_interval(x, y) {
     </SPLITINLINE>
     are
     primitives that find the minimum or maximum of any number of arguments.)
+    </EN>
+    <JA>
+    Alyssa はまた、境界の積の最小値と最大値を求め、それらを結果の区間の境界として使うことで、2つの区間の積を計算します。（
+    <INDEX><PRIMITIVE/><SUBINDEX><USE>math_min</USE><ECMA>Math.min</ECMA></SUBINDEX></INDEX>
+    <INDEX><USE>math_min</USE> (primitive function)</INDEX>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>Min</SCHEMEINLINE></SCHEME><JAVASCRIPT>関数<JAVASCRIPTINLINE>math_min</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>と
+    <INDEX><USE>math_max</USE> (primitive function)</INDEX>
+    <INDEX><PRIMITIVE/><SUBINDEX><USE>math_max</USE><ECMA>Math.max</ECMA></SUBINDEX></INDEX>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>max</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>math_max</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>は、任意の数の引数の最小値または最大値を求めるプリミティブです。）
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="94">
       <INDEX><DECLARATION>mul_interval</DECLARATION></INDEX>
       <NAME>mul_interval</NAME>
@@ -131,10 +187,17 @@ function mul_interval(x, y) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     To divide two intervals, Alyssa multiplies the first by the reciprocal of
     the second.  Note that the bounds of the reciprocal interval are
     the reciprocal of the upper bound and the reciprocal of the lower bound, in
     that order.
+    </EN>
+    <JA>
+    2つの区間を除算するには、Alyssa は最初の区間に2番目の逆数を掛けます。逆数の区間の境界は、上限の逆数と下限の逆数であることに注意してください（この順序で）。
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="94" POSTPADDING="no">
       <INDEX><DECLARATION>div_interval</DECLARATION></INDEX>
       <NAME>div_interval</NAME>
@@ -157,9 +220,10 @@ function div_interval(x, y) {
     </SNIPPET>
   </TEXT>
   <EXERCISE>
-    Alyssa<APOS/>s program is incomplete because she has not specified the
+    <BILINGUAL><EN>Alyssa<APOS/>s program is incomplete because she has not specified the
     implementation of the interval abstraction.  Here is a definition of
-    the interval constructor:
+    the interval constructor:</EN>
+    <JA>Alyssa のプログラムは、区間抽象の実装を指定していないため不完全です。区間コンストラクタの定義は次のとおりです：</JA></BILINGUAL>
     <SNIPPET PAGE="94" HIDE="yes">
       <NAME>make_interval</NAME>
       <SCHEME>
@@ -236,19 +300,26 @@ print_interval(div_interval(make_interval(1, 2),
                             make_interval(3, 5)));
       </JAVASCRIPT>
     </SNIPPET>
-    Define selectors 
-    <INDEX><USE>upper_bound</USE></INDEX> 
+    <BILINGUAL>
+    <EN>Define selectors
+    <INDEX><USE>upper_bound</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>upper-bound</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>upper_bound</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    and 
-     <INDEX><USE>lower_bound</USE></INDEX> 
+    and
+     <INDEX><USE>lower_bound</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>lower-bound</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>lower_bound</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    to complete the implementation.
+    to complete the implementation.</EN>
+    <JA>セレクタ
+    <INDEX><USE>upper_bound</USE></INDEX>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>upper-bound</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>upper_bound</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>と
+     <INDEX><USE>lower_bound</USE></INDEX>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>lower-bound</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>lower_bound</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を定義して実装を完成させてください。</JA>
+    </BILINGUAL>
     <LABEL NAME="ex:alyssa-interval-start"/>
     <SOLUTION>
       <SNIPPET EVAL="no">
@@ -271,17 +342,22 @@ function upper_bound(x) {
     <LABEL NAME="ex:2_7"/>
   </EXERCISE>
 
-  <EXERCISE> 
-    Using reasoning analogous to Alyssa<APOS/>s, describe how the difference
+  <EXERCISE>
+    <BILINGUAL>
+    <EN>Using reasoning analogous to Alyssa<APOS/>s, describe how the difference
     of two intervals may be computed.  Define a corresponding subtraction
     <SPLITINLINE>
       <SCHEME>procedure,</SCHEME>
     <JAVASCRIPT>function,</JAVASCRIPT></SPLITINLINE>
-    called 
-     <INDEX><USE>sub_interval</USE></INDEX> 
+    called
+     <INDEX><USE>sub_interval</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>sub-interval</SCHEMEINLINE>.</SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>sub_interval</JAVASCRIPTINLINE>.</JAVASCRIPT>
-    </SPLITINLINE>
+    </SPLITINLINE></EN>
+    <JA>Alyssa と同様の推論を使って、2つの区間の差をどのように計算できるか説明してください。対応する減算<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+     <INDEX><USE>sub_interval</USE></INDEX>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>sub-interval</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>sub_interval</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を定義してください。</JA>
+    </BILINGUAL>
     <SOLUTION>
       <SNIPPET>
 	<REQUIRES>make_interval</REQUIRES>
@@ -306,8 +382,9 @@ print_interval(sub_interval(make_interval(0, 1),
     <LABEL NAME="ex:2_8"/>
   </EXERCISE>
 
-  <EXERCISE> 
-    The
+  <EXERCISE>
+    <BILINGUAL>
+    <EN>The
     <INDEX>width of an interval</INDEX>
     <EM>width</EM> of an interval is half of the difference between its
     upper and lower bounds.  The width is a measure of the uncertainty of
@@ -318,7 +395,11 @@ print_interval(sub_interval(make_interval(0, 1),
     intervals.  Show that the width of the sum (or difference) of two
     intervals is a function only of the widths of the intervals being
     added (or subtracted).  Give examples to show that this is not true
-    for multiplication or division.
+    for multiplication or division.</EN>
+    <JA>区間の
+    <INDEX>width of an interval</INDEX>
+    <EM>幅</EM>は、上限と下限の差の半分です。幅は、区間で指定される数値の不確かさの尺度です。いくつかの算術演算では、2つの区間を組み合わせた結果の幅は引数の区間の幅だけの関数ですが、他の演算では組み合わせの幅は引数の区間の幅の関数ではありません。2つの区間の和（または差）の幅が、加算（または減算）される区間の幅だけの関数であることを示してください。乗算や除算ではこれが成り立たないことを例を挙げて示してください。</JA>
+    </BILINGUAL>
     <SOLUTION>
       Let us denote the width of interval <LATEXINLINE>$i$</LATEXINLINE>
       with <LATEXINLINE>$W(i)$</LATEXINLINE>, and its lower and upper
@@ -352,11 +433,16 @@ print_interval(sub_interval(make_interval(0, 1),
   </EXERCISE>
 
   <EXERCISE>
-    Ben Bitdiddle, an expert systems programmer, looks over Alyssa<APOS/>s
+    <BILINGUAL>
+    <EN>Ben Bitdiddle, an expert systems programmer, looks over Alyssa<APOS/>s
     shoulder and comments that it is not clear what it means to
     <INDEX><USE>div_interval</USE><SUBINDEX>division by zero</SUBINDEX></INDEX>
     divide by an interval that spans zero.  Modify Alyssa<APOS/>s program to
-    check for this condition and to signal an error if it occurs.
+    check for this condition and to signal an error if it occurs.</EN>
+    <JA>エキスパートシステムプログラマの Ben Bitdiddle が Alyssa の肩越しに覗いて、ゼロをまたぐ区間で
+    <INDEX><USE>div_interval</USE><SUBINDEX>division by zero</SUBINDEX></INDEX>
+    除算することの意味が不明確だとコメントします。この条件をチェックし、該当する場合はエラーを発生させるように Alyssa のプログラムを修正してください。</JA>
+    </BILINGUAL>
     <LABEL NAME="ex:div-interval"/>
     <SOLUTION>
       <SNIPPET>
@@ -380,7 +466,8 @@ function div_interval(x, y) {
   </EXERCISE>
 
   <EXERCISE>
-    In passing, Ben also cryptically comments: <QUOTE>By testing the signs of
+    <BILINGUAL>
+    <EN>In passing, Ben also cryptically comments: <QUOTE>By testing the signs of
     the endpoints of the intervals, it is possible to break
     <INDEX><USE>mul_interval</USE><SUBINDEX>more efficient version</SUBINDEX></INDEX>
     <SPLITINLINE><SCHEME><SCHEMEINLINE>mul-interval</SCHEMEINLINE></SCHEME>
@@ -391,7 +478,11 @@ function div_interval(x, y) {
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
     <JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>
-    using Ben<APOS/>s suggestion.
+    using Ben<APOS/>s suggestion.</EN>
+    <JA>ついでに、Ben は謎めいたコメントもします。<QUOTE>区間の端点の符号をテストすることで、
+    <INDEX><USE>mul_interval</USE><SUBINDEX>more efficient version</SUBINDEX></INDEX>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>mul-interval</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>mul_interval</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を9つのケースに分割でき、そのうち2回以上の乗算が必要なのは1つだけだ。</QUOTE>Ben の提案を使ってこの<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を書き直してください。</JA>
+    </BILINGUAL>
     <LABEL NAME="ex:alyssa-interval-end"/>
     <SOLUTION>
       <SNIPPET>
@@ -446,14 +537,17 @@ function mul_interval(x, y) {
   <EXERCISE_FOLLOWED_BY_TEXT/>
   <SHORT_PAGE lines="4"/>
   <TEXT>
-    After debugging her program, Alyssa shows it to a potential user, who
+    <BILINGUAL>
+    <EN>After debugging her program, Alyssa shows it to a potential user, who
     complains that her program solves the wrong problem.  He wants a program
     that can deal with numbers represented as a center value and an additive
     tolerance; for example, he wants to work with intervals such as
     <LATEXINLINE>$3.5\pm 0.15$</LATEXINLINE> rather than
     <LATEXINLINE>$[3.35, 3.65]$</LATEXINLINE>. Alyssa returns to her desk and
     fixes this problem by supplying an alternate constructor and alternate
-    selectors:
+    selectors:</EN>
+    <JA>プログラムをデバッグした後、Alyssa は潜在的なユーザーにプログラムを見せますが、彼女のプログラムは間違った問題を解いていると不満を言われます。ユーザーは、中心値と加法的な公差で表現された数値を扱えるプログラムを望んでいます。たとえば、<LATEXINLINE>$[3.35, 3.65]$</LATEXINLINE>ではなく<LATEXINLINE>$3.5\pm 0.15$</LATEXINLINE>のような区間で作業したいのです。Alyssa は席に戻り、別のコンストラクタと別のセレクタを提供してこの問題を修正します：</JA>
+    </BILINGUAL>
     <SNIPPET PAGE="95">
       <INDEX><DECLARATION>make_center_width</DECLARATION></INDEX>
       <INDEX><DECLARATION>center</DECLARATION></INDEX>
@@ -496,16 +590,20 @@ width(my_interval);
     </SNIPPET>
   </TEXT>
   <TEXT>
-    Unfortunately, most of Alyssa<APOS/>s users are engineers.  Real engineering
+    <BILINGUAL>
+    <EN>Unfortunately, most of Alyssa<APOS/>s users are engineers.  Real engineering
     situations usually involve measurements with only a small uncertainty,
     measured as the ratio of the width of the interval to the midpoint of the
     interval.  Engineers usually specify percentage tolerances on the parameters
-    of devices, as in the resistor specifications given earlier.
+    of devices, as in the resistor specifications given earlier.</EN>
+    <JA>残念ながら、Alyssa のユーザーのほとんどはエンジニアです。実際の工学的状況では通常、区間の幅と中点の比率として測定される、わずかな不確かさしかない測定値を扱います。エンジニアは通常、先に示した抵抗器の仕様のように、デバイスのパラメータにパーセンテージの公差を指定します。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
-    Define a constructor 
-     <INDEX><USE>make_center_percent</USE></INDEX> 
+    <BILINGUAL>
+    <EN>Define a constructor
+     <INDEX><USE>make_center_percent</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-center-percent</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_center_percent</JAVASCRIPTINLINE>
@@ -515,7 +613,11 @@ width(my_interval);
     interval.  You must also define a selector
     <SCHEMEINLINE>percent</SCHEMEINLINE> that produces the percentage tolerance
     for a given interval.  The <SCHEMEINLINE>center</SCHEMEINLINE> selector is
-    the same as the one shown above.
+    the same as the one shown above.</EN>
+    <JA>中心とパーセンテージの公差を受け取り、目的の区間を生成するコンストラクタ
+     <INDEX><USE>make_center_percent</USE></INDEX>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>make-center-percent</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>make_center_percent</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を定義してください。与えられた区間のパーセンテージ公差を生成するセレクタ<SCHEMEINLINE>percent</SCHEMEINLINE>も定義する必要があります。<SCHEMEINLINE>center</SCHEMEINLINE>セレクタは上に示したものと同じです。</JA>
+    </BILINGUAL>
     <LABEL NAME="ex:make-center-percent"/>
     <SOLUTION>
       <SNIPPET>
@@ -543,12 +645,15 @@ percent(my_interval);
     </SOLUTION>
   </EXERCISE>
 
-  <EXERCISE> 
-    Show that under the assumption of small percentage tolerances there is
+  <EXERCISE>
+    <BILINGUAL>
+    <EN>Show that under the assumption of small percentage tolerances there is
     a simple formula for the approximate percentage tolerance of the
     product of two intervals in terms of the tolerances of the factors.
     You may simplify the problem by assuming that all numbers are
-    positive.
+    positive.</EN>
+    <JA>パーセンテージ公差が小さいという仮定のもとで、2つの区間の積の近似パーセンテージ公差を因子の公差から求める簡単な公式があることを示してください。すべての数値が正であると仮定して問題を簡略化してかまいません。</JA>
+    </BILINGUAL>
     <LABEL NAME="ex:interval-product"/>
     <SOLUTION>
       Let us denote the maximal error of an interval with center
@@ -579,14 +684,19 @@ percent(my_interval);
   </EXERCISE>
   <EXERCISE_FOLLOWED_BY_TEXT/>
   <TEXT>
-    After considerable work, Alyssa P. Hacker delivers her finished
+    <BILINGUAL>
+    <EN>After considerable work, Alyssa P. Hacker delivers her finished
     system.  Several years later, after she has forgotten all about it, she
     gets a frenzied call from an irate user,  Lem E. Tweakit.
     It seems that Lem has
     noticed that the
     <INDEX>resistance<SUBINDEX>formula for parallel resistors</SUBINDEX></INDEX>
     formula for parallel resistors can be written in two
-    algebraically equivalent ways:
+    algebraically equivalent ways:</EN>
+    <JA>かなりの作業の後、Alyssa P. Hacker は完成したシステムを納品します。数年後、すっかり忘れた頃に、怒ったユーザーの Lem E. Tweakit から慌てた電話がかかってきます。Lem は、
+    <INDEX>resistance<SUBINDEX>formula for parallel resistors</SUBINDEX></INDEX>
+    並列抵抗の公式が代数的に等価な2つの方法で書けることに気づいたようです：</JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \dfrac{R_{1}R_{2}}{R_{1}+R_{2}}
@@ -598,8 +708,11 @@ percent(my_interval);
       \dfrac{1}{1/R_{1}+1/R_{2}}
       \]
     </LATEX>
-    He has written the following two programs, each of which computes the
-    parallel-resistors formula differently:
+    <BILINGUAL>
+    <EN>He has written the following two programs, each of which computes the
+    parallel-resistors formula differently:</EN>
+    <JA>彼は次の2つのプログラムを書きましたが、それぞれ並列抵抗の公式を異なる方法で計算します：</JA>
+    </BILINGUAL>
     <SNIPPET PAGE="95">
       <NAME>par</NAME>
       <REQUIRES>add_interval</REQUIRES>
@@ -645,18 +758,24 @@ print_interval(par1(pair(4, 6), pair(7, 8)))
 print_interval(par2(pair(4, 6), pair(7, 8)));
       </JAVASCRIPT_TEST>
     </SNIPPET>
-    Lem complains that Alyssa<APOS/>s program gives different answers for
-    the two ways of computing. This is a serious complaint.
+    <BILINGUAL>
+    <EN>Lem complains that Alyssa<APOS/>s program gives different answers for
+    the two ways of computing. This is a serious complaint.</EN>
+    <JA>Lem は、Alyssa のプログラムが2つの計算方法で異なる答えを出すと不満を訴えます。これは深刻な苦情です。</JA>
+    </BILINGUAL>
   </TEXT>
-  <EXERCISE> 
-    Demonstrate that Lem is right. Investigate the behavior of the
+  <EXERCISE>
+    <BILINGUAL>
+    <EN>Demonstrate that Lem is right. Investigate the behavior of the
     system on a variety of arithmetic expressions. Make some intervals
     <LATEXINLINE>$A$</LATEXINLINE> and <LATEXINLINE>$B$</LATEXINLINE>,
     and use them in computing the expressions <LATEXINLINE>$A/A$</LATEXINLINE>
     and <LATEXINLINE>$A/B$</LATEXINLINE>.  You will get the most insight by
     using intervals whose width is a small percentage of the center value.
     Examine the results of the computation in center-percent form (see
-    exercise<SPACE/><REF NAME="ex:make-center-percent"/>).
+    exercise<SPACE/><REF NAME="ex:make-center-percent"/>).</EN>
+    <JA>Lem が正しいことを実証してください。さまざまな算術式に対するシステムの動作を調べてください。いくつかの区間<LATEXINLINE>$A$</LATEXINLINE>と<LATEXINLINE>$B$</LATEXINLINE>を作り、式<LATEXINLINE>$A/A$</LATEXINLINE>と<LATEXINLINE>$A/B$</LATEXINLINE>の計算に使ってください。幅が中心値の小さなパーセンテージである区間を使うと、最も多くの洞察が得られるでしょう。計算結果を中心-パーセント形式（練習問題<SPACE/><REF NAME="ex:make-center-percent"/>を参照）で調べてください。</JA>
+    </BILINGUAL>
     <LABEL NAME="ex:interval-compare"/>
     <SOLUTION>
       The expression <LATEXINLINE>$A/A$</LATEXINLINE> is interesting, because if
@@ -669,23 +788,22 @@ print_interval(par2(pair(4, 6), pair(7, 8)));
   </EXERCISE>
 
   <EXERCISE>
-    Eva Lu Ator, another user, has also noticed the different intervals
+    <BILINGUAL>
+    <EN>Eva Lu Ator, another user, has also noticed the different intervals
     computed by different but algebraically equivalent expressions. She
     says that a formula to compute with intervals using Alyssa<APOS/>s system
     will produce tighter error bounds if it can be written in such a form
     that no
     <SPLITINLINE>
-      <SCHEME>
-	variable
-      </SCHEME>
-      <JAVASCRIPT>
-	name
-      </JAVASCRIPT>
+      <SCHEME>variable</SCHEME>
+      <JAVASCRIPT>name</JAVASCRIPT>
     </SPLITINLINE>
     that represents an uncertain number is repeated. Thus, she says,
     <SCHEMEINLINE>par2</SCHEMEINLINE> is a <QUOTE>better</QUOTE> program for
     parallel resistances than <SCHEMEINLINE>par1</SCHEMEINLINE>.  Is she right?
-    Why?
+    Why?</EN>
+    <JA>別のユーザーである Eva Lu Ator も、代数的に等価だが異なる式で異なる区間が計算されることに気づきました。彼女は、Alyssa のシステムを使って区間で計算する公式は、不確かな数を表す<SPLITINLINE><SCHEME>変数</SCHEME><JAVASCRIPT>名前</JAVASCRIPT></SPLITINLINE>が繰り返されない形で書ければ、より厳密な誤差範囲が得られると言います。したがって、<SCHEMEINLINE>par2</SCHEMEINLINE>は並列抵抗に対して<SCHEMEINLINE>par1</SCHEMEINLINE>よりも<QUOTE>よい</QUOTE>プログラムだと彼女は言います。彼女は正しいですか？ なぜですか？</JA>
+    </BILINGUAL>
     <SOLUTION>
       She is right. The so-called <EM>dependency problem</EM> in interval
       arithmetic arises when the same input values (or intermediate terms)
@@ -697,10 +815,13 @@ print_interval(par2(pair(4, 6), pair(7, 8)));
   </EXERCISE>
 
   <EXERCISE>
-    Explain, in general, why equivalent algebraic expressions may lead to
+    <BILINGUAL>
+    <EN>Explain, in general, why equivalent algebraic expressions may lead to
     different answers.  Can you devise an interval-arithmetic package that
     does not have this shortcoming, or is this task impossible?  (Warning:
-    This problem is very difficult.)
+    This problem is very difficult.)</EN>
+    <JA>一般に、等価な代数式がなぜ異なる答えにつながりうるのか説明してください。この欠点のない区間算術パッケージを考案できますか、それともこの課題は不可能ですか？（警告：この問題は非常に難しいです。）</JA>
+    </BILINGUAL>
 
     <SOLUTION>
       The dependency problem in interval arithmetic is solved using linear

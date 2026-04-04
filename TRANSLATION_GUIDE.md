@@ -77,6 +77,37 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | naming | 名前付け | |
 | means of abstraction | 抽象化の手段 | |
 
+### データ抽象・ペア
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| data abstraction | データ抽象 | |
+| abstract data | 抽象データ | |
+| concrete data representation | 具体的なデータ表現 | |
+| compound data | 複合データ | |
+| compound data object | 複合データオブジェクト | |
+| selector | セレクタ | |
+| constructor | コンストラクタ | |
+| pair | ペア | |
+| list-structured data | リスト構造データ | |
+| abstraction barriers | 抽象バリア | |
+| wishful thinking | 希望的思考（wishful thinking） | |
+| message passing | メッセージパッシング | |
+| functional representation of data | データの関数的表現 | |
+| closure (data combining) | 閉包 | 関数クロージャではなく閉包性 |
+| conventional interface | 規約インターフェース | |
+| rational number | 有理数 | |
+| numerator | 分子 | |
+| denominator | 分母 | |
+| reducing to lowest terms | 既約分数に約分 | |
+| interval arithmetic | 区間算術 | |
+| interval | 区間 | |
+| tolerance | 公差 | |
+| Church numerals | チャーチ数 | |
+| symbolic expression | シンボリック式 | |
+| generic operation | ジェネリック演算 | |
+| data-directed programming | データ指向プログラミング | |
+
 ### データ構造・再帰
 
 | 英語 | 日本語 | 備考 |

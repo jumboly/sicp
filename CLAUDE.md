@@ -95,7 +95,14 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 1.3.2 Constructing Functions using Lambda Expressions
 - [x] Section 1.3.3 Functions as General Methods
 - [x] Section 1.3.4 Functions as Returned Values
-- [ ] Chapter 2〜5
+- [x] Chapter 2 導入部
+- [x] Section 2.1 Introduction to Data Abstraction (導入部)
+- [x] Section 2.1.1 Example: Arithmetic Operations for Rational Numbers
+- [x] Section 2.1.2 Abstraction Barriers
+- [x] Section 2.1.3 What Is Meant by Data?
+- [x] Section 2.1.4 Extended Exercise: Interval Arithmetic
+- [ ] Chapter 2 (Section 2.2〜2.5)
+- [ ] Chapter 3〜5
 
 ## インライン実行
 
