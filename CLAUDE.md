@@ -79,7 +79,9 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 1.1.3 Evaluating Operator Combinations
 - [x] Section 1.1.4 Compound Functions
 - [x] Section 1.1.5 The Substitution Model for Function Application
-- [ ] Section 1.1.6〜1.1.8
+- [x] Section 1.1.6 Conditional Expressions and Predicates
+- [x] Section 1.1.7 Example: Square Roots by Newton's Method
+- [x] Section 1.1.8 Functions as Black-Box Abstractions
 - [ ] Section 1.2〜1.3
 - [ ] Chapter 2〜5
 
@@ -110,6 +112,20 @@ yarn validate-bilingual   # BILINGUAL タグ配置ルールを検証
 
 - CI で lint が走るので、`javascript/` 配下のファイルを編集したら prettier でフォーマットすること
 - `validate-bilingual` は翻訳 XML の構造ルール違反を検出する（FOOTNOTE/SNIPPET の配置、EN/JA の対応など）。翻訳作業後に実行すること
+
+## 一括翻訳ワークフロー
+
+「〜まで翻訳して」「〜まで一括で」といった指示があった場合、以下を各セクションごとに繰り返す：
+
+1. **翻訳**: XMLファイルを読み、TRANSLATION_GUIDE.md に従って BILINGUAL タグで翻訳を追加
+2. **検証**: `yarn validate-bilingual` を実行、エラーがあれば修正
+3. **レビュー**: 別エージェント（Agent ツール）で翻訳をレビュー（用語の一貫性、文体、タグ配置ルール）
+4. **用語集更新**: TRANSLATION_GUIDE.md に新出用語があれば追加
+5. **進捗更新**: CLAUDE.md の翻訳進捗チェックリストを更新
+
+- 途中で確認を求めず、すべて完了するまで自律的に進める
+- 判断に迷った箇所は最後にまとめて報告する
+- **このワークフローは yolo モード（--dangerously-skip-permissions）でのみ実行する。通常モードの場合は yolo モードで再起動するよう促すこと**
 
 ## ライセンス
 

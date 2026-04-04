@@ -100,6 +100,45 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | mutable data | ミュータブルなデータ | |
 | stream processing | ストリーム処理 | |
 
+### 条件式・述語
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| conditional expression | 条件式 | |
+| predicate | 述語 | |
+| consequent expression | 帰結式 | |
+| alternative expression | 代替式 | |
+| case analysis | 場合分け | |
+| clause | 節 | 場合分けの節 |
+| boolean | ブーリアン | |
+| logical conjunction | 論理積 | `&&` |
+| logical disjunction | 論理和 | `\|\|` |
+| logical negation | 論理否定 | `!` |
+| syntactic sugar | 糖衣構文 | |
+| unary operator | 単項演算子 | |
+| binary operator | 二項演算子 | |
+| prefix operator | 前置演算子 | |
+| right-associative | 右結合 | |
+| declarative knowledge | 宣言的知識 | |
+| imperative knowledge | 命令的知識 | |
+
+### ブラックボックス・スコープ
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| black box | ブラックボックス | |
+| functional abstraction | 関数的抽象化 | |
+| procedural abstraction | 手続き的抽象化 | Scheme 版 |
+| bound name | 束縛された名前 | JS版。Scheme版は束縛変数 (bound variable) |
+| free name | 自由な名前 | JS版。Scheme版は自由変数 (free variable) |
+| scope | スコープ | |
+| block structure | ブロック構造 | |
+| block | ブロック | |
+| internal declaration | 内部宣言 | |
+| lexical scoping | レキシカルスコーピング | |
+| radicand | 被開平数 | |
+| successive approximation | 逐次近似 | |
+
 ### その他
 
 | 英語 | 日本語 | 備考 |
@@ -215,4 +254,35 @@ UL・OL は BILINGUAL の中にそのまま入れてよい。パーサーが `<d
 <JA>脚注の日本語。</JA>
 </BILINGUAL>
 </FOOTNOTE>
+```
+
+### SOLUTION（演習問題の解答）
+
+- SOLUTION 内の解説テキストも BILINGUAL で翻訳する。SNIPPET のみの解答は翻訳不要
+- SNIPPET の前後で分割するルールは SOLUTION 内でも同様に適用する
+- SOLUTION が `<SPLIT><JAVASCRIPT>` の中にある場合は、その内側に BILINGUAL を置く
+
+```xml
+<SOLUTION>
+  <BILINGUAL>
+  <EN>The answer is ... because ...</EN>
+  <JA>答えは...です。なぜなら...</JA>
+  </BILINGUAL>
+  <SNIPPET>...</SNIPPET>
+</SOLUTION>
+```
+
+SPLIT 内の場合：
+
+```xml
+<SPLIT>
+  <JAVASCRIPT>
+    <SOLUTION>
+      <BILINGUAL>
+      <EN>Explanation text.</EN>
+      <JA>解説テキスト。</JA>
+      </BILINGUAL>
+    </SOLUTION>
+  </JAVASCRIPT>
+</SPLIT>
 ```

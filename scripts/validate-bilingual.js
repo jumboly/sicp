@@ -11,6 +11,7 @@
  * 4. EN/JA が BILINGUAL の外で使われていないこと
  * 5. BILINGUAL のネスト（BILINGUAL の中に BILINGUAL）がないこと
  *    ただし FOOTNOTE > BILINGUAL は許可（FOOTNOTE は独立スコープ）
+ * 6. SOLUTION 内に SNIPPET 以外のテキストがある場合、BILINGUAL で翻訳されていること
  */
 
 import fs from "fs";
@@ -221,6 +222,34 @@ function validateFile(filePath) {
         content,
         ja.start,
         "<JA> が <BILINGUAL> の外で使われています"
+      );
+    }
+  }
+
+  // ルール6: SOLUTION 内に SNIPPET 以外のテキストがある場合、BILINGUAL で翻訳されていること
+  const solutionRanges = findTagRanges(content, "SOLUTION");
+  for (const sol of solutionRanges) {
+    const solContent = content.substring(sol.contentStart, sol.contentEnd);
+    // SOLUTION 内に BILINGUAL があればOK
+    if (/<BILINGUAL[\s>]/.test(solContent)) continue;
+    // SNIPPET とタグを除去して、残りのテキストを確認
+    let textOnly = solContent;
+    // SNIPPET ブロックを除去
+    const solSnippets = findTagRanges(solContent, "SNIPPET");
+    // 後ろから除去してインデックスがずれないようにする
+    for (const sn of [...solSnippets].reverse()) {
+      textOnly = textOnly.substring(0, sn.start) + textOnly.substring(sn.end);
+    }
+    // すべてのタグを除去
+    textOnly = textOnly.replace(/<[^>]+>/g, "");
+    // 空白を除去して、意味のあるテキストが残るか確認
+    textOnly = textOnly.replace(/\s+/g, "").trim();
+    if (textOnly.length > 0) {
+      reportError(
+        filePath,
+        content,
+        sol.start,
+        "SOLUTION 内に未翻訳のテキストがあります。解説テキストは BILINGUAL で囲んでください"
       );
     }
   }
