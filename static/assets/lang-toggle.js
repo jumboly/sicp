@@ -45,9 +45,9 @@
   };
 
   document.addEventListener("DOMContentLoaded", function () {
-    var saved = "en";
+    var saved = "ja";
     try {
-      saved = localStorage.getItem(STORAGE_KEY) || "en";
+      saved = localStorage.getItem(STORAGE_KEY) || "ja";
     } catch (e) {}
     setLanguage(saved);
   });

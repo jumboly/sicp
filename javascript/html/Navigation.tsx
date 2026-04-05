@@ -91,7 +91,7 @@ const Navigation: FC<{
       >
         <button
           id="lang-en"
-          class="btn btn-sm btn-light"
+          class="btn btn-sm btn-outline-light"
           onclick="setLang('en')"
           style="font-size: 0.8rem; padding: 2px 8px;"
         >
@@ -99,7 +99,7 @@ const Navigation: FC<{
         </button>
         <button
           id="lang-ja"
-          class="btn btn-sm btn-outline-light"
+          class="btn btn-sm btn-light"
           onclick="setLang('ja')"
           style="font-size: 0.8rem; padding: 2px 8px;"
         >
