@@ -28,7 +28,7 @@ SICP JS Edition のソースは XML で管理されています。ビルドの�
 xml/ (原稿)  →  yarn web-js (ビルド)  →  html_js/ (静的HTML)  →  GitHub Pages で公開
 ```
 
-XML には `<TEXT>`, `<SNIPPET>`, `<FOOTNOTE>` などの独自タグが使われており、ビルド時に Node.js のパーサーが HTML に変換します。Scheme版とJavaScript版の切り替えは `<SPLITINLINE>` タグで制御されており、この仕組みに乗る形で EN/JA の切り替えを追加しました。
+XML には `<TEXT>`, `<SNIPPET>`, `<FOOTNOTE>` などの独自タグが使われており、ビルド時に [Node.js のパーサー](https://github.com/jumboly/sicp/blob/8b81da70/javascript/parseXmlHtml.tsx#L800-L822)が HTML に変換します。Scheme版とJavaScript版の切り替えは `<SPLITINLINE>` タグで制御されており、この仕組みに乗る形で EN/JA の切り替えを追加しました。
 
 ### 段階的翻訳という設計判断
 
@@ -48,7 +48,7 @@ XML には `<TEXT>`, `<SNIPPET>`, `<FOOTNOTE>` などの独自タグが使われ
 
 ### XMLソースの変更前と変更後
 
-upstreamのXMLソースは以下のような構造です。
+upstreamのXMLソースは以下のような構造です（[実際のファイル](https://github.com/jumboly/sicp/blob/8b81da70/xml/chapter1/section1/subsection1.xml#L6-L58)）。
 
 ```xml
 <!-- 変更前（upstream） -->
@@ -94,7 +94,7 @@ BILINGUALタグには配置制約があります。例えば、コードスニ�
 
 **しかし、LLMにこれらのルールを指示しても守ってくれないことが頻繁にありました。** FOOTNOTE ごと BILINGUAL の中に入れてしまったり、SNIPPET を BILINGUAL で囲んでしまったり。XMLの入れ子構造のルールはプロンプトで伝えるだけでは不十分で、自動検証が必須でした。
 
-そこで `validate-bilingual.js` を作り、以下の7項目を自動チェックしています。
+そこで [`validate-bilingual.js`](https://github.com/jumboly/sicp/blob/8b81da70/scripts/validate-bilingual.js) を作り、以下の7項目を自動チェックしています。
 
 1. U+FFFD（文字化け）が含まれていないこと
 2. FOOTNOTE が EN/JA の中にネストされていないこと
@@ -120,7 +120,7 @@ BILINGUALタグには配置制約があります。例えば、コードスニ�
 
 翻訳ルール・タグ配置ルール・用語集・ワークフローを `CLAUDE.md` と `TRANSLATION_GUIDE.md` に集約しました。Claude Codeは会話開始時にこれらを自動的にロードするため、新しいセッションでもコンテキストが維持されます。
 
-例えば、`CLAUDE.md` には一括翻訳ワークフローを以下のように記述しています。
+例えば、[`CLAUDE.md`](https://github.com/jumboly/sicp/blob/8b81da70/CLAUDE.md#L153-L169) には一括翻訳ワークフローを以下のように記述しています。
 
 ```markdown
 ## 一括翻訳ワークフロー
@@ -154,7 +154,7 @@ BILINGUALタグには配置制約があります。例えば、コードスニ�
 | operand | 被演算子 | オペランド |
 | compound function | 合成関数 | 複合関数 |
 
-用語集は250項目以上に達しました。翻訳中にレビューで指摘された用語の揺れは、次セクションの翻訳プロンプトにフィードバックし、用語集に追記するサイクルを回しています。
+[用語集](https://github.com/jumboly/sicp/blob/8b81da70/TRANSLATION_GUIDE.md)は250項目以上に達しました。翻訳中にレビューで指摘された用語の揺れは、次セクションの翻訳プロンプトにフィードバックし、用語集に追記するサイクルを回しています。
 
 ### Scheme版和訳との違い
 
