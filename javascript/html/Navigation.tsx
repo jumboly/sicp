@@ -32,7 +32,11 @@ const NavigationElements: FC = () => {
     </div>`;
 };
 
-const Navigation: FC = () => {
+const Navigation: FC<{
+  toIndexFolder: string;
+  shortTitle: string;
+  longTitle: string;
+}> = ({ toIndexFolder, shortTitle, longTitle }) => {
   return html`<!-- support for progressive web app, see README, DISABLED -->
     <!-- <script>
       if ("serviceWorker" in navigator && !navigator.serviceWorker.controller) {
@@ -59,6 +63,22 @@ const Navigation: FC = () => {
       >
         <span class="navbar-toggler-icon"></span>
       </button>
+      <span class="navbar-brand-short"
+        ><a
+          title="Go back to front page"
+          href="${toIndexFolder}index.html"
+          class="gray"
+          >${raw(shortTitle)}</a
+        ></span
+      >
+      <span class="navbar-brand-long"
+        ><a
+          title="Go back to front page"
+          href="${toIndexFolder}index.html"
+          class="gray"
+          >${raw(longTitle)}</a
+        ></span
+      >
       <span class="toolt"
         >Legend<span class="toolttext">
           ${raw(<NavigationElements />)}

@@ -48,24 +48,12 @@ export const html_links_part2 = (
   version: string
 ) => {
   writeTo.push(`<body>`);
-  writeTo.push(<Navigation />);
   writeTo.push(
-    html`<span class="navbar-brand-short"
-        ><a
-          title="Go back to front page"
-          href="${toIndexFolder}index.html"
-          class="gray"
-          >${raw(shortTitle)}</a
-        ></span
-      >
-      <span class="navbar-brand-long"
-        ><a
-          title="Go back to front page"
-          href="${toIndexFolder}index.html"
-          class="gray"
-          >${raw(longTitle)}</a
-        ></span
-      >`
+    <Navigation
+      toIndexFolder={toIndexFolder}
+      shortTitle={shortTitle}
+      longTitle={longTitle}
+    />
   );
   writeTo.push(`<div class="container scroll">`);
 };
