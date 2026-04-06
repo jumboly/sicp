@@ -1,6 +1,6 @@
 <SUBSECTION>
   <NAME>
-    Local State Variables
+    <BILINGUAL><EN>Local State Variables</EN><JA>ローカル状態変数</JA></BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:local-state-variables"/>
@@ -8,6 +8,8 @@
   <INDEX>state variable<SUBINDEX>local<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To illustrate what we mean by having a computational object with
     <INDEX>object(s)<SUBINDEX>with time-varying state</SUBINDEX></INDEX>
     time-varying state, let us model the situation of withdrawing money
@@ -28,6 +30,21 @@
     in the account, we should obtain the following sequence of responses
     using
     <SCHEMEINLINE>withdraw</SCHEMEINLINE>:
+    </EN>
+    <JA>
+    時間とともに変化する状態を持つ計算オブジェクトとはどういう意味かを示すために、
+    <INDEX>object(s)<SUBINDEX>with time-varying state</SUBINDEX></INDEX>
+    <INDEX>bank account</INDEX>
+    銀行口座からお金を引き出す状況をモデル化してみましょう。これを、引き出す金額
+    <SCHEMEINLINE>amount</SCHEMEINLINE> を引数に取る
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>withdraw</SCHEMEINLINE> を使って行います。
+    口座に引き出しに十分なお金がある場合、<SCHEMEINLINE>withdraw</SCHEMEINLINE> は引き出し後の残高を返します。そうでなければ、<SCHEMEINLINE>withdraw</SCHEMEINLINE> は <EM>Insufficient funds</EM>（残高不足）というメッセージを返します。たとえば、口座を <DOLLAR/>100 から始めると、<SCHEMEINLINE>withdraw</SCHEMEINLINE> を使って以下のような一連の応答が得られるはずです：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <NAME>withdraw_example</NAME>
       <EXPECTED>75</EXPECTED>
@@ -102,6 +119,8 @@ withdraw(15);
 35
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Observe that the expression
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>(withdraw 25)</SCHEMEINLINE>,</SCHEME>
@@ -131,7 +150,38 @@ withdraw(15);
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     with the same arguments always produced the same
-    result.<FOOTNOTE>Actually, this is not quite true. One exception was the 
+    result.
+    </EN>
+    <JA>
+    式
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(withdraw 25)</SCHEMEINLINE> を</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>withdraw(25)</JAVASCRIPTINLINE> を
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    2回評価すると、異なる値が返されることに注目してください。これは
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>にとってまったく新しい種類の振る舞いです。
+    これまで、私たちの
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>JavaScript の関数</JAVASCRIPT>
+    </SPLITINLINE>
+    はすべて数学的な関数を計算するための仕様と見なすことができました。
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の呼び出しは、与えられた引数に関数を適用した値を計算し、同じ
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を同じ引数で2回呼び出せば、常に同じ結果が得られました。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>Actually, this is not quite true. One exception was the
     <INDEX><USE>math_random</USE> (primitive function)<SUBINDEX>assignment needed for</SUBINDEX></INDEX>
     <INDEX>random-number generator</INDEX>
     random-number generator
@@ -148,7 +198,20 @@ withdraw(15);
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
-    ourselves.</FOOTNOTE>
+    ourselves.</EN>
+    <JA>実際には、これは完全に正しいわけではありません。一つの例外は、
+    <INDEX><USE>math_random</USE> (primitive function)<SUBINDEX>assignment needed for</SUBINDEX></INDEX>
+    <INDEX>random-number generator</INDEX>
+    <REF NAME="sec:primality"/>節の乱数生成器でした。もう一つの例外は、
+    <INDEX>operation-and-type table<SUBINDEX>assignment needed for</SUBINDEX></INDEX>
+    <REF NAME="sec:data-directed"/>節で導入した演算と型のテーブルです。そこでは、同じ引数で <SCHEMEINLINE>get</SCHEMEINLINE> を2回呼び出した結果が、その間に行われた <SCHEMEINLINE>put</SCHEMEINLINE> の呼び出しに依存していました。
+    一方で、代入を導入するまでは、そのような
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を自分で作る方法はありません。</JA>
+    </BILINGUAL></FOOTNOTE>
   </TEXT>
 
   <TEXT>
@@ -165,7 +228,9 @@ withdraw(15);
         that accesses <SCHEMEINLINE>balance</SCHEMEINLINE>.
       </SCHEME>
       <JAVASCRIPT>
-	So far, all our names have been <EM>immutable</EM>. 
+	<BILINGUAL>
+	<EN>
+	So far, all our names have been <EM>immutable</EM>.
 	When a function was applied, the values that its parameters
 	referred to never changed, and once a declaration was evaluated,
 	the declared name never changed its value.
@@ -182,12 +247,29 @@ withdraw(15);
 	<JAVASCRIPTINLINE>const</JAVASCRIPTINLINE>.
         We can declare a variable
 	<JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE>
-	to indicate the balance of money	
+	to indicate the balance of money
 	in the account and define
 	<SCHEMEINLINE>withdraw</SCHEMEINLINE> as a function that accesses
 	<SCHEMEINLINE>balance</SCHEMEINLINE>.
+	</EN>
+	<JA>
+	これまで、私たちの名前はすべて<EM>イミュータブル</EM>でした。
+	関数が適用されたとき、パラメータが参照する値は決して変化せず、宣言が評価されると、宣言された名前はその値を変えることはありませんでした。
+        <SCHEMEINLINE>withdraw</SCHEMEINLINE> のような関数を実装するために、
+	<INDEX>variable<SUBINDEX>declaration</SUBINDEX></INDEX>
+	<INDEX>syntactic forms<SUBINDEX>variable declaration</SUBINDEX><FRAGILE/></INDEX>
+	<INDEX>declaration<SUBINDEX><ORDER>variable</ORDER>of variable (<JAVASCRIPTINLINE>let</JAVASCRIPTINLINE>)</SUBINDEX></INDEX>
+	キーワード
+	<INDEX><USE>let</USE> (keyword)</INDEX>
+	<INDEX>keywords<SUBINDEX><ORDER>let</ORDER><USE>let</USE></SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>const</JAVASCRIPTINLINE> を使う定数宣言に加えて、キーワード <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE> を使う<EM>変数宣言</EM>を導入します。
+        変数 <JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE> を宣言して口座の残高を表し、<SCHEMEINLINE>balance</SCHEMEINLINE> にアクセスする関数として <SCHEMEINLINE>withdraw</SCHEMEINLINE> を定義できます。
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     The <SCHEMEINLINE>withdraw</SCHEMEINLINE>
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -206,6 +288,19 @@ withdraw(15);
     </SPLITINLINE>
     of <SCHEMEINLINE>balance</SCHEMEINLINE> and
     <SCHEMEINLINE>withdraw</SCHEMEINLINE>:
+    </EN>
+    <JA>
+    <SCHEMEINLINE>withdraw</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、<SCHEMEINLINE>balance</SCHEMEINLINE> が要求された <SCHEMEINLINE>amount</SCHEMEINLINE> 以上であるかどうかを確認します。もしそうであれば、<SCHEMEINLINE>withdraw</SCHEMEINLINE> は <SCHEMEINLINE>balance</SCHEMEINLINE> から <SCHEMEINLINE>amount</SCHEMEINLINE> を減らし、<SCHEMEINLINE>balance</SCHEMEINLINE> の新しい値を返します。そうでなければ、<SCHEMEINLINE>withdraw</SCHEMEINLINE> は <EM>Insufficient funds</EM> メッセージを返します。以下が <SCHEMEINLINE>balance</SCHEMEINLINE> と <SCHEMEINLINE>withdraw</SCHEMEINLINE> の
+    <SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>です：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <INDEX><DECLARATION>withdraw</DECLARATION></INDEX>
       <NAME>withdraw</NAME>
@@ -232,10 +327,20 @@ function withdraw(amount) {
 }
       </JAVASCRIPT>
     </SNIPPET>
-    Decrementing <SCHEMEINLINE>balance</SCHEMEINLINE> is accomplished by the 
+    <BILINGUAL>
+    <EN>
+    Decrementing <SCHEMEINLINE>balance</SCHEMEINLINE> is accomplished by the
     <SPLITINLINE>
       <SCHEME>expression</SCHEME>
     <JAVASCRIPT>expression statement</JAVASCRIPT></SPLITINLINE>
+    </EN>
+    <JA>
+    <SCHEMEINLINE>balance</SCHEMEINLINE> の減算は、次の
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+    <JAVASCRIPT>式文</JAVASCRIPT></SPLITINLINE>によって行われます。
+    </JA>
+    </BILINGUAL>
     <DONT_BREAK_PAGE/>
     <SNIPPET EVAL="no">
       <SCHEME>
@@ -256,6 +361,8 @@ balance = balance - amount;
 	</SNIPPET>
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	The syntax of
 	<INDEX>assignment</INDEX>
 	<INDEX>assignment<SUBINDEX>assignment expression</SUBINDEX></INDEX>
@@ -263,6 +370,16 @@ balance = balance - amount;
 	<INDEX>syntactic forms<SUBINDEX>assignment</SUBINDEX></INDEX>
 	<INDEX><ORDER>=</ORDER><JAVASCRIPTINLINE>=</JAVASCRIPTINLINE></INDEX>
 	<EM>assignment</EM> expressions is
+	</EN>
+	<JA>
+	<INDEX>assignment</INDEX>
+	<INDEX>assignment<SUBINDEX>assignment expression</SUBINDEX></INDEX>
+	<INDEX>variable<SUBINDEX>assignment to</SUBINDEX></INDEX>
+	<INDEX>syntactic forms<SUBINDEX>assignment</SUBINDEX></INDEX>
+	<INDEX><ORDER>=</ORDER><JAVASCRIPTINLINE>=</JAVASCRIPTINLINE></INDEX>
+	<EM>代入</EM>式の構文は次のとおりです。
+	</JA>
+	</BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <JAVASCRIPT>
 <META>name</META> = <META>new-value</META>
@@ -270,11 +387,13 @@ balance = balance - amount;
     </SNIPPET>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     Here
     <SPLITINLINE>
       <SCHEME>
 	<LATEXINLINE>$\langle \textit{name} \rangle$</LATEXINLINE>
-	is a symbol 
+	is a symbol
       </SCHEME>
       <JAVASCRIPT>
 	<META>name</META>
@@ -295,11 +414,11 @@ balance = balance - amount;
 	<META>new-value</META>
       </JAVASCRIPT>
     </SPLITINLINE>
-    is any expression.  
+    is any expression.
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Set!</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The assignment</JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     changes
     <SPLITINLINE>
       <SCHEME>
@@ -322,7 +441,57 @@ balance = balance - amount;
     In the case at hand, we are changing <SCHEMEINLINE>balance</SCHEMEINLINE> so
     that its new value will be the result of subtracting
     <SCHEMEINLINE>amount</SCHEMEINLINE> from the previous value of
-    <SCHEMEINLINE>balance</SCHEMEINLINE>.<FOOTNOTE>
+    <SCHEMEINLINE>balance</SCHEMEINLINE>.
+    </EN>
+    <JA>
+    ここで
+    <SPLITINLINE>
+      <SCHEME>
+	<LATEXINLINE>$\langle \textit{name} \rangle$</LATEXINLINE>
+	はシンボル
+      </SCHEME>
+      <JAVASCRIPT>
+	<META>name</META>
+	は
+	<INDEX>variable<SUBINDEX>parameter as</SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>let</JAVASCRIPTINLINE> で宣言されたか、
+	<INDEX>parameters<SUBINDEX><ORDER>variable</ORDER>as variables</SUBINDEX></INDEX>
+	関数のパラメータとして宣言された名前
+      </JAVASCRIPT>
+    </SPLITINLINE>であり、
+    <SPLITINLINE>
+      <SCHEME>
+	<LATEXINLINE>$\langle \textit{new-value} \rangle$</LATEXINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<META>new-value</META>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は任意の式です。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Set!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>代入</JAVASCRIPT>
+    </SPLITINLINE>は、
+    <SPLITINLINE>
+      <SCHEME>
+	<LATEXINLINE>$\langle \textit{name} \rangle$</LATEXINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<META>name</META>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の値を
+    <SPLITINLINE>
+      <SCHEME>
+	<LATEXINLINE>$\langle \textit{new-value}\rangle$</LATEXINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<META>new-value</META>
+      </JAVASCRIPT>
+    </SPLITINLINE>を評価して得られた結果に変更します。
+    この場合、<SCHEMEINLINE>balance</SCHEMEINLINE> の新しい値が、<SCHEMEINLINE>balance</SCHEMEINLINE> の以前の値から <SCHEMEINLINE>amount</SCHEMEINLINE> を引いた結果になるように変更しています。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
     <SPLITINLINE>
       <SCHEME>
 	<INDEX>unspecified values<SUBINDEX><ORDER>set</ORDER><SCHEMEINLINE>set!</SCHEMEINLINE></SUBINDEX></INDEX>
@@ -331,7 +500,7 @@ balance = balance - amount;
 	used only for its effect, not for its value.
 	<INDEX>naming conventions<SUBINDEX><ORDER>!</ORDER><SCHEMEINLINE>!</SCHEMEINLINE> for assignment and mutation</SUBINDEX></INDEX>
 	<INDEX>exclamation point in names</INDEX>
-	<INDEX><USE>!</USE><SUBINDEX>in names</SUBINDEX></INDEX> 
+	<INDEX><USE>!</USE><SUBINDEX>in names</SUBINDEX></INDEX>
 	The name <SCHEMEINLINE>set!</SCHEMEINLINE> reflects a naming convention
 	used in Scheme: Operations that change the values of variables (or that
 	change data structures, as we will see in
@@ -340,6 +509,8 @@ balance = balance - amount;
 	designating predicates by names that end with a question mark.
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	The
 	<INDEX>assignment<SUBINDEX>value of</SUBINDEX></INDEX>
 	value of an assignment is the value being assigned to the name.
@@ -347,31 +518,64 @@ balance = balance - amount;
 	<INDEX>assignment<SUBINDEX>constant/variable declaration vs.</SUBINDEX></INDEX>
 	look similar to and should not be
 	confused with constant and variable declarations of the form
+	</EN>
+	<JA>
+	<INDEX>assignment<SUBINDEX>value of</SUBINDEX></INDEX>
+	代入の値は、名前に代入される値そのものです。
+	代入の式文は、
+	<INDEX>assignment<SUBINDEX>constant/variable declaration vs.</SUBINDEX></INDEX>
+	次の形式の定数宣言や変数宣言と似ていますが、混同しないでください。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET EVAL="no" LATEX="yes">
           <JAVASCRIPT>
 const $name$ = $value$;
           </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	and
+	</EN>
+	<JA>
+	および
+	</JA>
+	</BILINGUAL>
 	<SNIPPET EVAL="no" LATEX="yes">
           <JAVASCRIPT>
 let $name$ = $value$;
           </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	in which a newly declared <META>name</META>
-	is associated with a <META>value</META>. 
+	is associated with a <META>value</META>.
 	Assignment expressions look similar to and should not be confused with
 	<INDEX>assignment<SUBINDEX>equality test vs.</SUBINDEX></INDEX>
-	expressions of the form 
+	expressions of the form
+	</EN>
+	<JA>
+	これらでは、新しく宣言された <META>name</META> が <META>value</META> に関連付けられます。
+	代入式はまた、
+	<INDEX>assignment<SUBINDEX>equality test vs.</SUBINDEX></INDEX>
+	次の形式の式とも似ていますが、混同しないでください。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET EVAL="no" LATEX="yes">
           <JAVASCRIPT>
 $expression_1$ === $expression_2$
           </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	which evaluate to <JAVASCRIPTINLINE>true</JAVASCRIPTINLINE>
 	if <META>expression</META><LATEXINLINE>$_1$</LATEXINLINE> evaluates to the
 	same value as <META>expression</META><LATEXINLINE>$_2$</LATEXINLINE> and to
 	<JAVASCRIPTINLINE>false</JAVASCRIPTINLINE> otherwise.
+	</EN>
+	<JA>
+	この式は、<META>expression</META><LATEXINLINE>$_1$</LATEXINLINE> が <META>expression</META><LATEXINLINE>$_2$</LATEXINLINE> と同じ値に評価される場合に <JAVASCRIPTINLINE>true</JAVASCRIPTINLINE> を、そうでなければ <JAVASCRIPTINLINE>false</JAVASCRIPTINLINE> を返します。
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLITINLINE></FOOTNOTE>
   </TEXT>
@@ -408,23 +612,42 @@ $expression_1$ === $expression_2$
 	expressions rather than a single expression.</FOOTNOTE>
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	The function <JAVASCRIPTINLINE>withdraw</JAVASCRIPTINLINE> also uses a
 	<INDEX>sequence of statements</INDEX>
 	<EM>sequence of statements</EM> to cause two statements to be evaluated
 	in the case where the <JAVASCRIPTINLINE>if</JAVASCRIPTINLINE> test is
 	true: first decrementing  <JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE>
 	and then returning the value of
-	<JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE>.  
+	<JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE>.
 	In general, executing a sequence
+	</EN>
+	<JA>
+	関数 <JAVASCRIPTINLINE>withdraw</JAVASCRIPTINLINE> は、
+	<INDEX>sequence of statements</INDEX>
+	<JAVASCRIPTINLINE>if</JAVASCRIPTINLINE> のテストが真の場合に2つの文を評価させるために、<EM>文のシーケンス</EM>も使っています。まず <JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE> を減らし、次に <JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE> の値を返します。
+	一般に、シーケンス
+	</JA>
+	</BILINGUAL>
 	<SNIPPET EVAL="no" LATEX="yes">
           <JAVASCRIPT>
 <META>stmt</META>$_{1}$ <META>stmt</META>$_{2} \ldots$<META>stmt</META>$_{n}$
           </JAVASCRIPT>
         </SNIPPET>
+	<BILINGUAL>
+	<EN>
         causes the statements <META>stmt</META><LATEXINLINE>$_{1}$</LATEXINLINE>
 	through
 	<META>stmt</META><LATEXINLINE>$_{n}$</LATEXINLINE> to be evaluated in
-	sequence.<FOOTNOTE>We have already used 
+	sequence.
+	</EN>
+	<JA>
+	を実行すると、文 <META>stmt</META><LATEXINLINE>$_{1}$</LATEXINLINE> から <META>stmt</META><LATEXINLINE>$_{n}$</LATEXINLINE> までが順番に評価されます。
+	</JA>
+	</BILINGUAL><FOOTNOTE>
+	<BILINGUAL>
+	<EN>We have already used
         <INDEX>sequence of statements<SUBINDEX><ORDER>block</ORDER>in block</SUBINDEX></INDEX>
         sequences implicitly in our programs, because in
 	JavaScript the body block
@@ -432,7 +655,11 @@ $expression_1$ === $expression_2$
 	followed by a return statement, not
 	just a single return statement,
 	as discussed in
-	section<SPACE/><REF NAME="sec:block-structure"/>.</FOOTNOTE>
+	section<SPACE/><REF NAME="sec:block-structure"/>.</EN>
+	<JA>
+        <INDEX>sequence of statements<SUBINDEX><ORDER>block</ORDER>in block</SUBINDEX></INDEX>
+	私たちはすでにプログラムの中で暗黙的にシーケンスを使ってきました。なぜなら、JavaScript では関数の本体ブロックに、単一の return 文だけでなく、関数宣言のシーケンスに続けて return 文を含めることができるからです。これは<REF NAME="sec:block-structure"/>節で議論しました。</JA>
+	</BILINGUAL></FOOTNOTE>
 	<COMMENT>
 	  In JavaScript, the return value of functions is determined by
 	  return statements, which
@@ -455,6 +682,8 @@ $expression_1$ === $expression_2$
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Although <SCHEMEINLINE>withdraw</SCHEMEINLINE> works as desired, the
     variable <SCHEMEINLINE>balance</SCHEMEINLINE> presents a problem.  As
     specified above, <SCHEMEINLINE>balance</SCHEMEINLINE> is a name defined
@@ -488,13 +717,42 @@ $expression_1$ === $expression_2$
       <SCHEMEINLINE>balance</SCHEMEINLINE> is a local state variable used by
       <SCHEMEINLINE>withdraw</SCHEMEINLINE> to keep track of the state of the
       account.
+    </EN>
+    <JA>
+    <SCHEMEINLINE>withdraw</SCHEMEINLINE> は期待どおりに動作しますが、変数 <SCHEMEINLINE>balance</SCHEMEINLINE> には問題があります。上で定義したように、<SCHEMEINLINE>balance</SCHEMEINLINE> は
+    <SPLITINLINE>
+      <SCHEME>グローバル</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+      </SPLITINLINE>環境で定義された名前であり、どの
+      <SPLITINLINE>
+	<SCHEME>手続き</SCHEME>
+	<JAVASCRIPT>関数</JAVASCRIPT>
+      </SPLITINLINE>からも自由にアクセスして調べたり変更したりできます。
+      <SCHEMEINLINE>balance</SCHEMEINLINE> を <SCHEMEINLINE>withdraw</SCHEMEINLINE> の内部にして、<SCHEMEINLINE>withdraw</SCHEMEINLINE> だけが <SCHEMEINLINE>balance</SCHEMEINLINE> に直接アクセスできる唯一の
+      <SPLITINLINE>
+	<SCHEME>手続き</SCHEME>
+	<JAVASCRIPT>関数</JAVASCRIPT>
+      </SPLITINLINE>であり、他の
+      <SPLITINLINE>
+	<SCHEME>手続き</SCHEME>
+	<JAVASCRIPT>関数</JAVASCRIPT>
+      </SPLITINLINE>は（<SCHEMEINLINE>withdraw</SCHEMEINLINE> の呼び出しを通じて）間接的にしか <SCHEMEINLINE>balance</SCHEMEINLINE> にアクセスできないようにできれば、はるかに良いでしょう。これは、<SCHEMEINLINE>balance</SCHEMEINLINE> が口座の状態を追跡するために <SCHEMEINLINE>withdraw</SCHEMEINLINE> が使うローカル状態変数であるという考え方を、より正確にモデル化することになります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <DO_BREAK_PAGE/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can make <SCHEMEINLINE>balance</SCHEMEINLINE> internal to
     <SCHEMEINLINE>withdraw</SCHEMEINLINE> by rewriting the definition as
     follows:
+    </EN>
+    <JA>
+    定義を次のように書き直すことで、<SCHEMEINLINE>balance</SCHEMEINLINE> を <SCHEMEINLINE>withdraw</SCHEMEINLINE> の内部にすることができます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>new_withdraw_example</NAME>
       <JAVASCRIPT>
@@ -561,12 +819,26 @@ const new_withdraw = make_withdraw_balance_100();
 	<QUOTE>need to know.</QUOTE></FOOTNOTE>
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
         What we have done here is use <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE>
 	to establish an environment with a local variable
 	<JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE>, bound to the initial
 	value 100. Within this local environment, we use a lambda
-	expression<FOOTNOTE>Blocks as bodies of lambda expressions were
-	introduced in section<SPACE/><REF NAME="sec:graphics"/>.</FOOTNOTE> to
+	expression
+	</EN>
+	<JA>
+	ここで行ったのは、<JAVASCRIPTINLINE>let</JAVASCRIPTINLINE> を使って、初期値 100 に束縛されたローカル変数 <JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE> を持つ環境を作ることです。このローカル環境の中で、ラムダ式
+	</JA>
+	</BILINGUAL><FOOTNOTE>
+	<BILINGUAL>
+	<EN>Blocks as bodies of lambda expressions were
+	introduced in section<SPACE/><REF NAME="sec:graphics"/>.</EN>
+	<JA>ラムダ式の本体としてのブロックは<REF NAME="sec:graphics"/>節で導入しました。</JA>
+	</BILINGUAL></FOOTNOTE>
+	<BILINGUAL>
+	<EN>
+	to
 	create a function that takes <JAVASCRIPTINLINE>amount</JAVASCRIPTINLINE>
 	as an argument and behaves like our previous
 	<JAVASCRIPTINLINE>withdraw</JAVASCRIPTINLINE> function.  This
@@ -575,31 +847,47 @@ const new_withdraw = make_withdraw_balance_100();
 	function<EMDASH/>behaves in precisely the same way as
 	<JAVASCRIPTINLINE>withdraw</JAVASCRIPTINLINE>, but its variable
 	<JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE> is not accessible by any
-	other function.<FOOTNOTE>In programming-language jargon, the variable
-	<JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE> is said to be 
+	other function.
+	</EN>
+	<JA>を使って、<JAVASCRIPTINLINE>amount</JAVASCRIPTINLINE> を引数に取り、先ほどの <JAVASCRIPTINLINE>withdraw</JAVASCRIPTINLINE> 関数と同じように動作する関数を作ります。この関数<EMDASH/><JAVASCRIPTINLINE>make_withdraw_balance_100</JAVASCRIPTINLINE> 関数の本体を評価した結果として返される<EMDASH/>は <JAVASCRIPTINLINE>withdraw</JAVASCRIPTINLINE> とまったく同じように動作しますが、変数 <JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE> には他のどの関数からもアクセスできません。
+	</JA>
+	</BILINGUAL><FOOTNOTE>
+	<BILINGUAL>
+	<EN>In programming-language jargon, the variable
+	<JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE> is said to be
         <INDEX>encapsulated name</INDEX>
         <INDEX>name<SUBINDEX>encapsulated</SUBINDEX></INDEX>
         <EM>encapsulated</EM> within the
 	<JAVASCRIPTINLINE>new_withdraw</JAVASCRIPTINLINE> function.
-	Encapsulation reflects the general system-design principle known as the 
+	Encapsulation reflects the general system-design principle known as the
         <INDEX>hiding principle</INDEX>
         <INDEX>modularity<SUBINDEX>hiding principle</SUBINDEX></INDEX>
         <EM>hiding principle</EM>: One can
         make a system more modular and robust by protecting parts of the
         system from each other; that is, by providing information access only
         to those parts of the system that have a <QUOTE>need to
-	know.</QUOTE></FOOTNOTE>
+	know.</QUOTE></EN>
+	<JA>プログラミング言語の用語では、変数 <JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE> は
+        <INDEX>encapsulated name</INDEX>
+        <INDEX>name<SUBINDEX>encapsulated</SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>new_withdraw</JAVASCRIPTINLINE> 関数の中に<EM>カプセル化</EM>されていると言います。カプセル化は、
+        <INDEX>hiding principle</INDEX>
+        <INDEX>modularity<SUBINDEX>hiding principle</SUBINDEX></INDEX>
+	<EM>隠蔽の原則</EM>として知られるシステム設計の一般原則を反映しています。つまり、システムの各部分を互いに保護することで、より高いモジュール性と堅牢性を実現できます。情報へのアクセスは、<QUOTE>知る必要がある</QUOTE>部分にのみ提供するのです。</JA>
+	</BILINGUAL></FOOTNOTE>
       </JAVASCRIPT>
     </SPLIT>
   </TEXT>
 
   <SHORT_PAGE lines="5"/>
   <TEXT>
-    Combining 
+    <BILINGUAL>
+    <EN>
+    Combining
     <SPLITINLINE>
       <SCHEME>
-        <SCHEMEINLINE>set!</SCHEMEINLINE> 
-        with local variables 
+        <SCHEMEINLINE>set!</SCHEMEINLINE>
+        with local variables
       </SCHEME>
       <JAVASCRIPT>
         assignments with variable declarations
@@ -680,7 +968,7 @@ const new_withdraw = make_withdraw_balance_100();
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     application.  In section<SPACE/><REF NAME="sec:environment-model"/> we will
-    introduce such a model, together with an explanation of 
+    introduce such a model, together with an explanation of
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>set!</SCHEMEINLINE> and local variables.</SCHEME>
       <JAVASCRIPT>assignments and variable declarations.</JAVASCRIPT>
@@ -691,9 +979,82 @@ const new_withdraw = make_withdraw_balance_100();
       <JAVASCRIPT><JAVASCRIPTINLINE>new_withdraw</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+        <SCHEMEINLINE>set!</SCHEMEINLINE> とローカル変数
+      </SCHEME>
+      <JAVASCRIPT>
+        代入と変数宣言
+      </JAVASCRIPT>
+    </SPLITINLINE>を組み合わせることは、ローカル状態を持つ計算オブジェクトを構成するために使う一般的なプログラミング技法です。しかし残念ながら、この技法を使うと深刻な問題が生じます。最初に
+    <SPLITINLINE>
+      <SCHEME>手続きを</SCHEME>
+      <JAVASCRIPT>関数を</JAVASCRIPT>
+    </SPLITINLINE>導入したとき、
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の適用が何を意味するかを解釈するために、置換モデル（<REF NAME="sec:substitution-model"/>節）も導入しました。
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>本体が return 文である関数</JAVASCRIPT>
+    </SPLITINLINE>を適用するとは、
+    <SPLITINLINE>
+      <SCHEME>手続きの本体</SCHEME>
+      <JAVASCRIPT>関数の return 式</JAVASCRIPT>
+    </SPLITINLINE>のパラメータをその値で置き換えて評価することだと述べました。
+    <SPLITINLINE>
+      <JAVASCRIPT>
+	より複雑な本体を持つ関数の場合は、パラメータをその値で置き換えて本体全体を評価する必要があります。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    問題は、言語に代入を導入した途端に、置換はもはや
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の適用の適切なモデルではなくなるということです。（なぜそうなるかは<REF NAME="sec:costs-of-assignment"/>節で見ます。）その結果、厳密に言えば、この時点では
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>new-withdraw</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>new_withdraw</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が上で主張したとおりに動作する理由を理解する方法がありません。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>new-withdraw</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>new_withdraw</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>のような
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を本当に理解するためには、
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の適用の新しいモデルを開発する必要があります。<REF NAME="sec:environment-model"/>節では、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>set!</SCHEMEINLINE> とローカル変数</SCHEME>
+      <JAVASCRIPT>代入と変数宣言</JAVASCRIPT>
+    </SPLITINLINE>の説明とともに、そのようなモデルを導入します。
+    しかしまず、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>new-withdraw</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>new_withdraw</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>で確立したテーマのいくつかのバリエーションを見てみましょう。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <JAVASCRIPT>
 	Parameters of functions as well as names declared with
@@ -720,8 +1081,36 @@ const new_withdraw = make_withdraw_balance_100();
       </JAVASCRIPT>
     </SPLITINLINE>
     specifies the initial amount of money in the
-    account.<FOOTNOTE>
+    account.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <JAVASCRIPT>
+	関数のパラメータおよび <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE> で宣言された名前は、
+	<INDEX>parameters<SUBINDEX><ORDER>variable</ORDER>as variables</SUBINDEX></INDEX>
+	変数です。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    次の
+    <SPLITINLINE>
+      <SCHEME>
+	手続き <SCHEMEINLINE>make-withdraw</SCHEMEINLINE> は、
+      </SCHEME>
+      <JAVASCRIPT>
+	関数 <JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE> は、
+      </JAVASCRIPT>
+    </SPLITINLINE><QUOTE>引き出しプロセッサ</QUOTE>を作ります。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-withdraw</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の<SPLITINLINE><SCHEME>仮</SCHEME></SPLITINLINE>パラメータ <SCHEMEINLINE>balance</SCHEMEINLINE> は、口座の初期金額を指定します。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
     <LABEL NAME="foot:make_withdraw"/>
+    <BILINGUAL>
+    <EN>
     In contrast with
     <SPLITINLINE>
       <SCHEME>
@@ -742,7 +1131,21 @@ const new_withdraw = make_withdraw_balance_100();
     model of evaluation in
     section<SPACE/><REF NAME="sec:environment-model"/>.
     (See also
-    exercise<SPACE/><REF NAME="ex:local-state-variable"/>.)</FOOTNOTE>
+    exercise<SPACE/><REF NAME="ex:local-state-variable"/>.)
+    </EN>
+    <JA>
+    上の
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>new-withdraw</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<SCHEMEINLINE>make_withdraw_balance_100</SCHEMEINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    とは異なり、<SCHEMEINLINE>let</SCHEMEINLINE> を使って <SCHEMEINLINE>balance</SCHEMEINLINE> をローカル変数にする必要はありません。<SPLITINLINE><SCHEME>仮</SCHEME></SPLITINLINE>パラメータはすでにローカルだからです。これは<REF NAME="sec:environment-model"/>節で環境モデルを議論した後に、より明確になります。（<REF NAME="ex:local-state-variable"/>も参照してください。）
+    </JA>
+    </BILINGUAL></FOOTNOTE>
     <SNIPPET EVAL="yes">
       <INDEX><DECLARATION>make_withdraw</DECLARATION></INDEX> 
       <NAME>make_withdraw</NAME>
@@ -768,6 +1171,8 @@ function make_withdraw(balance) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Make-withdraw</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>
@@ -776,6 +1181,17 @@ function make_withdraw(balance) {
     </SPLITINLINE>
     can be used as follows to create two objects <SCHEMEINLINE>W1</SCHEMEINLINE>
     and<SPACE/><SCHEMEINLINE>W2</SCHEMEINLINE>:
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Make-withdraw</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	関数 <JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を次のように使って、2つのオブジェクト <SCHEMEINLINE>W1</SCHEMEINLINE> と<SPACE/><SCHEMEINLINE>W2</SCHEMEINLINE> を作ることができます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <NAME>make_withdraw_define</NAME>
       <REQUIRES>make_withdraw</REQUIRES>
@@ -856,13 +1272,22 @@ W1(40);
 10
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
-    Observe that <SCHEMEINLINE>W1</SCHEMEINLINE> and 
+    <BILINGUAL>
+    <EN>
+    Observe that <SCHEMEINLINE>W1</SCHEMEINLINE> and
     <SCHEMEINLINE>W2</SCHEMEINLINE> are completely independent objects, each
     with its own local state variable <SCHEMEINLINE>balance</SCHEMEINLINE>.
     Withdrawals from one do not affect the other.
+    </EN>
+    <JA>
+    <SCHEMEINLINE>W1</SCHEMEINLINE> と <SCHEMEINLINE>W2</SCHEMEINLINE> は完全に独立したオブジェクトであり、それぞれが独自のローカル状態変数 <SCHEMEINLINE>balance</SCHEMEINLINE> を持っていることに注目してください。一方からの引き出しは、もう一方に影響しません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can also create objects that handle
     <INDEX><DECLARATION>deposit</DECLARATION> message for bank account</INDEX>
     deposits as well as
@@ -874,6 +1299,16 @@ W1(40);
     </SPLITINLINE>
     that returns a <QUOTE>bank-account object</QUOTE> with a specified initial
     balance:
+    </EN>
+    <JA>
+    <INDEX><DECLARATION>deposit</DECLARATION> message for bank account</INDEX>
+    引き出しだけでなく預け入れも扱えるオブジェクトを作ることもでき、それによって単純な銀行口座を表現できます。以下は、指定した初期残高を持つ<QUOTE>銀行口座オブジェクト</QUOTE>を返す
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>です：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <INDEX><DECLARATION>make_account</DECLARATION></INDEX> 
       <NAME>make_account</NAME>
@@ -932,6 +1367,8 @@ const acc = make_account(100);
 acc("withdraw")(50);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Each call to <SCHEMEINLINE>make_account</SCHEMEINLINE> sets up an
     environment with a local state variable <SCHEMEINLINE>balance</SCHEMEINLINE>.
     Within this environment, <SCHEMEINLINE>make_account</SCHEMEINLINE> defines
@@ -958,14 +1395,41 @@ acc("withdraw")(50);
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     itself is returned as the value that represents the bank-account object.
-    This is precisely the 
+    This is precisely the
     <INDEX>message passing<SUBINDEX>in bank account</SUBINDEX></INDEX>
     <EM>message-passing</EM> style of programming that we saw in
     section<SPACE/><REF NAME="sec:data-directed"/>, although here we are using
     it in conjunction with the ability to modify local variables.
+    </EN>
+    <JA>
+    <SCHEMEINLINE>make_account</SCHEMEINLINE> を呼び出すたびに、ローカル状態変数 <SCHEMEINLINE>balance</SCHEMEINLINE> を持つ環境が作られます。この環境の中で、<SCHEMEINLINE>make_account</SCHEMEINLINE> は <SCHEMEINLINE>balance</SCHEMEINLINE> にアクセスする
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>deposit</SCHEMEINLINE> と <SCHEMEINLINE>withdraw</SCHEMEINLINE>、および<QUOTE>メッセージ</QUOTE>を入力として受け取り、2つのローカル
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>のいずれかを返す追加の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>dispatch</SCHEMEINLINE> を定義します。<SCHEMEINLINE>dispatch</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>自体が、銀行口座オブジェクトを表す値として返されます。これはまさに<REF NAME="sec:data-directed"/>節で見た
+    <INDEX>message passing<SUBINDEX>in bank account</SUBINDEX></INDEX>
+    <EM>メッセージパッシング</EM>スタイルのプログラミングですが、ここではローカル変数を変更する機能と組み合わせて使っています。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>Make-account</SCHEMEINLINE>
@@ -976,6 +1440,19 @@ acc("withdraw")(50);
       </JAVASCRIPT>
     </SPLITINLINE>
     can be used as follows:
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>Make-account</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	関数 <JAVASCRIPTINLINE>make_account</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は次のように使えます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <NAME>make_account_example</NAME>
       <REQUIRES>make_account</REQUIRES>
@@ -1054,6 +1531,8 @@ acc("withdraw")(60);
 30
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     <SHORT_PAGE lines="4"/>Each call to <SCHEMEINLINE>acc</SCHEMEINLINE> returns the locally defined
     <SCHEMEINLINE>deposit</SCHEMEINLINE> or <SCHEMEINLINE>withdraw</SCHEMEINLINE>
     <SPLITINLINE>
@@ -1072,6 +1551,23 @@ acc("withdraw")(60);
 	call to <JAVASCRIPTINLINE>make_account</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SHORT_PAGE lines="4"/><SCHEMEINLINE>acc</SCHEMEINLINE> を呼び出すたびに、ローカルに定義された <SCHEMEINLINE>deposit</SCHEMEINLINE> または <SCHEMEINLINE>withdraw</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が返され、それが指定された <SCHEMEINLINE>amount</SCHEMEINLINE> に適用されます。
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>make-withdraw</SCHEMEINLINE> の場合と同様に、<SCHEMEINLINE>make-account</SCHEMEINLINE> を
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE> の場合と同様に、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <REQUIRES>make_account</REQUIRES>
       <SCHEME>
@@ -1081,13 +1577,22 @@ acc("withdraw")(60);
 const acc2 = make_account(100);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     will produce a completely separate account object, which maintains its
     own local <SCHEMEINLINE>balance</SCHEMEINLINE>.
+    </EN>
+    <JA>
+    のように <SCHEMEINLINE>make_account</SCHEMEINLINE> をもう一度呼び出すと、独自のローカルな <SCHEMEINLINE>balance</SCHEMEINLINE> を保持する、完全に別の口座オブジェクトが生成されます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
     <LABEL NAME="ex:make-accumulator"/>
-    An 
+    <BILINGUAL>
+    <EN>
+    An
     <INDEX>accumulator</INDEX>
     <EM>accumulator</EM> is a
     <SPLITINLINE>
@@ -1101,20 +1606,47 @@ const acc2 = make_account(100);
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX><USE>make_accumulator</USE></INDEX> 
+    <INDEX><USE>make_accumulator</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-accumulator</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_accumulator</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
     that generates accumulators, each maintaining an independent sum.  The
-    input to 
+    input to
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-accumulator</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_accumulator</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
     should specify the initial value of the sum; for example
+    </EN>
+    <JA>
+    <INDEX>accumulator</INDEX>
+    <EM>アキュムレータ</EM>とは、単一の数値引数で繰り返し呼び出され、引数を合計に累積する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>です。呼び出されるたびに、現在の累積合計を返します。それぞれ独立した合計を保持するアキュムレータを生成する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>make_accumulator</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-accumulator</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_accumulator</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を書いてください。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-accumulator</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_accumulator</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    への入力は合計の初期値を指定します。例えば、
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <NAME>make_accumulator_example</NAME>
       <SCHEME>
@@ -1197,6 +1729,8 @@ function make_accumulator(current) {
 
   <EXERCISE>
     <LABEL NAME="ex:make-monitored"/>
+    <BILINGUAL>
+    <EN>
     In software-testing applications, it is useful to be able to count the
     number of times a given
     <SPLITINLINE>
@@ -1208,7 +1742,7 @@ function make_accumulator(current) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX><USE>make_monitored</USE></INDEX> 
+    <INDEX><USE>make_monitored</USE></INDEX>
     <INDEX>monitored <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE></INDEX>
     <INDEX><FUNCTION/><SUBINDEX>monitored</SUBINDEX></INDEX>
     <SPLITINLINE>
@@ -1222,7 +1756,7 @@ function make_accumulator(current) {
       <JAVASCRIPT>function,</JAVASCRIPT>
     </SPLITINLINE>
     <SCHEMEINLINE>f</SCHEMEINLINE>, that itself takes one input.  The result
-    returned by 
+    returned by
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-monitored</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_monitored</JAVASCRIPTINLINE>
@@ -1243,7 +1777,7 @@ function make_accumulator(current) {
       </JAVASCRIPT>
     </SPLITINLINE>
     then <SCHEMEINLINE>mf</SCHEMEINLINE> returns the value of the counter.  If
-    the input is the 
+    the input is the
     <SPLITINLINE>
       <SCHEME>special symbol <SCHEMEINLINE>reset-count</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT>string <JAVASCRIPTINLINE>"reset count"</JAVASCRIPTINLINE>,
@@ -1258,6 +1792,60 @@ function make_accumulator(current) {
       <SCHEME>procedure:</SCHEME>
       <JAVASCRIPT>function:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    ソフトウェアテストの場面では、計算の過程で特定の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が何回呼び出されたかを数えられると便利です。入力として1つの引数を取る
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>f</SCHEMEINLINE> を受け取る
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>make_monitored</USE></INDEX>
+    <INDEX>monitored <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE></INDEX>
+    <INDEX><FUNCTION/><SUBINDEX>monitored</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-monitored</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_monitored</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を書いてください。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-monitored</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_monitored</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    が返す結果は、第3の
+    <SPLITINLINE>
+      <SCHEME>手続き、</SCHEME>
+      <JAVASCRIPT>関数、</JAVASCRIPT>
+    </SPLITINLINE>たとえば <SCHEMEINLINE>mf</SCHEMEINLINE> であり、内部カウンタを保持して自身が呼び出された回数を追跡します。<SCHEMEINLINE>mf</SCHEMEINLINE> への入力が
+    <SPLITINLINE>
+      <SCHEME>特殊シンボル <SCHEMEINLINE>how-many-calls</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>文字列 <JAVASCRIPTINLINE>"how many calls"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の場合、<SCHEMEINLINE>mf</SCHEMEINLINE> はカウンタの値を返します。入力が
+    <SPLITINLINE>
+      <SCHEME>特殊シンボル <SCHEMEINLINE>reset-count</SCHEMEINLINE> の場合、</SCHEME>
+      <JAVASCRIPT>文字列 <JAVASCRIPTINLINE>"reset count"</JAVASCRIPTINLINE> の場合、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>mf</SCHEMEINLINE> はカウンタをゼロにリセットします。それ以外の入力に対しては、<SCHEMEINLINE>mf</SCHEMEINLINE> はその入力で <SCHEMEINLINE>f</SCHEMEINLINE> を呼び出した結果を返し、カウンタを1つ増やします。例えば、<SCHEMEINLINE>sqrt</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の監視付きバージョンを作ることができます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <NAME>make_monitored_example</NAME>
       <SCHEME>
@@ -1348,7 +1936,9 @@ function make_monitored(f) {
   <LONG_PAGE lines="3"/>
   <EXERCISE>
     <LABEL NAME="ex:password-protection"/>
-    Modify the 
+    <BILINGUAL>
+    <EN>
+    Modify the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-account</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_account</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -1360,7 +1950,7 @@ function make_monitored(f) {
     so that it creates
     <INDEX>bank account<SUBINDEX>password-protected</SUBINDEX></INDEX>
     <INDEX>password-protected bank account</INDEX>
-    password-protected accounts.  That is, 
+    password-protected accounts.  That is,
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-account</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_account</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -1371,6 +1961,30 @@ function make_monitored(f) {
       <JAVASCRIPT>string</JAVASCRIPT>
     </SPLITINLINE>
     as an additional argument, as in
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-account</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_account</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を、
+    <INDEX>bank account<SUBINDEX>password-protected</SUBINDEX></INDEX>
+    <INDEX>password-protected bank account</INDEX>
+    パスワード保護された口座を作るように変更してください。つまり、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-account</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_account</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が追加の引数として
+    <SPLITINLINE>
+      <SCHEME>シンボル</SCHEME>
+      <JAVASCRIPT>文字列</JAVASCRIPT>
+    </SPLITINLINE>を受け取るようにします。例えば、
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <NAME>make_account_exercise</NAME>
       <SCHEME>
@@ -1384,9 +1998,16 @@ const acc = make_account(100, "secret password");
 const acc = make_account(100, "secret password");
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The resulting account object should process a request only if it is
     accompanied by the password with which the account was created, and
     should otherwise return a complaint:
+    </EN>
+    <JA>
+    生成された口座オブジェクトは、口座作成時に指定したパスワードが伴っている場合にのみリクエストを処理し、それ以外の場合はエラーメッセージを返すようにします：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <REQUIRES>make_account_exercise</REQUIRES>
       <NAME>make_account_exercise_example1</NAME>
@@ -1461,7 +2082,9 @@ a("withdraw", "ben")(40); //incorrect password
 
   <EXERCISE>
     <LABEL NAME="ex:3_4"/>
-    Modify the 
+    <BILINGUAL>
+    <EN>
+    Modify the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-account</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_account</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -1482,6 +2105,29 @@ a("withdraw", "ben")(40); //incorrect password
       <JAVASCRIPT><JAVASCRIPTINLINE>call_the_cops</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    練習問題<SPACE/><REF NAME="ex:password-protection"/>の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-account</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_account</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を変更して、もう1つのローカル状態変数を追加し、間違ったパスワードで7回連続してアクセスされた場合に
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>call-the-cops</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>call_the_cops</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を呼び出すようにしてください。
+    </JA>
+    </BILINGUAL>
     <SOLUTION>
       <SNIPPET>
 	<NAME>mka</NAME>

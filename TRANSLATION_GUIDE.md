@@ -345,6 +345,36 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | radicand | 被開平数 | |
 | successive approximation | 逐次近似 | |
 
+### 代入・状態・モジュール性（Chapter 3）
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| assignment | 代入 | |
+| assignment expression | 代入式 | |
+| assignment operation | 代入演算 | |
+| local state | ローカル状態 | |
+| local state variable | ローカル状態変数 | |
+| variable declaration | 変数宣言 | `let` による |
+| immutable | イミュータブル | |
+| encapsulation / encapsulate | カプセル化 | |
+| hiding principle | 隠蔽の原則 | |
+| functional programming | 関数型プログラミング | |
+| imperative programming | 命令型プログラミング | |
+| referential transparency | 参照透過性 | |
+| referentially transparent | 参照透過的 | |
+| sameness | 同一性 | |
+| aliasing | エイリアシング | |
+| side effect | 副作用 | |
+| side-effect bug | 副作用バグ | |
+| Monte Carlo simulation | モンテカルロシミュレーション | |
+| Monte Carlo method | モンテカルロ法 | |
+| Monte Carlo integration | モンテカルロ積分 | |
+| random-number generator | 乱数生成器 | |
+| pseudo-random | 擬似ランダム | |
+| accumulator | アキュムレータ | |
+| sequence of statements | 文のシーケンス | |
+| joint account | 共同口座 | |
+
 ### その他
 
 | 英語 | 日本語 | 備考 |

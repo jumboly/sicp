@@ -1,12 +1,17 @@
 <SUBSECTION>
   <NAME>
-    The Benefits of Introducing Assignment
+    <BILINGUAL>
+      <EN>The Benefits of Introducing Assignment</EN>
+      <JA>代入を導入する利点</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:benefits-of-assignment"/>
   <INDEX>assignment<SUBINDEX>benefits of<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     As we shall see, introducing assignment into our programming language
     leads us into a thicket of difficult conceptual issues.  Nevertheless,
     viewing systems as
@@ -22,9 +27,23 @@
     </SPLITINLINE>
     <SCHEMEINLINE>rand</SCHEMEINLINE> that, whenever
     it is called, returns an integer chosen at random.
+    </EN>
+    <JA>
+    これから見ていくように、プログラミング言語に代入を導入すると、概念的に難しい問題が山ほど出てきます。それにもかかわらず、システムをローカル状態を持つオブジェクトの集まりとして捉えることは、
+    <INDEX>object(s)<SUBINDEX>benefits of modeling with</SUBINDEX></INDEX>
+    <INDEX>modularity<SUBINDEX>through modeling with objects</SUBINDEX></INDEX>
+    モジュール性のある設計を維持するための強力な手法です。簡単な例として、呼び出されるたびにランダムに選ばれた整数を返す<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>rand</SCHEMEINLINE> の設計を考えてみましょう。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     It is not at all clear what is meant by <QUOTE>chosen at random.</QUOTE>
     What we presumably want is for successive calls to
     <INDEX>random-number generator</INDEX>
@@ -38,9 +57,16 @@
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     that has the property that if we start with a given number
     <LATEXINLINE>$x_{1}$</LATEXINLINE> and form
+    </EN>
+    <JA>
+    <QUOTE>ランダムに選ばれた</QUOTE>とは何を意味するのか、はっきりしません。おそらく私たちが望んでいるのは、
+    <INDEX>random-number generator</INDEX>
+    <SCHEMEINLINE>rand</SCHEMEINLINE> を連続して呼び出すと、一様分布の統計的性質を持つ数列が生成されることです。適切な数列を生成する方法についてはここでは議論しません。むしろ、ある数 <LATEXINLINE>$x_{1}$</LATEXINLINE> から始めて次のように計算すると
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
 	<SNIPPET EVAL="no" LATEX="yes">
@@ -59,13 +85,27 @@ $x_3$ = rand_update($x_2$);
 	</SNIPPET>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     then the sequence of values
     <LATEXINLINE>$x_1, x_2, x_3, \ldots$</LATEXINLINE>, will have the desired
-    statistical properties.<FOOTNOTE>One common way to implement
+    statistical properties.</EN>
+    <JA>
+    値の列 <LATEXINLINE>$x_1, x_2, x_3, \ldots$</LATEXINLINE> が望みの統計的性質を持つような<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>があると仮定しましょう。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>One common way to implement
     <SPLITINLINE><SCHEME>
       <SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     is to use the rule that <LATEXINLINE>$x$</LATEXINLINE> is updated to
     <LATEXINLINE>$ax+b$</LATEXINLINE> modulo <LATEXINLINE>$m$</LATEXINLINE>,
     where <LATEXINLINE>$a$</LATEXINLINE>, <LATEXINLINE>$b$</LATEXINLINE>, and
@@ -74,11 +114,11 @@ $x_3$ = rand_update($x_2$);
     <INDEX>Knuth, Donald E.</INDEX>
     <CITATION>Knuth 1997b</CITATION> includes an extensive
     discussion of techniques for generating sequences of random numbers and
-    establishing their statistical properties.  Notice that the 
+    establishing their statistical properties.  Notice that the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
@@ -88,15 +128,15 @@ $x_3$ = rand_update($x_2$);
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     certainly is not <QUOTE>random,</QUOTE> if by <QUOTE>random</QUOTE> we
     insist that each number in the sequence is unrelated to the preceding
-    number.  The relation between <QUOTE>real randomness</QUOTE> and so-called 
+    number.  The relation between <QUOTE>real randomness</QUOTE> and so-called
     <INDEX>pseudo-random sequence</INDEX>
     <EM>pseudo-random</EM> sequences, which are produced by well-determined
       computations and yet have suitable statistical properties, is a
       complex question involving difficult issues in mathematics and
-      philosophy.  
+      philosophy.
       <INDEX>Kolmogorov, A. N.</INDEX>
       Kolmogorov,
       <INDEX>Solomonoff, Ray</INDEX>
@@ -104,29 +144,69 @@ $x_3$ = rand_update($x_2$);
       <INDEX>Chaitin, Gregory</INDEX>
       Chaitin have made great
       progress in clarifying these issues; a discussion can be found in
-      <CITATION>Chaitin 1975</CITATION>.</FOOTNOTE>
+      <CITATION>Chaitin 1975</CITATION>.</EN>
+    <JA><SPLITINLINE><SCHEME>
+      <SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>を実装する一般的な方法の一つは、<LATEXINLINE>$x$</LATEXINLINE> を <LATEXINLINE>$ax+b$</LATEXINLINE> modulo <LATEXINLINE>$m$</LATEXINLINE> に更新する規則を使うことです。ここで <LATEXINLINE>$a$</LATEXINLINE>、<LATEXINLINE>$b$</LATEXINLINE>、<LATEXINLINE>$m$</LATEXINLINE> は適切に選ばれた整数です。
+    <INDEX>Knuth, Donald E.</INDEX>
+    <CITATION>Knuth 1997b</CITATION> の第<SPACE/><REF NAME="chap:state"></REF>章には、乱数列の生成技法とその統計的性質の確立に関する詳細な議論があります。<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE><SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は数学的な関数を計算していることに注目してください。同じ入力を2回与えれば、同じ出力を生成します。したがって、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>が生成する数列は、列の各数値が前の数値と無関係であるという意味での<QUOTE>ランダム</QUOTE>では決してありません。<QUOTE>真のランダム性</QUOTE>と、確定的な計算によって生成されるにもかかわらず適切な統計的性質を持つ、いわゆる
+    <INDEX>pseudo-random sequence</INDEX>
+    <EM>擬似ランダム</EM>列との関係は、数学と哲学の難しい問題を含む複雑な課題です。
+      <INDEX>Kolmogorov, A. N.</INDEX>
+      Kolmogorov、
+      <INDEX>Solomonoff, Ray</INDEX>
+      Solomonoff、
+      <INDEX>Chaitin, Gregory</INDEX>
+      Chaitin がこれらの問題の解明に大きな進歩をもたらしました。<CITATION>Chaitin 1975</CITATION> に議論があります。</JA>
+    </BILINGUAL></FOOTNOTE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can implement <SCHEMEINLINE>rand</SCHEMEINLINE> as a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     with a local state variable <SCHEMEINLINE>x</SCHEMEINLINE> that is
-    initialized to some fixed value 
+    initialized to some fixed value
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>random-init</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>random_init</JAVASCRIPTINLINE>.</JAVASCRIPT>
     </SPLITINLINE>
-    Each call to <SCHEMEINLINE>rand</SCHEMEINLINE> computes 
+    Each call to <SCHEMEINLINE>rand</SCHEMEINLINE> computes
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     of the current value of <SCHEMEINLINE>x</SCHEMEINLINE>, returns this as the
     random number, and also stores this as the new value of
     <SCHEMEINLINE>x</SCHEMEINLINE>.
+    </EN>
+    <JA>
+    <SCHEMEINLINE>rand</SCHEMEINLINE> は、ある固定値 <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>random-init</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>random_init</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> に初期化されたローカル状態変数 <SCHEMEINLINE>x</SCHEMEINLINE> を持つ<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>として実装できます。<SCHEMEINLINE>rand</SCHEMEINLINE> を呼び出すたびに、<SCHEMEINLINE>x</SCHEMEINLINE> の現在の値に対して <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> を計算し、その結果を乱数として返すとともに、<SCHEMEINLINE>x</SCHEMEINLINE> の新しい値として格納します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>rand_update</NAME>
       <JAVASCRIPT>
@@ -134,10 +214,10 @@ $x_3$ = rand_update($x_2$);
 // from 0 (inclusive) to 200560490131 (a large prime)
 // from a value x by multiplying it with a constant a,
 // adding a constant b, and then taking the remainder
-// of dividing it by the large prime. We used it here 
-// for illustration only, and do not claim any 
+// of dividing it by the large prime. We used it here
+// for illustration only, and do not claim any
 // statistical properties.
-const m = 200560490131; 
+const m = 200560490131;
 const a = 1103515245;
 const b = 12345;
 
@@ -147,7 +227,7 @@ function rand_update(x) {
       </JAVASCRIPT>
     </SNIPPET>
     <SNIPPET>
-      <INDEX><DECLARATION>rand</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>rand</DECLARATION></INDEX>
       <NAME>rand_definition</NAME>
       <REQUIRES>rand_update</REQUIRES>
       <REQUIRES>random_init</REQUIRES>
@@ -178,7 +258,7 @@ const rand = make_rand();
 const random_init = 123456789;
       </JAVASCRIPT>
     </SNIPPET>
-    
+
     <SNIPPET HIDE="yes">
       <NAME>rand_example</NAME>
       <JAVASCRIPT>
@@ -195,40 +275,73 @@ rand();
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Of course, we could generate the same sequence of random numbers
-    without using assignment by simply calling 
+    without using assignment by simply calling
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     directly. However, this would mean that any part of our program that used
     random numbers would have to explicitly remember the current value of
-    <SCHEMEINLINE>x</SCHEMEINLINE> to be passed as an argument to 
+    <SCHEMEINLINE>x</SCHEMEINLINE> to be passed as an argument to
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE>.</JAVASCRIPT>
     </SPLITINLINE>
     To realize what an annoyance this would be, consider using random numbers
-    to implement a technique called 
+    to implement a technique called
     <INDEX>Monte Carlo simulation</INDEX>
     <INDEX>random-number generator<SUBINDEX>in Monte Carlo simulation</SUBINDEX></INDEX>
     <EM>Monte Carlo simulation</EM>.
+    </EN>
+    <JA>
+    もちろん、代入を使わなくても、単に <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> を直接呼び出すことで同じ乱数列を生成できます。しかし、その場合、乱数を使うプログラムのあらゆる部分が、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> に引数として渡すための <SCHEMEINLINE>x</SCHEMEINLINE> の現在の値を明示的に覚えておかなければなりません。これがどれほど厄介かを理解するために、乱数を使って
+    <INDEX>Monte Carlo simulation</INDEX>
+    <INDEX>random-number generator<SUBINDEX>in Monte Carlo simulation</SUBINDEX></INDEX>
+    <EM>モンテカルロシミュレーション</EM>と呼ばれる手法を実装することを考えてみましょう。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The Monte Carlo method consists of choosing sample experiments at random
     from a large set and then making deductions on the basis of the
     probabilities estimated from tabulating the results of those experiments.
-    For example, we can approximate 
+    For example, we can approximate
     <INDEX><ORDER>pi</ORDER><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<SUBINDEX>Dirichlet estimate for</SUBINDEX></INDEX>
     <LATEXINLINE>$\pi$</LATEXINLINE> using the fact that
     <LATEXINLINE>$6/\pi^2$</LATEXINLINE> is the probability that two integers
     chosen at random will have no factors in common; that is, that their
-    greatest common divisor will be 1.<FOOTNOTE>This theorem is due to G. 
+    greatest common divisor will be 1.</EN>
+    <JA>
+    モンテカルロ法は、大きな集合からランダムにサンプル実験を選び、その実験結果を集計して推定した確率に基づいて推論を行うものです。例えば、ランダムに選んだ2つの整数が共通の因数を持たない、つまり最大公約数（GCD）が1である確率が <LATEXINLINE>$6/\pi^2$</LATEXINLINE> であるという事実を利用して、
+    <INDEX><ORDER>pi</ORDER><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<SUBINDEX>Dirichlet estimate for</SUBINDEX></INDEX>
+    <LATEXINLINE>$\pi$</LATEXINLINE> を近似できます。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>This theorem is due to G.
     <INDEX>Dirichlet, Peter Gustav Lejeune</INDEX>
     Lejeune Dirichlet.  See section 4.5.2 of
     <INDEX>Knuth, Donald E.</INDEX>
-    <CITATION>Knuth 1997b</CITATION> for a discussion and a proof.</FOOTNOTE>
+    <CITATION>Knuth 1997b</CITATION> for a discussion and a proof.</EN>
+    <JA>この定理は G.
+    <INDEX>Dirichlet, Peter Gustav Lejeune</INDEX>
+    Lejeune Dirichlet によるものです。議論と証明については
+    <INDEX>Knuth, Donald E.</INDEX>
+    <CITATION>Knuth 1997b</CITATION> のセクション 4.5.2 を参照してください。</JA>
+    </BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     To obtain the approximation to <LATEXINLINE>$\pi$</LATEXINLINE>, we perform
     a large number of experiments. In each experiment we choose two integers at
     random and perform a test
@@ -236,9 +349,18 @@ rand();
     to see if their GCD is 1.  The fraction of times that the test is passed
     gives us our estimate of <LATEXINLINE>$6/\pi^2$</LATEXINLINE>, and from this
     we obtain our approximation to <LATEXINLINE>$\pi$</LATEXINLINE>.
+    </EN>
+    <JA>
+    <LATEXINLINE>$\pi$</LATEXINLINE> の近似値を得るには、多数の実験を行います。各実験では、2つの整数をランダムに選び、その GCD が 1 かどうかをテスト
+    <INDEX>greatest common divisor<SUBINDEX><ORDER>used-estimate</ORDER>used to estimate <LATEXINLINE>$\pi$</LATEXINLINE></SUBINDEX></INDEX>
+    します。テストに合格した割合が <LATEXINLINE>$6/\pi^2$</LATEXINLINE> の推定値となり、そこから <LATEXINLINE>$\pi$</LATEXINLINE> の近似値が得られます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The heart of our program is a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -267,13 +389,36 @@ rand();
     runs the experiment for the designated number of trials and returns a
     number telling the fraction of the trials in which the experiment was
     found to be true.
+    </EN>
+    <JA>
+    プログラムの中心は<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>monte-carlo</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>monte_carlo</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>で、実験を試行する回数と、引数なしで実行するたびに true か false を返す<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>として表現された実験を引数に取ります。<SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>Monte-carlo</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	関数
+	<SCHEMEINLINE>monte_carlo</SCHEMEINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>は、指定された回数だけ実験を実行し、実験が true になった試行の割合を返します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
     <SNIPPET>
-      <INDEX><DECLARATION>estimate_pi</DECLARATION></INDEX> 
-      <INDEX><DECLARATION>dirichlet_test</DECLARATION></INDEX> 
-      <INDEX><DECLARATION>monte_carlo</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>estimate_pi</DECLARATION></INDEX>
+      <INDEX><DECLARATION>dirichlet_test</DECLARATION></INDEX>
+      <INDEX><DECLARATION>monte_carlo</DECLARATION></INDEX>
       <NAME>monte_carlo</NAME>
       <REQUIRES>rand_definition</REQUIRES>
       <REQUIRES>gcd_definition</REQUIRES>
@@ -324,15 +469,25 @@ estimate_pi(10000);
   </TEXT>
 
   <TEXT>
-    Now let us try the same computation using 
+    <BILINGUAL>
+    <EN>
+    Now let us try the same computation using
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     directly rather than <SCHEMEINLINE>rand</SCHEMEINLINE>, the way we would be
     forced to proceed if we did not use assignment to model local state:
+    </EN>
+    <JA>
+    次に、代入を使ってローカル状態をモデル化しなかった場合にそうせざるを得ないように、<SCHEMEINLINE>rand</SCHEMEINLINE> の代わりに <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> を直接使って同じ計算を試みてみましょう。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
-      <INDEX><DECLARATION>estimate_pi</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>estimate_pi</DECLARATION></INDEX>
       <NAME>estimate_pi_alternative</NAME>
       <REQUIRES>rand_definition</REQUIRES>
       <REQUIRES>gcd_definition</REQUIRES>
@@ -346,7 +501,7 @@ estimate_pi(10000);
   (define (iter trials-remaining trials-passed x)
     (let ((x1 (rand-update x)))
       (let ((x2 (rand-update x1)))
-        (cond ((= trials-remaining 0)   
+        (cond ((= trials-remaining 0)
                (/ trials-passed trials))
               ((= (gcd x1 x2) 1)
                (iter (- trials-remaining 1)
@@ -373,20 +528,22 @@ function random_gcd_test(trials, initial_x) {
                : iter(trials_remaining - 1, trials_passed, x2);
     }
     return iter(trials, 0, initial_x);
-}   
+}
       </JAVASCRIPT>
     </SNIPPET>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     While the program is still simple, it betrays some painful breaches of
     modularity.  In our first version of the program, using
     <SCHEMEINLINE>rand</SCHEMEINLINE>, we can express the Monte Carlo method
-    directly as a general 
+    directly as a general
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>monte-carlo</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>monte_carlo</JAVASCRIPTINLINE></JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
@@ -398,16 +555,16 @@ function random_gcd_test(trials, initial_x) {
       <JAVASCRIPT>function.</JAVASCRIPT>
     </SPLITINLINE>
     In our second version of the program, with no local state for the
-    random-number generator, 
+    random-number generator,
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>random-gcd-test</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>random_gcd_test</JAVASCRIPTINLINE>
       </JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     must explicitly manipulate the random numbers
     <SCHEMEINLINE>x1</SCHEMEINLINE> and <SCHEMEINLINE>x2</SCHEMEINLINE> and
     recycle <SCHEMEINLINE>x2</SCHEMEINLINE> through the iterative loop as the
-    new input to 
+    new input to
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE>.</JAVASCRIPT>
@@ -435,9 +592,42 @@ function random_gcd_test(trials, initial_x) {
     <JAVASCRIPT>function,</JAVASCRIPT></SPLITINLINE>
     so that the details of random-number generation remain independent of the
     rest of the program.
+    </EN>
+    <JA>
+    プログラムはまだ単純ですが、モジュール性の痛々しい破綻がいくつか見られます。<SCHEMEINLINE>rand</SCHEMEINLINE> を使ったプログラムの最初のバージョンでは、モンテカルロ法を、任意の <SCHEMEINLINE>experiment</SCHEMEINLINE> <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を引数に取る汎用的な <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>monte-carlo</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>monte_carlo</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>として直接表現できます。一方、乱数生成器にローカル状態を持たないプログラムの2番目のバージョンでは、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>random-gcd-test</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>random_gcd_test</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE> が乱数 <SCHEMEINLINE>x1</SCHEMEINLINE> と <SCHEMEINLINE>x2</SCHEMEINLINE> を明示的に操作し、<SCHEMEINLINE>x2</SCHEMEINLINE> を反復ループを通じて <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> への新しい入力として再利用しなければなりません。この乱数の明示的な扱いは、テスト結果を蓄積する構造と、私たちの特定の実験が2つの乱数を使うという事実を絡み合わせてしまいます。他のモンテカルロ実験では1つや3つの乱数を使うかもしれないにもかかわらず、です。トップレベルの<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>estimate-pi</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>estimate_pi</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>でさえ、初期乱数を供給することに気を配らなければなりません。乱数生成器の内部がプログラムの他の部分に漏れ出しているため、モンテカルロのアイデアを他のタスクに適用できるように分離することが困難になります。プログラムの最初のバージョンでは、代入が乱数生成器の状態を <SCHEMEINLINE>rand</SCHEMEINLINE> <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の中にカプセル化するので、乱数生成の詳細はプログラムの残りの部分から独立したままになります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The general phenomenon illustrated by the Monte Carlo example is this: From
     the point of view of one part of a complex process, the other parts appear
     to change with time.  They have hidden time-varying local state.  If we wish
@@ -446,19 +636,33 @@ function random_gcd_test(trials, initial_x) {
     generators) whose behavior changes with time.  We model state with local
     state variables, and we model the changes of state with assignments to those
     variables.
+    </EN>
+    <JA>
+    モンテカルロの例が示す一般的な現象はこうです。複雑なプロセスのある部分から見ると、他の部分は時間とともに変化しているように見えます。それらは隠れた時間変化するローカル状態を持っています。この分解を反映した構造のコンピュータプログラムを書きたければ、時間とともにふるまいが変化する計算オブジェクト（銀行口座や乱数生成器など）を作ります。状態はローカル状態変数でモデル化し、状態の変化はそれらの変数への代入でモデル化します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     It is tempting to conclude this discussion by saying that, by introducing
     assignment and the technique of hiding state in local variables, we are able
     to structure systems in a more modular fashion than if all state had to be
     manipulated explicitly, by passing additional parameters.  Unfortunately,
     as we shall see, the story is not so simple.
+    </EN>
+    <JA>
+    代入とローカル変数に状態を隠す手法を導入することで、すべての状態を追加のパラメータを渡して明示的に操作する場合よりも、よりモジュール性のある形でシステムを構造化できる、と言ってこの議論を締めくくりたいところです。残念ながら、これから見ていくように、話はそう簡単ではありません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SHORT_PAGE lines="2"/>
   <EXERCISE>
     <LABEL NAME="ex:monte-carlo-integration"/>
+    <BILINGUAL>
+    <EN>
     <EM>Monte Carlo integration</EM>
     <INDEX>Monte Carlo integration</INDEX>
     <INDEX><ORDER>pi</ORDER><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<SUBINDEX>approximation with Monte Carlo integration</SUBINDEX></INDEX>
@@ -491,7 +695,7 @@ function random_gcd_test(trials, initial_x) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX><USE>estimate_integral</USE></INDEX> 
+    <INDEX><USE>estimate_integral</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>estimate-integral</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>estimate_integral</JAVASCRIPTINLINE>
@@ -506,7 +710,7 @@ function random_gcd_test(trials, initial_x) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    should use the same 
+    should use the same
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>monte-carlo</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>monte_carlo</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -515,7 +719,7 @@ function random_gcd_test(trials, initial_x) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    that was used above to estimate <LATEXINLINE>$\pi$</LATEXINLINE>.  Use your 
+    that was used above to estimate <LATEXINLINE>$\pi$</LATEXINLINE>.  Use your
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>estimate-integral</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>estimate_integral</JAVASCRIPTINLINE>
@@ -529,7 +733,7 @@ function random_gcd_test(trials, initial_x) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    that returns a number chosen at random from a given range.  The following 
+    that returns a number chosen at random from a given range.  The following
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>random-in-range</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>random_in_range</JAVASCRIPTINLINE>
@@ -551,7 +755,7 @@ function random_gcd_test(trials, initial_x) {
       </JAVASCRIPT>
     </SPLITINLINE>
     used in section<SPACE/><REF NAME="sec:primality"/>, which returns a
-    nonnegative number less 
+    nonnegative number less
     <SPLITINLINE>
       <SCHEME>
 	than its input.<FOOTNOTE>
@@ -562,9 +766,9 @@ function random_gcd_test(trials, initial_x) {
 	  <SCHEME>procedure.</SCHEME>
 	  <JAVASCRIPT>function.</JAVASCRIPT>
 	</SPLITINLINE>
-	If 
+	If
 	<INDEX><USE>random</USE> (primitive function) MIT Scheme</INDEX>
-	<INDEX>primitive procedures (those marked <EM>ns</EM> are not in the IEEE Scheme standard)<SUBINDEX>random</SUBINDEX></INDEX>	
+	<INDEX>primitive procedures (those marked <EM>ns</EM> are not in the IEEE Scheme standard)<SUBINDEX>random</SUBINDEX></INDEX>
 	<SCHEMEINLINE>random</SCHEMEINLINE> is given an exact integer (as in
 	section<SPACE/><REF NAME="sec:primality"/>) it returns an exact integer,
 	but if it is given a decimal value (as in this exercise) it returns a
@@ -574,8 +778,86 @@ function random_gcd_test(trials, initial_x) {
 	than<SPACE/>1.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <EM>モンテカルロ積分</EM>は、
+    <INDEX>Monte Carlo integration</INDEX>
+    <INDEX><ORDER>pi</ORDER><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<SUBINDEX>approximation with Monte Carlo integration</SUBINDEX></INDEX>
+    <INDEX>definite integral<SUBINDEX>estimated with Monte Carlo simulation</SUBINDEX></INDEX>
+    モンテカルロシミュレーションを用いて定積分を推定する方法です。述語 <LATEXINLINE>$P(x, y)$</LATEXINLINE> で記述される空間領域の面積を計算することを考えましょう。この述語は、領域内の点 <LATEXINLINE>$(x, y)$</LATEXINLINE> に対しては true、領域外の点に対しては false を返します。例えば、<LATEXINLINE>$(5, 7)$</LATEXINLINE> を中心とする半径 <LATEXINLINE>$3$</LATEXINLINE> の円に含まれる領域は、<LATEXINLINE>$(x-5)^2 + (y-7)^2\leq 3^2$</LATEXINLINE> かどうかをテストする述語で記述されます。このような述語で記述される領域の面積を推定するには、まず領域を含む長方形を選びます。例えば、対角の頂点が <LATEXINLINE>$(2, 4)$</LATEXINLINE> と <LATEXINLINE>$(8, 10)$</LATEXINLINE> にある長方形は上記の円を含みます。求めたい積分は、長方形のうち領域内にある部分の面積です。積分を推定するには、長方形内の点 <LATEXINLINE>$(x, y)$</LATEXINLINE> をランダムに選び、各点について <LATEXINLINE>$P(x, y)$</LATEXINLINE> をテストして、その点が領域内にあるかどうかを判定します。多数の点でこれを試みれば、領域内に落ちる点の割合が、長方形のうち領域内にある比率の推定値を与えるはずです。したがって、この割合に長方形全体の面積を掛ければ、積分の推定値が得られます。
+    <P/>
+    モンテカルロ積分を<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>estimate_integral</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>estimate-integral</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>estimate_integral</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    として実装してください。引数として、述語 <SCHEMEINLINE>P</SCHEMEINLINE>、長方形の上下限 <SCHEMEINLINE>x1</SCHEMEINLINE>、<SCHEMEINLINE>x2</SCHEMEINLINE>、<SCHEMEINLINE>y1</SCHEMEINLINE>、<SCHEMEINLINE>y2</SCHEMEINLINE>、および推定を行うための試行回数を取ります。この<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、上記で <LATEXINLINE>$\pi$</LATEXINLINE> を推定するのに使ったのと同じ <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>monte-carlo</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>monte_carlo</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を使うべきです。<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>estimate-integral</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>estimate_integral</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を使って、単位円の面積を測定することで <LATEXINLINE>$\pi$</LATEXINLINE> の推定値を求めてください。
+    <P/>
+    指定された範囲からランダムに数を選ぶ<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>があると便利です。以下の <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>random-in-range</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>random_in_range</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE> <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、セクション<SPACE/><REF NAME="sec:primality"/>で使った <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>random</SCHEMEINLINE>
+	手続き
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>math_random</JAVASCRIPTINLINE>
+	関数
+      </JAVASCRIPT>
+    </SPLITINLINE>を使って実装しています。この関数は 0 以上
+    <SPLITINLINE>
+      <SCHEME>
+	入力未満の非負の数を返します。<FOOTNOTE>
+	MIT Scheme
+	<INDEX>MIT Scheme<SUBINDEX><ORDER>random</ORDER><SCHEMEINLINE>random</SCHEMEINLINE></SUBINDEX></INDEX>
+	provides such a
+	<SPLITINLINE>
+	  <SCHEME>procedure.</SCHEME>
+	  <JAVASCRIPT>function.</JAVASCRIPT>
+	</SPLITINLINE>
+	If
+	<INDEX><USE>random</USE> (primitive function) MIT Scheme</INDEX>
+	<INDEX>primitive procedures (those marked <EM>ns</EM> are not in the IEEE Scheme standard)<SUBINDEX>random</SUBINDEX></INDEX>
+	<SCHEMEINLINE>random</SCHEMEINLINE> is given an exact integer (as in
+	section<SPACE/><REF NAME="sec:primality"/>) it returns an exact integer,
+	but if it is given a decimal value (as in this exercise) it returns a
+	decimal value.</FOOTNOTE>
+      </SCHEME>
+      <JAVASCRIPT>
+	1 未満の非負の数を返します。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
     <SNIPPET POSTPADDING="no">
-      <INDEX><DECLARATION>random_in_range</DECLARATION><FRAGILE/></INDEX> 
+      <INDEX><DECLARATION>random_in_range</DECLARATION><FRAGILE/></INDEX>
       <NAME>random_in_range</NAME>
       <REQUIRES>random_definition</REQUIRES>
       <EXAMPLE>random_in_range_example</EXAMPLE>
@@ -630,6 +912,8 @@ function estimate_integral(pred, x1, x2, y1, y2, trials) {
 
   <EXERCISE>
     <LABEL NAME="ex:random-with-reset"/>
+    <BILINGUAL>
+    <EN>
     It is useful to be able to
     <INDEX>random-number generator<SUBINDEX>with reset</SUBINDEX></INDEX>
     <INDEX><USE>rand</USE><SUBINDEX>with reset</SUBINDEX></INDEX>
@@ -657,7 +941,7 @@ function estimate_integral(pred, x1, x2, y1, y2, trials) {
       <JAVASCRIPT><JAVASCRIPTINLINE>rand("generate")</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    produces a new random number; 
+    produces a new random number;
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>((rand 'reset)</SCHEMEINLINE>
@@ -670,6 +954,40 @@ function estimate_integral(pred, x1, x2, y1, y2, trials) {
     resets the internal state variable to the designated <META>new-value</META>. Thus, by resetting the
     state, one can generate repeatable sequences.  These are very handy to have
     when testing and debugging programs that use random numbers.
+    </EN>
+    <JA>
+    乱数生成器を
+    <INDEX>random-number generator<SUBINDEX>with reset</SUBINDEX></INDEX>
+    <INDEX><USE>rand</USE><SUBINDEX>with reset</SUBINDEX></INDEX>
+    リセットして、指定した値から始まる数列を生成できると便利です。新しい <SCHEMEINLINE>rand</SCHEMEINLINE> <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を設計してください。引数として<SPLITINLINE>
+      <SCHEME>
+	シンボル <SCHEMEINLINE>generate</SCHEMEINLINE> またはシンボル <SCHEMEINLINE>reset</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	文字列 <SCHEMEINLINE>"generate"</SCHEMEINLINE> または文字列 <SCHEMEINLINE>"reset"</SCHEMEINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>のいずれかを取り、次のように動作します。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(rand 'generate)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>rand("generate")</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は新しい乱数を生成します。
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>((rand 'reset)</SCHEMEINLINE>
+	<LATEXINLINE>$\langle \textit{new-value} \rangle$</LATEXINLINE>
+	<SCHEMEINLINE>)</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+      <JAVASCRIPTINLINE>rand("reset")(</JAVASCRIPTINLINE><META>new-value</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は内部の状態変数を指定された <META>new-value</META> にリセットします。このように状態をリセットすることで、再現可能な数列を生成できます。これは乱数を使うプログラムのテストやデバッグの際にとても便利です。
+    </JA>
+    </BILINGUAL>
     <SOLUTION>
       <SNIPPET>
 	<EXAMPLE>prng_example</EXAMPLE>
@@ -686,7 +1004,7 @@ function rand(symbol) {
         // symbol is "generate"
         state = (state * 1010) % 1101;
         return state;
-    } 
+    }
 }
 	</JAVASCRIPT>
       </SNIPPET>
@@ -732,4 +1050,4 @@ rand("generate");
   </EXERCISE>
   <INDEX>assignment<SUBINDEX>benefits of<CLOSE/></SUBINDEX></INDEX>
 </SUBSECTION>
-    
+

@@ -120,7 +120,12 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 2.5.1 Generic Arithmetic Operations
 - [x] Section 2.5.2 Combining Data of Different Types
 - [x] Section 2.5.3 Example: Symbolic Algebra
-- [ ] Chapter 3〜5
+- [x] Chapter 3 導入部
+- [x] Section 3.1 Assignment and Local State (導入部)
+- [x] Section 3.1.1 Local State Variables
+- [x] Section 3.1.2 The Benefits of Introducing Assignment
+- [x] Section 3.1.3 The Costs of Introducing Assignment
+- [ ] Chapter 3 (残り: 3.2〜3.5)〜5
 
 ## インライン実行
 

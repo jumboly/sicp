@@ -1,6 +1,9 @@
 <SUBSECTION> 
   <NAME>
-    The Costs of Introducing Assignment
+    <BILINGUAL>
+    <EN>The Costs of Introducing Assignment</EN>
+    <JA>代入を導入するコスト</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:costs-of-assignment"/>
@@ -8,6 +11,8 @@
 
   <LONG_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     As we have seen,
     <SPLITINLINE>
       <SCHEME>
@@ -29,9 +34,26 @@
     section<SPACE/><REF NAME="sec:substitution-model"/>.  Moreover, no simple
     model with <QUOTE>nice</QUOTE> mathematical properties can be an adequate
     framework for dealing with objects and assignment in programming languages.
+    </EN>
+    <JA>
+    これまで見てきたように、<SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>set!</SCHEMEINLINE> 操作
+      </SCHEME>
+      <JAVASCRIPT>
+	代入
+      </JAVASCRIPT>
+    </SPLITINLINE>を使うことで、局所状態を持つオブジェクトをモデル化できるようになります。しかし、この利点には代償があります。私たちのプログラミング言語は、<REF NAME="sec:substitution-model"/> 節で導入した<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>適用の置換モデルでは解釈できなくなります。さらに、<QUOTE>良い</QUOTE>数学的性質を持つ単純なモデルでは、プログラミング言語におけるオブジェクトと代入を扱うための適切な枠組みにはなりません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     So long as we do not use assignments, two evaluations of the same
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -47,9 +69,24 @@
     book, is accordingly known as
     <INDEX>functional programming</INDEX>
     <EM>functional programming</EM>.
+    </EN>
+    <JA>
+    代入を使わない限り、同じ<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を同じ引数で2回評価すれば同じ結果が得られるので、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は数学的関数を計算するものと見なすことができます。本書の最初の2章で行ったように、代入を一切使わないプログラミングは、
+    <INDEX>functional programming</INDEX>
+    <EM>関数型プログラミング</EM>として知られています。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <INDEX>substitution model of <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE> application<SUBINDEX>inadequacy of<OPEN/></SUBINDEX></INDEX>
     To understand how assignment complicates matters, consider a simplified
     version of the <SCHEMEINLINE>make_withdraw</SCHEMEINLINE>
@@ -59,6 +96,15 @@
     </SPLITINLINE>
     of section<SPACE/><REF NAME="sec:local-state-variables"/> that does not
     bother to check for an insufficient amount:
+    </EN>
+    <JA>
+    <INDEX>substitution model of <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE> application<SUBINDEX>inadequacy of<OPEN/></SUBINDEX></INDEX>
+    代入がどのように物事を複雑にするかを理解するために、<REF NAME="sec:local-state-variables"/> 節の <SCHEMEINLINE>make_withdraw</SCHEMEINLINE> <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の簡略版で、残高不足のチェックを省いたものを考えてみましょう：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <INDEX><DECLARATION>make_simplified_withdraw</DECLARATION></INDEX> 
       <NAME>make_simplified_withdraw</NAME>
@@ -125,6 +171,8 @@ W(10);
 -5
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Compare this
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -140,6 +188,20 @@ W(10);
       <SCHEME><SCHEMEINLINE>set!</SCHEMEINLINE>:</SCHEME>
       <JAVASCRIPT>assignment:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    この<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>set!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>代入</JAVASCRIPT>
+    </SPLITINLINE>を使わない次の <SCHEMEINLINE>make_decrementer</SCHEMEINLINE> <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>と比較してみましょう：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <INDEX><DECLARATION>make_decrementer</DECLARATION></INDEX> 
       <NAME>make_decrementer</NAME>
@@ -154,6 +216,8 @@ function make_decrementer(balance) {
 }    
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE><SCHEME>
       <SCHEMEINLINE>make-decrementer</SCHEMEINLINE>
     </SCHEME>
@@ -170,6 +234,20 @@ function make_decrementer(balance) {
     <SCHEMEINLINE>balance</SCHEMEINLINE>, but there is no accumulated effect
     over successive calls, as with
     <SCHEMEINLINE>make_simplified_withdraw</SCHEMEINLINE>:
+    </EN>
+    <JA>
+    <SPLITINLINE><SCHEME>
+      <SCHEMEINLINE>make-decrementer</SCHEMEINLINE>
+    </SCHEME>
+    <JAVASCRIPT>
+      関数
+      <JAVASCRIPTINLINE>make_decrementer</JAVASCRIPTINLINE>
+    </JAVASCRIPT></SPLITINLINE>は、指定された金額 <SCHEMEINLINE>balance</SCHEMEINLINE> から入力を引いた値を返す<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>ですが、<SCHEMEINLINE>make_simplified_withdraw</SCHEMEINLINE> とは異なり、連続した呼び出しにわたる累積的な効果はありません：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <REQUIRES>make_decrementer</REQUIRES>
       <NAME>make_decrementer_example</NAME>
@@ -214,9 +292,16 @@ D(10);
 15
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     We can use the substitution model to explain how
     <SCHEMEINLINE>make_decrementer</SCHEMEINLINE> works.  For instance, let us
     analyze the evaluation of the expression
+    </EN>
+    <JA>
+    置換モデルを使って <SCHEMEINLINE>make_decrementer</SCHEMEINLINE> の動作を説明できます。例えば、次の式の評価を分析してみましょう。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <REQUIRES>make_decrementer</REQUIRES>
       <EXPECTED>5</EXPECTED>
@@ -230,6 +315,8 @@ make_decrementer(25)(20)
 make_decrementer(25)(20);
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     We first simplify the
     <SPLITINLINE>
       <SCHEME>
@@ -252,6 +339,25 @@ make_decrementer(25)(20);
     </SPLITINLINE>
     This reduces the
     expression to
+    </EN>
+    <JA>
+    まず、<SPLITINLINE>
+      <SCHEME>
+	組み合わせの演算子
+      </SCHEME>
+      <JAVASCRIPT>
+	適用の関数式
+      </JAVASCRIPT>
+    </SPLITINLINE>を簡約するために、<SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>make-decrementer</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>make_decrementer</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE> の本体中の <SCHEMEINLINE>balance</SCHEMEINLINE> に <LATEXINLINE>$25$</LATEXINLINE> を置換します。これにより式は次のように簡約されます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <SCHEME>
 ((lambda (amount) (- 25 amount)) 20)
@@ -260,13 +366,15 @@ make_decrementer(25)(20);
 (amount =&gt; 25 - amount)(20)
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Now we apply the
     <SPLITINLINE>
       <SCHEME>
 	operator
       </SCHEME>
       <JAVASCRIPT>
-	function 
+	function
       </JAVASCRIPT>
     </SPLITINLINE>
     by substituting 20 for
@@ -280,6 +388,25 @@ make_decrementer(25)(20);
       </JAVASCRIPT>
     </SPLITINLINE>
     expression:
+    </EN>
+    <JA>
+    次に、<SPLITINLINE>
+      <SCHEME>
+	ラムダ
+      </SCHEME>
+      <JAVASCRIPT>
+	ラムダ
+      </JAVASCRIPT>
+    </SPLITINLINE>式の本体中の <SCHEMEINLINE>amount</SCHEMEINLINE> に 20 を置換して<SPLITINLINE>
+      <SCHEME>
+	演算子
+      </SCHEME>
+      <JAVASCRIPT>
+	関数
+      </JAVASCRIPT>
+    </SPLITINLINE>を適用します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <EXPECTED>5</EXPECTED>
       <SCHEME>
@@ -292,12 +419,22 @@ make_decrementer(25)(20);
 25 - 20;
       </JAVASCRIPT_RUN>
     </SNIPPET>
-    The final answer is 5. <!-- FIXME: no page break here -->
+    <BILINGUAL>
+    <EN>The final answer is 5.</EN>
+    <JA>最終的な答えは 5 です。</JA>
+    </BILINGUAL> <!-- FIXME: no page break here -->
  </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Observe, however, what happens if we attempt a similar substitution analysis
     with <SCHEMEINLINE>make_simplified_withdraw</SCHEMEINLINE>:
+    </EN>
+    <JA>
+    しかし、<SCHEMEINLINE>make_simplified_withdraw</SCHEMEINLINE> に対して同様の置換分析を試みるとどうなるか見てみましょう：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <REQUIRES>make_simplified_withdraw</REQUIRES>
       <SCHEME>
@@ -307,6 +444,8 @@ make_decrementer(25)(20);
 make_simplified_withdraw(25)(20)
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     We first simplify the
     <SPLITINLINE>
       <SCHEME>
@@ -329,7 +468,30 @@ make_simplified_withdraw(25)(20)
 	expression
       </JAVASCRIPT>
     </SPLITINLINE>
-    to<FOOTNOTE>We don<APOS/>t substitute for the occurrence of
+    to
+    </EN>
+    <JA>
+    まず、<SCHEMEINLINE>make_simplified_withdraw</SCHEMEINLINE> の<SPLITINLINE><SCHEME>本体</SCHEME>
+    <JAVASCRIPT>本体</JAVASCRIPT></SPLITINLINE>中の <SCHEMEINLINE>balance</SCHEMEINLINE> に 25 を置換して、<SPLITINLINE>
+      <SCHEME>
+	演算子
+      </SCHEME>
+      <JAVASCRIPT>
+	関数式
+      </JAVASCRIPT>
+    </SPLITINLINE>を簡約します。これにより<SPLITINLINE>
+      <SCHEME>
+	式
+      </SCHEME>
+      <JAVASCRIPT>
+	式
+      </JAVASCRIPT>
+    </SPLITINLINE>は次のように簡約されます。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    We don<APOS/>t substitute for the occurrence of
     <SCHEMEINLINE>balance</SCHEMEINLINE> in the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>set!</SCHEMEINLINE> expression</SCHEME>
@@ -346,7 +508,22 @@ make_simplified_withdraw(25)(20)
       <JAVASCRIPT><JAVASCRIPTINLINE>25 = 25 - amount;</JAVASCRIPTINLINE>,
       </JAVASCRIPT>
     </SPLITINLINE>
-    which makes no sense.</FOOTNOTE>
+    which makes no sense.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>set!</SCHEMEINLINE> 式</SCHEME>
+      <JAVASCRIPT>代入</JAVASCRIPT>
+    </SPLITINLINE>における <SCHEMEINLINE>balance</SCHEMEINLINE> の出現に対しては置換を行いません。なぜなら、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>set!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>代入</JAVASCRIPT>
+    </SPLITINLINE>における<LATEXINLINE>名前</LATEXINLINE>は評価されないからです。もし置換してしまうと、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(set! 25 (- 25 amount))</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>25 = 25 - amount;</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> となり、意味をなしません。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET EVAL="no"> 
       <SCHEME>
 ((lambda (amount) (set! balance (- 25 amount)) 25) 20)
@@ -358,6 +535,8 @@ make_simplified_withdraw(25)(20)
  })(20)
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Now we apply the
     <SPLITINLINE>
       <SCHEME>operator</SCHEME>
@@ -373,6 +552,21 @@ make_simplified_withdraw(25)(20)
 	lambda expression:
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    次に、<SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>lambda</SCHEMEINLINE> 式
+      </SCHEME>
+      <JAVASCRIPT>
+	ラムダ式
+      </JAVASCRIPT>
+    </SPLITINLINE>の本体中の <SCHEMEINLINE>amount</SCHEMEINLINE> に 20 を置換して<SPLITINLINE>
+      <SCHEME>演算子</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を適用します：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (set! balance (- 25 20)) 25
@@ -382,6 +576,8 @@ balance = 25 - 20;
 return 25;
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     If we adhered to the substitution model, we would have to say that the
     meaning of the
     <SPLITINLINE>
@@ -402,9 +598,23 @@ return 25;
     <JAVASCRIPT>assignment),</JAVASCRIPT>
     </SPLITINLINE>
     and the substitution model cannot do this.
+    </EN>
+    <JA>
+    置換モデルに従うと、この<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>適用の意味は、まず <SCHEMEINLINE>balance</SCHEMEINLINE> を 5 に設定し、次に式の値として 25 を返すということになります。これは間違った答えです。正しい答えを得るには、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>set!</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT>代入</JAVASCRIPT></SPLITINLINE>の効果が及ぶ前の <SCHEMEINLINE>balance</SCHEMEINLINE> の最初の出現と、<SPLITINLINE><SCHEME><SCHEMEINLINE>set!</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT>代入</JAVASCRIPT>
+    </SPLITINLINE>の効果が及んだ後の <SCHEMEINLINE>balance</SCHEMEINLINE> の2番目の出現を何らかの方法で区別しなければなりませんが、置換モデルではそれができません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The trouble here is that substitution is based ultimately on the notion that
     <SPLITINLINE>
       <SCHEME>
@@ -416,44 +626,85 @@ return 25;
 	symbols for values.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    ここでの問題は、置換が最終的に、<SPLITINLINE>
+      <SCHEME>
+	言語中のシンボルは本質的に値の名前である
+      </SCHEME>
+      <JAVASCRIPT>
+	言語中の名前は本質的に値を表すシンボルである
+      </JAVASCRIPT>
+    </SPLITINLINE>という考えに基づいているということです。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
 	But as soon as we introduce <SCHEMEINLINE>set!</SCHEMEINLINE> and the
 	idea that the value of a variable can change, a variable can no longer
 	be simply a name.  Now a variable somehow refers to a place where a
-	value can be stored, and the value stored at this place can change. 
+	value can be stored, and the value stored at this place can change.
         <INDEX>substitution model of <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE> application<SUBINDEX>inadequacy of<CLOSE/></SUBINDEX></INDEX>
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	This worked well for constants.
 	But a variable, whose value can change with assignment, cannot simply
 	be a name for a value. A variable somehow refers to a place where a
 	value can be stored, and the value stored at this place can change.
         <INDEX>substitution model of <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE> application<SUBINDEX>inadequacy of<CLOSE/></SUBINDEX></INDEX>
+	</EN>
+	<JA>
+	これは定数に対してはうまく機能しました。しかし、代入によって値が変わりうる変数は、単に値の名前であるとは言えません。変数はどういうわけか、値を格納できる場所を指し示しており、その場所に格納されている値は変化しうるのです。
+        <INDEX>substitution model of <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE> application<SUBINDEX>inadequacy of<CLOSE/></SUBINDEX></INDEX>
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     In section<SPACE/><REF NAME="sec:environment-model"/> we will see how
     environments play this role of <QUOTE>place</QUOTE> in our computational
-    model.    
+    model.
+    </EN>
+    <JA>
+    <REF NAME="sec:environment-model"/> 節では、私たちの計算モデルにおいて環境がこの<QUOTE>場所</QUOTE>の役割をどのように果たすかを見ていきます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Sameness and change</NAME>
+    <NAME>
+      <BILINGUAL>
+      <EN>Sameness and change</EN>
+      <JA>同一性と変化</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>sameness and change<SUBINDEX>meaning of<OPEN/></SUBINDEX></INDEX>
   <INDEX>change and sameness<SUBINDEX>meaning of<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The issue surfacing here is more profound than the mere breakdown of a
     particular model of computation.  As soon as we introduce change into
     our computational models, many notions that were previously
     straightforward become problematical.  Consider the concept of two
     things being <QUOTE>the same.</QUOTE>
+    </EN>
+    <JA>
+    ここで浮上している問題は、特定の計算モデルが破綻するという以上に深遠なものです。計算モデルに変化を導入した途端、以前は単純明快だった多くの概念が問題をはらむようになります。2つのものが<QUOTE>同じ</QUOTE>であるという概念について考えてみましょう。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    Suppose we call 
+    <BILINGUAL>
+    <EN>
+    Suppose we call
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-decrementer</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_decrementer</JAVASCRIPTINLINE>
@@ -464,6 +715,18 @@ return 25;
       <SCHEME>procedures:</SCHEME>
       <JAVASCRIPT>functions:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-decrementer</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_decrementer</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE> を同じ引数で2回呼び出して、2つの<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を作るとしましょう：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <REQUIRES>make_decrementer</REQUIRES>
       <SCHEME>
@@ -477,33 +740,54 @@ const D1 = make_decrementer(25);
 const D2 = make_decrementer(25);
       </JAVASCRIPT>
     </SNIPPET>
-    Are 
+    <BILINGUAL>
+    <EN>
+    Are
     <SCHEMEINLINE>D1</SCHEMEINLINE>
-    and 
+    and
     <SCHEMEINLINE>D2</SCHEMEINLINE>
-    the same?  An acceptable answer is yes, because 
+    the same?  An acceptable answer is yes, because
     <SCHEMEINLINE>D1</SCHEMEINLINE>
-    and 
+    and
     <SCHEMEINLINE>D2</SCHEMEINLINE>
     have the same computational behavior<EMDASH/>each is a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    that subtracts its input from 25.  In fact, 
+    that subtracts its input from 25.  In fact,
     <SCHEMEINLINE>D1</SCHEMEINLINE>
-    could be substituted for 
+    could be substituted for
     <SCHEMEINLINE>D2</SCHEMEINLINE>
     in any computation without changing the result.
+    </EN>
+    <JA>
+    <SCHEMEINLINE>D1</SCHEMEINLINE> と <SCHEMEINLINE>D2</SCHEMEINLINE> は同じでしょうか？ 答えは「はい」で差し支えありません。なぜなら、<SCHEMEINLINE>D1</SCHEMEINLINE> と <SCHEMEINLINE>D2</SCHEMEINLINE> は同じ計算上の振る舞いを持つからです<EMDASH/>どちらも入力を 25 から引く<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>です。実際、どんな計算においても <SCHEMEINLINE>D1</SCHEMEINLINE> を <SCHEMEINLINE>D2</SCHEMEINLINE> に置き換えても結果は変わりません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    Contrast this with making two calls to 
+    <BILINGUAL>
+    <EN>
+    Contrast this with making two calls to
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-simplified-withdraw</SCHEMEINLINE>:</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_simplified_withdraw</JAVASCRIPTINLINE>:
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    これを、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-simplified-withdraw</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_simplified_withdraw</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE> を2回呼び出す場合と対比してみましょう：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <REQUIRES>make_simplified_withdraw</REQUIRES>
       <NAME>make_simplified_withdraw_example3</NAME>
@@ -518,10 +802,17 @@ const W1 = make_simplified_withdraw(25);
 const W2 = make_simplified_withdraw(25);
       </JAVASCRIPT>
     </SNIPPET>
-    Are <SCHEMEINLINE>W1</SCHEMEINLINE> and 
-    <SCHEMEINLINE>W2</SCHEMEINLINE> the same?  Surely not, because calls to 
+    <BILINGUAL>
+    <EN>
+    Are <SCHEMEINLINE>W1</SCHEMEINLINE> and
+    <SCHEMEINLINE>W2</SCHEMEINLINE> the same?  Surely not, because calls to
     <SCHEMEINLINE>W1</SCHEMEINLINE> and <SCHEMEINLINE>W2</SCHEMEINLINE>
     have distinct effects, as shown by the following sequence of interactions:
+    </EN>
+    <JA>
+    <SCHEMEINLINE>W1</SCHEMEINLINE> と <SCHEMEINLINE>W2</SCHEMEINLINE> は同じでしょうか？ 明らかに同じではありません。<SCHEMEINLINE>W1</SCHEMEINLINE> と <SCHEMEINLINE>W2</SCHEMEINLINE> への呼び出しは異なる効果を持つからです。次のやり取りのシーケンスで示されるとおりです：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <REQUIRES>make_simplified_withdraw_example3</REQUIRES>
       <NAME>make_simplified_withdraw_example4</NAME>
@@ -573,9 +864,11 @@ W2(20);
 5
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
-    Even though <SCHEMEINLINE>W1</SCHEMEINLINE> and 
+    <BILINGUAL>
+    <EN>
+    Even though <SCHEMEINLINE>W1</SCHEMEINLINE> and
     <SCHEMEINLINE>W2</SCHEMEINLINE> are <QUOTE>equal</QUOTE> in the sense that
-    they are both created by evaluating the same expression, 
+    they are both created by evaluating the same expression,
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>(make-simplified-withdraw 25)</SCHEMEINLINE>,
       </SCHEME>
@@ -583,13 +876,25 @@ W2(20);
 	<JAVASCRIPTINLINE>make_simplified_withdraw(25)</JAVASCRIPTINLINE>,
       </JAVASCRIPT>
     </SPLITINLINE>
-    it is not true that 
-    <SCHEMEINLINE>W1</SCHEMEINLINE> could be substituted for 
+    it is not true that
+    <SCHEMEINLINE>W1</SCHEMEINLINE> could be substituted for
     <SCHEMEINLINE>W2</SCHEMEINLINE> in any expression without changing the
     result of evaluating the expression.
+    </EN>
+    <JA>
+    <SCHEMEINLINE>W1</SCHEMEINLINE> と <SCHEMEINLINE>W2</SCHEMEINLINE> はどちらも同じ式 <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(make-simplified-withdraw 25)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>make_simplified_withdraw(25)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE> を評価して作られたという意味では<QUOTE>等しい</QUOTE>のですが、任意の式で <SCHEMEINLINE>W1</SCHEMEINLINE> を <SCHEMEINLINE>W2</SCHEMEINLINE> に置き換えても式の評価結果が変わらないとは言えません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     A language that supports the concept that <QUOTE>equals can be substituted
     for equals</QUOTE> in an expression without changing the value of the
     expression is said to be
@@ -606,9 +911,23 @@ W2(20);
     simplify expressions by substituting equivalent expressions.  Consequently,
     reasoning about programs that use assignment becomes drastically more
     difficult.
+    </EN>
+    <JA>
+    式の中で<QUOTE>等しいものを等しいもので置き換え</QUOTE>ても式の値が変わらないという概念をサポートする言語は、
+    <INDEX>referential transparency</INDEX>
+    <INDEX>transparency, referential</INDEX>
+    <INDEX>equality<SUBINDEX>referential transparency and</SUBINDEX></INDEX>
+    <EM>参照透過的</EM>であると言われます。コンピュータ言語に<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>set!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>代入</JAVASCRIPT>
+    </SPLITINLINE>を含めると、参照透過性は破られます。これにより、等価な式で置き換えて式を簡約できるかどうかの判断が難しくなります。その結果、代入を使うプログラムについて推論することは格段に難しくなります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Once we forgo referential transparency, the notion of what it means for
     computational objects to be <QUOTE>the same</QUOTE> becomes difficult to
     capture in a formal way.  Indeed, the meaning of <QUOTE>same</QUOTE> in the
@@ -622,14 +941,28 @@ W2(20);
     <QUOTE>change</QUOTE> without some a priori notion of
     <QUOTE>sameness,</QUOTE> and we cannot determine sameness without observing
     the effects of change.
+    </EN>
+    <JA>
+    参照透過性を放棄すると、計算オブジェクトが<QUOTE>同じ</QUOTE>であるとはどういう意味かを形式的に捉えることが難しくなります。実際、プログラムがモデル化する現実世界における<QUOTE>同じ</QUOTE>の意味自体が、決して明確ではありません。一般に、見かけ上同一の2つのオブジェクトが本当に<QUOTE>同じもの</QUOTE>であると判定するには、一方のオブジェクトを変更して、もう一方のオブジェクトも同じように変化したかどうかを観察するしかありません。しかし、<QUOTE>同じ</QUOTE>オブジェクトを2回観察して何らかの性質が変わったかどうかを見る以外に、オブジェクトが<QUOTE>変化した</QUOTE>かどうかをどうやって判定できるのでしょうか？ このように、<QUOTE>同一性</QUOTE>の先験的な概念なしに<QUOTE>変化</QUOTE>を判定することはできず、変化の効果を観察しなければ同一性を判定できないのです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     As an example of how this issue arises in programming, consider the
     situation where Peter and Paul have a
     <INDEX>bank account<SUBINDEX>joint</SUBINDEX></INDEX>
     bank account with <DOLLAR/>100 in
     it.  There is a substantial difference between modeling this as
+    </EN>
+    <JA>
+    プログラミングにおいてこの問題がどのように生じるかの例として、ピーターとポールが
+    <INDEX>bank account<SUBINDEX>joint</SUBINDEX></INDEX>
+    100ドルの入った銀行口座を持っている状況を考えてみましょう。これを次のようにモデル化する場合と
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <REQUIRES>make_account</REQUIRES>
       <EXPECTED>50</EXPECTED>
@@ -650,7 +983,10 @@ peter_acc("withdraw")(20);
 paul_acc("withdraw")(50);
       </JAVASCRIPT_RUN>
     </SNIPPET>
-    and modeling it as
+    <BILINGUAL>
+    <EN>and modeling it as</EN>
+    <JA>次のようにモデル化する場合とでは、大きな違いがあります。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <REQUIRES>make_account</REQUIRES>
       <EXPECTED>20</EXPECTED>
@@ -670,25 +1006,28 @@ peter_acc("withdraw")(20);
 paul_acc("withdraw")(50);
       </JAVASCRIPT_RUN>
     </SNIPPET>
-    <LONG_PAGE lines="1"/>In the first situation, the two bank accounts are distinct.
+    <LONG_PAGE lines="1"/>
+    <BILINGUAL>
+    <EN>
+    In the first situation, the two bank accounts are distinct.
     Transactions made by Peter will not affect Paul<APOS/>s account, and vice
-    versa.  In the second situation, however, we have defined 
+    versa.  In the second situation, however, we have defined
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>paul-acc</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>paul_acc</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    to be <EM>the same thing</EM> as 
+    to be <EM>the same thing</EM> as
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>peter-acc</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>peter_acc</JAVASCRIPTINLINE>.</JAVASCRIPT>
     </SPLITINLINE>
     In effect, Peter and Paul now have a joint bank account, and if Peter makes
-    a withdrawal from 
+    a withdrawal from
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>peter-acc</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>peter_acc</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    Paul will observe less money in 
+    Paul will observe less money in
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>paul-acc</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>paul_acc</JAVASCRIPTINLINE>.</JAVASCRIPT>
@@ -696,7 +1035,7 @@ paul_acc("withdraw")(50);
     These two similar but distinct situations can cause confusion in building
     computational models.  With the shared account, in particular, it can be
     especially confusing that there is one object (the bank account) that has
-    two different names 
+    two different names
     <SPLITINLINE>
       <SCHEME>
 	(<SCHEMEINLINE>peter-acc</SCHEMEINLINE> and
@@ -707,15 +1046,47 @@ paul_acc("withdraw")(50);
 	<JAVASCRIPTINLINE>paul_acc</JAVASCRIPTINLINE>);
       </JAVASCRIPT>
     </SPLITINLINE>
-    if we are searching for all the places in our program where 
+    if we are searching for all the places in our program where
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>paul-acc</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>paul_acc</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    can be changed, we must remember to look also at things that change 
-    <SPLITINLINE><SCHEME><SCHEMEINLINE>peter-acc</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>peter_acc</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>.<FOOTNOTE>The
+    can be changed, we must remember to look also at things that change
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>peter-acc</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>peter_acc</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>.
+    </EN>
+    <JA>
+    最初の状況では、2つの銀行口座は別物です。ピーターの取引はポールの口座に影響を与えず、その逆も同様です。しかし、2番目の状況では、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>paul-acc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>paul_acc</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> を <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>peter-acc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>peter_acc</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> と<EM>同じもの</EM>として定義しています。事実上、ピーターとポールは共同口座を持つことになり、ピーターが <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>peter-acc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>peter_acc</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> から引き出しを行うと、ポールは <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>paul-acc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>paul_acc</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> の残高が減っているのを観察します。この2つの似ているが異なる状況は、計算モデルの構築において混乱を引き起こしかねません。特に共有口座の場合、1つのオブジェクト（銀行口座）が2つの異なる名前 <SPLITINLINE>
+      <SCHEME>
+	（<SCHEMEINLINE>peter-acc</SCHEMEINLINE> と
+	<SCHEMEINLINE>paul-acc</SCHEMEINLINE>）
+      </SCHEME>
+      <JAVASCRIPT>
+	（<JAVASCRIPTINLINE>peter_acc</JAVASCRIPTINLINE> と
+	<JAVASCRIPTINLINE>paul_acc</JAVASCRIPTINLINE>）
+      </JAVASCRIPT>
+    </SPLITINLINE>を持つことは特に紛らわしくなります。プログラム中で <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>paul-acc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>paul_acc</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> が変更されうるすべての箇所を探す場合、<SPLITINLINE><SCHEME><SCHEMEINLINE>peter-acc</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>peter_acc</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> を変更するものも見ることを忘れてはなりません。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    The
     phenomenon of a single computational object being accessed by more than one
-    name is known as 
+    name is known as
     <INDEX>aliasing</INDEX>
     <EM>aliasing</EM>.  The joint bank account situation illustrates a very
     simple example of an alias.  In section<SPACE/><REF NAME="sec:mutable-data"/>
@@ -735,11 +1106,31 @@ paul_acc("withdraw")(50);
     <INDEX>Morris, J. H.</INDEX>
     <INDEX>Schmidt, Eric</INDEX>
     <INDEX>Wadler, Philip</INDEX>
-    (<CITATION>Lampson et al.<SPACE/>1981</CITATION>; 
-    <CITATION>Morris, Schmidt, and Wadler 1980</CITATION>).</FOOTNOTE>
+    (<CITATION>Lampson et al.<SPACE/>1981</CITATION>;
+    <CITATION>Morris, Schmidt, and Wadler 1980</CITATION>).
+    </EN>
+    <JA>
+    1つの計算オブジェクトが複数の名前でアクセスされる現象は、
+    <INDEX>aliasing</INDEX>
+    <EM>エイリアシング</EM>として知られています。共同銀行口座の状況は、エイリアスの非常に単純な例を示しています。<REF NAME="sec:mutable-data"/> 節では、部分を共有する<QUOTE>別の</QUOTE>複合データ構造など、はるかに複雑な例を見ていきます。オブジェクトへの変更が、<QUOTE>副作用</QUOTE>として
+    <INDEX>side-effect bug</INDEX>
+    <INDEX>bug<SUBINDEX>side effect with aliasing</SUBINDEX></INDEX>
+    <INDEX>assignment<SUBINDEX>bugs associated with</SUBINDEX></INDEX>
+    <QUOTE>別の</QUOTE>オブジェクトも変更しうることを忘れると、プログラムにバグが生じます。なぜなら、2つの<QUOTE>別の</QUOTE>オブジェクトは実際には異なるエイリアスの下に現れる1つのオブジェクトだからです。このいわゆる<EM>副作用バグ</EM>は、発見と分析が非常に困難なため、副作用やエイリアシングを許さないようにプログラミング言語を設計すべきだと提案する人もいます
+    <INDEX>Lampson, Butler</INDEX>
+    <INDEX>Morris, J. H.</INDEX>
+    <INDEX>Schmidt, Eric</INDEX>
+    <INDEX>Wadler, Philip</INDEX>
+    （<CITATION>Lampson et al.<SPACE/>1981</CITATION>；
+    <CITATION>Morris, Schmidt, and Wadler 1980</CITATION>）。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     With reference to the above remarks on <QUOTE>sameness</QUOTE> and
     <QUOTE>change,</QUOTE> observe that if Peter and Paul could only examine
     their bank balances, and could not perform operations that changed the
@@ -761,16 +1152,32 @@ paul_acc("withdraw")(50);
     <QUOTE>the same</QUOTE> rational number.
     <INDEX>sameness and change<SUBINDEX>meaning of<CLOSE/></SUBINDEX></INDEX>
     <INDEX>change and sameness<SUBINDEX>meaning of<CLOSE/></SUBINDEX></INDEX>
+    </EN>
+    <JA>
+    上記の<QUOTE>同一性</QUOTE>と<QUOTE>変化</QUOTE>に関する考察を踏まえると、もしピーターとポールが銀行残高を確認するだけで、残高を変更する操作を行えなかったとしたら、2つの口座が別物かどうかという問題は意味をなさないことに注目してください。一般に、データオブジェクトを決して変更しない限り、複合データオブジェクトはまさにその部品の全体であると見なすことができます。例えば、有理数はその分子と分母を与えることで決定されます。しかし、変化がある場合、この見方はもはや有効ではありません。変化がある場合、複合データオブジェクトは、それを構成する部品とは異なる<QUOTE>アイデンティティ</QUOTE>を持ちます。銀行口座は引き出しによって残高を変更しても依然として<QUOTE>同じ</QUOTE>銀行口座です。逆に、同じ状態情報を持つ2つの異なる銀行口座があることもありえます。この複雑さは、プログラミング言語の結果ではなく、
+    <SHRINK_PARAGRAPH lines="1"/>
+    銀行口座をオブジェクトとして認識することの結果です。例えば、有理数を、分子を変えても<QUOTE>同じ</QUOTE>有理数のままであるようなアイデンティティを持つ変更可能なオブジェクトだと通常は見なしません。
+    <INDEX>sameness and change<SUBINDEX>meaning of<CLOSE/></SUBINDEX></INDEX>
+    <INDEX>change and sameness<SUBINDEX>meaning of<CLOSE/></SUBINDEX></INDEX>
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Pitfalls of imperative programming</NAME>
+    <NAME>
+      <BILINGUAL>
+      <EN>Pitfalls of imperative programming</EN>
+      <JA>命令型プログラミングの落とし穴</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <LONG_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In contrast to functional programming, programming that makes extensive use
-    of assignment is known as 
+    of assignment is known as
     <INDEX>imperative programming</INDEX>
     <INDEX>programming<SUBINDEX>imperative</SUBINDEX></INDEX>
     <EM>imperative programming</EM>.  In addition to raising complications about
@@ -787,6 +1194,24 @@ paul_acc("withdraw")(50);
 	expression):
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    関数型プログラミングとは対照的に、代入を多用するプログラミングは
+    <INDEX>imperative programming</INDEX>
+    <INDEX>programming<SUBINDEX>imperative</SUBINDEX></INDEX>
+    <EM>命令型プログラミング</EM>として知られています。計算モデルに関する複雑さを生むことに加えて、命令型スタイルで書かれたプログラムは、関数型プログラムでは起こりえないバグの影響を受けやすくなります。例えば、<SPLITINLINE>
+      <SCHEME>
+	<REF NAME="sec:recursion-and-iteration"/> 節
+      </SCHEME>
+      <JAVASCRIPT>
+	<REF NAME="sec:recursion-and-iteration"/> 節
+      </JAVASCRIPT>
+    </SPLITINLINE>の反復的な階乗プログラムを思い出してください<SPLITINLINE>
+      <SCHEME>：</SCHEME>
+      <JAVASCRIPT>（ここでは条件式の代わりに条件文を使っています）：</JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <NAME>factorial_iterative</NAME>
       <EXAMPLE>factorial_example</EXAMPLE>
@@ -814,10 +1239,17 @@ function factorial(n) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Instead of passing arguments in the internal iterative loop, we could
     adopt a more imperative style by using explicit assignment
     to update the values of the variables <SCHEMEINLINE>product</SCHEMEINLINE>
     and <SCHEMEINLINE>counter</SCHEMEINLINE>:
+    </EN>
+    <JA>
+    内部の反復ループで引数を渡す代わりに、明示的な代入を使って変数 <SCHEMEINLINE>product</SCHEMEINLINE> と <SCHEMEINLINE>counter</SCHEMEINLINE> の値を更新する、より命令型のスタイルを採用することもできます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <INDEX><DECLARATION>factorial</DECLARATION><SUBINDEX>with assignment</SUBINDEX></INDEX>
       <NAME>factorial_imperative</NAME>
@@ -852,10 +1284,17 @@ function factorial(n) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     This does not change the results produced by the program, but it does
     introduce a subtle trap.  How do we decide the order of the assignments?
     As it happens, the program is correct as written.  But writing the
     assignments in the opposite order
+    </EN>
+    <JA>
+    これはプログラムの結果を変えませんが、微妙な罠を導入します。代入の順序をどう決めればよいのでしょうか？ たまたま、このプログラムは書かれたとおりで正しいのです。しかし、代入を逆の順序で書くと
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (set! counter (+ counter 1))
@@ -866,6 +1305,8 @@ counter = counter + 1;
 product = counter * product;
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     would have produced a different,
     <INDEX>bug<SUBINDEX>order of assignments</SUBINDEX></INDEX>
     <INDEX>assignment<SUBINDEX>bugs associated with</SUBINDEX></INDEX>
@@ -873,7 +1314,18 @@ product = counter * product;
     with assignment forces us to carefully consider the relative orders of the
     assignments to make sure that each statement is using the correct version
     of the variables that have been changed.  This issue simply does not arise
-    in functional programs.<FOOTNOTE>In view of this, it is ironic that
+    in functional programs.
+    </EN>
+    <JA>
+    異なる、
+    <INDEX>bug<SUBINDEX>order of assignments</SUBINDEX></INDEX>
+    <INDEX>assignment<SUBINDEX>bugs associated with</SUBINDEX></INDEX>
+    誤った結果を生むことになります。一般に、代入を使ったプログラミングでは、各文が変更された変数の正しいバージョンを使っていることを確認するために、代入の相対的な順序を慎重に考慮しなければなりません。この問題は関数型プログラムでは単に発生しません。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    In view of this, it is ironic that
     introductory programming is most often taught in a highly imperative style.
     This may be a vestige of a belief, common throughout the 1960s and 1970s,
     that programs that call
@@ -881,8 +1333,8 @@ product = counter * product;
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
-    must inherently be less efficient than programs that perform assignments.  
-    (<CITATION>Steele (1977)</CITATION> 
+    must inherently be less efficient than programs that perform assignments.
+    (<CITATION>Steele (1977)</CITATION>
     <INDEX>Steele, Guy Lewis Jr.</INDEX>
     debunks this argument.)  Alternatively it may reflect a view that
     step-by-step assignment is easier for beginners to visualize than
@@ -892,22 +1344,45 @@ product = counter * product;
     </SPLITINLINE>
     call. Whatever the reason, it often saddles beginning programmers with
     <QUOTE>should I set this variable before or after that one</QUOTE> concerns
-    that can complicate programming and obscure the important ideas.</FOOTNOTE>
+    that can complicate programming and obscure the important ideas.
+    </EN>
+    <JA>
+    これを考えると、プログラミング入門が極めて命令型のスタイルで教えられることが多いのは皮肉なことです。これは、1960年代から1970年代にかけて一般的だった、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を呼び出すプログラムは代入を行うプログラムよりも本質的に効率が悪いに違いないという信念の名残かもしれません。（<CITATION>Steele (1977)</CITATION>
+    <INDEX>Steele, Guy Lewis Jr.</INDEX>
+    がこの主張を論駁しています。）あるいは、ステップごとの代入の方が<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>呼び出しよりも初学者にとってイメージしやすいという見方を反映しているのかもしれません。理由が何であれ、初学者プログラマは<QUOTE>この変数をあの変数の前に設定すべきか、それとも後にすべきか</QUOTE>という懸念に悩まされることが多く、それがプログラミングを複雑にし、重要な考え方を見えにくくしています。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The complexity of imperative programs becomes even worse if we consider
     applications in which several processes execute concurrently.  We will
     return to this in section<SPACE/><REF NAME="sec:time-is-of-the-essence"/>.
     First, however, we will address the issue of providing a computational
     model for expressions that involve assignment, and explore the uses of
     objects with local state in designing simulations.
+    </EN>
+    <JA>
+    複数のプロセスが並行実行するアプリケーションを考えると、命令型プログラムの複雑さはさらに悪化します。これについては <REF NAME="sec:time-is-of-the-essence"/> 節で再び取り上げます。しかしまず、代入を含む式に対する計算モデルを提供する問題に取り組み、シミュレーションの設計における局所状態を持つオブジェクトの利用法を探ります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <LONG_PAGE lines="1"/>
   <EXERCISE>
     <LABEL NAME="ex:3_7"/>
-    Consider the bank account objects created by 
+    <BILINGUAL>
+    <EN>
+    Consider the bank account objects created by
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-account</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_account</JAVASCRIPTINLINE>,
@@ -922,12 +1397,12 @@ product = counter * product;
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX><USE>make_joint</USE></INDEX> 
+    <INDEX><USE>make_joint</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-joint</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_joint</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    that accomplishes this.  
+    that accomplishes this.
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Make-joint</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The function <JAVASCRIPTINLINE>make_joint</JAVASCRIPTINLINE>
@@ -935,31 +1410,64 @@ product = counter * product;
     </SPLITINLINE>
     should take three arguments.  The first is a password-protected account.
     The second argument must match the password with which the account was
-    defined in order for the 
+    defined in order for the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-joint</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_joint</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    operation to proceed.  The third argument is a new password.  
+    operation to proceed.  The third argument is a new password.
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Make-joint</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The function <JAVASCRIPTINLINE>make_joint</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
     is to create an additional access to the original account using the new
-    password.  For example, if 
+    password.  For example, if
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>peter-acc</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>peter_acc</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     is a bank account with
-    password 
+    password
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>open-sesame</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>"open sesame"</JAVASCRIPTINLINE>,
       </JAVASCRIPT>
     </SPLITINLINE>
     then
+    </EN>
+    <JA>
+    練習問題 <REF NAME="ex:password-protection"/> で説明したパスワード機能付きの <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-account</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_account</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> で作られた銀行口座オブジェクトを考えてください。銀行システムに
+    <INDEX>bank account<SUBINDEX>joint</SUBINDEX></INDEX>
+    共同口座を作る機能が必要だとしましょう。これを実現する<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>make_joint</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-joint</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_joint</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> を定義してください。<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Make-joint</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>make_joint</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> は3つの引数を取ります。第1引数はパスワードで保護された口座です。第2引数は、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-joint</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_joint</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> 操作を進めるために、口座の定義時に使われたパスワードと一致しなければなりません。第3引数は新しいパスワードです。<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Make-joint</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>make_joint</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> は、新しいパスワードを使って元の口座への追加アクセスを作成します。例えば、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>peter-acc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>peter_acc</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> がパスワード <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>open-sesame</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>"open sesame"</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> で保護された銀行口座であるとき、
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <NAME>make_joint_example</NAME>
       <SCHEME>
@@ -974,7 +1482,9 @@ const paul_acc = make_joint(peter_acc, "open sesame", "rosebud");
 const paul_acc = make_joint(peter_acc, "open sesame", "rosebud");
       </JAVASCRIPT_RUN>
     </SNIPPET>
-    will allow one to make transactions on 
+    <BILINGUAL>
+    <EN>
+    will allow one to make transactions on
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>peter-acc</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>peter_acc</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -997,6 +1507,20 @@ const paul_acc = make_joint(peter_acc, "open sesame", "rosebud");
     You may wish to modify your solution to
     exercise<SPACE/><REF NAME="ex:password-protection"/> to accommodate this
     new feature.
+    </EN>
+    <JA>
+    とすれば、名前 <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>paul-acc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>paul_acc</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> とパスワード <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>rosebud</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>"rosebud"</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> を使って <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>peter-acc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>peter_acc</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> に対する取引ができるようになります。この新機能に対応するために、練習問題 <REF NAME="ex:password-protection"/> の解答を修正する必要があるかもしれません。
+    </JA>
+    </BILINGUAL>
     <SOLUTION>
       <SNIPPET>
 	<NAME>make_joint</NAME>
@@ -1046,6 +1570,8 @@ paul_acc("withdraw", "rosebud")(50); // Withdraws 50, should return 40
 
   <EXERCISE>
     <LABEL NAME="ex:3_8"/>
+    <BILINGUAL>
+    <EN>
     When we defined the evaluation model in
     section<SPACE/><REF NAME="sec:evaluating-combinations"/>, we said that the
     <INDEX>order of evaluation<SUBINDEX><ORDER>JavaScript</ORDER>in JavaScript</SUBINDEX></INDEX>
@@ -1086,6 +1612,34 @@ paul_acc("withdraw", "rosebud")(50); // Withdraws 50, should return 40
       <JAVASCRIPT>operands</JAVASCRIPT>
     </SPLITINLINE>
     are evaluated from right to left.
+    </EN>
+    <JA>
+    <REF NAME="sec:evaluating-combinations"/> 節で評価モデルを定義したとき、
+    <INDEX>order of evaluation<SUBINDEX><ORDER>JavaScript</ORDER>in JavaScript</SUBINDEX></INDEX>
+    <INDEX>order of evaluation<SUBINDEX>assignment and</SUBINDEX></INDEX>
+    式を評価する最初のステップはその部分式を評価することだと述べました。しかし、部分式をどの順序で評価すべきか（例えば、左から右か、右から左か）は指定しませんでした。<SPLITINLINE>
+      <SCHEME>
+	代入を導入すると、手続きの引数が評価される順序が結果に影響を与えることがあります。
+      </SCHEME>
+      <JAVASCRIPT>
+	代入を導入すると、演算子の組み合わせのオペランドが評価される順序が結果に影響を与えることがあります。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(+ (f 0) (f 1))</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>f(0) + f(1)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> を評価したとき、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>+</SCHEMEINLINE> の引数</SCHEME>
+      <JAVASCRIPT><SCHEMEINLINE>+</SCHEMEINLINE> のオペランド</JAVASCRIPT>
+    </SPLITINLINE>が左から右に評価されれば 0 を返し、<SPLITINLINE>
+      <SCHEME>引数</SCHEME>
+      <JAVASCRIPT>オペランド</JAVASCRIPT>
+    </SPLITINLINE>が右から左に評価されれば 1 を返すような、単純な<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE> <SCHEMEINLINE>f</SCHEMEINLINE> を定義してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:order-of-evaluation"/>
 
     <SOLUTION>
