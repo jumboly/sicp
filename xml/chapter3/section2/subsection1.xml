@@ -1,6 +1,9 @@
 <SUBSECTION> 
   <NAME>
-    The Rules for Evaluation
+    <BILINGUAL>
+    <EN>The Rules for Evaluation</EN>
+    <JA>評価のルール</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:env-model-rules"/>
@@ -8,6 +11,8 @@
 
   <LONG_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The overall specification of how the interpreter
     <INDEX>function application<SUBINDEX>environment model of</SUBINDEX></INDEX>
     <INDEX>environment model of evaluation<SUBINDEX>function application</SUBINDEX></INDEX>
@@ -39,36 +44,9 @@
 	    of the
 	    <SPLITINLINE>
 	      <SCHEME>
-		combination.<FOOTNOTE>Assignment introduces a subtlety into step
-		1 of the evaluation rule.  As shown in
-		exercise<SPACE/><REF NAME="ex:order-of-evaluation"/>, the
-		presence of assignment allows us to write expressions that will
-		produce different values depending on the
-		<INDEX>order of evaluation<SUBINDEX>implementation-dependent</SUBINDEX></INDEX>
-		<INDEX>implementation dependencies<SUBINDEX>order of subexpression evaluation</SUBINDEX></INDEX>
-		order in which the subexpressions in a combination
-		are evaluated. Thus, to be precise, we should specify an
-		evaluation order in step 1 (e.g., left to right or right to
-		left). However, this order should always be considered to be an
-		implementation detail, and one should never write programs that
-		depend on some particular order. For instance, a sophisticated
-		compiler might optimize a program by varying the order in which
-		subexpressions are evaluated. The ECMAScript standard specifies
-		evaluation of subexpressions from left to right.</FOOTNOTE>
-	      </SCHEME>
+		combination.</SCHEME>
 	      <JAVASCRIPT>
-		application.<FOOTNOTE>Assignment introduces a subtlety
-		into step 1 of the evaluation rule.  As shown in
-		exercise<SPACE/><REF NAME="ex:order-of-evaluation"/>, the
-		presence of assignment allows us to write expressions that will
-		produce different values depending on the order in which the
-		subexpressions in a combination
-		are evaluated. To eliminate such ambiguities,
-		<INDEX>order of evaluation<SUBINDEX><ORDER>JavaScript</ORDER>in JavaScript</SUBINDEX></INDEX>
-		JavaScript specifies left-to-right evaluation of the
-		subexpressions of combinations and of the argument expressions
-		of applications.</FOOTNOTE>
-	      </JAVASCRIPT>
+		application.</JAVASCRIPT>
 	    </SPLITINLINE>
 	  </LI>
           <LI>
@@ -103,15 +81,145 @@
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     to arguments.
+    </EN>
+    <JA>
+    インタプリタが
+    <INDEX>function application<SUBINDEX>environment model of</SUBINDEX></INDEX>
+    <INDEX>environment model of evaluation<SUBINDEX>function application</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>
+	組み合わせ
+      </SCHEME>
+      <JAVASCRIPT>
+	関数適用
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    をどのように評価するかの全体的な仕様は、
+    <SPACE/><REF NAME="sec:compound-procedures"/>節で最初に導入したときと変わりません。
+    <UL>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME>
+	    組み合わせを評価するには：
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    適用を評価するには：
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+        <OL>
+	  <LI>
+	    <SPLITINLINE>
+	      <SCHEME>
+		組み合わせ</SCHEME>
+	      <JAVASCRIPT>
+		適用</JAVASCRIPT>
+	    </SPLITINLINE>の部分式を評価する。
+	  </LI>
+          <LI>
+	    <SPLITINLINE>
+	      <SCHEME>
+		演算子
+	      </SCHEME>
+	      <JAVASCRIPT>
+		関数
+	      </JAVASCRIPT>
+	    </SPLITINLINE>の部分式の値を、
+	    <SPLITINLINE>
+	      <SCHEME>
+		オペランド
+	      </SCHEME>
+	      <JAVASCRIPT>
+		引数
+	      </JAVASCRIPT>
+	    </SPLITINLINE>の部分式の値に適用する。
+	  </LI>
+        </OL>
+      </LI>
+    </UL>
+    環境モデルによる評価は、複合<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を引数に適用するとはどういう意味かを規定する際に、置換モデルに取って代わるものです。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    <SPLITINLINE>
+      <SCHEME>
+	Assignment introduces a subtlety into step
+	1 of the evaluation rule.  As shown in
+	exercise<SPACE/><REF NAME="ex:order-of-evaluation"/>, the
+	presence of assignment allows us to write expressions that will
+	produce different values depending on the
+	<INDEX>order of evaluation<SUBINDEX>implementation-dependent</SUBINDEX></INDEX>
+	<INDEX>implementation dependencies<SUBINDEX>order of subexpression evaluation</SUBINDEX></INDEX>
+	order in which the subexpressions in a combination
+	are evaluated. Thus, to be precise, we should specify an
+	evaluation order in step 1 (e.g., left to right or right to
+	left). However, this order should always be considered to be an
+	implementation detail, and one should never write programs that
+	depend on some particular order. For instance, a sophisticated
+	compiler might optimize a program by varying the order in which
+	subexpressions are evaluated. The ECMAScript standard specifies
+	evaluation of subexpressions from left to right.
+      </SCHEME>
+      <JAVASCRIPT>
+	Assignment introduces a subtlety
+	into step 1 of the evaluation rule.  As shown in
+	exercise<SPACE/><REF NAME="ex:order-of-evaluation"/>, the
+	presence of assignment allows us to write expressions that will
+	produce different values depending on the order in which the
+	subexpressions in a combination
+	are evaluated. To eliminate such ambiguities,
+	<INDEX>order of evaluation<SUBINDEX><ORDER>JavaScript</ORDER>in JavaScript</SUBINDEX></INDEX>
+	JavaScript specifies left-to-right evaluation of the
+	subexpressions of combinations and of the argument expressions
+	of applications.
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	代入は、評価規則のステップ1に微妙な問題をもたらします。
+	練習問題<SPACE/><REF NAME="ex:order-of-evaluation"/>で示すように、
+	代入があると、組み合わせの部分式が評価される
+	<INDEX>order of evaluation<SUBINDEX>implementation-dependent</SUBINDEX></INDEX>
+	<INDEX>implementation dependencies<SUBINDEX>order of subexpression evaluation</SUBINDEX></INDEX>
+	順序によって異なる値を生成する式を書くことが可能になります。
+	したがって、厳密には、ステップ1で評価の順序を指定すべきです
+	（例えば、左から右、あるいは右から左）。
+	ただし、この順序は常に実装の詳細とみなすべきであり、
+	特定の順序に依存するプログラムを書くべきではありません。
+	たとえば、洗練されたコンパイラは部分式の評価順序を変更することで
+	プログラムを最適化するかもしれません。
+	ECMAScript 標準仕様では、部分式は左から右へ評価すると定めています。
+      </SCHEME>
+      <JAVASCRIPT>
+	代入は、評価規則のステップ1に微妙な問題をもたらします。
+	練習問題<SPACE/><REF NAME="ex:order-of-evaluation"/>で示すように、
+	代入があると、組み合わせの部分式が評価される順序によって
+	異なる値を生成する式を書くことが可能になります。
+	このような曖昧さを排除するために、
+	<INDEX>order of evaluation<SUBINDEX><ORDER>JavaScript</ORDER>in JavaScript</SUBINDEX></INDEX>
+	JavaScript では組み合わせの部分式と適用の引数式を
+	左から右の順に評価すると定めています。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In the environment model of evaluation, a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    is always a pair consisting of some code and a pointer to an environment. 
+    is always a pair consisting of some code and a pointer to an environment.
     <SPLITINLINE>
       <SCHEME>Procedures</SCHEME>
       <JAVASCRIPT>Functions</JAVASCRIPT>
@@ -120,7 +228,7 @@
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>lambda</JAVASCRIPT>
-    </SPLITINLINE>	
+    </SPLITINLINE>
     expression.
     <INDEX><FUNCTION/><SUBINDEX>creating with <SPLITINLINE><SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME><JAVASCRIPT>lambda expression</JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
     This produces a
@@ -132,12 +240,12 @@
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>lambda</JAVASCRIPT>
-    </SPLITINLINE>	
+    </SPLITINLINE>
     expression and whose environment is the environment in which the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>lambda</JAVASCRIPT>
-    </SPLITINLINE>	
+    </SPLITINLINE>
     expression was evaluated to produce the
     <SPLITINLINE>
       <SCHEME>procedure.</SCHEME>
@@ -148,6 +256,40 @@
       <SCHEME>procedure definition</SCHEME>
       <JAVASCRIPT>function declaration</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    環境モデルによる評価では、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は常に、コードと環境へのポインタからなるペアです。
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が生成される方法はただ一つ、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>ラムダ</JAVASCRIPT>
+    </SPLITINLINE>式を評価することです。
+    <INDEX><FUNCTION/><SUBINDEX>creating with <SPLITINLINE><SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME><JAVASCRIPT>lambda expression</JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
+    これにより<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が生成されます。そのコード部分は<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>ラムダ</JAVASCRIPT>
+    </SPLITINLINE>式のテキストから取得され、環境部分はその<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>ラムダ</JAVASCRIPT>
+    </SPLITINLINE>式が評価されて<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が生成された環境です。
+    たとえば、次の<SPLITINLINE>
+      <SCHEME>手続き定義</SCHEME>
+      <JAVASCRIPT>関数宣言</JAVASCRIPT>
+    </SPLITINLINE>を考えてみましょう。
+    </JA>
+    </BILINGUAL>
     <INDEX><USE>square</USE><SUBINDEX><ORDER>environment</ORDER>in environment model<OPEN/></SUBINDEX></INDEX>
     <SNIPPET EVAL="yes">
       <EXAMPLE>square_example</EXAMPLE>
@@ -162,6 +304,8 @@ function square(x) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     evaluated in the
     <SPLITINLINE>
       <SCHEME>
@@ -188,10 +332,45 @@ function square(x) {
       <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>lambda</JAVASCRIPT>
     </SPLITINLINE>
-    expression.  It would have been equivalent to have used<FOOTNOTE>
+    expression.  It would have been equivalent to have used
+    </EN>
+    <JA>
+    を<SPLITINLINE>
+      <SCHEME>
+	グローバル
+      </SCHEME>
+      <JAVASCRIPT>
+	プログラム
+      </JAVASCRIPT>
+    </SPLITINLINE>環境で評価した場合を考えます。
+    <SPLITINLINE>
+      <SCHEME>手続き定義</SCHEME>
+      <JAVASCRIPT>関数宣言</JAVASCRIPT>
+    </SPLITINLINE>の構文は、暗黙の<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>ラムダ</JAVASCRIPT>
+    </SPLITINLINE>式<SPLITINLINE>
+      <SCHEME>の糖衣構文にすぎません。</SCHEME>
+      <JAVASCRIPT>
+	と等価です。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    次のように書いても同じことです。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
 	Footnote<SPACE/><REF NAME="foot:function-decl-vs-lambda"/> in chapter 1
 	mentions subtle differences between the two in full JavaScript, which
-	we will ignore in this book.</FOOTNOTE>
+	we will ignore in this book.
+    </EN>
+    <JA>
+	第1章の脚注<SPACE/><REF NAME="foot:function-decl-vs-lambda"/>で、
+	完全な JavaScript ではこの2つの間に微妙な違いがあることに触れていますが、
+	本書ではこの違いを無視します。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET EVAL="yes">
       <EXAMPLE>square_example</EXAMPLE>
       <EXPECTED>196</EXPECTED>
@@ -203,6 +382,8 @@ function square(x) {
 const square = x =&gt; x * x;
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     which evaluates
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>(lambda (x) (* x x))</SCHEMEINLINE>
@@ -222,9 +403,29 @@ const square = x =&gt; x * x;
       </JAVASCRIPT>
     </SPLITINLINE>
     environment.
+    </EN>
+    <JA>
+    これは<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(lambda (x) (* x x))</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>x =&gt; x * x</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>を評価し、その結果の値に <SCHEMEINLINE>square</SCHEMEINLINE> を束縛します。これらはすべて<SPLITINLINE>
+      <SCHEME>
+	グローバル
+      </SCHEME>
+      <JAVASCRIPT>
+	プログラム
+      </JAVASCRIPT>
+    </SPLITINLINE>環境の中で行われます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	Figure<SPACE/><REF NAME="fig:evaluating-square_scheme"/>
@@ -246,7 +447,7 @@ const square = x =&gt; x * x;
 	The global environment encloses the program environment. To reduce
 	clutter, after this figure we will not display the global environment
 	(as it is always the same), but we are reminded of its existence by the
-	pointer from the program environment upward. 
+	pointer from the program environment upward.
       </JAVASCRIPT>
     </SPLIT>
     The
@@ -303,7 +504,7 @@ const square = x =&gt; x * x;
       </JAVASCRIPT>
     </SPLITINLINE>
     <SCHEMEINLINE>square</SCHEMEINLINE>, has been added
-    to the program frame. 
+    to the program frame.
     <SPLIT>
       <SCHEME>
         In general, <SCHEMEINLINE>define</SCHEMEINLINE> creates definitions by
@@ -312,6 +513,77 @@ const square = x =&gt; x * x;
       <JAVASCRIPT>
       </JAVASCRIPT>
     </SPLIT>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:evaluating-square_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:evaluating-square"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>は、この
+    <INDEX>declaration<SUBINDEX>environment model of</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>define</SCHEMEINLINE> 式</SCHEME>
+      <JAVASCRIPT>宣言文</JAVASCRIPT>
+    </SPLITINLINE>を評価した結果を示しています。
+    <SPLIT>
+      <SCHEME>
+      </SCHEME>
+      <JAVASCRIPT>
+	グローバル環境はプログラム環境を囲んでいます。
+	図を簡潔にするため、この図以降はグローバル環境を表示しませんが
+	（常に同じなので）、プログラム環境から上向きに伸びるポインタによって
+	その存在を思い出すことができます。
+      </JAVASCRIPT>
+    </SPLIT>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>オブジェクトはペアであり、そのコード部分は、この<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が1つの<SPLITINLINE><SCHEME>仮</SCHEME></SPLITINLINE>パラメータ <SCHEMEINLINE>x</SCHEMEINLINE> を持ち、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>本体が
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(* x x)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>return x * x;</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    であることを示しています。
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の環境部分はプログラム環境へのポインタです。
+    なぜなら、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>ラムダ</JAVASCRIPT>
+    </SPLITINLINE>式が評価されて<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が生成されたのが、その環境だからです。
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>オブジェクトを<SPLITINLINE>
+      <SCHEME>
+	シンボル
+      </SCHEME>
+      <JAVASCRIPT>
+	名前
+      </JAVASCRIPT>
+    </SPLITINLINE> <SCHEMEINLINE>square</SCHEMEINLINE> に関連付ける新しい束縛が、プログラムフレームに追加されました。
+    <SPLIT>
+      <SCHEME>
+	一般に、<SCHEMEINLINE>define</SCHEMEINLINE> はフレームに束縛を追加することで定義を作成します。
+      </SCHEME>
+      <JAVASCRIPT>
+      </JAVASCRIPT>
+    </SPLIT>
+    </JA>
+    </BILINGUAL>
 
     <SPLIT>
       <SCHEME>
@@ -319,9 +591,16 @@ const square = x =&gt; x * x;
           <FIGURE src="img_original/ch3-Z-G-3.svg"  split_scale="0.75"></FIGURE>
           <LABEL NAME="fig:evaluating-square_scheme"/>
           <CAPTION>
+	    <BILINGUAL>
+	    <EN>
 	    Environment structure produced by evaluating
 	  <SCHEMEINLINE>(define (square x) (* x x))</SCHEMEINLINE> in the global
 	  environment.
+	    </EN>
+	    <JA>
+	    <SCHEMEINLINE>(define (square x) (* x x))</SCHEMEINLINE> をグローバル環境で評価して生成される環境構造。
+	    </JA>
+	    </BILINGUAL>
 	  </CAPTION>
         </FIGURE>
       </SCHEME>
@@ -330,9 +609,17 @@ const square = x =&gt; x * x;
           <FIGURE src="img_javascript/ch3-Z-G-3.svg" split_scale="0.75" web_scale="0.5"></FIGURE>
           <LABEL NAME="fig:evaluating-square"/>
           <CAPTION>
+	    <BILINGUAL>
+	    <EN>
 	    Environment structure produced by evaluating
 	    <JAVASCRIPTINLINE>function square(x) { return x * x; }</JAVASCRIPTINLINE>
 	    in the program environment.
+	    </EN>
+	    <JA>
+	    <JAVASCRIPTINLINE>function square(x) { return x * x; }</JAVASCRIPTINLINE>
+	    をプログラム環境で評価して生成される環境構造。
+	    </JA>
+	    </BILINGUAL>
 	  </CAPTION>
         </FIGURE>
       </JAVASCRIPT>
@@ -344,6 +631,8 @@ const square = x =&gt; x * x;
     </SCHEME>
     <JAVASCRIPT>
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	In general, <JAVASCRIPTINLINE>const</JAVASCRIPTINLINE>,
 	<JAVASCRIPTINLINE>function</JAVASCRIPTINLINE>, and
 	<JAVASCRIPTINLINE>let</JAVASCRIPTINLINE>
@@ -354,17 +643,38 @@ const square = x =&gt; x * x;
 	a name is a constant by writing an equal sign after the colon
 	that follows the name.
 	We consider function declarations as equivalent to constant
-	declarations;<FOOTNOTE>We mentioned in
+	declarations;
+	observe the equal signs after the colons in
+	figure<SPACE/><REF NAME="fig:evaluating-square"/>.
+	</EN>
+	<JA>
+	一般に、<JAVASCRIPTINLINE>const</JAVASCRIPTINLINE>、
+	<JAVASCRIPTINLINE>function</JAVASCRIPTINLINE>、
+	<JAVASCRIPTINLINE>let</JAVASCRIPTINLINE>
+	はフレームに束縛を追加します。
+	定数への代入は禁止されているため、環境モデルでは定数を参照する名前と
+	変数を参照する名前を区別する必要があります。
+	名前が定数であることを示すために、名前の後のコロンの後に等号を書きます。
+	関数宣言は定数宣言と等価であるとみなします。
+	図<SPACE/><REF NAME="fig:evaluating-square"/>のコロンの後の等号に注目してください。
+	</JA>
+	</BILINGUAL><FOOTNOTE>
+	<BILINGUAL>
+	<EN>We mentioned in
 	footnote<SPACE/><REF NAME="foot:function-decl-vs-lambda"/>
 	in chapter 1
 	that the full JavaScript language allows assignment to
-	names that are declared with function declarations.</FOOTNOTE>
-	observe the equal signs after the colons in
-	figure<SPACE/><REF NAME="fig:evaluating-square"/>.
+	names that are declared with function declarations.</EN>
+	<JA>第1章の脚注<SPACE/><REF NAME="foot:function-decl-vs-lambda"/>で、
+	完全な JavaScript では関数宣言で宣言された名前への代入が許可されていることに触れました。</JA>
+	</BILINGUAL>
+	</FOOTNOTE>
       </TEXT>
     </JAVASCRIPT>
   </SPLIT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Now that we have seen how
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -392,9 +702,31 @@ const square = x =&gt; x * x;
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     body.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>がどのように生成されるかを見たので、次は<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>がどのように適用されるかを説明します。環境モデルでは次のように規定します。<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を引数に適用するには、パラメータを引数の値に束縛するフレームを含む新しい環境を作成します。このフレームの外側の環境は、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>によって指定された環境です。そして、この新しい環境の中で<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の本体を評価します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To show how this rule is followed,
     <SPLITINLINE>
       <SCHEME>
@@ -451,12 +783,7 @@ const square = x =&gt; x * x;
 	Note that name <SCHEMEINLINE>x</SCHEMEINLINE> in environment E1 is
 	followed by a colon with no equal sign, which indicates
 	that the parameter <SCHEMEINLINE>x</SCHEMEINLINE> is treated as a
-	variable.<FOOTNOTE>This example does not make use of the fact that
-	the parameter <SCHEMEINLINE>x</SCHEMEINLINE> is a variable, but recall the
-	function <JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE> in
-	section<SPACE/><REF NAME="sec:local-state-variables"/>, which relied on
-	its parameter being a variable.
-	</FOOTNOTE>
+	variable.
       </JAVASCRIPT>
     </SPLITINLINE>
     The pointer leading upward from this frame shows that the
@@ -492,6 +819,92 @@ const square = x =&gt; x * x;
       <JAVASCRIPT><JAVASCRIPTINLINE>5 * 5</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
     or<SPACE/>25.
+    </EN>
+    <JA>
+    この規則がどのように適用されるかを示すために、
+    <SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:square5-eval_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:square5-eval"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>に、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(square 5)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>square(5)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    という式を<SPLITINLINE>
+      <SCHEME>グローバル</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>環境で評価したときに生成される環境構造を示します。ここで <SCHEMEINLINE>square</SCHEMEINLINE> は
+    <SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:evaluating-square_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:evaluating-square"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>で生成された<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>です。
+    この<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を適用すると、図で E1 と名付けられた新しい環境が作成されます。この環境は、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の<SPLITINLINE>
+      <SCHEME>仮</SCHEME>
+    </SPLITINLINE>パラメータ <SCHEMEINLINE>x</SCHEMEINLINE> が引数 5 に束縛されたフレームから始まります。
+    <SPLITINLINE>
+      <JAVASCRIPT>
+	環境 E1 における名前 <SCHEMEINLINE>x</SCHEMEINLINE> の後に等号のないコロンが付いていることに注目してください。これはパラメータ <SCHEMEINLINE>x</SCHEMEINLINE> が変数として扱われることを示しています。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    このフレームから上向きに伸びるポインタは、フレームの外側の環境が<SPLITINLINE>
+      <SCHEME>グローバル</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>環境であることを示しています。<SPLITINLINE>
+      <SCHEME>グローバル</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>環境が選ばれるのは、それが <SCHEMEINLINE>square</SCHEMEINLINE> <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>オブジェクトの一部として示されている環境だからです。E1 の中で、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の本体
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(* x x)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>return x * x;</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を評価します。
+    E1 での <SCHEMEINLINE>x</SCHEMEINLINE> の値は 5 なので、結果は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(*<SPACE/>5<SPACE/>5)</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>5 * 5</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    すなわち<SPACE/>25 です。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    This example does not make use of the fact that
+    the parameter <SCHEMEINLINE>x</SCHEMEINLINE> is a variable, but recall the
+    function <JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE> in
+    section<SPACE/><REF NAME="sec:local-state-variables"/>, which relied on
+    its parameter being a variable.
+    </EN>
+    <JA>
+    この例ではパラメータ <SCHEMEINLINE>x</SCHEMEINLINE> が変数であるという事実を利用していませんが、
+    <SPACE/><REF NAME="sec:local-state-variables"/>節の関数
+    <JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE> では、パラメータが変数であることに
+    依存していたことを思い出してください。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <INDEX><USE>square</USE><SUBINDEX><ORDER>environment</ORDER>in environment model<CLOSE/></SUBINDEX></INDEX>
     <SPLIT>
       <SCHEME>
@@ -499,8 +912,15 @@ const square = x =&gt; x * x;
           <FIGURE src="img_original/ch3-Z-G-4.svg"></FIGURE>
           <LABEL NAME="fig:square5-eval_scheme"/>
           <CAPTION>
+	    <BILINGUAL>
+	    <EN>
 	    Environment created by evaluating
 	    <SCHEMEINLINE>(square 5)</SCHEMEINLINE> in the global environment.
+	    </EN>
+	    <JA>
+	    <SCHEMEINLINE>(square 5)</SCHEMEINLINE> をグローバル環境で評価して作成される環境。
+	    </JA>
+	    </BILINGUAL>
 	  </CAPTION>
         </FIGURE>
       </SCHEME>
@@ -509,9 +929,17 @@ const square = x =&gt; x * x;
           <FIGURE src="img_javascript/ch3-Z-G-4.svg"></FIGURE>
           <LABEL NAME="fig:square5-eval"/>
           <CAPTION>
+	    <BILINGUAL>
+	    <EN>
 	    Environment created by evaluating
 	    <JAVASCRIPTINLINE>square(5)</JAVASCRIPTINLINE>
 	    in the program environment.
+	    </EN>
+	    <JA>
+	    <JAVASCRIPTINLINE>square(5)</JAVASCRIPTINLINE>
+	    をプログラム環境で評価して作成される環境。
+	    </JA>
+	    </BILINGUAL>
 	  </CAPTION>
         </FIGURE>
       </JAVASCRIPT>
@@ -519,6 +947,8 @@ const square = x =&gt; x * x;
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The environment model of
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -533,7 +963,7 @@ const square = x =&gt; x * x;
 	  <SCHEME>procedure</SCHEME>
 	  <JAVASCRIPT>function</JAVASCRIPT>
 	</SPLITINLINE>
-	object is applied to a set of arguments by constructing a frame, 
+	object is applied to a set of arguments by constructing a frame,
 	<SPLITINLINE>
 	  <SCHEME>binding the formal parameters of the procedure</SCHEME>
 	  <JAVASCRIPT>binding the parameters of the function</JAVASCRIPT>
@@ -560,7 +990,7 @@ const square = x =&gt; x * x;
 	  <SCHEME>procedure</SCHEME>
 	  <JAVASCRIPT>function</JAVASCRIPT>
 	</SPLITINLINE>
-	is created by evaluating a 
+	is created by evaluating a
 	<INDEX><FUNCTION/><SUBINDEX>creating with <SPLITINLINE><SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME><JAVASCRIPT>lambda expression</JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
 	<SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
@@ -585,6 +1015,54 @@ const square = x =&gt; x * x;
 	was created.
       </LI>
     </UL>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>適用の環境モデルは、2つのルールにまとめることができます。
+    <UL>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>オブジェクトを引数の集合に適用するには、フレームを構築し、<SPLITINLINE>
+	  <SCHEME>手続きの仮パラメータ</SCHEME>
+	  <JAVASCRIPT>関数のパラメータ</JAVASCRIPT>
+	</SPLITINLINE>を呼び出しの引数に束縛し、構築された新しい環境のコンテキストで<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>の本体を評価します。新しいフレームの外側の環境は、適用される<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>オブジェクトの環境部分です。
+	適用の結果は、関数本体を評価する間に最初に出会った return 文の return 式を評価した結果です。
+      </LI>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>は、与えられた環境に対して
+	<INDEX><FUNCTION/><SUBINDEX>creating with <SPLITINLINE><SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME><JAVASCRIPT>lambda expression</JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT>ラムダ</JAVASCRIPT>
+	</SPLITINLINE>式を評価することで生成されます。生成される
+	<INDEX>lambda expression<SUBINDEX>value of</SUBINDEX></INDEX>
+	<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>オブジェクトは、<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT>ラムダ</JAVASCRIPT>
+	</SPLITINLINE>式のテキストと、その<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>が生成された環境へのポインタからなるペアです。
+      </LI>
+    </UL>
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
@@ -616,6 +1094,8 @@ const square = x =&gt; x * x;
 	<SCHEMEINLINE>set!</SCHEMEINLINE> signals an error.
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	<INDEX>assignment<SUBINDEX>evaluation of</SUBINDEX></INDEX>
 	Finally, we specify the behavior of assignment, the operation that
 	forced us to introduce the environment model in the first place.
@@ -628,7 +1108,7 @@ const square = x =&gt; x * x;
 	If the binding is a variable binding<EMDASH/>indicated in the frame by
 	just <JAVASCRIPTINLINE>:</JAVASCRIPTINLINE>
 	after the name<EMDASH/>that binding is changed to reflect the new
-	value of the variable. 
+	value of the variable.
 	Otherwise, if the binding in the frame is a constant
 	binding<EMDASH/>indicated
 	in the frame by <JAVASCRIPTINLINE>:=</JAVASCRIPTINLINE>
@@ -637,11 +1117,32 @@ const square = x =&gt; x * x;
 	If the name is unbound in the environment, then
 	the assignment signals a
 	<JAVASCRIPTINLINE>"variable undeclared"</JAVASCRIPTINLINE> error.
+	</EN>
+	<JA>
+	<INDEX>assignment<SUBINDEX>evaluation of</SUBINDEX></INDEX>
+	最後に、そもそも環境モデルを導入するきっかけとなった演算である代入の動作を規定します。
+	ある環境で式
+	<META>name</META><SPACE/><JAVASCRIPTINLINE>=</JAVASCRIPTINLINE><SPACE/><META>value</META>
+	を評価すると、その環境の中でその名前の束縛を探します。
+	つまり、その名前の束縛を含む最初のフレームを見つけます。
+	その束縛が変数の束縛<EMDASH/>フレーム内で名前の後に
+	<JAVASCRIPTINLINE>:</JAVASCRIPTINLINE>
+	だけが付いているもの<EMDASH/>であれば、その束縛は変数の新しい値を反映するように変更されます。
+	一方、フレーム内の束縛が定数の束縛<EMDASH/>フレーム内で名前の後に
+	<JAVASCRIPTINLINE>:=</JAVASCRIPTINLINE>
+	が付いているもの<EMDASH/>であれば、代入は
+	<JAVASCRIPTINLINE>"assignment to constant"</JAVASCRIPTINLINE> エラーを発生させます。
+	その名前が環境内で未束縛であれば、代入は
+	<JAVASCRIPTINLINE>"variable undeclared"</JAVASCRIPTINLINE> エラーを発生させます。
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     These evaluation rules, though considerably more complex than the
     substitution model, are still reasonably straightforward.  Moreover,
     the evaluation model, though abstract, provides a correct description
@@ -649,6 +1150,11 @@ const square = x =&gt; x * x;
     see how this model can serve as a blueprint for implementing a working
     interpreter.  The following sections elaborate the details of the
     model by analyzing some illustrative programs.
+    </EN>
+    <JA>
+    これらの評価規則は、置換モデルよりもかなり複雑ですが、それでも十分に理解しやすいものです。さらに、この評価モデルは抽象的ではありますが、インタプリタが式をどのように評価するかの正確な記述を提供しています。第<SPACE/><REF NAME="chap:meta"></REF>章では、このモデルが実際に動作するインタプリタを実装するための設計図としてどのように機能するかを見ていきます。以降の節では、いくつかの具体的なプログラムを分析することで、このモデルの詳細を掘り下げていきます。
+    </JA>
+    </BILINGUAL>
     <INDEX>environment model of evaluation<SUBINDEX>rules for evaluation<CLOSE/></SUBINDEX></INDEX>
   </TEXT>
 </SUBSECTION>

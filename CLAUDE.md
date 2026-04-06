@@ -125,7 +125,13 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 3.1.1 Local State Variables
 - [x] Section 3.1.2 The Benefits of Introducing Assignment
 - [x] Section 3.1.3 The Costs of Introducing Assignment
-- [ ] Chapter 3 (残り: 3.2〜3.5)〜5
+- [x] Section 3.2 The Environment Model of Evaluation (導入部)
+- [x] Section 3.2.1 The Rules for Evaluation
+- [x] Section 3.2.2 Applying Simple Functions
+- [x] Section 3.2.3 Frames as the Repository of Local State
+- [x] Section 3.2.4 Internal Declarations
+- [x] Section 3.2.5 CSE Machine
+- [ ] Chapter 3 (残り: 3.3〜3.5)〜5
 
 ## インライン実行
 

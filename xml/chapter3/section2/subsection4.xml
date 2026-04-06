@@ -1,11 +1,21 @@
 <SUBSECTION> 
   <LONG_PAGE lines="2"/>
   <NAME>
+    <BILINGUAL>
+    <EN>
     Internal
     <SPLITINLINE>
       <SCHEME>Definitions</SCHEME>
       <JAVASCRIPT>Declarations</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    内部<SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:env-internal-def"/>
@@ -16,6 +26,8 @@
   <SPLIT>
     <JAVASCRIPT>
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	In this section we handle the evaluation of function bodies or other
 	blocks (such as the branches of conditional statements) that contain
 	declarations.
@@ -24,10 +36,20 @@
 	environment by a new frame that contains all names declared directly
 	(that is, outside of nested blocks) in the body of the block and
 	then evaluate the body in the newly constructed environment.
+	</EN>
+	<JA>
+	この節では、宣言を含む関数本体やその他のブロック（条件文の分岐など）の評価を扱います。
+	各ブロックは、そのブロック内で宣言された名前のための新しいスコープを開きます。
+	与えられた環境でブロックを評価するには、ブロック本体で直接宣言されている（つまり、入れ子のブロックの外にある）すべての名前を含む新しいフレームでその環境を拡張し、
+	新しく構築された環境でブロック本体を評価します。
+	</JA>
+	</BILINGUAL>
       </TEXT>
     </JAVASCRIPT>
   </SPLIT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Section<SPACE/><REF NAME="sec:black-box"/> introduced the idea that
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -50,6 +72,23 @@
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     to compute square roots:
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が内部<SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>を持てるという考え方は、節<SPACE/><REF NAME="sec:black-box"/>で導入しました。
+    これにより、次の平方根を計算する
+    <INDEX><USE>sqrt</USE><SUBINDEX><ORDER>environment</ORDER>in environment model<OPEN/></SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>のようなブロック構造が生まれます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <NAME>another_sqrt</NAME>
       <REQUIRES>abs_definition</REQUIRES>
@@ -86,6 +125,8 @@ function sqrt(x) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Now we can use the environment model to see why these internal
     <SPLITINLINE>
       <SCHEME>
@@ -120,6 +161,35 @@ function sqrt(x) {
     </SPLITINLINE>
     has been called for the first time with
     <SCHEMEINLINE>guess</SCHEMEINLINE> equal to<SPACE/>1.
+    </EN>
+    <JA>
+    これで、環境モデルを使って、これらの内部<SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>が期待通りに動作する理由を確認できます。
+    <SPLITINLINE>
+      <SCHEME>
+    図<SPACE/><REF NAME="fig:sqrt-internal_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+    図<SPACE/><REF NAME="fig:sqrt-internal"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>は、式
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(sqrt 2)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sqrt(2)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の評価において、内部<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>good-enough?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_good_enough</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が <SCHEMEINLINE>guess</SCHEMEINLINE> の値を<SPACE/>1 として初めて呼び出された時点を示しています。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
         <FIGURE>
@@ -134,9 +204,16 @@ function sqrt(x) {
       <JAVASCRIPT>
         <FIGURE>
           <FIGURE src="img_javascript/ch3-Z-G-12.svg"></FIGURE>
-          <CAPTION>The
+          <CAPTION>
+	  <BILINGUAL>
+	  <EN>The
 	    <SCHEMEINLINE>sqrt</SCHEMEINLINE> function with internal
 	    declarations.
+	  </EN>
+	  <JA>内部宣言を持つ
+	    <SCHEMEINLINE>sqrt</SCHEMEINLINE> 関数。
+	  </JA>
+	  </BILINGUAL>
 	  </CAPTION>
           <LABEL NAME="fig:sqrt-internal"/>
         </FIGURE>
@@ -145,6 +222,8 @@ function sqrt(x) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Observe the structure of the environment.
     <SPLITINLINE>
       <SCHEME>
@@ -177,7 +256,7 @@ function sqrt(x) {
     </SPLITINLINE>
     environment, in which the parameter <SCHEMEINLINE>x</SCHEMEINLINE> is bound
     to<SPACE/>2. The body of <SCHEMEINLINE>sqrt</SCHEMEINLINE> was then
-    evaluated in<SPACE/>E1. 
+    evaluated in<SPACE/>E1.
     <SPLIT>
       <SCHEME>
 	Since the first expression
@@ -191,6 +270,42 @@ function sqrt(x) {
 	in the body is
       </JAVASCRIPT>
     </SPLIT>
+    </EN>
+    <JA>
+    環境の構造を観察しましょう。
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>Sqrt</SCHEMEINLINE> は
+	グローバル環境のシンボルであり、
+      </SCHEME>
+      <JAVASCRIPT>
+      名前 <SCHEMEINLINE>sqrt</SCHEMEINLINE> はプログラム環境で
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>グローバル</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>環境を関連環境として持つ<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>オブジェクトに束縛されています。
+    <SCHEMEINLINE>sqrt</SCHEMEINLINE> が呼び出されると、
+    <SPLITINLINE>
+      <SCHEME>グローバル</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>環境に従属する新しい環境 E1 が作られ、その中でパラメータ <SCHEMEINLINE>x</SCHEMEINLINE> が<SPACE/>2 に束縛されます。
+    そして <SCHEMEINLINE>sqrt</SCHEMEINLINE> の本体が E1 で評価されます。
+    <SPLIT>
+      <SCHEME>
+	<SCHEMEINLINE>sqrt</SCHEMEINLINE> の本体の最初の式は
+      </SCHEME>
+      <JAVASCRIPT>
+	その本体はローカルな関数宣言を含むブロックであるため、E1 はそれらの宣言のための新しいフレームで拡張され、新しい環境 E2 が生まれます。
+	そのブロック本体は E2 で評価されます。本体の最初の文は
+      </JAVASCRIPT>
+    </SPLIT>
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <REQUIRES>abs_definition</REQUIRES>
       <REQUIRES>square_definition</REQUIRES>
@@ -204,6 +319,8 @@ function is_good_enough(guess) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     <SPLIT>
       <SCHEME>
 	evaluating this expression defined the procedure
@@ -218,20 +335,20 @@ function is_good_enough(guess) {
     </SPLIT>
     <SPLIT>
       <SCHEME>
-	To<SPACE/>be more precise, the symbol 
+	To<SPACE/>be more precise, the symbol
 	<SCHEMEINLINE>good-enough?</SCHEMEINLINE> was added to the first frame
 	of E1, bound to a procedure
 	object whose associated environment is E1.
       </SCHEME>
       <JAVASCRIPT>
-	To<SPACE/>be more precise, 
+	To<SPACE/>be more precise,
 	the name <JAVASCRIPTINLINE>is_good_enough</JAVASCRIPTINLINE>
 	in the first frame of E2 was bound to a function
 	object whose associated environment is E2.
       </JAVASCRIPT>
     </SPLIT>
     Similarly,
-    <SCHEMEINLINE>improve</SCHEMEINLINE> and 
+    <SCHEMEINLINE>improve</SCHEMEINLINE> and
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>sqrt-iter</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>sqrt_iter</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -255,14 +372,72 @@ function is_good_enough(guess) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    object for 
+    object for
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>good-enough?</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>is_good_enough</JAVASCRIPTINLINE>.</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLIT>
+      <SCHEME>
+	この式を評価すると、環境<SPACE/>E1 で手続き
+	<SCHEMEINLINE>good-enough?</SCHEMEINLINE>
+	が定義されます。
+      </SCHEME>
+      <JAVASCRIPT>
+	この宣言を評価すると、環境<SPACE/>E2 で関数
+	<JAVASCRIPTINLINE>is_good_enough</JAVASCRIPTINLINE>
+	が作成されます。
+      </JAVASCRIPT>
+    </SPLIT>
+    <SPLIT>
+      <SCHEME>
+	より正確には、シンボル
+	<SCHEMEINLINE>good-enough?</SCHEMEINLINE> が E1 の最初のフレームに追加され、
+	E1 を関連環境とする手続きオブジェクトに束縛されます。
+      </SCHEME>
+      <JAVASCRIPT>
+	より正確には、E2 の最初のフレームにある名前
+	<JAVASCRIPTINLINE>is_good_enough</JAVASCRIPTINLINE>
+	が、E2 を関連環境とする関数オブジェクトに束縛されます。
+      </JAVASCRIPT>
+    </SPLIT>
+    同様に、<SCHEMEINLINE>improve</SCHEMEINLINE> と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sqrt-iter</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sqrt_iter</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    も
+    <SPLITINLINE>
+      <SCHEME>E1 で手続きとして定義されます。</SCHEME>
+      <JAVASCRIPT>E2 で関数として定義されます。</JAVASCRIPT>
+    </SPLITINLINE>
+    簡潔さのため、
+    <SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:sqrt-internal_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:sqrt-internal"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    では
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>good-enough?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_good_enough</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>オブジェクトのみを示しています。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     After the local
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -284,7 +459,7 @@ function is_good_enough(guess) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    object bound to 
+    object bound to
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>sqrt-iter</SCHEMEINLINE>
       in E1 was called with 1 as an argument.  This created an environment E2
@@ -295,18 +470,18 @@ function is_good_enough(guess) {
       in which
       </JAVASCRIPT>
     </SPLITINLINE>
-    <SCHEMEINLINE>guess</SCHEMEINLINE>, the parameter of 
+    <SCHEMEINLINE>guess</SCHEMEINLINE>, the parameter of
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>sqrt-iter</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>sqrt_@iter</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
-    is bound to 1.  
+    is bound to 1.
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>sqrt-iter</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The function <JAVASCRIPTINLINE>sqrt_@iter</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    in turn called 
+    in turn called
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>good-enough?</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>is_@good_@enough</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -314,11 +489,11 @@ function is_good_enough(guess) {
     with the value of <SCHEMEINLINE>guess</SCHEMEINLINE>
     <SPLITINLINE>
       <SCHEME>
-	(from E2) as the argument for 
+	(from E2) as the argument for
 	<SCHEMEINLINE>good-enough?</SCHEMEINLINE>.
       </SCHEME>
       <JAVASCRIPT>
-	(from E3) as the argument for 
+	(from E3) as the argument for
 	<JAVASCRIPTINLINE>is_@good_@enough</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
     </SPLITINLINE>
@@ -326,21 +501,21 @@ function is_good_enough(guess) {
     <SPLITINLINE>
       <SCHEME>
 	E3, in which
-	<SCHEMEINLINE>guess</SCHEMEINLINE> (the parameter of 
+	<SCHEMEINLINE>guess</SCHEMEINLINE> (the parameter of
 	<SCHEMEINLINE>good-enough?</SCHEMEINLINE>)
       </SCHEME>
       <JAVASCRIPT>
 	E4, in which
-	<SCHEMEINLINE>guess</SCHEMEINLINE> (the parameter of 
+	<SCHEMEINLINE>guess</SCHEMEINLINE> (the parameter of
 	<JAVASCRIPTINLINE>is_@good_@enough</JAVASCRIPTINLINE>)
       </JAVASCRIPT>
     </SPLITINLINE>
-    is bound to 1. Although 
+    is bound to 1. Although
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>sqrt-iter</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>sqrt_@iter</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    and 
+    and
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>good-enough?</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>is_@good_@enough</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -349,15 +524,15 @@ function is_good_enough(guess) {
     distinct local variables located in different frames.
     <SPLIT>
       <SCHEME>
-	Also, E2 and E3 both have E1 as their enclosing environment, because the 
-	<SCHEMEINLINE>sqrt-iter</SCHEMEINLINE> and 
+	Also, E2 and E3 both have E1 as their enclosing environment, because the
+	<SCHEMEINLINE>sqrt-iter</SCHEMEINLINE> and
 	<SCHEMEINLINE>good-enough?</SCHEMEINLINE> procedures
 	both have E1 as their environment part.
       </SCHEME>
       <JAVASCRIPT>
-	Also, E3 and E4 both have E2 as their enclosing environment, because the 
+	Also, E3 and E4 both have E2 as their enclosing environment, because the
 	<JAVASCRIPT><JAVASCRIPTINLINE>sqrt_@iter</JAVASCRIPTINLINE></JAVASCRIPT>
-	and 
+	and
 	<JAVASCRIPTINLINE>is_@good_@enough</JAVASCRIPTINLINE> functions
 	both have E2 as their environment part.
       </JAVASCRIPT>
@@ -371,7 +546,7 @@ function is_good_enough(guess) {
 	name
       </JAVASCRIPT>
     </SPLITINLINE>
-    <SCHEMEINLINE>x</SCHEMEINLINE> that appears in the body of 
+    <SCHEMEINLINE>x</SCHEMEINLINE> that appears in the body of
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>good-enough?</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>is_@good_@enough</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -385,9 +560,113 @@ function is_good_enough(guess) {
     </SPLITINLINE>
     was called.
     <INDEX><USE>sqrt</USE><SUBINDEX><ORDER>environment</ORDER>in environment model<CLOSE/></SUBINDEX></INDEX>
+    </EN>
+    <JA>
+    ローカルな<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が定義された後、式
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(sqrt-iter 1.0)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sqrt_@iter(1)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    が、引き続き環境
+    <SPLITINLINE>
+      <SCHEME>E1</SCHEME>
+      <JAVASCRIPT>E2</JAVASCRIPT>
+    </SPLITINLINE>
+    で評価されます。
+    そこで、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sqrt-iter</SCHEMEINLINE>
+      に束縛された E1 内の手続きオブジェクトが、1 を引数として呼び出されます。これにより環境 E2 が作られ、その中で
+      </SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sqrt_@iter</JAVASCRIPTINLINE>
+      に束縛された E2 内の関数オブジェクトが、1 を引数として呼び出されます。これにより環境 E3 が作られ、その中で
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sqrt-iter</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sqrt_@iter</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    のパラメータ <SCHEMEINLINE>guess</SCHEMEINLINE> が 1 に束縛されます。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sqrt-iter</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>sqrt_@iter</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は次に
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>good-enough?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_@good_@enough</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を、<SCHEMEINLINE>guess</SCHEMEINLINE> の値
+    <SPLITINLINE>
+      <SCHEME>
+	（E2 から取得）を <SCHEMEINLINE>good-enough?</SCHEMEINLINE> の引数として呼び出します。
+      </SCHEME>
+      <JAVASCRIPT>
+	（E3 から取得）を <JAVASCRIPTINLINE>is_@good_@enough</JAVASCRIPTINLINE> の引数として呼び出します。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    これによりまた別の環境、
+    <SPLITINLINE>
+      <SCHEME>
+	E3 が構築され、その中で
+	<SCHEMEINLINE>guess</SCHEMEINLINE>（<SCHEMEINLINE>good-enough?</SCHEMEINLINE> のパラメータ）
+      </SCHEME>
+      <JAVASCRIPT>
+	E4 が構築され、その中で
+	<SCHEMEINLINE>guess</SCHEMEINLINE>（<JAVASCRIPTINLINE>is_@good_@enough</JAVASCRIPTINLINE> のパラメータ）
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    が 1 に束縛されます。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sqrt-iter</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sqrt_@iter</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>good-enough?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_@good_@enough</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    はどちらも <SCHEMEINLINE>guess</SCHEMEINLINE> という名前のパラメータを持っていますが、これらは異なるフレームにある 2 つの別々のローカル変数です。
+    <SPLIT>
+      <SCHEME>
+	また、E2 と E3 はどちらも E1 を外側の環境として持っています。なぜなら、
+	<SCHEMEINLINE>sqrt-iter</SCHEMEINLINE> と
+	<SCHEMEINLINE>good-enough?</SCHEMEINLINE> の手続きはどちらも環境部分として E1 を持っているからです。
+      </SCHEME>
+      <JAVASCRIPT>
+	また、E3 と E4 はどちらも E2 を外側の環境として持っています。なぜなら、
+	<JAVASCRIPT><JAVASCRIPTINLINE>sqrt_@iter</JAVASCRIPTINLINE></JAVASCRIPT>
+	と
+	<JAVASCRIPTINLINE>is_@good_@enough</JAVASCRIPTINLINE> の関数はどちらも環境部分として E2 を持っているからです。
+      </JAVASCRIPT>
+    </SPLIT>
+    この結果として、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>good-enough?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_@good_@enough</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の本体に現れる<SPLITINLINE>
+      <SCHEME>シンボル</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>x</SCHEMEINLINE> は、E1 に現れる <SCHEMEINLINE>x</SCHEMEINLINE> の束縛、すなわち元の <SCHEMEINLINE>sqrt</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が呼び出されたときの <SCHEMEINLINE>x</SCHEMEINLINE> の値を参照します。
+    <INDEX><USE>sqrt</USE><SUBINDEX><ORDER>environment</ORDER>in environment model<CLOSE/></SUBINDEX></INDEX>
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The environment model thus explains the two key properties that make local
     <SPLITINLINE>
       <SCHEME>procedure definitions</SCHEME>
@@ -454,8 +733,58 @@ function is_good_enough(guess) {
 	</SPLITINLINE>
       </LI>
     </UL>
+    </EN>
+    <JA>
+    環境モデルは、ローカルな<SPLITINLINE>
+      <SCHEME>手続き定義</SCHEME>
+      <JAVASCRIPT>関数宣言</JAVASCRIPT>
+    </SPLITINLINE>をプログラムのモジュール化に有用な技法にしている 2 つの重要な性質を説明します：
+    <UL>
+      <LI>
+	ローカルな<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>の名前は、それを囲む<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>の外部の名前と干渉しません。
+	なぜなら、ローカルな<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>の名前は、<SPLITINLINE>
+	  <SCHEME>手続きが実行されるときに作られる</SCHEME>
+	  <JAVASCRIPT>ブロックが評価されるときに作られる</JAVASCRIPT>
+	</SPLITINLINE>フレーム内で束縛され、<SPLITINLINE>
+	  <SCHEME>グローバル</SCHEME>
+	  <JAVASCRIPT>プログラム</JAVASCRIPT>
+	</SPLITINLINE>環境では束縛されないからです。
+      </LI>
+      <LI>
+	ローカルな<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>は、パラメータ名を自由な<SPLITINLINE>
+	  <SCHEME>変数</SCHEME>
+	  <JAVASCRIPT>名前</JAVASCRIPT>
+	</SPLITINLINE>として使うだけで、それを囲む<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>の引数にアクセスできます。
+	これは、ローカルな<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>の本体が、それを囲む<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>の評価環境に従属する環境で評価されるからです。
+      </LI>
+    </UL>
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     In section<SPACE/><REF NAME="sec:env-local-state"/> we saw how the
     environment model described the behavior of
     <SPLITINLINE>
@@ -487,6 +816,29 @@ function is_good_enough(guess) {
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     of section<SPACE/><REF NAME="sec:local-state-variables"/>:
+    </EN>
+    <JA>
+    節<SPACE/><REF NAME="sec:env-local-state"/>では、環境モデルがローカル状態を持つ<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の振る舞いをどのように記述するかを見ました。そして今、内部<SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>がどのように機能するかを見ました。
+    <INDEX>environment model of evaluation<SUBINDEX>message passing</SUBINDEX></INDEX>
+    <INDEX>message passing<SUBINDEX>environment model and</SUBINDEX></INDEX>
+    典型的なメッセージパッシング<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、これら両方の側面を含んでいます。
+    節<SPACE/><REF NAME="sec:local-state-variables"/>の
+    <INDEX>bank account</INDEX>
+    銀行口座<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を考えましょう：
+    </JA>
+    </BILINGUAL>
     <SHORT_PAGE lines="1"/>
     <SNIPPET EVAL="yes">
       <INDEX><USE>make_account</USE><SUBINDEX><ORDER>environment</ORDER>in environment model</SUBINDEX><FRAGILE/></INDEX>
@@ -535,8 +887,15 @@ function make_account(balance) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Show the environment structure generated by the sequence of
     interactions
+    </EN>
+    <JA>
+    以下の一連の操作で生成される環境構造を示してください。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <NAME>another_make_account_example</NAME>
       <SCHEME>
@@ -580,9 +939,17 @@ acc("withdraw")(60);
 30
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Where is the local state for <SCHEMEINLINE>acc</SCHEMEINLINE> kept?
     Suppose we define another account
-    <SNIPPET EVAL="no"> 
+    </EN>
+    <JA>
+    <SCHEMEINLINE>acc</SCHEMEINLINE> のローカル状態はどこに保持されていますか？
+    もう一つの口座を定義したとしましょう。
+    </JA>
+    </BILINGUAL>
+    <SNIPPET EVAL="no">
       <SCHEME>
             (define acc2 (make-account 100))
       </SCHEME>
@@ -590,15 +957,25 @@ acc("withdraw")(60);
 const acc2 = make_account(100);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     How are the local states for the two accounts kept distinct?  Which parts
     of the environment structure are shared between
     <SCHEMEINLINE>acc</SCHEMEINLINE> and <SCHEMEINLINE>acc2</SCHEMEINLINE>?
+    </EN>
+    <JA>
+    2 つの口座のローカル状態はどのように区別されていますか？ 環境構造のどの部分が
+    <SCHEMEINLINE>acc</SCHEMEINLINE> と <SCHEMEINLINE>acc2</SCHEMEINLINE> の間で共有されていますか？
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:two-accounts"/>
   </EXERCISE>
 
-  <SUBHEADING><NAME>More about blocks</NAME></SUBHEADING>
+  <SUBHEADING><NAME><BILINGUAL><EN>More about blocks</EN><JA>ブロックについてもう少し</JA></BILINGUAL></NAME></SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     As we saw, the scope of the names declared in
     <JAVASCRIPTINLINE>sqrt</JAVASCRIPTINLINE> is the whole body of
     <JAVASCRIPTINLINE>sqrt</JAVASCRIPTINLINE>. This explains why
@@ -607,6 +984,15 @@ const acc2 = make_account(100);
     <EM>mutual recursion</EM> works, as in this (quite
     wasteful) way of checking whether a nonnegative
     integer is even.
+    </EN>
+    <JA>
+    先に見たように、<JAVASCRIPTINLINE>sqrt</JAVASCRIPTINLINE> 内で宣言された名前のスコープは
+    <JAVASCRIPTINLINE>sqrt</JAVASCRIPTINLINE> の本体全体です。これにより、
+    <INDEX>mutual recursion</INDEX>
+    <INDEX>recursion<SUBINDEX>mutual</SUBINDEX></INDEX>
+    <EM>相互再帰</EM>が機能する理由が説明できます。例えば、非負整数が偶数かどうかを調べる次の（かなり無駄な）方法がそうです。
+    </JA>
+    </BILINGUAL>
     <SNIPPET LATEX="yes">
       <NAME>f_is_even_is_odd</NAME>
       <JAVASCRIPT>
@@ -625,7 +1011,9 @@ function f(x) {
 }
       </JAVASCRIPT>
     </SNIPPET>
-    At the time when 
+    <BILINGUAL>
+    <EN>
+    At the time when
     <JAVASCRIPTINLINE>is_even</JAVASCRIPTINLINE> is called during a call to
     <JAVASCRIPTINLINE>f</JAVASCRIPTINLINE>, the environment diagram looks
     like the one in figure<SPACE/><REF NAME="fig:sqrt-internal"/> when
@@ -647,8 +1035,28 @@ function f(x) {
     and the name
     <JAVASCRIPTINLINE>sqrt_iter</JAVASCRIPTINLINE>
     itself refer to the right functions.
+    </EN>
+    <JA>
+    <JAVASCRIPTINLINE>f</JAVASCRIPTINLINE> の呼び出し中に
+    <JAVASCRIPTINLINE>is_even</JAVASCRIPTINLINE> が呼び出される時点で、環境図は
+    <JAVASCRIPTINLINE>sqrt_iter</JAVASCRIPTINLINE> が呼び出されるときの図<SPACE/><REF NAME="fig:sqrt-internal"/>と同じように見えます。
+    関数 <JAVASCRIPTINLINE>is_even</JAVASCRIPTINLINE> と
+    <JAVASCRIPTINLINE>is_odd</JAVASCRIPTINLINE> は E2 で関数オブジェクトに束縛されており、
+    それらの関数オブジェクトは呼び出しを評価する環境として E2 を指しています。
+    したがって、<JAVASCRIPTINLINE>is_even</JAVASCRIPTINLINE> の本体にある
+    <JAVASCRIPTINLINE>is_odd</JAVASCRIPTINLINE> は正しい関数を参照します。
+    <JAVASCRIPTINLINE>is_odd</JAVASCRIPTINLINE> は
+    <JAVASCRIPTINLINE>is_even</JAVASCRIPTINLINE> の後に定義されていますが、
+    これは <JAVASCRIPTINLINE>sqrt_iter</JAVASCRIPTINLINE> の本体で名前
+    <JAVASCRIPTINLINE>improve</JAVASCRIPTINLINE> や名前
+    <JAVASCRIPTINLINE>sqrt_iter</JAVASCRIPTINLINE>
+    自身が正しい関数を参照するのと変わりありません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Equipped with a way to handle declarations within blocks, we can
     revisit declarations of names at the top level. In
     section<SPACE/><REF NAME="sec:env-model-rules"/>, we saw
@@ -663,8 +1071,22 @@ function f(x) {
     environment is the
     <INDEX>program environment</INDEX>
     program environment.
+    </EN>
+    <JA>
+    ブロック内の宣言を処理する方法を手に入れたので、トップレベルでの名前の宣言を再検討できます。
+    節<SPACE/><REF NAME="sec:env-model-rules"/>では、トップレベルで宣言された名前がプログラムフレームに追加されることを見ました。
+    より適切な説明は、プログラム全体が暗黙のブロックに入れられ、それがグローバル環境で評価されるということです。
+    上で述べたブロックの扱い方がそのままトップレベルに適用されます。
+    つまり、グローバル環境が、暗黙のブロック内で宣言されたすべての名前の束縛を含むフレームで拡張されます。
+    そのフレームがプログラムフレームであり、結果として得られる環境が
+    <INDEX>program environment</INDEX>
+    プログラム環境です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We said that a block<APOS/>s body is evaluated in an environment that
     contains all names declared directly in the body of the block.
     A locally declared name is put into the environment when the block is
@@ -677,15 +1099,39 @@ function f(x) {
     is in the scope of the name, an erroneous program could attempt to
     <INDEX>declaration<SUBINDEX>use of name before</SUBINDEX></INDEX>
     access the value of a name before its declaration is evaluated;
-    the evaluation of an unassigned name signals an error.<FOOTNOTE>
+    the evaluation of an unassigned name signals an error.
+    </EN>
+    <JA>
+    ブロックの本体は、そのブロック本体で直接宣言されたすべての名前を含む環境で評価されると述べました。
+    ローカルに宣言された名前は、ブロックに入ったときに環境に追加されますが、値は関連付けられていません。
+    ブロック本体の評価中にその宣言が評価されると、<JAVASCRIPTINLINE>=</JAVASCRIPTINLINE> の右側の式を評価した結果がその名前に割り当てられます。
+    これは宣言が代入であるかのように動作します。
+    名前の環境への追加と宣言の評価は別々であり、ブロック全体がその名前のスコープ内にあるため、
+    誤ったプログラムでは、宣言が評価される前にその名前の値にアクセスしようとする可能性があります。
+    <INDEX>declaration<SUBINDEX>use of name before</SUBINDEX></INDEX>
+    未割り当ての名前の評価はエラーを通知します。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
     <LABEL NAME="foot:tdz_explained"/>
+    <BILINGUAL>
+    <EN>
     This explains why the program in
     footnote<SPACE/><REF NAME="foot:tdz"/> of chapter 1 goes wrong.
     The time between creating the binding for a name and evaluating
     the declaration of the name is called the
     <INDEX>temporal dead zone (TDZ)</INDEX>
     <INDEX>TDZ (temporal dead zone)</INDEX>
-    <EM>temporal dead zone</EM> (TDZ).</FOOTNOTE>
+    <EM>temporal dead zone</EM> (TDZ).
+    </EN>
+    <JA>
+    これが、第 1 章の脚注<SPACE/><REF NAME="foot:tdz"/>のプログラムがうまくいかない理由を説明しています。
+    名前の束縛が作成されてから名前の宣言が評価されるまでの期間は、
+    <INDEX>temporal dead zone (TDZ)</INDEX>
+    <INDEX>TDZ (temporal dead zone)</INDEX>
+    <EM>テンポラルデッドゾーン</EM>（TDZ）と呼ばれます。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
   </TEXT>
   <INDEX>environment model of evaluation<CLOSE/></INDEX>
   <INDEX>block structure<SUBINDEX><ORDER>environment</ORDER>in environment model<CLOSE/></SUBINDEX></INDEX>

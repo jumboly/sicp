@@ -301,6 +301,17 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 |------|--------|------|
 | substitution model | 置換モデル | |
 | substitution / substitute | 置換 / 置換する | 「代入」は assignment の訳なので混同しない |
+| environment model | 環境モデル | Section 3.2 で導入 |
+| current environment | 現在の環境 | |
+| enclosing environment | 外側の環境 | |
+| global frame | グローバルフレーム | |
+| program frame | プログラムフレーム | |
+| function object | 関数オブジェクト | コードと環境へのポインタのペア |
+| binding | 束縛 | 名前と値の対応 |
+| unbound | 未束縛 | |
+| shadow (a binding) | シャドウする | 外側のフレームの束縛を隠す |
+| immediately invoked lambda expression | 即時呼び出しラムダ式 | |
+| temporal dead zone (TDZ) | テンポラルデッドゾーン（TDZ） | 名前の束縛作成から宣言評価までの期間 |
 | applicative-order evaluation | 適用順序の評価 | |
 | normal-order evaluation | 正規順序の評価 | |
 | mutable data | ミュータブルなデータ | |
@@ -373,6 +384,9 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | pseudo-random | 擬似ランダム | |
 | accumulator | アキュムレータ | |
 | sequence of statements | 文のシーケンス | |
+| joint account | 共同口座 | |
+| withdrawal processor | 引き出しプロセッサ | |
+| mutual recursion | 相互再帰 | |
 | joint account | 共同口座 | |
 
 ### その他

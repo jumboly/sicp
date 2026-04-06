@@ -1,6 +1,9 @@
 <SUBSECTION> 
   <NAME>
-    Frames as the Repository of Local State
+    <BILINGUAL>
+      <EN>Frames as the Repository of Local State</EN>
+      <JA>ローカル状態の保管場所としてのフレーム</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:env-local-state"/>
@@ -9,6 +12,8 @@
   <INDEX>environment model of evaluation<SUBINDEX>local state<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can turn to the environment model to see how
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -23,6 +28,19 @@
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    環境モデルを使って、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>と代入がどのようにローカル状態を持つオブジェクトを表現するかを見ていきましょう。例として、
+    <INDEX><USE>make_withdraw</USE><SUBINDEX><ORDER>environment</ORDER>in environment model<OPEN/></SUBINDEX></INDEX>
+    節<SPACE/><REF NAME="sec:local-state-variables"/>で次の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を呼び出して作った<QUOTE>引き出しプロセッサ</QUOTE>を考えます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <NAME>make_withdraw2</NAME>
       <SCHEME>
@@ -46,7 +64,10 @@ function make_withdraw(balance) {
 }
       </JAVASCRIPT>
     </SNIPPET>
-    Let us describe the evaluation of
+    <BILINGUAL>
+    <EN>Let us describe the evaluation of</EN>
+    <JA>次の式の評価を説明しましょう。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <REQUIRES>make_withdraw2</REQUIRES>
       <NAME>make_withdraw2_w1_declare</NAME>
@@ -57,7 +78,10 @@ function make_withdraw(balance) {
 const W1 = make_withdraw(100);
       </JAVASCRIPT>
     </SNIPPET>
-    followed by
+    <BILINGUAL>
+    <EN>followed by</EN>
+    <JA>続いて</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <NAME>make_withdraw2_w1_example</NAME>
       <REQUIRES>make_withdraw2_w1_declare</REQUIRES>
@@ -75,6 +99,8 @@ W1(50);
 50
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	Figure<SPACE/><REF NAME="fig:make-withdraw_scheme"/>
@@ -124,6 +150,39 @@ W1(50);
 	a lambda expression.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:make-withdraw_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:make-withdraw"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>は、<SPLITINLINE>
+      <SCHEME>グローバル</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>環境で<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-withdraw</SCHEMEINLINE> 手続きを定義</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE> 関数を宣言</JAVASCRIPT>
+    </SPLITINLINE>した結果を示しています。これにより、<SPLITINLINE>
+      <SCHEME>グローバル</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>環境へのポインタを含む<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>オブジェクトが生成されます。ここまでは、これまで見てきた例と変わりません。ただし、<SPLITINLINE>
+      <SCHEME>
+	手続きの本体自体が
+	<SCHEMEINLINE>lambda</SCHEMEINLINE>
+	式である点が異なります。
+      </SCHEME>
+      <JAVASCRIPT>
+	関数の本体にある return 式自体がラムダ式である点が異なります。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
         <FIGURE>
@@ -139,9 +198,17 @@ W1(50);
         <FIGURE>
           <FIGURE src="img_javascript/ch3-Z-G-7.svg"></FIGURE>
           <CAPTION>
+            <BILINGUAL>
+            <EN>
 	    Result of defining
 	    <JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE> in
 	    the program environment.
+            </EN>
+            <JA>
+	    プログラム環境で
+	    <JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE> を宣言した結果。
+            </JA>
+            </BILINGUAL>
 	  </CAPTION>
           <LABEL NAME="fig:make-withdraw"/>
         </FIGURE>
@@ -150,7 +217,9 @@ W1(50);
   </TEXT>
 
   <TEXT>
-    The interesting part of the computation happens when we apply the 
+    <BILINGUAL>
+    <EN>
+    The interesting part of the computation happens when we apply the
     <SPLITINLINE><SCHEME>procedure</SCHEME>
     <JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>
     <SPLITINLINE>
@@ -158,6 +227,16 @@ W1(50);
       <JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     to an argument:
+    </EN>
+    <JA>
+    計算の興味深い部分は、<SPLITINLINE><SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-withdraw</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>を引数に適用するときに起こります。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (define W1 (make-withdraw 100))
@@ -166,6 +245,8 @@ W1(50);
 const W1 = make_withdraw(100);
       </JAVASCRIPT>
     </SNIPPET> 
+    <BILINGUAL>
+    <EN>
     We begin, as usual, by setting up an environment E1 in which the
     <SPLITINLINE><SCHEME>formal</SCHEME></SPLITINLINE> parameter
     <SCHEMEINLINE>balance</SCHEMEINLINE> is bound to the argument 100.  Within
@@ -238,6 +319,52 @@ const W1 = make_withdraw(100);
       </JAVASCRIPT>
     </SPLITINLINE>
     shows the resulting environment structure.
+    </EN>
+    <JA>
+    まず通常通り、<SPLITINLINE><SCHEME>仮</SCHEME></SPLITINLINE>パラメータ
+    <SCHEMEINLINE>balance</SCHEMEINLINE> が引数 100 に束縛される環境 E1 を作ります。この環境の中で、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-withdraw</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> の本体、すなわち <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE> 式を評価します。これにより</SCHEME>
+      <JAVASCRIPT>return 式がラムダ式である return 文を評価します。このラムダ式の評価により</JAVASCRIPT>
+    </SPLITINLINE>、新しい<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>オブジェクトが生成されます。そのコードは<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>ラムダ式</JAVASCRIPT>
+    </SPLITINLINE>で指定されたもので、環境は E1、つまり<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>ラムダ式</JAVASCRIPT>
+    </SPLITINLINE>が評価されて<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を生成した環境です。この<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>オブジェクトが、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-withdraw</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> の呼び出しが返す値です。<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>define</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>定数宣言</JAVASCRIPT>
+    </SPLITINLINE>自体が<SPLITINLINE>
+      <SCHEME>グローバル</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>環境で評価されているため、この値は<SPLITINLINE>
+      <SCHEME>グローバル</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>環境で <SCHEMEINLINE>W1</SCHEMEINLINE> に束縛されます。<SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:w1_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:w1"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>に、結果の環境構造を示します。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
         <FIGURE>
@@ -253,8 +380,15 @@ const W1 = make_withdraw(100);
         <FIGURE>
           <FIGURE src="img_javascript/ch3-Z-G-8.svg"></FIGURE>
           <CAPTION>
+            <BILINGUAL>
+            <EN>
 	    Result of evaluating
 	    <JAVASCRIPTINLINE>const W1 = make_withdraw(100);</JAVASCRIPTINLINE>.
+            </EN>
+            <JA>
+	    <JAVASCRIPTINLINE>const W1 = make_withdraw(100);</JAVASCRIPTINLINE> を評価した結果。
+            </JA>
+            </BILINGUAL>
 	  </CAPTION>
           <LABEL NAME="fig:w1"/>
         </FIGURE>
@@ -263,8 +397,15 @@ const W1 = make_withdraw(100);
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Now we can analyze what happens when <SCHEMEINLINE>W1</SCHEMEINLINE>
     is applied to an argument:
+    </EN>
+    <JA>
+    次に、<SCHEMEINLINE>W1</SCHEMEINLINE> を引数に適用したときに何が起こるかを分析しましょう。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (W1 50)
@@ -279,6 +420,8 @@ W1(50);
 50
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     We begin by constructing a frame in which
     <SCHEMEINLINE>amount</SCHEMEINLINE>, the
     <SPLITINLINE><SCHEME>formal</SCHEME></SPLITINLINE> parameter of
@@ -299,6 +442,21 @@ W1(50);
       <SCHEME>procedure:</SCHEME>
       <JAVASCRIPT>function:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    まず、<SCHEMEINLINE>W1</SCHEMEINLINE> の<SPLITINLINE><SCHEME>仮</SCHEME></SPLITINLINE>パラメータ
+    <SCHEMEINLINE>amount</SCHEMEINLINE> が引数 50 に束縛されるフレームを構築します。ここで注目すべき重要な点は、このフレームの外側の環境が<SPLITINLINE>
+      <SCHEME>グローバル</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>環境ではなく環境 E1 であるということです。これは、<SCHEMEINLINE>W1</SCHEMEINLINE> の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>オブジェクトが指定している環境が E1 だからです。この新しい環境の中で、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の本体を評価します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (if (&gt;= balance amount)
@@ -315,6 +473,8 @@ if (balance &gt;= amount) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The resulting environment structure is shown in
     <SPLITINLINE>
       <SCHEME>
@@ -335,6 +495,22 @@ if (balance &gt;= amount) {
     will be found in the first frame in the environment, and
     <SCHEMEINLINE>balance</SCHEMEINLINE> will be found by following the
     enclosing-environment pointer to E1.
+    </EN>
+    <JA>
+    結果の環境構造を<SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:apply-w1_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:apply-w1"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>に示します。評価される式は <SCHEMEINLINE>amount</SCHEMEINLINE> と
+    <SCHEMEINLINE>balance</SCHEMEINLINE> の両方を参照しています。<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>amount</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>変数 <JAVASCRIPTINLINE>amount</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>は環境の最初のフレームで見つかり、<SCHEMEINLINE>balance</SCHEMEINLINE> は外側の環境へのポインタをたどって E1 で見つかります。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
         <FIGURE>
@@ -350,8 +526,15 @@ if (balance &gt;= amount) {
         <FIGURE>
           <FIGURE src="img_javascript/ch3-Z-G-9.svg"></FIGURE>
           <CAPTION>
+            <BILINGUAL>
+            <EN>
 	    Environments created by applying the function object
 	    <JAVASCRIPTINLINE>W1</JAVASCRIPTINLINE>.
+            </EN>
+            <JA>
+	    関数オブジェクト <JAVASCRIPTINLINE>W1</JAVASCRIPTINLINE> を適用して生成された環境。
+            </JA>
+            </BILINGUAL>
 	  </CAPTION>
           <LABEL NAME="fig:apply-w1"/>
         </FIGURE>
@@ -360,6 +543,8 @@ if (balance &gt;= amount) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     When the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>set!</SCHEMEINLINE></SCHEME>
@@ -402,6 +587,30 @@ if (balance &gt;= amount) {
       </JAVASCRIPT>
     </SPLITINLINE>
     shows the situation after the call to <SCHEMEINLINE>W1</SCHEMEINLINE>.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>set!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>代入</JAVASCRIPT>
+    </SPLITINLINE>が実行されると、E1 における <SCHEMEINLINE>balance</SCHEMEINLINE> の束縛が変更されます。<SCHEMEINLINE>W1</SCHEMEINLINE> の呼び出しが完了した時点で、<SCHEMEINLINE>balance</SCHEMEINLINE> は 50 になっており、<SCHEMEINLINE>balance</SCHEMEINLINE> を含むフレームは依然として<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>オブジェクト <SCHEMEINLINE>W1</SCHEMEINLINE> から指されています。<SCHEMEINLINE>amount</SCHEMEINLINE> を束縛するフレーム（<SCHEMEINLINE>balance</SCHEMEINLINE> を変更したコードを実行したフレーム）は、それを構築した<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>呼び出しが終了し、環境の他の部分からそのフレームへのポインタもないため、もはや関係ありません。次に <SCHEMEINLINE>W1</SCHEMEINLINE> が呼び出されるときには、<SCHEMEINLINE>amount</SCHEMEINLINE> を束縛する新しいフレームが構築され、その外側の環境は E1 になります。E1 が<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>オブジェクト <SCHEMEINLINE>W1</SCHEMEINLINE> のローカル状態変数を保持する<QUOTE>場所</QUOTE>として機能していることがわかります。<SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:after-w1_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:after-w1"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>に、<SCHEMEINLINE>W1</SCHEMEINLINE> の呼び出し後の状況を示します。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
         <FIGURE>
@@ -416,8 +625,15 @@ if (balance &gt;= amount) {
         <FIGURE>
           <FIGURE src="img_javascript/ch3-Z-G-10.svg"></FIGURE>
           <CAPTION>
+            <BILINGUAL>
+            <EN>
 	    Environments after the call to
 	    <JAVASCRIPTINLINE>W1</JAVASCRIPTINLINE>.
+            </EN>
+            <JA>
+	    <JAVASCRIPTINLINE>W1</JAVASCRIPTINLINE> の呼び出し後の環境。
+            </JA>
+            </BILINGUAL>
 	  </CAPTION>
           <LABEL NAME="fig:after-w1"/>
         </FIGURE>
@@ -428,6 +644,8 @@ if (balance &gt;= amount) {
   <PDF_ONLY>\pagebreak</PDF_ONLY>
   <LONG_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Observe what happens when we create a second <QUOTE>withdraw</QUOTE> object
     by making another call to
     <SPLITINLINE>
@@ -435,6 +653,14 @@ if (balance &gt;= amount) {
       <JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE>:
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make_withdraw</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> をもう一度呼び出して、2番目の<QUOTE>引き出し</QUOTE>オブジェクトを作るとどうなるか見てみましょう。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <REQUIRES>make_withdraw2</REQUIRES>
       <NAME>make_withdraw2_w2_declare</NAME>
@@ -452,6 +678,8 @@ const W2 = make_withdraw(100);
 W2(80);	
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     This produces the environment structure of
     <SPLITINLINE>
       <SCHEME>
@@ -483,18 +711,50 @@ W2(80);
       <JAVASCRIPT>lambda</JAVASCRIPT>
     </SPLITINLINE>
     expression in the body of
-    <SPLITINLINE><SCHEME><SCHEMEINLINE>make-withdraw</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>.<FOOTNOTE>Whether
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>make-withdraw</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>.
+    </EN>
+    <JA>
+    これにより、<SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:w2_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:w2"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>の環境構造が生成されます。この図は、<SCHEMEINLINE>W2</SCHEMEINLINE> が<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>オブジェクト、つまりコードと環境のペアであることを示しています。<SCHEMEINLINE>W2</SCHEMEINLINE> の環境 E2 は、<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-withdraw</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> の呼び出しによって作られたものです。この環境には、<SCHEMEINLINE>balance</SCHEMEINLINE> に対する独自のローカルな束縛を持つフレームが含まれています。一方、<SCHEMEINLINE>W1</SCHEMEINLINE> と <SCHEMEINLINE>W2</SCHEMEINLINE> は同じコードを持っています。それは <SPLITINLINE><SCHEME><SCHEMEINLINE>make-withdraw</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> の本体にある <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>ラムダ</JAVASCRIPT>
+    </SPLITINLINE>式で指定されたコードです。
+    </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>Whether
     <SCHEMEINLINE>W1</SCHEMEINLINE> and <SCHEMEINLINE>W2</SCHEMEINLINE> share
     the same physical code stored in the computer, or whether they each keep a
     copy of the code, is a detail of the implementation.  For the interpreter we
-    implement in chapter<SPACE/><REF NAME="chap:meta"></REF>, the code is in fact shared.</FOOTNOTE> We see
+    implement in chapter<SPACE/><REF NAME="chap:meta"></REF>, the code is in fact shared.</EN>
+    <JA><SCHEMEINLINE>W1</SCHEMEINLINE> と <SCHEMEINLINE>W2</SCHEMEINLINE> がコンピュータに格納された同じ物理的なコードを共有しているのか、それぞれがコードのコピーを保持しているのかは、実装の詳細です。第<SPACE/><REF NAME="chap:meta"></REF>章で実装するインタプリタでは、実際にコードは共有されます。</JA>
+    </BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    We see
     here why <SCHEMEINLINE>W1</SCHEMEINLINE> and <SCHEMEINLINE>W2</SCHEMEINLINE>
     behave as independent objects.  Calls to
     <SCHEMEINLINE>W1</SCHEMEINLINE> reference the state variable
-    <SCHEMEINLINE>balance</SCHEMEINLINE> stored in E1, whereas calls to 
+    <SCHEMEINLINE>balance</SCHEMEINLINE> stored in E1, whereas calls to
     <SCHEMEINLINE>W2</SCHEMEINLINE> reference the
     <SCHEMEINLINE>balance</SCHEMEINLINE> stored in E2. Thus, changes to the
     local state of one object do not affect the other object.
+    </EN>
+    <JA>
+    ここで、<SCHEMEINLINE>W1</SCHEMEINLINE> と <SCHEMEINLINE>W2</SCHEMEINLINE> が独立したオブジェクトとして振る舞う理由がわかります。<SCHEMEINLINE>W1</SCHEMEINLINE> の呼び出しは E1 に格納された状態変数 <SCHEMEINLINE>balance</SCHEMEINLINE> を参照し、<SCHEMEINLINE>W2</SCHEMEINLINE> の呼び出しは E2 に格納された <SCHEMEINLINE>balance</SCHEMEINLINE> を参照します。したがって、一方のオブジェクトのローカル状態を変更しても、もう一方のオブジェクトには影響しません。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
         <FIGURE>
@@ -510,9 +770,17 @@ W2(80);
         <FIGURE>
           <FIGURE src="img_javascript/ch3-Z-G-11.svg"></FIGURE>
           <CAPTION>
+            <BILINGUAL>
+            <EN>
 	    Using
 	    <JAVASCRIPTINLINE>const W2 = make_withdraw(100);</JAVASCRIPTINLINE>
 	    to create a second object.
+            </EN>
+            <JA>
+	    <JAVASCRIPTINLINE>const W2 = make_withdraw(100);</JAVASCRIPTINLINE>
+	    を使って2番目のオブジェクトを作成。
+            </JA>
+            </BILINGUAL>
 	  </CAPTION>
           <LABEL NAME="fig:w2"/>
         </FIGURE>
@@ -523,6 +791,8 @@ W2(80);
 
   <EXERCISE>
     <LABEL NAME="ex:local-state-variable"/>
+    <BILINGUAL>
+    <EN>
     In the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-withdraw</SCHEMEINLINE></SCHEME>
@@ -548,7 +818,7 @@ W2(80);
 	separately,
       </JAVASCRIPT>
     </SPLITINLINE>
-    using 
+    using
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>let</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT>
@@ -560,6 +830,29 @@ W2(80);
       </JAVASCRIPT>
     </SPLITINLINE>
     as follows:
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-withdraw</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> <SPLITINLINE>
+      <SCHEME>手続きでは、</SCHEME>
+      <JAVASCRIPT>関数では、</JAVASCRIPT>
+    </SPLITINLINE>ローカル変数 <SCHEMEINLINE>balance</SCHEMEINLINE> は <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-withdraw</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> のパラメータとして作られています。ローカル状態変数は、<SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>let</SCHEMEINLINE> を使って明示的に
+      </SCHEME>
+      <JAVASCRIPT>
+	<INDEX>lambda expression<SUBINDEX>immediately invoked</SUBINDEX></INDEX>
+	<INDEX>immediately invoked lambda expression</INDEX>
+	いわゆる<EM>即時呼び出しラムダ式</EM>を使って別の方法でも
+      </JAVASCRIPT>
+    </SPLITINLINE>作ることができます。次のようにします。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <INDEX><DECLARATION>make_withdraw</DECLARATION><SUBINDEX>using immediately invoked lambda expression</SUBINDEX><FRAGILE/></INDEX>
       <NAME>make_withdraw3</NAME>
@@ -619,15 +912,32 @@ W1(80);
         </SNIPPET>
       </SCHEME>
       <JAVASCRIPT>
+        <BILINGUAL>
+        <EN>
 	The outer lambda expression is invoked immediately after it
 	is evaluated. Its only purpose is to create a local variable
 	<JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE> and
 	initialize it to <JAVASCRIPTINLINE>initial_amount</JAVASCRIPTINLINE>.
+        </EN>
+        <JA>
+	外側のラムダ式は、評価された直後に呼び出されます。その唯一の目的は、ローカル変数
+	<JAVASCRIPTINLINE>balance</JAVASCRIPTINLINE> を作成し、
+	<JAVASCRIPTINLINE>initial_amount</JAVASCRIPTINLINE> で初期化することです。
+        </JA>
+        </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     Use the environment model to analyze this alternate version of
     <SCHEMEINLINE>make_withdraw</SCHEMEINLINE>, drawing figures like the ones
     above to illustrate the interactions
+    </EN>
+    <JA>
+    環境モデルを使って、この別バージョンの
+    <SCHEMEINLINE>make_withdraw</SCHEMEINLINE> を分析してください。上の図のような図を描いて、次のやりとりを説明してください。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <NAME>make_withdraw3_example_2</NAME>
       <REQUIRES>make_withdraw3</REQUIRES>
@@ -653,6 +963,8 @@ const W2 = make_withdraw(100);
 W2(80);
       </JAVASCRIPT_TEST>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Show that the two versions of
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-withdraw</SCHEMEINLINE></SCHEME>
@@ -661,12 +973,31 @@ W2(80);
     </SPLITINLINE>
     create objects with the same behavior.  How do the environment structures
     differ for the two versions?
+    </EN>
+    <JA>
+    2つのバージョンの <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-withdraw</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> が同じ振る舞いのオブジェクトを生成することを示してください。2つのバージョンで環境構造はどのように異なりますか？
+    </JA>
+    </BILINGUAL>
     <SOLUTION>
+      <BILINGUAL>
+      <EN>
       <UL>
 	<LI>Black shows the environment structure of function in exercise 3.10</LI>
 	<LI>Green shows differences in environment structure of original
 	(where <JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE> is replaced with the figure 3.9 version)</LI>
       </UL>
+      </EN>
+      <JA>
+      <UL>
+	<LI>黒は練習問題 3.10 の関数の環境構造を示しています</LI>
+	<LI>緑はオリジナルの環境構造との違いを示しています
+	（<JAVASCRIPTINLINE>make_withdraw</JAVASCRIPTINLINE> を図 3.9 のバージョンに置き換えた場合）</LI>
+      </UL>
+      </JA>
+      </BILINGUAL>
       <FIGURE src="img_javascript/ex3-10-solution.png">
         <LABEL NAME="ex:3-10"/>
       </FIGURE>

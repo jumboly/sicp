@@ -1,5 +1,5 @@
 <SECTION>
-  <NAME>The Environment Model of Evaluation</NAME>
+  <NAME><BILINGUAL><EN>The Environment Model of Evaluation</EN><JA>評価の環境モデル</JA></BILINGUAL></NAME>
 
   <SECTIONCONTENT/>
 
@@ -7,6 +7,8 @@
   <INDEX>environment model of evaluation<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     When we introduced compound
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -28,7 +30,7 @@
 	<SCHEME>procedure</SCHEME>
 	<JAVASCRIPT>function</JAVASCRIPT>
       </SPLITINLINE>
-      to arguments, evaluate the 
+      to arguments, evaluate the
       <SPLITINLINE>
 	<SCHEME>body of the procedure</SCHEME>
 	<JAVASCRIPT>return expression of the function (more generally, the body)</JAVASCRIPT>
@@ -43,16 +45,45 @@
       argument.
       </LI>
     </UL>
+    </EN>
+    <JA>
+    第<SPACE/><REF NAME="chap:fun"></REF>章で複合<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を導入したとき、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を引数に適用するとはどういう意味かを定義するために、
+    <INDEX>substitution model of <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE> application</INDEX>
+    評価の置換モデル（節<SPACE/><REF NAME="sec:substitution-model"/>）を用いました。
+    <UL>
+      <LI>複合<SPLITINLINE>
+	<SCHEME>手続き</SCHEME>
+	<JAVASCRIPT>関数</JAVASCRIPT>
+      </SPLITINLINE>を引数に適用するには、<SPLITINLINE>
+	<SCHEME>手続きの本体</SCHEME>
+	<JAVASCRIPT>関数の return 式（より一般的には本体）</JAVASCRIPT>
+      </SPLITINLINE>を評価する。その際、各<SPLITINLINE>
+	<SCHEME>
+	  仮
+	</SCHEME>
+      </SPLITINLINE>パラメータを対応する引数で置き換える。
+      </LI>
+    </UL>
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Once we admit assignment into our programming language, such a
     definition is no longer adequate.  In particular,
     section<SPACE/><REF NAME="sec:costs-of-assignment"/> argued that, in the
     presence of assignment,
     <SPLITINLINE>
       <SCHEME>
-	a variable cannot be considered to be merely a name for 
+	a variable cannot be considered to be merely a name for
 	a value.  Rather, a variable must somehow designate a
 	<QUOTE>place</QUOTE> in which values can be stored.
       </SCHEME>
@@ -63,15 +94,32 @@
       </JAVASCRIPT>
     </SPLITINLINE>
     In our new model of
-    evaluation, these places will be maintained in structures called 
+    evaluation, these places will be maintained in structures called
     <INDEX>environment</INDEX>
     <EM>environments</EM>.
+    </EN>
+    <JA>
+    プログラミング言語に代入を導入すると、このような定義はもはや適切ではなくなります。特に、節<SPACE/><REF NAME="sec:costs-of-assignment"/>では、代入がある状況では、<SPLITINLINE>
+      <SCHEME>
+	変数を単なる値の名前とみなすことはできないと論じました。むしろ、変数は値を格納できる何らかの<QUOTE>場所</QUOTE>を指し示す必要があります。
+      </SCHEME>
+      <JAVASCRIPT>
+	名前を単に値を表すものとみなすことはできないと論じました。むしろ、名前は値を格納できる何らかの<QUOTE>場所</QUOTE>を指し示す必要があります。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    新しい評価モデルでは、これらの場所は
+    <INDEX>environment</INDEX>
+    <EM>環境</EM>と呼ばれる構造で管理されます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    An environment is a sequence of 
+    <BILINGUAL>
+    <EN>
+    An environment is a sequence of
     <INDEX>frame (environment model)</INDEX>
-    <EM>frames</EM>.  Each frame is a table (possibly empty) of 
+    <EM>frames</EM>.  Each frame is a table (possibly empty) of
     <INDEX>binding</INDEX>
     <EM>bindings</EM>, which associate
     <SPLITINLINE>
@@ -92,14 +140,14 @@
 	(A single frame may contain at most one binding for any name.)
       </JAVASCRIPT>
     </SPLITINLINE>
-    Each frame also has a pointer to its 
+    Each frame also has a pointer to its
     <INDEX>enclosing environment</INDEX>
     <INDEX>environment<SUBINDEX>enclosing</SUBINDEX></INDEX>
     <EM>enclosing environment</EM>, unless, for the purposes of discussion, the
-    frame is considered to be 
+    frame is considered to be
     <INDEX>global frame</INDEX>
     <INDEX>frame (environment model)<SUBINDEX>global</SUBINDEX></INDEX>
-    <EM>global</EM>.  The 
+    <EM>global</EM>.  The
     <SPLITINLINE>
       <SCHEME>
 	<EM>value of a variable</EM>
@@ -148,10 +196,72 @@
 	name
       </JAVASCRIPT>
     </SPLITINLINE>
-    is said to be 
+    is said to be
     <INDEX>unbound name</INDEX>
     <INDEX>name<SUBINDEX>unbound</SUBINDEX></INDEX>
     <EM>unbound</EM> in the environment.
+    </EN>
+    <JA>
+    環境とは、
+    <INDEX>frame (environment model)</INDEX>
+    <EM>フレーム</EM>のシーケンスです。各フレームは、<SPLITINLINE>
+      <SCHEME>
+	変数名
+      </SCHEME>
+      <JAVASCRIPT>
+	名前
+      </JAVASCRIPT>
+    </SPLITINLINE>とそれに対応する値を関連付ける
+    <INDEX>binding</INDEX>
+    <EM>束縛</EM>のテーブル（空の場合もあります）です。<SPLITINLINE>
+      <SCHEME>
+	（1つのフレームには、どの変数に対しても最大1つの束縛しか含められません。）
+      </SCHEME>
+      <JAVASCRIPT>
+	（1つのフレームには、どの名前に対しても最大1つの束縛しか含められません。）
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    各フレームはまた、その
+    <INDEX>enclosing environment</INDEX>
+    <INDEX>environment<SUBINDEX>enclosing</SUBINDEX></INDEX>
+    <EM>外側の環境</EM>へのポインタを持っています。ただし、議論の都合上、そのフレームが
+    <INDEX>global frame</INDEX>
+    <INDEX>frame (environment model)<SUBINDEX>global</SUBINDEX></INDEX>
+    <EM>グローバル</EM>であるとみなされる場合は除きます。ある環境に対する<SPLITINLINE>
+      <SCHEME>
+	<EM>変数の値</EM>
+      </SCHEME>
+      <JAVASCRIPT>
+	<INDEX>name<SUBINDEX>value of</SUBINDEX></INDEX>
+	<EM>名前の値</EM>
+      </JAVASCRIPT>
+    </SPLITINLINE>とは、その環境内で、その<SPLITINLINE>
+      <SCHEME>
+	変数
+      </SCHEME>
+      <JAVASCRIPT>
+	名前
+      </JAVASCRIPT>
+    </SPLITINLINE>の束縛を含む最初のフレームにおける束縛が与える値です。シーケンス内のどのフレームにもその<SPLITINLINE>
+      <SCHEME>
+	変数
+      </SCHEME>
+      <JAVASCRIPT>
+	名前
+      </JAVASCRIPT>
+    </SPLITINLINE>の束縛が見つからない場合、その<SPLITINLINE>
+      <SCHEME>
+	変数
+      </SCHEME>
+      <JAVASCRIPT>
+	名前
+      </JAVASCRIPT>
+    </SPLITINLINE>はその環境において
+    <INDEX>unbound name</INDEX>
+    <INDEX>name<SUBINDEX>unbound</SUBINDEX></INDEX>
+    <EM>未束縛</EM>であると言います。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
         <FIGURE>
@@ -165,9 +275,18 @@
           <FIGURE split_scale="0.65" web_scale="0.5" src="img_javascript/ch3-Z-G-2.svg"></FIGURE>
           <LABEL NAME="fig:environment-structure"/>
           <CAPTION>
-	    A simple 
+	    <BILINGUAL>
+	    <EN>
+	    A simple
 	    <INDEX>environment model of evaluation<SUBINDEX>environment structure</SUBINDEX></INDEX>
-	    environment structure.	    
+	    environment structure.
+	    </EN>
+	    <JA>
+	    単純な
+	    <INDEX>environment model of evaluation<SUBINDEX>environment structure</SUBINDEX></INDEX>
+	    環境構造。
+	    </JA>
+	    </BILINGUAL>
 	  </CAPTION>
         </FIGURE>
       </JAVASCRIPT>
@@ -175,6 +294,8 @@
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	Figure<SPACE/><REF NAME="fig:environment-structure_scheme"/>
@@ -207,24 +328,47 @@
     <SCHEMEINLINE>x</SCHEMEINLINE> in environment A is 7, because the first
     frame in the sequence (frame II) contains a binding of
     <SCHEMEINLINE>x</SCHEMEINLINE> to 7.  With respect to environment A, the
-    binding of <SCHEMEINLINE>x</SCHEMEINLINE> to 7 in frame II is said to 
+    binding of <SCHEMEINLINE>x</SCHEMEINLINE> to 7 in frame II is said to
     <INDEX>shadow a binding</INDEX>
     <EM>shadow</EM> the binding of <SCHEMEINLINE>x</SCHEMEINLINE> to 3 in
     frame I.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:environment-structure_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:environment-structure"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>は、I、II、III とラベル付けされた3つのフレームからなる単純な環境構造を示しています。図中で、A、B、C、D は環境へのポインタです。C<SPACE/>と D は同じ環境を指しています。<SPLITINLINE>
+      <SCHEME>
+	変数
+      </SCHEME>
+      <JAVASCRIPT>
+	名前
+      </JAVASCRIPT>
+    </SPLITINLINE> <SCHEMEINLINE>z</SCHEMEINLINE> と <SCHEMEINLINE>x</SCHEMEINLINE> はフレーム<SPACE/>II で束縛されており、<SCHEMEINLINE>y</SCHEMEINLINE> と <SCHEMEINLINE>x</SCHEMEINLINE> はフレーム I で束縛されています。環境 D における <SCHEMEINLINE>x</SCHEMEINLINE> の値は 3 です。環境 B における <SCHEMEINLINE>x</SCHEMEINLINE> の値も 3 です。これは次のように決定されます。シーケンスの最初のフレーム（フレーム III）を調べると <SCHEMEINLINE>x</SCHEMEINLINE> の束縛が見つからないので、外側の環境 D に進み、フレーム I で束縛を見つけます。一方、環境 A における <SCHEMEINLINE>x</SCHEMEINLINE> の値は 7 です。なぜなら、シーケンスの最初のフレーム（フレーム II）に <SCHEMEINLINE>x</SCHEMEINLINE> を 7 に束縛する束縛があるからです。環境 A に関して、フレーム II における <SCHEMEINLINE>x</SCHEMEINLINE> と 7 の束縛は、フレーム I における <SCHEMEINLINE>x</SCHEMEINLINE> と 3 の束縛を
+    <INDEX>shadow a binding</INDEX>
+    <EM>シャドウする</EM>（隠す）と言います。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The environment is crucial to the evaluation process, because it determines
     the context in which an expression should be evaluated.  Indeed, one could
     say that expressions in a programming language do not, in themselves, have
     any meaning.  Rather, an expression acquires a meaning only with respect to
-    some environment in which it is evaluated.  
+    some environment in which it is evaluated.
     <SPLIT>
       <SCHEME>
 	Even the interpretation of an expression as straightforward as
 	<SCHEMEINLINE>(+<SPACE/>1<SPACE/>1)</SCHEMEINLINE> depends on an
 	understanding that one is operating in a context in which
-	<SCHEMEINLINE>+</SCHEMEINLINE> is the symbol for addition. 
+	<SCHEMEINLINE>+</SCHEMEINLINE> is the symbol for addition.
       </SCHEME>
       <JAVASCRIPT>
 	Even the interpretation of an expression as straightforward as
@@ -236,7 +380,7 @@
     </SPLIT>
     Thus, in our model of evaluation we will always speak of evaluating an
     expression with respect to some environment.  To describe interactions with
-    the	interpreter, we will suppose that there is a 
+    the	interpreter, we will suppose that there is a
     <INDEX>global environment</INDEX>
     global environment, consisting of a single frame (with no enclosing
     environment) that includes values for the
@@ -275,10 +419,52 @@
       <SCHEME>addition procedure.</SCHEME>
       <JAVASCRIPT>display function.</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    環境は評価プロセスにとって極めて重要です。なぜなら、式がどのコンテキストで評価されるべきかを決定するからです。実際、プログラミング言語における式はそれ自体では何の意味も持たないと言えます。むしろ、式はそれが評価される何らかの環境に対してのみ意味を持ちます。
+    <SPLIT>
+      <SCHEME>
+	<SCHEMEINLINE>(+<SPACE/>1<SPACE/>1)</SCHEMEINLINE> のように単純な式の解釈でさえ、<SCHEMEINLINE>+</SCHEMEINLINE> が加算のシンボルであるコンテキストで操作しているという理解に依存しています。
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>display(1)</JAVASCRIPTINLINE> のように単純な式の解釈でさえ、名前 <SCHEMEINLINE>display</SCHEMEINLINE> が値を表示するプリミティブ関数を指すコンテキストで操作しているという理解に依存しています。
+      </JAVASCRIPT>
+    </SPLIT>
+    したがって、私たちの評価モデルでは、常に何らかの環境に対して式を評価することについて述べます。インタプリタとのやりとりを記述するために、
+    <INDEX>global environment</INDEX>
+    グローバル環境が存在すると仮定します。グローバル環境は、外側の環境を持たない単一のフレームで構成され、プリミティブ<SPLITINLINE>
+      <SCHEME>
+	手続き
+      </SCHEME>
+      <JAVASCRIPT>
+	関数
+      </JAVASCRIPT>
+    </SPLITINLINE>に関連付けられた<SPLITINLINE>
+      <SCHEME>
+	シンボル
+      </SCHEME>
+      <JAVASCRIPT>
+	名前
+      </JAVASCRIPT>
+    </SPLITINLINE>の値を含んでいます。例えば、<SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>+</SCHEMEINLINE> が加算のシンボルであるという考えは、シンボル <SCHEMEINLINE>+</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>display</JAVASCRIPTINLINE> がプリミティブな display 関数の名前であるという考えは、名前 <JAVASCRIPTINLINE>display</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>がグローバル環境においてプリミティブな<SPLITINLINE>
+      <SCHEME>加算手続き</SCHEME>
+      <JAVASCRIPT>display 関数</JAVASCRIPT>
+    </SPLITINLINE>に束縛されていると言うことで表現されます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <SPLIT>
     <JAVASCRIPT>
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	Before we evaluate a program, we extend the global
 	environment with a new frame, the
 	<EM>program frame</EM>, resulting in the
@@ -287,6 +473,13 @@
 	the names that are declared at the top level of the
 	program, outside of any block, to this frame. The given program
 	is then	evaluated with respect to the program environment.
+	</EN>
+	<JA>
+	プログラムを評価する前に、グローバル環境を新しいフレームである<EM>プログラムフレーム</EM>で拡張し、
+	<INDEX>program environment</INDEX>
+	<EM>プログラム環境</EM>を作ります。プログラムのトップレベル、つまりどのブロックの外側でもない場所で宣言された名前を、このフレームに追加します。与えられたプログラムは、このプログラム環境に対して評価されます。
+	</JA>
+	</BILINGUAL>
       </TEXT>
     </JAVASCRIPT>
   </SPLIT>
