@@ -388,6 +388,41 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | withdrawal processor | 引き出しプロセッサ | |
 | mutual recursion | 相互再帰 | |
 | joint account | 共同口座 | |
+| mutator | ミューテータ | |
+| mutation | ミューテーション | |
+| mutable list structure | ミュータブルなリスト構造 | |
+| sharing | 共有 | |
+| identity | 同一性 | |
+| queue | キュー | |
+| front / rear | 先頭 / 末尾 | キューの |
+| deque | 両端キュー | double-ended queue |
+| FIFO | FIFO（先入れ先出し） | |
+| table | テーブル | |
+| one-dimensional table | 一次元テーブル | |
+| two-dimensional table | 二次元テーブル | |
+| memoization / memoize | メモ化 / メモ化する | |
+| digital circuit | デジタル回路 | |
+| wire | ワイヤ | |
+| signal | 信号 | |
+| inverter | インバータ | |
+| and-gate | ANDゲート | |
+| or-gate | ORゲート | |
+| half-adder | 半加算器 | |
+| full-adder | 全加算器 | |
+| function box | ファンクションボックス | |
+| agenda | アジェンダ | |
+| time segment | タイムセグメント | |
+| event-driven simulation | イベント駆動シミュレーション | |
+| action function | アクション関数 | |
+| propagation delay | 伝播遅延 | |
+| ripple-carry adder | リプルキャリー加算器 | |
+| constraint | 制約 | |
+| constraint network | 制約ネットワーク | |
+| constraint propagation | 制約伝播 | |
+| connector | コネクタ | |
+| informant | 情報源 | |
+| retract | 撤回 | |
+| syntax interface | 構文インターフェース | |
 
 ### その他
 

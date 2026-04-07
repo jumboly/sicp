@@ -131,7 +131,13 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 3.2.3 Frames as the Repository of Local State
 - [x] Section 3.2.4 Internal Declarations
 - [x] Section 3.2.5 CSE Machine
-- [ ] Chapter 3 (残り: 3.3〜3.5)〜5
+- [x] Section 3.3 Modeling with Mutable Data (導入部)
+- [x] Section 3.3.1 Mutable List Structure
+- [x] Section 3.3.2 Representing Queues
+- [x] Section 3.3.3 Representing Tables
+- [x] Section 3.3.4 A Simulator for Digital Circuits
+- [x] Section 3.3.5 Propagation of Constraints
+- [ ] Chapter 3 (残り: 3.4〜3.5)〜5
 
 ## インライン実行
 

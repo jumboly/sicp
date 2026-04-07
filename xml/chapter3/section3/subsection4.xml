@@ -1,12 +1,17 @@
 <SUBSECTION> 
   <NAME>
-    A Simulator for Digital Circuits
+    <BILINGUAL>
+      <EN>A Simulator for Digital Circuits</EN>
+      <JA>デジタル回路のシミュレータ</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:circuit-simulator"/>
   <INDEX>digital-circuit simulation<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Designing complex digital systems, such as computers, is an important
     engineering activity.  Digital systems are constructed by
     interconnecting simple elements.  Although the behavior of these
@@ -14,32 +19,42 @@
     behavior.  Computer simulation of proposed circuit designs is an
     important tool used by digital systems engineers.  In this section we
     design a system for performing digital logic simulations.  This system
-    typifies a kind of program called an 
+    typifies a kind of program called an
     <INDEX>event-driven simulation</INDEX>
     <INDEX>simulation<SUBINDEX>event-driven</SUBINDEX></INDEX>
     <EM>event-driven simulation</EM>, in
     which actions (<QUOTE>events</QUOTE>) trigger further events that happen
     at a later time, which in turn trigger more events, and so on.
+      </EN>
+      <JA>
+    コンピュータのような複雑なデジタルシステムの設計は、重要な工学的活動です。デジタルシステムは、単純な要素を相互に接続することで構築されます。個々の要素の振る舞いは単純ですが、それらのネットワークは非常に複雑な振る舞いを示すことがあります。提案された回路設計のコンピュータシミュレーションは、デジタルシステムエンジニアにとって重要なツールです。この節では、デジタル論理シミュレーションを行うシステムを設計します。このシステムは、
+    <INDEX>event-driven simulation</INDEX>
+    <INDEX>simulation<SUBINDEX>event-driven</SUBINDEX></INDEX>
+    <EM>イベント駆動シミュレーション</EM>と呼ばれるプログラムの典型的な例です。イベント駆動シミュレーションでは、アクション（<QUOTE>イベント</QUOTE>）がさらなるイベントを引き起こし、それが後の時点で発生し、さらにそれがまた別のイベントを引き起こす、というように続きます。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Our computational model of a circuit will be composed of objects that
     correspond to the elementary components from which the circuit is
-    constructed.  There are 
+    constructed.  There are
     <INDEX>wire, in digital circuit</INDEX>
-    <EM>wires</EM>, which carry 
+    <EM>wires</EM>, which carry
     <INDEX>signal, digital</INDEX>
     <INDEX>digital signal</INDEX>
     <EM>digital signals</EM>.  A<SPACE/>digital signal may at any moment have only one of two
     possible values,
-    0 and 1.  There are also various types of digital 
+    0 and 1.  There are also various types of digital
     <INDEX>function box, in digital circuit</INDEX>
     <EM>function boxes</EM>, which connect wires carrying input signals to other output
     wires.  Such boxes produce output signals computed from their input
-    signals.  The output signal is 
+    signals.  The output signal is
     <INDEX><ORDER>delay</ORDER>delay, in digital circuit</INDEX>
     delayed by a time that depends on the
-    type of the function box.  For example, an 
+    type of the function box.  For example, an
     <INDEX>inverter</INDEX>
     <EM>inverter</EM> is a
     primitive function box that inverts its input.  If the
@@ -47,37 +62,67 @@
     later the inverter will change its output signal to 1.  If the input
     signal to an inverter changes to 1, then one <EM>inverter-delay</EM> later
     the inverter will change its output signal to 0.  We draw an inverter
-    symbolically as in figure<SPACE/><REF NAME="fig:logic-gates"/>.  An 
+    symbolically as in figure<SPACE/><REF NAME="fig:logic-gates"/>.  An
     <INDEX>and-gate</INDEX>
     <EM>and-gate</EM>,
     also shown in figure<SPACE/><REF NAME="fig:logic-gates"/>, is a primitive
     function box with two inputs and one output.  It drives its output signal
-    to a value that is the 
+    to a value that is the
     <INDEX>logical and (digital logic)</INDEX>
     <EM>logical and</EM> of the inputs.  That is, if both
     of its input signals become<SPACE/>1, then one <EM>and-gate-delay</EM> time
     later the and-gate will force its output signal to be 1; otherwise the
-    output will be 0.  An 
+    output will be 0.  An
     <INDEX>or-gate</INDEX>
     <EM>or-gate</EM> is a similar two-input primitive function
-    box that drives its output signal to a value that is the 
+    box that drives its output signal to a value that is the
     <INDEX>logical or (digital logic)</INDEX>
     <EM>logical or</EM> of the inputs.  That is, the output will become 1 if at least one
     of the input signals is 1; otherwise the output will become<SPACE/>0.
+      </EN>
+      <JA>
+    回路の計算モデルは、回路を構成する基本的な部品に対応するオブジェクトで構成されます。まず
+    <INDEX>wire, in digital circuit</INDEX>
+    <EM>ワイヤ</EM>があり、これは
+    <INDEX>signal, digital</INDEX>
+    <INDEX>digital signal</INDEX>
+    <EM>デジタル信号</EM>を伝えます。デジタル信号は、どの瞬間においても 0 と 1 の二つの値のうちいずれか一方のみを取ります。また、さまざまな種類のデジタル
+    <INDEX>function box, in digital circuit</INDEX>
+    <EM>ファンクションボックス</EM>があり、入力信号を伝えるワイヤを別の出力ワイヤに接続します。このようなボックスは、入力信号から計算された出力信号を生成します。出力信号には、ファンクションボックスの種類に応じた時間の
+    <INDEX><ORDER>delay</ORDER>delay, in digital circuit</INDEX>
+    遅延があります。例えば、
+    <INDEX>inverter</INDEX>
+    <EM>インバータ</EM>は入力を反転するプリミティブなファンクションボックスです。インバータへの入力信号が 0 に変化すると、<EM>inverter-delay</EM> 後にインバータは出力信号を 1 に変更します。入力信号が 1 に変化すると、<EM>inverter-delay</EM> 後に出力信号を 0 に変更します。インバータは図<SPACE/><REF NAME="fig:logic-gates"/>のように記号的に描きます。
+    <INDEX>and-gate</INDEX>
+    <EM>ANDゲート</EM>も図<SPACE/><REF NAME="fig:logic-gates"/>に示されていますが、二つの入力と一つの出力を持つプリミティブなファンクションボックスです。その出力信号を、入力の
+    <INDEX>logical and (digital logic)</INDEX>
+    <EM>論理積</EM>の値にします。つまり、両方の入力信号が<SPACE/>1 になると、<EM>and-gate-delay</EM> 時間後に ANDゲートは出力信号を 1 にします。それ以外の場合、出力は 0 になります。
+    <INDEX>or-gate</INDEX>
+    <EM>ORゲート</EM>も同様に二つの入力を持つプリミティブなファンクションボックスで、出力信号を入力の
+    <INDEX>logical or (digital logic)</INDEX>
+    <EM>論理和</EM>の値にします。つまり、入力信号のうち少なくとも一つが 1 であれば出力は 1 になり、それ以外の場合は出力は<SPACE/>0 になります。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
     <FIGURE>
       <FIGURE src="img_original/ch3-Z-G-24.svg"></FIGURE>
-      <CAPTION>Primitive functions in the digital logic simulator.
+      <CAPTION>
+        <BILINGUAL>
+          <EN>Primitive functions in the digital logic simulator.</EN>
+          <JA>デジタル論理シミュレータのプリミティブ関数。</JA>
+        </BILINGUAL>
       </CAPTION>
       <LABEL NAME="fig:logic-gates"/>
     </FIGURE>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     We can connect primitive functions together to construct more complex
     functions.  To accomplish this we wire the outputs of some
     function boxes to the inputs of other function boxes.  For example,
-    the 
+    the
     <INDEX>half-adder</INDEX>
     <INDEX>adder<SUBINDEX>half</SUBINDEX></INDEX>
     <EM>half-adder</EM> circuit shown in
@@ -93,15 +138,30 @@
     delays involved, the outputs may be generated at different times.
     Many of the difficulties in the design of digital circuits arise from
     this fact.
+      </EN>
+      <JA>
+    プリミティブ関数を接続することで、より複雑な関数を構築できます。これを実現するために、あるファンクションボックスの出力を別のファンクションボックスの入力に配線します。例えば、図<SPACE/><REF NAME="fig:half-adder"/>に示す
+    <INDEX>half-adder</INDEX>
+    <INDEX>adder<SUBINDEX>half</SUBINDEX></INDEX>
+    <EM>半加算器</EM>回路は、一つの ORゲート、二つの ANDゲート、一つのインバータで構成されています。二つの入力信号
+    <LATEXINLINE>$A$</LATEXINLINE> と <LATEXINLINE>$B$</LATEXINLINE> を受け取り、二つの出力信号 <LATEXINLINE>$S$</LATEXINLINE> と <LATEXINLINE>$C$</LATEXINLINE> を持ちます。<LATEXINLINE>$S$</LATEXINLINE> は <LATEXINLINE>$A$</LATEXINLINE> と <LATEXINLINE>$B$</LATEXINLINE> のうちちょうど一方が<SPACE/>1 のときに 1 になり、<LATEXINLINE>$C$</LATEXINLINE> は <LATEXINLINE>$A$</LATEXINLINE> と <LATEXINLINE>$B$</LATEXINLINE> の両方が 1 のときに 1 になります。図からわかるように、遅延が関係するため、出力は異なるタイミングで生成される可能性があります。デジタル回路設計の難しさの多くは、この事実から生じます。
+      </JA>
+    </BILINGUAL>
     <FIGURE>
       <FIGURE split_scale="0.5" web_scale="0.8" src="img_original/ch3-Z-G-25.svg"></FIGURE>
-      <CAPTION>A half-adder circuit.
+      <CAPTION>
+        <BILINGUAL>
+          <EN>A half-adder circuit.</EN>
+          <JA>半加算器回路。</JA>
+        </BILINGUAL>
       </CAPTION>
       <LABEL NAME="fig:half-adder"/>
     </FIGURE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     We will now build a program for modeling the digital logic circuits we
     wish to study.  The program will construct computational objects
     modeling the wires, which will <QUOTE>hold</QUOTE> the signals.  Function
@@ -111,20 +171,47 @@
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     that enforce the correct relationships among the signals.
+      </EN>
+      <JA>
+    これから、研究対象のデジタル論理回路をモデル化するプログラムを構築します。このプログラムは、信号を<QUOTE>保持する</QUOTE>ワイヤをモデル化する計算オブジェクトを構築します。ファンクションボックスは、信号間の正しい関係を強制する
+    <SPLITINLINE>
+      <SCHEME>procedures</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    によってモデル化されます。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     One basic element of our simulation will be a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX><USE>make_wire</USE></INDEX> 
+    <INDEX><USE>make_wire</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-wire</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_wire</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
     which constructs wires.  For example, we can construct six wires as follows:
+      </EN>
+      <JA>
+    シミュレーションの基本要素の一つは、ワイヤを構築する
+    <SPLITINLINE>
+      <SCHEME>procedure</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>make_wire</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-wire</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_wire</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    です。例えば、次のように六つのワイヤを構築できます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>make_wire_usage</NAME>
       <REQUIRES>make_wire</REQUIRES>
@@ -145,6 +232,8 @@ const e = make_wire();
 const s = make_wire();
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     We attach a function box to a set of wires by calling a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -158,6 +247,21 @@ const s = make_wire();
     are the wires to be attached to the box.  For example, given
     that we can construct and-gates, or-gates, and inverters, we can wire
     together the half-adder shown in figure<SPACE/><REF NAME="fig:half-adder"/>:
+      </EN>
+      <JA>
+    ファンクションボックスをワイヤのセットに接続するには、そのボックスを構築する
+    <SPLITINLINE>
+      <SCHEME>procedure</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を呼び出します。コンストラクタ
+    <SPLITINLINE>
+      <SCHEME>procedure</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    への引数は、ボックスに接続するワイヤです。例えば、ANDゲート、ORゲート、インバータを構築できるとすると、図<SPACE/><REF NAME="fig:half-adder"/>に示す半加算器を次のように配線できます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>or_gate_example</NAME>
       <REQUIRES>or_gate</REQUIRES>
@@ -233,6 +337,8 @@ and_gate(d, e, s);
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Better yet, we can explicitly name this operation by defining a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -244,6 +350,20 @@ and_gate(d, e, s);
     </SPLITINLINE>
     that constructs this circuit, given the four
     external wires to be attached to the half-adder:
+      </EN>
+      <JA>
+    さらに良いことに、この操作に明示的に名前を付けることができます。半加算器に接続する四つの外部ワイヤを受け取り、この回路を構築する
+    <SPLITINLINE>
+      <SCHEME>procedure</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>half-adder</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>half_@adder</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を定義すればよいのです。
+      </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>half_adder_example</NAME>
       <REQUIRES>half_adder</REQUIRES>
@@ -285,6 +405,8 @@ function half_adder(a, b, s, c) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     The advantage of making this definition is that we can use <SPLITINLINE>
     <SCHEME><SCHEMEINLINE>half-adder</SCHEMEINLINE></SCHEME>
     <JAVASCRIPT><JAVASCRIPTINLINE>half_adder</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -292,7 +414,20 @@ function half_adder(a, b, s, c) {
     circuits.  Figure<SPACE/><REF NAME="fig:full-adder"/>, for example, shows a
     <INDEX>full-adder</INDEX>
     <INDEX>adder<SUBINDEX>full</SUBINDEX></INDEX>
-    <EM>full-adder</EM> composed of two half-adders and an or-gate.<FOOTNOTE>A
+    <EM>full-adder</EM> composed of two half-adders and an or-gate.
+      </EN>
+      <JA>
+    この定義の利点は、<SPLITINLINE>
+    <SCHEME><SCHEMEINLINE>half-adder</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>half_adder</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> 自体をより複雑な回路を作るためのビルディングブロックとして使えることです。例えば、図<SPACE/><REF NAME="fig:full-adder"/>は、二つの半加算器と一つの ORゲートで構成される
+    <INDEX>full-adder</INDEX>
+    <INDEX>adder<SUBINDEX>full</SUBINDEX></INDEX>
+    <EM>全加算器</EM>を示しています。
+      </JA>
+    </BILINGUAL><FOOTNOTE>
+      <BILINGUAL>
+        <EN>A
       full-adder is a basic circuit element used in adding two binary
       numbers.  Here <LATEXINLINE>$A$</LATEXINLINE> and <LATEXINLINE>$B$</LATEXINLINE>
       are the bits at corresponding positions in the
@@ -300,8 +435,15 @@ function half_adder(a, b, s, c) {
       carry bit from the addition one place to the right.  The circuit generates
       <LATEXINLINE>$\mathit{SUM}$</LATEXINLINE>, which is the sum bit in the corresponding position, and
       <LATEXINLINE>$C_{\mathit{out}}$</LATEXINLINE>, which is the
-      carry bit to be propagated to the left.</FOOTNOTE> We can construct a
-      full-adder as follows:
+      carry bit to be propagated to the left.</EN>
+        <JA>全加算器は、二つの二進数を加算するために使われる基本的な回路要素です。ここで <LATEXINLINE>$A$</LATEXINLINE> と <LATEXINLINE>$B$</LATEXINLINE> は加算する二つの数の対応する桁のビットで、<LATEXINLINE>$C_{\mathit{in}}$</LATEXINLINE> は一つ右の桁からの桁上げビットです。回路は、対応する桁の和ビットである <LATEXINLINE>$\mathit{SUM}$</LATEXINLINE> と、左に伝播される桁上げビットである <LATEXINLINE>$C_{\mathit{out}}$</LATEXINLINE> を生成します。</JA>
+      </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+      <EN> We can construct a
+      full-adder as follows:</EN>
+      <JA> 全加算器は次のように構築できます。</JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>full_adder_example</NAME>
       <REQUIRES>full_adder</REQUIRES>
@@ -344,6 +486,8 @@ function full_adder(a, b, c_in, sum, c_out) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     Having defined
     <SPLITINLINE>
     <SCHEME><SCHEMEINLINE>full-adder</SCHEMEINLINE></SCHEME>
@@ -356,12 +500,30 @@ function full_adder(a, b, c_in, sum, c_out) {
     </SPLITINLINE>
     we can now use it as a building block for creating still more complex
     circuits.  (For example, see exercise<SPACE/><REF NAME="ex:ripple-carry"/>.)
+      </EN>
+      <JA>
+    <SPLITINLINE>
+    <SCHEME><SCHEMEINLINE>full-adder</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>full_adder</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    として定義したので、さらに複雑な回路を作るためのビルディングブロックとして使えます。（例えば、練習問題<SPACE/><REF NAME="ex:ripple-carry"/>を参照してください。）
+      </JA>
+    </BILINGUAL>
   <WEB_ONLY>
     <!-- Figure moved later for SICP JS pagination -->
     <!-- Figure code is duplicated later in this file in a PDF_ONLY -->
     <FIGURE>
       <FIGURE split_scale="0.5" web_scale="0.8" src="img_original/ch3-Z-G-26.svg"></FIGURE>
-      <CAPTION>A full-adder circuit.
+      <CAPTION>
+        <BILINGUAL>
+          <EN>A full-adder circuit.</EN>
+          <JA>全加算器回路。</JA>
+        </BILINGUAL>
       </CAPTION>
       <LABEL NAME="fig:full-adder"/>
     </FIGURE>
@@ -369,6 +531,8 @@ function full_adder(a, b, c_in, sum, c_out) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     In essence, our simulator provides us with the tools to construct a
     language of circuits.  If we adopt the general perspective on
     languages with which we approached the study of
@@ -385,14 +549,36 @@ function full_adder(a, b, c_in, sum, c_out) {
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     serves as a means of abstraction.
+      </EN>
+      <JA>
+    本質的に、このシミュレータは回路の言語を構築するためのツールを提供しています。<SPACE/><REF NAME="sec:elements-of-programming"/>節で
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    を学んだときと同じ、言語に対する一般的な視点を採用すると、プリミティブなファンクションボックスが言語のプリミティブな要素を形成し、ボックスを配線でつなぐことが組み合わせの手段を提供し、配線パターンを
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    として定義することが抽象化の手段として機能する、と言えます。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
-  <SUBHEADING> 
-    <NAME>Primitive function boxes</NAME>
+  <SUBHEADING>
+    <NAME>
+      <BILINGUAL>
+        <EN>Primitive function boxes</EN>
+        <JA>プリミティブなファンクションボックス</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The primitive function boxes
     <INDEX>digital-circuit simulation<SUBINDEX>primitive function boxes<OPEN/></SUBINDEX></INDEX>
     implement the <QUOTE>forces</QUOTE> by which a
@@ -407,7 +593,7 @@ function full_adder(a, b, c_in, sum, c_out) {
 	    <JAVASCRIPTINLINE>get_signal(</JAVASCRIPTINLINE><META>wire</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-	<INDEX><USE>get_signal</USE></INDEX> 
+	<INDEX><USE>get_signal</USE></INDEX>
 	<BR/>
 	returns the current value of the signal on the wire.
       </LI>
@@ -419,7 +605,7 @@ function full_adder(a, b, c_in, sum, c_out) {
 	    <JAVASCRIPTINLINE>set_signal(</JAVASCRIPTINLINE><META>wire</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>new-value</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>:
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-        <INDEX><USE>set_signal</USE></INDEX> 
+        <INDEX><USE>set_signal</USE></INDEX>
 	<BR/>
         changes the value of the signal on the wire to the new value.
       </LI>
@@ -432,7 +618,7 @@ function full_adder(a, b, c_in, sum, c_out) {
 	    <JAVASCRIPTINLINE>add_action(</JAVASCRIPTINLINE><META>wire</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>function-of-no-arguments</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>:
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-        <INDEX><USE>add_action</USE></INDEX> 
+        <INDEX><USE>add_action</USE></INDEX>
 	<BR/>
         asserts that the designated
         <SPLITINLINE>
@@ -453,7 +639,7 @@ function full_adder(a, b, c_in, sum, c_out) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX><USE>after_delay</USE></INDEX> 
+    <INDEX><USE>after_delay</USE></INDEX>
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>after-delay</SCHEMEINLINE>
@@ -473,9 +659,91 @@ function full_adder(a, b, c_in, sum, c_out) {
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     after the given delay.
+      </EN>
+      <JA>
+    プリミティブなファンクションボックスは、
+    <INDEX>digital-circuit simulation<SUBINDEX>primitive function boxes<OPEN/></SUBINDEX></INDEX>
+    あるワイヤの信号の変化が他のワイヤの信号に影響を及ぼす<QUOTE>力</QUOTE>を実装します。ファンクションボックスを構築するために、ワイヤに対する以下の操作を使います。
+    <UL>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(get-signal wire)</SCHEMEINLINE>:</SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>get_signal(</JAVASCRIPTINLINE><META>wire</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	<INDEX><USE>get_signal</USE></INDEX>
+	<BR/>
+	ワイヤ上の信号の現在の値を返します。
+      </LI>
+      <LI>
+        <SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(set-signal! wire new-value)</SCHEMEINLINE>:
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>set_signal(</JAVASCRIPTINLINE><META>wire</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>new-value</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>:
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+        <INDEX><USE>set_signal</USE></INDEX>
+	<BR/>
+        ワイヤ上の信号の値を新しい値に変更します。
+      </LI>
+      <LI>
+        <SPLITINLINE>
+	  <SCHEME>
+	    <SCHEMEINLINE>(add-action! wire procedure-of-no-arguments)</SCHEMEINLINE>:
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>add_action(</JAVASCRIPTINLINE><META>wire</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>function-of-no-arguments</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>:
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+        <INDEX><USE>add_action</USE></INDEX>
+	<BR/>
+        ワイヤ上の信号の値が変化したときに、指定された
+        <SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+        が実行されるべきことを宣言します。このような
+        <SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+        は、ワイヤ上の信号値の変化を他のワイヤに伝える手段です。
+      </LI>
+    </UL>
+    さらに、時間遅延と実行する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を受け取り、指定された遅延の後にその
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を実行する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>after_delay</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>after-delay</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>after_delay</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    も使います。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Using these
     <SPLITINLINE>
       <SCHEME>procedures,</SCHEME>
@@ -512,6 +780,44 @@ function full_adder(a, b, c_in, sum, c_out) {
       </JAVASCRIPT>
     </SPLITINLINE>
     sets the output signal to be this new value:
+      </EN>
+      <JA>
+    これらの
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を使って、プリミティブなデジタル論理関数を定義できます。インバータを通じて入力を出力に接続するには、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-action!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_action</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を使って、入力ワイヤに、信号の値が変化するたびに実行される
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を関連付けます。この
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は入力信号の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>logical-not</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>logical_not</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を計算し、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>inverter-delay</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>inverter_delay</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    後に出力信号をこの新しい値に設定します。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX>inverter<SUBINDEX><DECLARATION>inverter</DECLARATION></SUBINDEX></INDEX>
       <INDEX><DECLARATION>logical_not</DECLARATION></INDEX> 
@@ -575,13 +881,19 @@ function logical_and(s1, s2) {
     <!-- Figure code is copy of code earlier in this file in a WEB_ONLY -->
     <FIGURE>
       <FIGURE split_scale="0.5" web_scale="0.8" src="img_original/ch3-Z-G-26.svg"></FIGURE>
-      <CAPTION>A full-adder circuit.
+      <CAPTION>
+        <BILINGUAL>
+          <EN>A full-adder circuit.</EN>
+          <JA>全加算器回路。</JA>
+        </BILINGUAL>
       </CAPTION>
       <LABEL NAME="fig:full-adder"/>
     </FIGURE>
   </PDF_ONLY>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     An and-gate is a little more complex.  The action
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -607,6 +919,32 @@ function logical_and(s1, s2) {
       <JAVASCRIPT><JAVASCRIPTINLINE>and_gate_delay</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
     </SPLITINLINE>
+      </EN>
+      <JA>
+    ANDゲートはもう少し複雑です。アクション
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、ゲートへのいずれかの入力が変化した場合に実行されなければなりません。入力ワイヤ上の信号値の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>logical-and</SCHEMEINLINE>
+      （<SCHEMEINLINE>logical-not</SCHEMEINLINE> に類似した手続きを使用）
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>logical_and</JAVASCRIPTINLINE>
+	（<JAVASCRIPTINLINE>logical_not</JAVASCRIPTINLINE> に類似した関数を使用）
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を計算し、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>and-gate-delay</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>and_gate_delay</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    後に出力ワイヤの値が新しい値に変化するよう設定します。
+      </JA>
+    </BILINGUAL>
     <SNIPPET POSTPADDING="no">
       <INDEX>and-gate<SUBINDEX><DECLARATION>and_gate</DECLARATION></SUBINDEX></INDEX>
       <NAME>and_gate</NAME>
@@ -644,6 +982,8 @@ function and_gate(a1, a2, output) {
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+      <EN>
     Define an
     <INDEX>or-gate<SUBINDEX><ORDER>or gate</ORDER><SPLITINLINE><SCHEME><SCHEMEINLINE>or-gate</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>or_gate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
     or-gate as a primitive function box.  Your
@@ -658,6 +998,24 @@ function and_gate(a1, a2, output) {
       <JAVASCRIPT><JAVASCRIPTINLINE>and_gate</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
     </SPLITINLINE>
+      </EN>
+      <JA>
+    <INDEX>or-gate<SUBINDEX><ORDER>or gate</ORDER><SPLITINLINE><SCHEME><SCHEMEINLINE>or-gate</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>or_gate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
+    ORゲートをプリミティブなファンクションボックスとして定義しなさい。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>or-gate</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>or_gate</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    コンストラクタは
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>and-gate</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>and_gate</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と同様にすべきです。
+      </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:3_28"/>
     <SOLUTION>
       <SNIPPET>
@@ -701,6 +1059,8 @@ function or_gate(a1, a2, output) {
   </EXERCISE>
   
   <EXERCISE>
+    <BILINGUAL>
+      <EN>
     Another way to construct an
     <INDEX>or-gate<SUBINDEX><ORDER>or gate</ORDER><SPLITINLINE><SCHEME><SCHEMEINLINE>or-gate</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>or_gate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
     or-gate is as a compound digital logic
@@ -726,10 +1086,46 @@ function or_gate(a1, a2, output) {
       <JAVASCRIPT><JAVASCRIPTINLINE>inverter_delay</JAVASCRIPTINLINE>?
       </JAVASCRIPT>
     </SPLITINLINE>
+      </EN>
+      <JA>
+    <INDEX>or-gate<SUBINDEX><ORDER>or gate</ORDER><SPLITINLINE><SCHEME><SCHEMEINLINE>or-gate</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>or_gate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
+    ORゲートを構成するもう一つの方法は、ANDゲートとインバータから構築される複合デジタル論理デバイスとして作ることです。これを実現する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>or-gate</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>or_gate</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を定義しなさい。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>and-gate-delay</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>and_gate_delay</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>inverter-delay</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>inverter_delay</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    で表すと、このORゲートの遅延時間はいくらですか？
+      </JA>
+    </BILINGUAL>
     <SOLUTION>
+      <BILINGUAL>
+        <EN>
       (contributed by github user <LINK address="https://github.com/taimoon">taimoon</LINK>)
       <BREAK/>
       Idea: ~(~a &amp; ~b) = nand(~a, ~b) = ~~a | ~~b = a | b
+        </EN>
+        <JA>
+      （GitHub ユーザー <LINK address="https://github.com/taimoon">taimoon</LINK> による貢献）
+      <BREAK/>
+      アイデア: ~(~a &amp; ~b) = nand(~a, ~b) = ~~a | ~~b = a | b
+        </JA>
+      </BILINGUAL>
       <SNIPPET EVAL="no">
 	<JAVASCRIPT>
 function nand_gate(a1, a2, out){
@@ -747,15 +1143,26 @@ function or_gate(a1, a2, out){
 }
 	</JAVASCRIPT>
       </SNIPPET>
+      <BILINGUAL>
+        <EN>
       The delay time of the nand-gate is
       <JAVASCRIPTINLINE>nand_gate_delay = and_gate_delay + inverter_delay</JAVASCRIPTINLINE> and the delay time of the or-gate above is
       <JAVASCRIPTINLINE>or_gate_delay = nand_gate_delay + inverter_delay = and_gate_delay + 2 * inverter_delay</JAVASCRIPTINLINE>.
+        </EN>
+        <JA>
+      NANDゲートの遅延時間は
+      <JAVASCRIPTINLINE>nand_gate_delay = and_gate_delay + inverter_delay</JAVASCRIPTINLINE> であり、上記のORゲートの遅延時間は
+      <JAVASCRIPTINLINE>or_gate_delay = nand_gate_delay + inverter_delay = and_gate_delay + 2 * inverter_delay</JAVASCRIPTINLINE> です。
+        </JA>
+      </BILINGUAL>
     </SOLUTION>
     <LABEL NAME="ex:3_29"/>
   </EXERCISE>
   <SHORT_PAGE lines="1"/>
   <EXERCISE>
-    Figure<SPACE/><REF NAME="fig:ripple-carry"/> shows a 
+    <BILINGUAL>
+      <EN>
+    Figure<SPACE/><REF NAME="fig:ripple-carry"/> shows a
     <INDEX>ripple-carry adder</INDEX>
     <INDEX>adder<SUBINDEX>ripple-carry</SUBINDEX></INDEX>
     <EM>ripple-carry adder</EM> formed by stringing
@@ -807,23 +1214,77 @@ function or_gate(a1, a2, out){
     complete output from an <LATEXINLINE>$n$</LATEXINLINE>-bit ripple-carry
     adder, expressed in terms of the delays for and-gates, or-gates, and
     inverters?
+      </EN>
+      <JA>
+    図<SPACE/><REF NAME="fig:ripple-carry"/>は、
+    <INDEX>ripple-carry adder</INDEX>
+    <INDEX>adder<SUBINDEX>ripple-carry</SUBINDEX></INDEX>
+    <LATEXINLINE>$n$</LATEXINLINE>個の全加算器を直列に接続して形成された<EM>リプルキャリー加算器</EM>を示しています。
+    これは2つの<LATEXINLINE>$n$</LATEXINLINE>ビット2進数を加算するための最も単純な形式の並列加算器です。
+    入力<LATEXINLINE>$A_{1}$</LATEXINLINE>,
+    <LATEXINLINE>$A_{2}$</LATEXINLINE>,
+    <LATEXINLINE>$A_{3}$</LATEXINLINE>, <ELLIPSIS/>,
+    <LATEXINLINE>$A_{n}$</LATEXINLINE> と
+    <LATEXINLINE>$B_{1}$</LATEXINLINE>,
+    <LATEXINLINE>$B_{2}$</LATEXINLINE>,
+    <LATEXINLINE>$B_{3}$</LATEXINLINE>, <ELLIPSIS/>,
+    <LATEXINLINE>$B_{n}$</LATEXINLINE>
+    は加算される2つの2進数です（各
+    <LATEXINLINE>$A_{k}$</LATEXINLINE> と
+    <LATEXINLINE>$B_{k}$</LATEXINLINE>
+    は0または1です）。この回路は
+    <LATEXINLINE>$S_{1}$</LATEXINLINE>,
+    <LATEXINLINE>$S_{2}$</LATEXINLINE>,
+    <LATEXINLINE>$S_{3}$</LATEXINLINE>,
+    <ELLIPSIS/>,
+    <LATEXINLINE>$S_{n}$</LATEXINLINE>
+    （和の<LATEXINLINE>$n$</LATEXINLINE>ビット）と、加算からのキャリー
+    <LATEXINLINE>$C$</LATEXINLINE> を生成します。この回路を生成する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>ripple-carry-adder</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>ripple_carry_adder</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を書きなさい。この
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、それぞれ<LATEXINLINE>$n$</LATEXINLINE>本のワイヤからなる3つのリスト<EMDASH/><LATEXINLINE>$A_{k}$</LATEXINLINE>、<LATEXINLINE>$B_{k}$</LATEXINLINE>、<LATEXINLINE>$S_{k}$</LATEXINLINE><EMDASH/>と、もう1本のワイヤ<LATEXINLINE>$C$</LATEXINLINE>を引数として受け取るべきです。
+    リプルキャリー加算器の主な欠点は、キャリー信号が伝搬するのを待つ必要があることです。<LATEXINLINE>$n$</LATEXINLINE>ビットのリプルキャリー加算器から完全な出力を得るために必要な遅延を、ANDゲート、ORゲート、インバータの遅延で表すといくらになりますか？
+      </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:ripple-carry"/>
   </EXERCISE>
 
   <FIGURE>
     <FIGURE split_scale="0.5" web_scale="0.8" src="img_original/ch3-Z-G-27.svg"></FIGURE>
     <CAPTION>
-      A ripple-carry adder for <LATEXINLINE>$n$</LATEXINLINE>-bit numbers.
+      <BILINGUAL>
+        <EN>A ripple-carry adder for <LATEXINLINE>$n$</LATEXINLINE>-bit numbers.</EN>
+        <JA><LATEXINLINE>$n$</LATEXINLINE>ビット数のリプルキャリー加算器。</JA>
+      </BILINGUAL>
     </CAPTION>
     <LABEL NAME="fig:ripple-carry"/>
   </FIGURE>
 
   <INDEX>digital-circuit simulation<SUBINDEX>primitive function boxes<CLOSE/></SUBINDEX></INDEX>
 
-  <SUBHEADING> 
-    <NAME>Representing wires</NAME>
+  <SUBHEADING>
+    <NAME>
+      <BILINGUAL>
+        <EN>Representing wires</EN>
+        <JA>ワイヤの表現</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
   <TEXT>
+    <BILINGUAL>
+      <EN>
     A wire
     <INDEX>digital-circuit simulation<SUBINDEX>representing wires<OPEN/></SUBINDEX></INDEX>
     in our simulation will be a computational object with two local
@@ -855,6 +1316,35 @@ function or_gate(a1, a2, out){
     that selects the appropriate local operation, just as we did
     with the simple bank-account object in section
     <SPACE/><REF NAME="sec:local-state-variables"/>:
+      </EN>
+      <JA>
+    シミュレーションにおけるワイヤは、2つの局所状態変数を持つ計算オブジェクトです。
+    <INDEX>digital-circuit simulation<SUBINDEX>representing wires<OPEN/></SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>signal-value</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>signal_value</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    （初期値は0）と、信号の値が変化したときに実行される
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>action-procedures</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>action_functions</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    のコレクションです。ワイヤの実装には、
+    <INDEX>message passing<SUBINDEX>in digital-circuit simulation</SUBINDEX></INDEX>
+    メッセージパッシングスタイルを用い、局所
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    のコレクションと、適切な局所操作を選択する <SCHEMEINLINE>dispatch</SCHEMEINLINE>
+    <SPLITINLINE><SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を組み合わせます。これは<REF NAME="sec:local-state-variables"/>節の単純な銀行口座オブジェクトで行ったのと同じ方法です。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>make_wire</DECLARATION></INDEX> 
       <NAME>make_wire</NAME>
@@ -909,6 +1399,8 @@ function make_wire() {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     The local
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -939,6 +1431,44 @@ function make_wire() {
       <SCHEME>procedures:</SCHEME>
       <JAVASCRIPT>functions:</JAVASCRIPT>
     </SPLITINLINE>
+      </EN>
+      <JA>
+    局所
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>set-my-signal</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>set_my_signal</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、新しい信号値がワイヤの信号を変化させるかどうかをテストします。変化する場合は、以下の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>call-each</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>call_each</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使って各アクション
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を実行します。<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>call-each</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>call_each</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は、引数なし
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    のリストの各要素を呼び出します。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>call_each</DECLARATION></INDEX> 
       <NAME>call_each</NAME>
@@ -961,6 +1491,8 @@ function call_each(functions) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     The local
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -988,9 +1520,42 @@ function call_each(functions) {
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     once.  (See exercise<SPACE/><REF NAME="ex:accept-action"/>.)
+      </EN>
+      <JA>
+    局所
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>
+      <SCHEMEINLINE>accept-action-procedure</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>accept_action_function</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、与えられた
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を実行対象の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    のリストに追加し、その新しい
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を1回実行します（練習問題<SPACE/><REF NAME="ex:accept-action"/>を参照）。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     With the local <SCHEMEINLINE>dispatch</SCHEMEINLINE>
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -1003,14 +1568,31 @@ function call_each(functions) {
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     to access the local operations on
-    wires:<FOOTNOTE>These
+    wires:
+      </EN>
+      <JA>
+    上記のように局所 <SCHEMEINLINE>dispatch</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を設定すれば、ワイヤの局所操作にアクセスする以下の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を提供できます。
+      </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+      <EN>These
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     are simply syntactic sugar that allow
     <SPLITINLINE>
-      <SCHEME>	
+      <SCHEME>
         <INDEX>syntactic sugar<SUBINDEX>procedure vs.<SPACE/>data as</SUBINDEX></INDEX>
       </SCHEME>
       <JAVASCRIPT>
@@ -1018,10 +1600,10 @@ function call_each(functions) {
       </JAVASCRIPT>
     </SPLITINLINE>
     <INDEX>syntax interface</INDEX>
-    us to use ordinary 
+    us to use ordinary
     <SPLITINLINE>
       <SCHEME>
-        procedural 
+        procedural
       </SCHEME>
       <JAVASCRIPT>
         functional
@@ -1079,6 +1661,80 @@ function call_each(functions) {
     <QUOTE><SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE></QUOTE>
     and <QUOTE>data,</QUOTE> and we can choose our syntactic sugar to allow us
     to program in whatever style we choose.
+      </EN>
+      <JA>これらの
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は単なる糖衣構文であり、
+    <SPLITINLINE>
+      <SCHEME>
+        <INDEX>syntactic sugar<SUBINDEX>procedure vs.<SPACE/>data as</SUBINDEX></INDEX>
+      </SCHEME>
+      <JAVASCRIPT>
+        <INDEX>syntactic sugar<SUBINDEX>function vs.<SPACE/>data as</SUBINDEX></INDEX>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX>syntax interface</INDEX>
+    通常の
+    <SPLITINLINE>
+      <SCHEME>
+        手続き的な
+      </SCHEME>
+      <JAVASCRIPT>
+        関数的な
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    構文でオブジェクトの局所
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    にアクセスできるようにするものです。
+    <SPLITINLINE><SCHEME><QUOTE>手続き</QUOTE></SCHEME>
+    <JAVASCRIPT><QUOTE>関数</QUOTE></JAVASCRIPT>
+    </SPLITINLINE>
+    と<QUOTE>データ</QUOTE>の役割をこれほど簡単に交換できるのは注目に値します。例えば、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(wire 'get-signal)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>wire("get_signal")</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と書くと、<SCHEMEINLINE>wire</SCHEMEINLINE> はメッセージ
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>get-signal</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>"get_signal"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を入力として呼び出される
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    だと考えます。一方、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(get-signal wire)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>get_signal(wire)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と書くと、<SCHEMEINLINE>wire</SCHEMEINLINE> は
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>get-signal</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>get_signal</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    への入力であるデータオブジェクトだと考えるようになります。実際のところ、
+    <SPLITINLINE><SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    をオブジェクトとして扱える言語では、<QUOTE><SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE></QUOTE>と<QUOTE>データ</QUOTE>の間に根本的な違いはなく、好みのスタイルでプログラミングできるように糖衣構文を選べるのです。
+      </JA>
+    </BILINGUAL>
     <LABEL NAME="foot:object-syntax"/></FOOTNOTE>
     <SNIPPET>
       <INDEX><DECLARATION>get_signal</DECLARATION></INDEX> 
@@ -1111,6 +1767,8 @@ function add_action(wire, action_function) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Wires, which have time-varying signals and may be incrementally attached to
     devices, are typical of mutable objects.  We have modeled them as
     <SPLITINLINE>
@@ -1136,9 +1794,33 @@ function add_action(wire, action_function) {
     </SPLITINLINE>
     is constructed and returned, capturing
     the environment with the new state variables.
+      </EN>
+      <JA>
+    ワイヤは、時間とともに変化する信号を持ち、デバイスに段階的に接続できるという点で、ミュータブルなオブジェクトの典型例です。ワイヤは、代入によって変更される局所状態変数を持つ
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    としてモデル化しました。新しいワイヤが作成されると、新しい状態変数のセットが（
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-wire</SCHEMEINLINE> の <SCHEMEINLINE>let</SCHEMEINLINE> 式</SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>make_wire</JAVASCRIPTINLINE> の <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE> 文
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    によって）割り当てられ、新しい <SCHEMEINLINE>dispatch</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    が構築されて返されます。この関数は新しい状態変数を含む環境を捕捉しています。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The wires are shared among the various devices that have been
     connected to them.  Thus, a change made by an interaction with one
     device will affect all the other devices attached to the wire.  The
@@ -1148,17 +1830,34 @@ function add_action(wire, action_function) {
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     provided to it when the connections were established.
+      </EN>
+      <JA>
+    ワイヤは、接続されたさまざまなデバイス間で共有されます。したがって、あるデバイスとのインタラクションによって行われた変更は、そのワイヤに接続された他のすべてのデバイスに影響を与えます。ワイヤは、接続が確立されたときに提供されたアクション
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を呼び出すことで、変更を隣接するデバイスに伝達します。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <INDEX>digital-circuit simulation<SUBINDEX>representing wires<CLOSE/></SUBINDEX></INDEX>
   
-  <SUBHEADING> 
-    <NAME>The agenda</NAME>
+  <SUBHEADING>
+    <NAME>
+      <BILINGUAL>
+        <EN>The agenda</EN>
+        <JA>アジェンダ</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>digital-circuit simulation<SUBINDEX>agenda<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The only thing needed to complete the simulator is
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>after-delay</SCHEMEINLINE>.</SCHEME>
@@ -1167,17 +1866,45 @@ function add_action(wire, action_function) {
     The idea here is that we maintain a data structure, called an
     <EM>agenda</EM>, that contains a schedule of things to do.
     The following operations are defined for agendas:
+      </EN>
+      <JA>
+    シミュレータを完成させるために残っているのは
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>after-delay</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>after_delay</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    だけです。ここでの考え方は、実行すべきことのスケジュールを含む<EM>アジェンダ</EM>と呼ばれるデータ構造を維持するということです。アジェンダに対して以下の操作が定義されています。
+      </JA>
+    </BILINGUAL>
     <UL>
+      <BILINGUAL>
+      <EN>
       <LI>
         <SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>(make-agenda)</SCHEMEINLINE>:</SCHEME>
 	  <JAVASCRIPT><JAVASCRIPTINLINE>make_agenda()</JAVASCRIPTINLINE>:
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-        <INDEX><USE>make_agenda</USE></INDEX> 
+        <INDEX><USE>make_agenda</USE></INDEX>
 	<BR/>
 	returns a new empty agenda.
       </LI>
+      </EN>
+      <JA>
+      <LI>
+        <SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(make-agenda)</SCHEMEINLINE>:</SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>make_agenda()</JAVASCRIPTINLINE>:
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+        <INDEX><USE>make_agenda</USE></INDEX>
+	<BR/>
+	新しい空のアジェンダを返します。
+      </LI>
+      </JA>
+      </BILINGUAL>
+      <BILINGUAL>
+      <EN>
       <LI>
         <SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>(empty-agenda? agenda)</SCHEMEINLINE>:
@@ -1186,7 +1913,7 @@ function add_action(wire, action_function) {
 	    <JAVASCRIPTINLINE>is_empty_agenda(</JAVASCRIPTINLINE><META>agenda</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-        <INDEX><USE>is_empty_agenda</USE></INDEX> 
+        <INDEX><USE>is_empty_agenda</USE></INDEX>
 	<BR/>
 	is true if the specified agenda is empty.
       </LI>
@@ -1198,7 +1925,7 @@ function add_action(wire, action_function) {
 	    <JAVASCRIPTINLINE>first_agenda_item(</JAVASCRIPTINLINE><META>agenda</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-        <INDEX><USE>first_agenda_item</USE></INDEX> 
+        <INDEX><USE>first_agenda_item</USE></INDEX>
 	<BR/>
 	returns the first item on the agenda.
       </LI>
@@ -1211,7 +1938,7 @@ function add_action(wire, action_function) {
             <JAVASCRIPTINLINE>remove_first_agenda_item(</JAVASCRIPTINLINE><META>agenda</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-        <INDEX><USE>remove_first_agenda_item</USE></INDEX> 
+        <INDEX><USE>remove_first_agenda_item</USE></INDEX>
 	<BR/>
         modifies the agenda by removing the first item.
       </LI>
@@ -1224,7 +1951,7 @@ function add_action(wire, action_function) {
 	    <JAVASCRIPTINLINE>add_to_agenda(</JAVASCRIPTINLINE><META>time</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>action</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>agenda</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-        <INDEX><USE>add_to_agenda</USE></INDEX> 
+        <INDEX><USE>add_to_agenda</USE></INDEX>
 	<BR/>
         modifies the agenda by adding the given action
         <SPLITINLINE>
@@ -1241,14 +1968,87 @@ function add_action(wire, action_function) {
 	    <JAVASCRIPTINLINE>current_time(</JAVASCRIPTINLINE><META>agenda</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-        <INDEX><USE>current_time</USE></INDEX> 
+        <INDEX><USE>current_time</USE></INDEX>
 	<BR/>
         returns the current simulation time.
       </LI>
+      </EN>
+      <JA>
+      <LI>
+        <SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(empty-agenda? agenda)</SCHEMEINLINE>:
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>is_empty_agenda(</JAVASCRIPTINLINE><META>agenda</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+        <INDEX><USE>is_empty_agenda</USE></INDEX>
+	<BR/>
+	指定されたアジェンダが空の場合に真を返します。
+      </LI>
+      <LI>
+        <SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(first-agenda-item agenda)</SCHEMEINLINE>:
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>first_agenda_item(</JAVASCRIPTINLINE><META>agenda</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+        <INDEX><USE>first_agenda_item</USE></INDEX>
+	<BR/>
+	アジェンダの最初の項目を返します。
+      </LI>
+      <LI>
+        <SPLITINLINE>
+	  <SCHEME>
+	    <SCHEMEINLINE>(remove-first-agenda-item! agenda)</SCHEMEINLINE>:
+	  </SCHEME>
+	  <JAVASCRIPT>
+            <JAVASCRIPTINLINE>remove_first_agenda_item(</JAVASCRIPTINLINE><META>agenda</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+        <INDEX><USE>remove_first_agenda_item</USE></INDEX>
+	<BR/>
+        最初の項目を削除してアジェンダを変更します。
+      </LI>
+      <LI>
+        <SPLITINLINE>
+	  <SCHEME>
+	    <SCHEMEINLINE>(add-to-agenda! time action agenda)</SCHEMEINLINE>:
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>add_to_agenda(</JAVASCRIPTINLINE><META>time</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>action</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>agenda</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+        <INDEX><USE>add_to_agenda</USE></INDEX>
+	<BR/>
+        指定された時刻に実行するアクション
+        <SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+        を追加してアジェンダを変更します。
+      </LI>
+      <LI>
+        <SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(current-time agenda)</SCHEMEINLINE>:
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>current_time(</JAVASCRIPTINLINE><META>agenda</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+        <INDEX><USE>current_time</USE></INDEX>
+	<BR/>
+        現在のシミュレーション時刻を返します。
+      </LI>
+      </JA>
+      </BILINGUAL>
     </UL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The particular agenda that we use is denoted by
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>the-agenda</SCHEMEINLINE>.</SCHEME>
@@ -1268,6 +2068,30 @@ function add_action(wire, action_function) {
       <SCHEME><SCHEMEINLINE>the-agenda</SCHEMEINLINE>:</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>the_agenda</JAVASCRIPTINLINE>:</JAVASCRIPT>
     </SPLITINLINE>
+      </EN>
+      <JA>
+    使用する特定のアジェンダは
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>the-agenda</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>the_agenda</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    で表されます。
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>after-delay</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>after_delay</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>the-agenda</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>the_agenda</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    に新しい要素を追加します。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>after_delay</DECLARATION></INDEX> 
       <NAME>after_delay</NAME>
@@ -1291,6 +2115,8 @@ function after_delay(delay, action) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     <SPLIT>
       <SCHEME>
 	The simulation is driven by the procedure
@@ -1309,6 +2135,25 @@ function after_delay(delay, action) {
     In general, as the simulation runs, new items
     will be added to the agenda, and <SCHEMEINLINE>propagate</SCHEMEINLINE>
     will continue the simulation as long as there are items on the agenda:
+      </EN>
+      <JA>
+    <SPLIT>
+      <SCHEME>
+	シミュレーションは手続き
+	<SCHEMEINLINE>propagate</SCHEMEINLINE> によって駆動されます。この手続きは
+	<SCHEMEINLINE>the-agenda</SCHEMEINLINE>
+	に対して動作し、アジェンダ上の各手続きを順番に実行します。
+      </SCHEME>
+      <JAVASCRIPT>
+	シミュレーションは関数
+	<SCHEMEINLINE>propagate</SCHEMEINLINE> によって駆動されます。この関数は
+	<JAVASCRIPTINLINE>the_agenda</JAVASCRIPTINLINE>
+	上の各関数を順番に実行します。
+      </JAVASCRIPT>
+    </SPLIT>
+    一般に、シミュレーションの実行中に新しい項目がアジェンダに追加され、<SCHEMEINLINE>propagate</SCHEMEINLINE> はアジェンダに項目がある限りシミュレーションを続行します。
+      </JA>
+    </BILINGUAL>
     <SNIPPET POSTPADDING="no">
       <INDEX><DECLARATION>propagate</DECLARATION></INDEX> 
       <NAME>propagate</NAME>
@@ -1342,14 +2187,21 @@ function propagate() {
   <INDEX>digital-circuit simulation<SUBINDEX>agenda<CLOSE/></SUBINDEX></INDEX>
   
   <LONG_PAGE lines="1"/>
-  <SUBHEADING> 
-    <NAME>A sample simulation</NAME>
+  <SUBHEADING>
+    <NAME>
+      <BILINGUAL>
+        <EN>A sample simulation</EN>
+        <JA>サンプルシミュレーション</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>digital-circuit simulation<SUBINDEX>sample simulation<OPEN/></SUBINDEX></INDEX>
   <INDEX>half-adder<SUBINDEX>simulation of<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The following
     <SPLITINLINE>
       <SCHEME>procedure,</SCHEME>
@@ -1362,9 +2214,19 @@ function propagate() {
     <SPLITINLINE>
       <SCHEME>wire:</SCHEME>
       <JAVASCRIPT>
-	wire. 
+	wire.
       </JAVASCRIPT>
     </SPLITINLINE>
+      </EN>
+      <JA>
+    以下の
+    <SPLITINLINE>
+      <SCHEME>手続きは、</SCHEME>
+      <JAVASCRIPT>関数は、</JAVASCRIPT>
+    </SPLITINLINE>
+    ワイヤに<QUOTE>プローブ</QUOTE>を設置し、シミュレータの動作を示します。プローブは、信号の値が変化するたびに、新しい信号値を現在の時刻およびワイヤを識別する名前とともに表示するようワイヤに指示します。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>probe</DECLARATION><SUBINDEX>in digital-circuit simulator</SUBINDEX></INDEX>
       <NAME>probe</NAME>
@@ -1403,8 +2265,15 @@ function probe(name, wire) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     We begin by initializing the agenda and specifying delays for the
     primitive function boxes:
+      </EN>
+      <JA>
+    まず、アジェンダを初期化し、プリミティブなファンクションボックスの遅延を指定します。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>the_agenda</NAME>
       <REQUIRES>make_agenda</REQUIRES>
@@ -1421,7 +2290,14 @@ const and_gate_delay = 3;
 const or_gate_delay = 5;
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     Now we define four wires, placing probes on two of them:
+      </EN>
+      <JA>
+    次に4本のワイヤを定義し、そのうち2本にプローブを設置します。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>probing_two_wires</NAME>
       <REQUIRES>make_wire</REQUIRES>
@@ -1465,6 +2341,8 @@ probe("carry", carry);
 "carry 0, new value = 0"
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     Next we connect the wires in a half-adder circuit (as in
     figure<SPACE/><REF NAME="fig:half-adder"/>), set the signal on
     <SPLITINLINE>
@@ -1472,6 +2350,16 @@ probe("carry", carry);
       <JAVASCRIPT><JAVASCRIPTINLINE>input_1</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     to 1, and run the simulation:
+      </EN>
+      <JA>
+    次に、ワイヤを半加算器回路（図<SPACE/><REF NAME="fig:half-adder"/>のように）に接続し、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>input-1</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>input_1</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の信号を1に設定して、シミュレーションを実行します。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>half_adder_example_2</NAME>
       <REQUIRES>half_adder</REQUIRES>
@@ -1527,6 +2415,8 @@ propagate();
 "done"	
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     The <SCHEMEINLINE>sum</SCHEMEINLINE> signal changes to 1 at time 8.
     We are now eight time units from the beginning of the simulation.
     At this point, we can set the signal on
@@ -1535,6 +2425,16 @@ propagate();
       <JAVASCRIPT><JAVASCRIPTINLINE>input_2</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     to 1 and allow the values to propagate:
+      </EN>
+      <JA>
+    <SCHEMEINLINE>sum</SCHEMEINLINE> の信号は時刻8で1に変化します。シミュレーション開始から8時間単位が経過しました。この時点で、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>input-2</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>input_2</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の信号を1に設定し、値を伝搬させることができます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>set_signal_example_2</NAME>
       <REQUIRES>propagate_example_1</REQUIRES>
@@ -1573,8 +2473,12 @@ propagate();
 "done"
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
-    <LONG_PAGE lines="2"/>The <SCHEMEINLINE>carry</SCHEMEINLINE> changes to 1 at time 11 and the
-    <SCHEMEINLINE>sum</SCHEMEINLINE> changes to 0 at time 16.
+    <LONG_PAGE lines="2"/>
+    <BILINGUAL>
+      <EN>The <SCHEMEINLINE>carry</SCHEMEINLINE> changes to 1 at time 11 and the
+    <SCHEMEINLINE>sum</SCHEMEINLINE> changes to 0 at time 16.</EN>
+      <JA><SCHEMEINLINE>carry</SCHEMEINLINE> は時刻11で1に変化し、<SCHEMEINLINE>sum</SCHEMEINLINE> は時刻16で0に変化します。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <INDEX>digital-circuit simulation<SUBINDEX>sample simulation<CLOSE/></SUBINDEX></INDEX>
@@ -1582,6 +2486,8 @@ propagate();
 
   <EXERCISE>
     <LABEL NAME="ex:accept-action"/>
+    <BILINGUAL>
+      <EN>
     The internal
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -1620,6 +2526,43 @@ propagate();
       </JAVASCRIPT>
     </SPLITINLINE>
     as
+      </EN>
+      <JA>
+    <INDEX><USE>make_wire</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-wire</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_wire</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    で定義されている内部
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>accept-action-procedure!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>accept_action_function</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、新しいアクション
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    がワイヤに追加されると、その
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    が直ちに実行されるように指定しています。この初期化がなぜ必要なのか説明してください。特に、上の段落の半加算器の例をトレースし、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>accept-action-procedure!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>accept_action_function</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を次のように定義した場合、システムの応答がどう異なるか述べてください。
+      </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" POSTPADDING="no">
       <SCHEME>
 (define (accept-action-procedure! proc)
@@ -1633,26 +2576,45 @@ function accept_action_function(fun) {
     </SNIPPET>
   </EXERCISE>
       
-  <SUBHEADING> 
-    <NAME>Implementing the agenda</NAME>
+  <SUBHEADING>
+    <NAME>
+      <BILINGUAL>
+        <EN>Implementing the agenda</EN>
+        <JA>アジェンダの実装</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>digital-circuit simulation<SUBINDEX>agenda implementation<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Finally, we give details of the agenda data structure, which holds the
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     that are scheduled for future execution.
+      </EN>
+      <JA>
+    最後に、将来の実行がスケジュールされた
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を保持するアジェンダデータ構造の詳細を示します。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    The agenda is made up of 
+    <BILINGUAL>
+      <EN>
+    The agenda is made up of
     <INDEX>time segment, in agenda</INDEX>
     <EM>time segments</EM>.  Each time segment is a
-    pair consisting of a number (the time) and a 
+    pair consisting of a number (the time) and a
     <INDEX>queue<SUBINDEX><ORDER>simulation</ORDER>in simulation agenda</SUBINDEX></INDEX>
     queue (see
     exercise<SPACE/><REF NAME="ex:agenda-list"/>) that holds the
@@ -1661,6 +2623,20 @@ function accept_action_function(fun) {
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     that are scheduled to be run during that time segment.
+      </EN>
+      <JA>
+    アジェンダは
+    <INDEX>time segment, in agenda</INDEX>
+    <EM>タイムセグメント</EM>で構成されています。各タイムセグメントは、数値（時刻）と、そのタイムセグメント中に実行がスケジュールされた
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を保持する
+    <INDEX>queue<SUBINDEX><ORDER>simulation</ORDER>in simulation agenda</SUBINDEX></INDEX>
+    キュー（練習問題<SPACE/><REF NAME="ex:agenda-list"/>を参照）からなるペアです。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>make_time_segment</DECLARATION></INDEX> 
       <INDEX><DECLARATION>segment_time</DECLARATION></INDEX> 
@@ -1683,22 +2659,43 @@ function segment_time(s) { return head(s); }
 function segment_queue(s) { return tail(s); }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     We will operate on the time-segment queues using the queue operations
     described in section<SPACE/><REF NAME="sec:queues"/>.
+      </EN>
+      <JA>
+    タイムセグメントのキューは、セクション<SPACE/><REF NAME="sec:queues"/>で説明したキュー操作を使って操作します。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The agenda itself is a one-dimensional
     <INDEX>table<SUBINDEX>used in simulation agenda</SUBINDEX></INDEX>
     table of time segments.  It
     differs from the tables described in section<SPACE/><REF NAME="sec:tables"/>
     in that the segments will be sorted in order of increasing time.  In
-    addition, we store the 
+    addition, we store the
     <INDEX>current time, for simulation agenda</INDEX>
     <EM>current time</EM> (i.e., the time of the last action
     that was processed) at the head of the agenda.  A newly constructed
-    agenda has no time segments and has a current time of 0:<FOOTNOTE>The
-    agenda is a 
+    agenda has no time segments and has a current time of 0:
+      </EN>
+      <JA>
+    アジェンダ自体は、タイムセグメントの1次元の
+    <INDEX>table<SUBINDEX>used in simulation agenda</SUBINDEX></INDEX>
+    テーブルです。セクション<SPACE/><REF NAME="sec:tables"/>で説明したテーブルと異なるのは、セグメントが時刻の昇順でソートされる点です。さらに、アジェンダの先頭に
+    <INDEX>current time, for simulation agenda</INDEX>
+    <EM>現在の時刻</EM>（つまり、最後に処理されたアクションの時刻）を格納します。新しく構築されたアジェンダにはタイムセグメントがなく、現在の時刻は0です。
+      </JA>
+    </BILINGUAL>
+    <FOOTNOTE>
+      <BILINGUAL>
+        <EN>The
+    agenda is a
     <INDEX>headed list</INDEX>
     <INDEX>list(s)<SUBINDEX>headed</SUBINDEX></INDEX>
     headed list, like the tables in section<SPACE/><REF NAME="sec:tables"/>,
@@ -1713,7 +2710,24 @@ function segment_queue(s) { return tail(s); }
       </JAVASCRIPT>
     </SPLITINLINE>
     used
-    with tables).</FOOTNOTE>
+    with tables).
+        </EN>
+        <JA>アジェンダは、セクション<SPACE/><REF NAME="sec:tables"/>のテーブルと同様に、
+    <INDEX>headed list</INDEX>
+    <INDEX>list(s)<SUBINDEX>headed</SUBINDEX></INDEX>
+    ヘッダ付きリストですが、リストの先頭が時刻であるため、追加のダミーヘッダ（テーブルで使用する
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>*table*</SCHEMEINLINE> シンボル
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>"*table*"</JAVASCRIPTINLINE> 文字列
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    など）は必要ありません。
+        </JA>
+      </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET>
       <INDEX><DECLARATION>make_agenda</DECLARATION></INDEX> 
       <INDEX><DECLARATION>current_time</DECLARATION></INDEX> 
@@ -1761,7 +2775,14 @@ function rest_segments(agenda) { return tail(segments(agenda)); }
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     An agenda is empty if it has no time segments:
+      </EN>
+      <JA>
+    アジェンダは、タイムセグメントがない場合に空です。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>is_empty_agenda</DECLARATION></INDEX> 
       <NAME>is_empty_agenda</NAME>
@@ -1779,6 +2800,8 @@ function is_empty_agenda(agenda) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     To add an action to an agenda, we first check if the agenda is empty.
     If so, we create a time segment for the action and install this in
     the agenda.  Otherwise, we scan the agenda, examining the time of each
@@ -1787,6 +2810,11 @@ function is_empty_agenda(agenda) {
     to which we are appointed, we insert a new time segment into the
     agenda just before it.  If we reach the end of the agenda, we must
     create a new time segment at the end.
+      </EN>
+      <JA>
+    アジェンダにアクションを追加するには、まずアジェンダが空かどうかを確認します。空であれば、そのアクション用のタイムセグメントを作成し、アジェンダにインストールします。そうでなければ、アジェンダをスキャンして各セグメントの時刻を調べます。指定された時刻のセグメントが見つかれば、関連するキューにアクションを追加します。指定された時刻よりも後の時刻に達した場合は、その直前に新しいタイムセグメントを挿入します。アジェンダの末尾に達した場合は、末尾に新しいタイムセグメントを作成する必要があります。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>add_to_agenda</DECLARATION></INDEX> 
       <NAME>add_to_agenda</NAME>
@@ -1859,6 +2887,8 @@ function add_to_agenda(time, action, agenda) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -1867,8 +2897,21 @@ function add_to_agenda(time, action, agenda) {
     that removes the first item from the agenda deletes the
     item at the front of the queue in the first time segment.  If this
     deletion makes the time segment empty, we remove it from the list of
-    segments:<FOOTNOTE>Observe that the
-    <LABEL NAME="foot:one-armed"/>
+    segments:
+      </EN>
+      <JA>
+    アジェンダから最初の項目を削除する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、最初のタイムセグメントのキューの先頭にある項目を削除します。この削除によってタイムセグメントが空になった場合は、セグメントのリストからそれを削除します。
+      </JA>
+    </BILINGUAL>
+    <FOOTNOTE>
+      <LABEL NAME="foot:one-armed"/>
+      <BILINGUAL>
+        <EN>Observe that the
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>if</SCHEMEINLINE>
@@ -1903,7 +2946,39 @@ function add_to_agenda(time, action, agenda) {
       </SCHEME>
       <JAVASCRIPT>statements.</JAVASCRIPT>
     </SPLITINLINE>
-  </FOOTNOTE>
+        </EN>
+        <JA>この
+    <SPLITINLINE>
+      <SCHEME>
+	手続きの <SCHEMEINLINE>if</SCHEMEINLINE>
+	式には代替式がないことに注意してください。
+      </SCHEME>
+      <JAVASCRIPT>
+	関数の条件文は、代替文として
+	<INDEX>block<SUBINDEX>empty</SUBINDEX></INDEX>
+	空のブロックを持っています。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    このような
+    <INDEX>conditional statement<SUBINDEX>one-armed (without alternative)</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>
+	<QUOTE>片腕の <SCHEMEINLINE>if</SCHEMEINLINE> 式</QUOTE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<QUOTE>片腕の条件文</QUOTE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、2つの
+    <SPLITINLINE>
+      <SCHEME>
+	式の間で選択するのではなく、何かを行うかどうかを決定するために使用されます。<SCHEMEINLINE>if</SCHEMEINLINE> 式は、述語が偽で<LATEXINLINE>alternative</LATEXINLINE>がない場合、不定の値を返します。
+      </SCHEME>
+      <JAVASCRIPT>文の間で選択するのではなく、何かを行うかどうかを決定するために使用されます。</JAVASCRIPT>
+    </SPLITINLINE>
+        </JA>
+      </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET>
       <INDEX><DECLARATION>remove_first_agenda_item</DECLARATION></INDEX> 
       <NAME>remove_first_agenda_item</NAME>
@@ -1931,12 +3006,25 @@ function remove_first_agenda_item(agenda) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The first agenda item is found at the head of the queue in the first
     time segment.  Whenever we extract an item, we also update the current
-    time:<FOOTNOTE>In this way, the current time will always be the time
+    time:
+      </EN>
+      <JA>
+    アジェンダの最初の項目は、最初のタイムセグメントのキューの先頭にあります。項目を取り出すたびに、現在の時刻も更新します。
+      </JA>
+    </BILINGUAL>
+    <FOOTNOTE>
+      <BILINGUAL>
+        <EN>In this way, the current time will always be the time
     of the action most recently processed.  Storing this time at the head
     of the agenda ensures that it will still be available even if the
-    associated time segment has been deleted.</FOOTNOTE>
+    associated time segment has been deleted.</EN>
+        <JA>このようにすることで、現在の時刻は常に最後に処理されたアクションの時刻になります。この時刻をアジェンダの先頭に格納することで、関連するタイムセグメントが削除された場合でも利用可能であることが保証されます。</JA>
+      </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET POSTPADDING="no">
       <INDEX><DECLARATION>first_agenda_item</DECLARATION></INDEX> 
       <NAME>first_agenda_item</NAME>
@@ -1966,6 +3054,8 @@ function first_agenda_item(agenda) {
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+      <EN>
     The
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -1992,6 +3082,26 @@ function first_agenda_item(agenda) {
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     only at the front (last in, first out).
+      </EN>
+      <JA>
+    アジェンダの各タイムセグメント中に実行される
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    はキューに保持されます。したがって、各セグメントの
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、アジェンダに追加された順序で呼び出されます（先入れ先出し）。なぜこの順序を使わなければならないのか説明してください。特に、同じセグメント内で入力が0,1から1,0に変化するANDゲートの振る舞いをトレースし、セグメントの
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を通常のリストに格納して、先頭でのみ追加・削除する（後入れ先出し）場合に振る舞いがどう異なるか述べてください。
+      </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:agenda-list"/>
   </EXERCISE>
 
