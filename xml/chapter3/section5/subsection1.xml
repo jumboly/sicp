@@ -1,13 +1,13 @@
 <SUBSECTION>
-  <NAME>
-    Streams Are Delayed Lists
-  </NAME>
+  <NAME><BILINGUAL><EN>Streams Are Delayed Lists</EN><JA>ストリームは遅延リスト</JA></BILINGUAL></NAME>
 
   <LABEL NAME="sec:delayed-lists"/>
 
   <INDEX>stream(s)<SUBINDEX>implemented as delayed lists<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     As we saw in
     section<SPACE/><REF NAME="sec:sequences-conventional-interfaces"/>,
     sequences can serve as standard interfaces for combining program
@@ -16,28 +16,51 @@
     <SCHEMEINLINE>filter</SCHEMEINLINE>, and
     <SCHEMEINLINE>accumulate</SCHEMEINLINE>, that capture a wide variety of
     operations in a manner that is both succinct and elegant.
+    </EN>
+    <JA>
+    セクション<SPACE/><REF NAME="sec:sequences-conventional-interfaces"/>で見たように、シーケンスはプログラムのモジュールを組み合わせるための標準的なインターフェースとして機能します。私たちはシーケンスを操作するための強力な抽象化、たとえば<SCHEMEINLINE>map</SCHEMEINLINE>、<SCHEMEINLINE>filter</SCHEMEINLINE>、<SCHEMEINLINE>accumulate</SCHEMEINLINE>といったものを定式化し、多種多様な演算を簡潔かつエレガントな方法で捉えることができました。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Unfortunately, if we represent sequences as lists, this elegance is
     bought at the price of severe inefficiency with respect to both the
     time and space required by our computations.
     When we represent manipulations on sequences as transformations
     of lists, our programs must construct and copy data structures (which
     may be huge) at every step of a process.
+    </EN>
+    <JA>
+    残念ながら、シーケンスをリストとして表現すると、このエレガントさは計算に必要な時間と空間の両面で著しい非効率さという代償を払って手に入れることになります。シーケンスの操作をリストの変換として表現すると、プログラムはプロセスの各ステップで（場合によっては巨大な）データ構造を構築したりコピーしたりしなければなりません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To see why this is true, let us compare two programs for computing the
     sum of all the prime numbers in an interval.  The first program is
-    written in standard iterative style:<FOOTNOTE>Assume that we have a
+    written in standard iterative style:
+    </EN>
+    <JA>
+    この理由を理解するために、ある区間に含まれるすべての素数の合計を計算する 2 つのプログラムを比較してみましょう。最初のプログラムは標準的な反復的スタイルで書かれています。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>Assume that we have a
     predicate
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>prime?</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>is_prime</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     (e.g., as in section<SPACE/><REF NAME="sec:primality"/>) that
-    tests for primality.</FOOTNOTE>
+    tests for primality.</EN>
+    <JA>素数性を判定する述語<SPLITINLINE><SCHEME><SCHEMEINLINE>prime?</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>is_prime</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>（たとえばセクション<SPACE/><REF NAME="sec:primality"/>のもの）があると仮定します。</JA>
+    </BILINGUAL></FOOTNOTE>
     <SNIPPET EVAL="yes">
       <INDEX><DECLARATION>sum_primes</DECLARATION></INDEX> 
       <REQUIRES>prime_definition</REQUIRES>
@@ -71,9 +94,16 @@ function sum_primes(a, b) {
 sum_primes(7, 182);    
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The second program performs the same computation using the sequence
     operations of
     section<SPACE/><REF NAME="sec:sequences-conventional-interfaces"/>:
+    </EN>
+    <JA>
+    2 番目のプログラムはセクション<SPACE/><REF NAME="sec:sequences-conventional-interfaces"/>のシーケンス演算を使って同じ計算を行います。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="yes">
       <INDEX><DECLARATION>sum_primes</DECLARATION></INDEX> 
       <NAME>sum_primes2</NAME>
@@ -99,26 +129,40 @@ function sum_primes(a, b) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In carrying out the computation, the first program needs to store only
     the sum being accumulated.  In contrast, the filter in the second
-    program cannot do any testing until 
+    program cannot do any testing until
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>enumerate-interval</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>enumerate_interval</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
     has constructed a complete list of the numbers in the interval.
-    The filter generates another list, which in turn is passed to 
+    The filter generates another list, which in turn is passed to
     <SCHEMEINLINE>accumulate</SCHEMEINLINE> before being collapsed to form
     a sum.  Such large intermediate storage is not needed by the first program,
     which we can think of as enumerating the interval incrementally, adding
     each prime to the sum as it is generated.
+    </EN>
+    <JA>
+    計算を実行する際、最初のプログラムは累積中の合計値だけを保持していれば十分です。それに対して、2 番目のプログラムのフィルタは、<SPLITINLINE><SCHEME><SCHEMEINLINE>enumerate-interval</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>enumerate_interval</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>が区間内の数のリストを完全に構築し終えるまで、何のテストも行えません。フィルタはさらに別のリストを生成し、それが<SCHEMEINLINE>accumulate</SCHEMEINLINE>に渡され、最後に畳み込まれて合計値になります。このような大きな中間ストレージは最初のプログラムには不要で、こちらは区間を少しずつ列挙しながら、生成された素数をその場で合計に加えていくものと考えられます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The inefficiency in using lists becomes painfully apparent if we use
     the sequence paradigm to compute the second prime in the interval from
     10,000 to 1,000,000 by evaluating the expression
+    </EN>
+    <JA>
+    リストを使うことの非効率さは、シーケンスパラダイムを使って 10,000 から 1,000,000 の区間における 2 番目の素数を、次の式を評価して求めようとすると痛感することになります。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <NAME>painfully</NAME>
       <REQUIRES>prime_definition</REQUIRES>
@@ -132,15 +176,24 @@ head(tail(filter(is_prime,
                  enumerate_interval(10000, 1000000))));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     This expression does find the second prime, but the computational overhead
     is outrageous. We construct a list of almost a million integers, filter
     this list by testing each element for primality, and then ignore almost
     all of the result.  In a more traditional programming style, we would
     interleave the enumeration and the filtering, and stop when we reached
     the second prime.
+    </EN>
+    <JA>
+    この式はたしかに 2 番目の素数を見つけてくれますが、その計算オーバーヘッドは途方もないものです。100 万近い整数のリストを構築し、各要素の素数性をテストしてリストをフィルタにかけ、そして結果のほとんどすべてを捨ててしまうのです。もっと伝統的なプログラミングスタイルであれば、列挙とフィルタリングをインターリーブさせ、2 番目の素数に到達した時点で止めるでしょう。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Streams are a clever idea that allows one to use sequence
     manipulations without incurring the costs of manipulating sequences as
     lists.  With streams we can achieve the best of both worlds: We can
@@ -156,6 +209,23 @@ head(tail(filter(is_prime,
     programs as if we were processing complete sequences, we design our
     stream implementation to automatically and transparently interleave
     the construction of the stream with its use.
+    </EN>
+    <JA>
+    ストリームは、シーケンスをリストとして操作する際のコストを払わずに
+    シーケンス操作を使えるようにする巧妙なアイデアです。ストリームを使えば
+    両方の良いところ取りができます。プログラムをシーケンス操作として
+    エレガントに定式化しながら、インクリメンタルな計算の効率性を
+    手に入れられるのです。基本的なアイデアは、ストリームを部分的にだけ
+    構築するようにしておき、その部分的な構築物をストリームを消費する
+    プログラムに渡すことです。消費側がまだ構築されていない部分に
+    アクセスしようとすると、ストリームは必要な部分を生成するのに
+    ちょうど十分なだけ自分自身を自動的に構築し、それによってストリーム全体が
+    存在しているかのような錯覚を保ちます。言い換えると、あたかも完全な
+    シーケンスを処理しているかのようにプログラムを書きますが、ストリームの
+    実装の方では、ストリームの構築とその利用が自動的かつ透過的に
+    交互に行われるように設計するのです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <COMMENT>
@@ -725,6 +795,8 @@ head(tail(filter(is_prime,
 
     <JAVASCRIPT>
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	To accomplish this, we will construct streams using pairs,
 	with the first item of the stream in the head of the pair.
 	However, rather than placing the value of the rest of the stream
@@ -747,14 +819,45 @@ head(tail(filter(is_prime,
 	<INDEX>stream(s)<SUBINDEX>empty</SUBINDEX></INDEX>
 	The empty stream is
 	<JAVASCRIPTINLINE>null</JAVASCRIPTINLINE>, the same as the empty list.
+	</EN>
+	<JA>
+	これを実現するために、ペアを使ってストリームを構築します。
+	ストリームの最初の要素をペアの head に入れるのです。
+	ただし、ストリームの残りの値をペアの tail に直接入れるのではなく、
+        <INDEX>promise to evaluate</INDEX>
+	要求されたときに残りを計算するための<QUOTE>プロミス</QUOTE>をそこに入れます。
+	データ項目
+	<JAVASCRIPTINLINE>h</JAVASCRIPTINLINE>とストリーム
+	<JAVASCRIPTINLINE>t</JAVASCRIPTINLINE>があるとき、head が
+	<JAVASCRIPTINLINE>h</JAVASCRIPTINLINE>で tail が
+	<JAVASCRIPTINLINE>t</JAVASCRIPTINLINE>であるストリームは、
+	<JAVASCRIPTINLINE>pair(h, () => t)</JAVASCRIPTINLINE>を評価することで構築します<EMDASH/>
+	ストリームの tail
+	<JAVASCRIPTINLINE>t</JAVASCRIPTINLINE>は引数なしの関数で
+	<QUOTE>ラップ</QUOTE>されており、
+        <INDEX>delayed expression</INDEX>
+	その評価が<EM>遅延</EM>されるようになっています。
+        <INDEX>empty stream</INDEX>
+	<INDEX>stream(s)<SUBINDEX>empty</SUBINDEX></INDEX>
+	空のストリームは
+	<JAVASCRIPTINLINE>null</JAVASCRIPTINLINE>であり、空のリストと同じです。
+	</JA>
+	</BILINGUAL>
       </TEXT>
       <TEXT>
+        <BILINGUAL>
+        <EN>
 	To access the first data item of a nonempty stream,
 	we simply select the
 	<JAVASCRIPTINLINE>head</JAVASCRIPTINLINE> of the pair, as with a list.
 	But to access the tail of a stream, we need to evaluate the
 	delayed expression.
 	For convenience, we define
+        </EN>
+        <JA>
+        空でないストリームの先頭のデータ項目にアクセスするには、リストと同じようにペアの<JAVASCRIPTINLINE>head</JAVASCRIPTINLINE>を選択するだけです。しかしストリームの末尾にアクセスするには、遅延された式を評価する必要があります。便宜上、次の関数を定義します。
+        </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="yes" CHAP="2">
           <INDEX><DECLARATION>stream_tail</DECLARATION></INDEX> 
           <NAME>stream_tail</NAME>
@@ -775,6 +878,8 @@ stream_tail(pair(4, () => pair(5, () => null)));
 head(stream_tail(pair(4, () => pair(5, () => null))));
 	  </JAVASCRIPT_TEST>
 	</SNIPPET>
+        <BILINGUAL>
+        <EN>
 	This selects the tail of the pair and applies the function
 	found there to obtain the next pair of the stream
 	(or
@@ -784,15 +889,29 @@ head(stream_tail(pair(4, () => pair(5, () => null))));
 	<EM>forcing</EM> the function in the
 	tail of the pair to fulfill its promise.
         <INDEX>stream(s)<SUBINDEX>implemented as delayed lists<CLOSE/></SUBINDEX></INDEX>
+        </EN>
+        <JA>
+        これはペアの末尾を取り出し、そこにある関数を適用してストリームの次のペア（またはストリームの末尾が空であれば<JAVASCRIPTINLINE>null</JAVASCRIPTINLINE>）を得るものです<EMDASH/>つまり、ペアの末尾にある関数にプロミスを果たさせるよう<INDEX>forcing<SUBINDEX>tail of stream</SUBINDEX></INDEX><INDEX>強制<SUBINDEX>ストリームの末尾</SUBINDEX></INDEX>強制（<EM>forcing</EM>）するわけです。<INDEX>stream(s)<SUBINDEX>implemented as delayed lists<CLOSE/></SUBINDEX></INDEX>
+        </JA>
+        </BILINGUAL>
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         We can make and use streams, in just the same way as we can make
         and use lists, to represent aggregate data arranged in a sequence.  In
         particular, we can build stream analogs of the list operations from
         chapter<SPACE/><REF NAME="chap:data"></REF>, such as  <JAVASCRIPTINLINE>list_ref</JAVASCRIPTINLINE>,
 	<SCHEMEINLINE>map</SCHEMEINLINE>, and
-	<JAVASCRIPTINLINE>for_each</JAVASCRIPTINLINE>:<FOOTNOTE>This should
+	<JAVASCRIPTINLINE>for_each</JAVASCRIPTINLINE>:
+        </EN>
+        <JA>
+        ストリームを作って使う方法は、シーケンスとして並んだ集約データを表現するためにリストを作って使う方法とまったく同じです。特に、章<SPACE/><REF NAME="chap:data"></REF>のリスト操作（<JAVASCRIPTINLINE>list_ref</JAVASCRIPTINLINE>、<SCHEMEINLINE>map</SCHEMEINLINE>、<JAVASCRIPTINLINE>for_each</JAVASCRIPTINLINE>など）に対応するストリーム版を構築できます。
+        </JA>
+        </BILINGUAL><FOOTNOTE>
+        <BILINGUAL>
+        <EN>This should
 	bother you. The fact that we are defining such similar functions
         for streams and lists indicates that we are missing some underlying
 	abstraction.  Unfortunately, in order to exploit this abstraction, we
@@ -800,7 +919,9 @@ head(stream_tail(pair(4, () => pair(5, () => null))));
 	can at present.  We will discuss this point further at the end of
 	section<SPACE/><REF NAME="sec:streams-and-delayed-evaluation"/>.
         In section<SPACE/><REF NAME="sec:lazy-evaluation"/>, we<APOS/>ll
-	develop a framework that unifies lists and streams.</FOOTNOTE>
+	develop a framework that unifies lists and streams.</EN>
+        <JA>これは気になるところです。ストリームとリストに対してこれほど似通った関数を定義しているという事実は、私たちがその根底にある抽象を取り逃がしていることを示しています。残念ながら、この抽象を活用するには、評価のプロセスを現状よりも細かく制御する必要があります。この点についてはセクション<SPACE/><REF NAME="sec:streams-and-delayed-evaluation"/>の最後でさらに議論します。セクション<SPACE/><REF NAME="sec:lazy-evaluation"/>では、リストとストリームを統一する枠組みを構築します。</JA>
+        </BILINGUAL></FOOTNOTE>
         <SNIPPET EVAL="yes">
 	  <INDEX><DECLARATION>stream_ref</DECLARATION></INDEX> 
 	  <INDEX><DECLARATION>stream_map</DECLARATION></INDEX> 
@@ -847,9 +968,16 @@ stream_for_each(x => {acc = acc + x;}, my_stream_2);
 acc;
 	  </JAVASCRIPT_TEST>
 	</SNIPPET>
+        <BILINGUAL>
+        <EN>
 	The function
         <JAVASCRIPTINLINE>stream_for_each</JAVASCRIPTINLINE> is useful for
-	viewing streams: <DONT_BREAK_PAGE/>
+	viewing streams:
+        </EN>
+        <JA>
+        関数<JAVASCRIPTINLINE>stream_for_each</JAVASCRIPTINLINE>はストリームの内容を見るのに便利です。
+        </JA>
+        </BILINGUAL> <DONT_BREAK_PAGE/>
         <SNIPPET EVAL="yes">
 	  <INDEX><DECLARATION>display_stream</DECLARATION></INDEX> 
           <NAME>display_stream</NAME>
@@ -887,6 +1015,8 @@ display_stream(my_stream);
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+          <EN>
 	To make the stream implementation automatically and transparently
 	interleave the construction of a stream with its use, we have arranged
 	for the tail
@@ -908,16 +1038,28 @@ display_stream(my_stream);
 	<JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE>
         are evaluated at construction time.  With streams, the
 	<JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE> is evaluated at selection time.
+          </EN>
+          <JA>
+        ストリームの実装で、ストリームの構築とその使用が自動かつ透過的に交互に行われるようにするために、ストリームの末尾は<JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE>によってストリームが構築されるときではなく、<JAVASCRIPTINLINE>stream_tail</JAVASCRIPTINLINE>関数によってアクセスされるときに評価されるよう取り決めました。この実装上の選択は、セクション<SPACE/><REF NAME="sec:abstraction-barriers"/>で有理数について議論したことを思い出させます。そこでは、分子と分母を既約分数に約分する処理を、構築時か選択時のどちらで行うかを選べるという話をしました。2 つの有理数の実装は同じデータ抽象を生み出しますが、選択は効率に影響を与えます。ストリームと通常のリストの間にも似た関係があります。データ抽象としては、ストリームはリストと同じです。違いは要素が評価されるタイミングです。通常のリストでは、<JAVASCRIPTINLINE>head</JAVASCRIPTINLINE>と<JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE>のどちらも構築時に評価されます。ストリームでは、<JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE>は選択時に評価されます。
+          </JA>
+        </BILINGUAL>
       </TEXT>
 
-      <SUBHEADING> 
-        <NAME>Streams in action</NAME>
+      <SUBHEADING>
+        <NAME><BILINGUAL><EN>Streams in action</EN><JA>ストリームの実例</JA></BILINGUAL></NAME>
       </SUBHEADING>
 
       <TEXT>
+        <BILINGUAL>
+          <EN>
         To see how this data structure behaves, let us analyze the
         <QUOTE>outrageous</QUOTE> prime computation we saw above, reformulated
 	in terms of streams:
+          </EN>
+          <JA>
+        このデータ構造がどのようにふるまうかを見るために、先ほど見た<QUOTE>とんでもない</QUOTE>素数計算を、ストリームを使った形に書き直して分析してみましょう。
+          </JA>
+        </BILINGUAL>
 
         <SNIPPET EVAL="yes">
 	  <NAME>no_more_outrageous</NAME>
@@ -930,10 +1072,19 @@ head(stream_tail(stream_filter(
                      stream_enumerate_interval(10000, 1000000))));
 	  </JAVASCRIPT>
         </SNIPPET>
+        <BILINGUAL>
+          <EN>
         We will see that it does indeed work efficiently.
+          </EN>
+          <JA>
+        これが実際に効率よく動作することを見ていきます。
+          </JA>
+        </BILINGUAL>
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         We begin by calling
 	<JAVASCRIPTINLINE>stream_enumerate_interval</JAVASCRIPTINLINE> with
         the arguments 10,000 and 1,000,000.  The function
@@ -941,6 +1092,16 @@ head(stream_tail(stream_filter(
         is the stream analog of
 	<JAVASCRIPTINLINE>enumerate_interval</JAVASCRIPTINLINE>
         (section<SPACE/><REF NAME="sec:sequences-conventional-interfaces"/>):
+        </EN>
+        <JA>
+        まず <JAVASCRIPTINLINE>stream_enumerate_interval</JAVASCRIPTINLINE>
+        を引数 10,000 と 1,000,000 で呼び出すところから始めます。関数
+        <JAVASCRIPTINLINE>stream_enumerate_interval</JAVASCRIPTINLINE> は、
+        <JAVASCRIPTINLINE>enumerate_interval</JAVASCRIPTINLINE>
+        （第<SPACE/><REF NAME="sec:sequences-conventional-interfaces"/>節）
+        に対応するストリーム版です。
+        </JA>
+        </BILINGUAL>
         <SNIPPET HIDE="yes">
 	  <NAME>stream_enumerate_interval_example</NAME>
           <REQUIRES>stream_enumerate_interval</REQUIRES>
@@ -966,15 +1127,32 @@ function stream_enumerate_interval(low, high) {
 }
 	  </JAVASCRIPT>
         </SNIPPET>
+        <BILINGUAL>
+        <EN>
         and thus the result returned by
 	<JAVASCRIPTINLINE>stream_enumerate_interval</JAVASCRIPTINLINE>,
         formed by the <SCHEMEINLINE>pair</SCHEMEINLINE>,
-	is<FOOTNOTE>The numbers shown here do not really appear in the delayed
+	is
+        </EN>
+        <JA>
+        したがって <JAVASCRIPTINLINE>stream_enumerate_interval</JAVASCRIPTINLINE>
+        が返す結果は、<SCHEMEINLINE>pair</SCHEMEINLINE> によって作られる次のようなペアです。
+        </JA>
+        </BILINGUAL><FOOTNOTE>
+        <BILINGUAL>
+        <EN>The numbers shown here do not really appear in the delayed
 	expression.  What actually appears is the original expression, in an
 	environment in which the variables are bound to the appropriate numbers.
 	For example, <JAVASCRIPTINLINE>low + 1</JAVASCRIPTINLINE> with
         <SCHEMEINLINE>low</SCHEMEINLINE> bound to 10,000 actually appears
-	where <SCHEMEINLINE>10001</SCHEMEINLINE> is shown.</FOOTNOTE>
+	where <SCHEMEINLINE>10001</SCHEMEINLINE> is shown.</EN>
+        <JA>ここに示す数値は、実際には遅延された式の中に現れるわけではありません。
+        実際に現れるのは元の式であり、その式は変数が適切な数値に束縛されている環境のもとに置かれています。
+        たとえば <SCHEMEINLINE>10001</SCHEMEINLINE> と表示されている箇所には、
+        実際には <SCHEMEINLINE>low</SCHEMEINLINE> が 10,000 に束縛された状態での
+        <JAVASCRIPTINLINE>low + 1</JAVASCRIPTINLINE> が現れます。</JA>
+        </BILINGUAL>
+        </FOOTNOTE>
         <SNIPPET EVAL="yes">
 	  <NAME>stream_enumerate_interval_example_2</NAME>
           <REQUIRES>stream_enumerate_interval</REQUIRES>
@@ -986,6 +1164,8 @@ pair(10000, () => stream_enumerate_interval(10001, 1000000));
 stream_ref(pair(10000, () => stream_enumerate_interval(10001, 1000000)), 100);
 	  </JAVASCRIPT_TEST>
         </SNIPPET>
+        <BILINGUAL>
+        <EN>
         That is, <JAVASCRIPTINLINE>stream_enumerate_interval</JAVASCRIPTINLINE>
         returns a stream represented as a pair whose
 	<JAVASCRIPTINLINE>head</JAVASCRIPTINLINE>
@@ -995,6 +1175,17 @@ stream_ref(pair(10000, () => stream_enumerate_interval(10001, 1000000)), 100);
         using the stream analog of the <SCHEMEINLINE>filter</SCHEMEINLINE>
 	function
         (section<SPACE/><REF NAME="sec:sequences-conventional-interfaces"/>):
+        </EN>
+        <JA>
+        すなわち <JAVASCRIPTINLINE>stream_enumerate_interval</JAVASCRIPTINLINE>
+        は、<JAVASCRIPTINLINE>head</JAVASCRIPTINLINE> が 10,000 で、
+        <JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE> が「要求されればさらに区間を列挙する」
+        というプロミスであるようなペアとして表現されたストリームを返します。
+        このストリームは次に、<SCHEMEINLINE>filter</SCHEMEINLINE> 関数
+        （第<SPACE/><REF NAME="sec:sequences-conventional-interfaces"/>節）に
+        対応するストリーム版を使って、素数だけに絞り込まれます。
+        </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="yes" CHAP="2">
 	  <INDEX><DECLARATION>stream_filter</DECLARATION></INDEX> 
           <REQUIRES>stream_tail</REQUIRES>
@@ -1028,6 +1219,8 @@ const my_filtered_stream =
 head(my_filtered_stream);
 	  </JAVASCRIPT_TEST>
 	</SNIPPET>
+        <BILINGUAL>
+        <EN>
         The function <JAVASCRIPTINLINE>stream_filter</JAVASCRIPTINLINE> tests the
 	<SCHEMEINLINE>head</SCHEMEINLINE> of the stream (which is 10,000). Since
 	this is not prime, <JAVASCRIPTINLINE>stream_filter</JAVASCRIPTINLINE>
@@ -1035,6 +1228,16 @@ head(my_filtered_stream);
 	<JAVASCRIPTINLINE>stream_tail</JAVASCRIPTINLINE> forces evaluation of the
 	delayed <JAVASCRIPTINLINE>stream_enumerate_interval</JAVASCRIPTINLINE>,
 	which now returns
+        </EN>
+        <JA>
+        関数 <JAVASCRIPTINLINE>stream_filter</JAVASCRIPTINLINE> は、ストリームの
+        <SCHEMEINLINE>head</SCHEMEINLINE>（これは 10,000）を調べます。これは素数ではないので、
+        <JAVASCRIPTINLINE>stream_filter</JAVASCRIPTINLINE> は入力ストリームの tail を調べます。
+        <JAVASCRIPTINLINE>stream_tail</JAVASCRIPTINLINE> の呼び出しは、遅延された
+        <JAVASCRIPTINLINE>stream_enumerate_interval</JAVASCRIPTINLINE> の評価を強制し、
+        今度は次のものが返ります。
+        </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="yes">
 	  <NAME>enumerate_interval_example_3</NAME>
           <REQUIRES>stream_enumerate_interval</REQUIRES>
@@ -1046,21 +1249,40 @@ pair(10001, () => stream_enumerate_interval(10002, 1000000));
 stream_ref(pair(10001, () => stream_enumerate_interval(10002, 1000000)), 100);
           </JAVASCRIPT_TEST>
 	</SNIPPET>
+        <BILINGUAL>
+        <EN>
 	The function <JAVASCRIPTINLINE>stream_filter</JAVASCRIPTINLINE> now
 	looks at the <JAVASCRIPTINLINE>head</JAVASCRIPTINLINE> of this stream,
-        10,001, sees that this is not prime either, forces another 
-	<JAVASCRIPTINLINE>stream_@tail</JAVASCRIPTINLINE>, and so on, until 
+        10,001, sees that this is not prime either, forces another
+	<JAVASCRIPTINLINE>stream_@tail</JAVASCRIPTINLINE>, and so on, until
 	<JAVASCRIPTINLINE>stream_@enumerate_interval</JAVASCRIPTINLINE> yields
 	the prime 10,007, whereupon
 	<JAVASCRIPTINLINE>stream_@filter</JAVASCRIPTINLINE>, according to its
         definition, returns
+        </EN>
+        <JA>
+        関数 <JAVASCRIPTINLINE>stream_filter</JAVASCRIPTINLINE> は今度はこのストリームの
+        <JAVASCRIPTINLINE>head</JAVASCRIPTINLINE> である 10,001 を見て、これも素数ではないと判断し、
+        再び <JAVASCRIPTINLINE>stream_tail</JAVASCRIPTINLINE> を強制する、という具合に、
+        <JAVASCRIPTINLINE>stream_enumerate_interval</JAVASCRIPTINLINE> が素数 10,007 を
+        生み出すまで処理を続けます。そこで
+        <JAVASCRIPTINLINE>stream_filter</JAVASCRIPTINLINE> は、その定義に従って次のものを返します。
+        </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="no">
 	  <JAVASCRIPT>
 pair(head(stream), 
      () => stream_filter(pred, stream_tail(stream)));
           </JAVASCRIPT>
 	</SNIPPET>
+        <BILINGUAL>
+        <EN>
         which in this case is
+        </EN>
+        <JA>
+        これは、この場合次のようになります。
+        </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="yes">
 	  <NAME>which_in_this_case</NAME>
           <REQUIRES>prime_definition</REQUIRES>
@@ -1083,14 +1305,27 @@ stream_ref(pair(10007,
     ), 100);
 	  </JAVASCRIPT_TEST>
         </SNIPPET>
+        <BILINGUAL>
+        <EN>
         This result is now passed to
 	<JAVASCRIPTINLINE>stream_tail</JAVASCRIPTINLINE> in our original
 	expression.  This forces the delayed
-	<JAVASCRIPTINLINE>stream_filter</JAVASCRIPTINLINE>, 
+	<JAVASCRIPTINLINE>stream_filter</JAVASCRIPTINLINE>,
 	which in turn keeps forcing the delayed
 	<JAVASCRIPTINLINE>stream_@enumerate_interval</JAVASCRIPTINLINE> until it
 	finds the next prime, which is 10,009.  Finally, the result passed to
 	<SCHEMEINLINE>head</SCHEMEINLINE> in our original expression is
+        </EN>
+        <JA>
+        この結果は今度は、元の式の中の
+        <JAVASCRIPTINLINE>stream_tail</JAVASCRIPTINLINE> に渡されます。これは遅延された
+        <JAVASCRIPTINLINE>stream_filter</JAVASCRIPTINLINE> の評価を強制し、
+        その <JAVASCRIPTINLINE>stream_filter</JAVASCRIPTINLINE> は、次の素数である 10,009 を
+        見つけるまで、遅延された
+        <JAVASCRIPTINLINE>stream_enumerate_interval</JAVASCRIPTINLINE> を強制し続けます。
+        最終的に、元の式の中で <SCHEMEINLINE>head</SCHEMEINLINE> に渡される結果は次のようになります。
+        </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="yes">
 	  <NAME>now_passed_to</NAME>
           <REQUIRES>prime_definition</REQUIRES>
@@ -1113,15 +1348,26 @@ stream_ref(pair(10009,
     ), 100);
 	  </JAVASCRIPT_TEST>
         </SNIPPET>
+        <BILINGUAL>
+        <EN>
 	The function <SCHEMEINLINE>head</SCHEMEINLINE> returns 10,009, and the
 	computation is complete.  Only as many integers were tested for
 	primality as were necessary to find the second prime, and the interval
 	was enumerated only as far as was necessary to feed the prime filter.
+        </EN>
+        <JA>
+        関数 <SCHEMEINLINE>head</SCHEMEINLINE> は 10,009 を返し、計算は完了です。
+        素数性の検査は 2 番目の素数を見つけるのに必要な整数についてだけ行われ、区間の列挙も
+        素数フィルタに供給するのに必要な範囲までしか行われませんでした。
+        </JA>
+        </BILINGUAL>
       </TEXT>
 
   <SHORT_PAGE lines="2"/>
       <TEXT>
-        In general, we can think of delayed evaluation as 
+        <BILINGUAL>
+        <EN>
+        In general, we can think of delayed evaluation as
         <INDEX>programming<SUBINDEX>demand-driven</SUBINDEX></INDEX>
         <QUOTE>demand-driven</QUOTE> programming, whereby each stage in the
 	stream process is activated only enough to satisfy the next stage.  What
@@ -1131,21 +1377,43 @@ stream_ref(pair(10009,
 	structure of our functions. We write functions as if the streams existed
 	<QUOTE>all at once</QUOTE> when, in reality, the computation is
 	performed incrementally, as in traditional programming styles.
+        </EN>
+        <JA>
+        一般に、遅延評価は
+        <INDEX>プログラミング<SUBINDEX>要求駆動</SUBINDEX></INDEX>
+        <QUOTE>要求駆動</QUOTE>プログラミングと考えることができます。ストリーム処理の各段階は、
+        次の段階を満たすのにちょうど必要な分だけ起動されるのです。私たちが行ったのは、
+        <INDEX>イベントの順序<SUBINDEX>見かけと実際の切り離し</SUBINDEX></INDEX>
+        計算における実際のイベントの順序を、関数の見かけの構造から切り離すことでした。
+        私たちは、あたかもストリームが<QUOTE>一度にすべて</QUOTE>存在するかのように関数を書きますが、
+        実際には、伝統的なプログラミングスタイルと同様に、計算は段階的に実行されているのです。
+        </JA>
+        </BILINGUAL>
       </TEXT>
 
 
-      <SUBHEADING> 
-        <NAME>An optimization</NAME>
+      <SUBHEADING>
+        <NAME><BILINGUAL><EN>An optimization</EN><JA>最適化</JA></BILINGUAL></NAME>
       </SUBHEADING>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
 	When we construct stream pairs, we delay the evaluation of their tail
 	expressions by wrapping these expressions in a function. We force their
 	evaluation when needed, by applying the function.
+        </EN>
+        <JA>
+        ストリームペアを構築するとき、末尾の式を関数で包むことによって、その評価を遅延します。
+        必要になったときに、その関数を適用することで評価を強制します。
+        </JA>
+        </BILINGUAL>
       </TEXT>
 
       <LONG_PAGE lines="2"/>
       <TEXT>
+        <BILINGUAL>
+        <EN>
         This implementation suffices for streams to work as advertised, but
 	there is an important optimization that we shall consider where needed.
 	In many	applications, we end up forcing the same delayed object many
@@ -1164,18 +1432,38 @@ stream_ref(pair(10009,
         (of no arguments) and returns a memoized version of the function.
 	The first time the memoized function is run, it saves the computed
 	result.	On subsequent evaluations, it simply returns
-	the result.<FOOTNOTE>There are many possible implementations of streams
+	the result.
+        </EN>
+        <JA>
+        この実装でもストリームは期待通りに動作しますが、必要に応じて検討すべき重要な最適化があります。
+        多くのアプリケーションでは、同じ遅延されたオブジェクトを何度も強制することになります。
+        これはストリームを用いた再帰的なプログラムにおいて深刻な非効率につながりかねません
+        （演習<SPACE/><REF NAME="ex:fib-stream-efficiency"/>を参照）。
+        解決策は、遅延されたオブジェクトを、最初に強制されたときに計算された値を保存するように作ることです。
+        その後の強制では、計算を繰り返すことなく、保存された値を単に返します。
+        言い換えれば、ストリームペアの構築を、
+        <INDEX>遅延された式<SUBINDEX>メモ化された</SUBINDEX></INDEX>
+        <INDEX>メモ化<SUBINDEX><ORDER>stream tail</ORDER>ストリームの末尾における</SUBINDEX></INDEX>
+        演習<SPACE/><REF NAME="ex:memoization"/>で説明したものと同様の、メモ化された関数として実装します。
+        これを実現する一つの方法は、以下の関数を使うことです。
+        この関数は引数として（引数なしの）関数を取り、その関数のメモ化されたバージョンを返します。
+        メモ化された関数が最初に実行されるときに、計算された結果を保存します。
+        その後の評価では、その結果を単に返すだけです。
+        </JA>
+        </BILINGUAL><FOOTNOTE>
+        <BILINGUAL>
+        <EN>There are many possible implementations of streams
 	other than the one described in this section.  Delayed evaluation, which
-	is the key to making streams practical, was inherent in 
+	is the key to making streams practical, was inherent in
         <INDEX>Algol<SUBINDEX>call-by-name argument passing</SUBINDEX></INDEX>
         Algol 60<APOS/>s
         <INDEX>call-by-name argument passing</INDEX>
 	<EM>call-by-name</EM>
         parameter-passing method.  The use of this mechanism to implement
-        streams was first described by 
+        streams was first described by
         <INDEX>Landin, Peter</INDEX>
         Landin (1965).  Delayed evaluation for
-        streams was introduced into Lisp by 
+        streams was introduced into Lisp by
         <INDEX>Friedman, Daniel P.</INDEX>
         <INDEX>Wise, David S.</INDEX>
         Friedman and Wise (1976). In their
@@ -1185,7 +1473,7 @@ stream_ref(pair(10009,
 	<JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE> function)
 	always delays evaluating its arguments, so
         that lists automatically behave as streams.  The memoizing
-        optimization is also known as 
+        optimization is also known as
         <INDEX>call-by-need argument passing</INDEX>
         <EM>call-by-need</EM>.  The Algol community would refer to our original
 	delayed objects as
@@ -1193,7 +1481,34 @@ stream_ref(pair(10009,
         <INDEX>thunk<SUBINDEX>call-by-need</SUBINDEX></INDEX>
         <INDEX>Algol<SUBINDEX>thunks</SUBINDEX></INDEX>
 	<EM>call-by-name thunks</EM> and to the optimized
-	versions as <EM>call-by-need thunks</EM>.</FOOTNOTE>
+	versions as <EM>call-by-need thunks</EM>.</EN>
+        <JA>本節で説明したもの以外にも、ストリームの実装には多くの可能性があります。
+        ストリームを実用的にする鍵である遅延評価は、
+        <INDEX>Algol<SUBINDEX>名前呼び引数渡し</SUBINDEX></INDEX>
+        Algol 60 の
+        <INDEX>名前呼び引数渡し</INDEX>
+        <EM>名前呼び（call-by-name）</EM>引数渡し方式に内在していました。
+        この仕組みをストリームの実装に使うことは、
+        <INDEX>Landin, Peter</INDEX>
+        Landin (1965) によって最初に説明されました。
+        ストリームのための遅延評価を Lisp に導入したのは、
+        <INDEX>Friedman, Daniel P.</INDEX>
+        <INDEX>Wise, David S.</INDEX>
+        Friedman and Wise (1976) です。彼らの実装では、
+        <SCHEMEINLINE>cons</SCHEMEINLINE>（Lispにおける
+        <JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE>関数に相当）
+        が常に引数の評価を遅延するため、リストが自動的にストリームのように振る舞います。
+        このメモ化による最適化は、
+        <INDEX>必要呼び引数渡し</INDEX>
+        <EM>必要呼び（call-by-need）</EM>としても知られています。
+        Algolのコミュニティでは、元の遅延されたオブジェクトを
+        <INDEX>サンク<SUBINDEX>名前呼び</SUBINDEX></INDEX>
+        <INDEX>サンク<SUBINDEX>必要呼び</SUBINDEX></INDEX>
+        <INDEX>Algol<SUBINDEX>サンク</SUBINDEX></INDEX>
+        <EM>名前呼びサンク（call-by-name thunks）</EM>と呼び、最適化されたバージョンを
+        <EM>必要呼びサンク（call-by-need thunks）</EM>と呼んでいました。</JA>
+        </BILINGUAL>
+        </FOOTNOTE>
         <SNIPPET>
           <INDEX><DECLARATION>memo</DECLARATION></INDEX> 
 	  <NAME>memo</NAME>
@@ -1243,10 +1558,17 @@ calls;
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
 	We can make use of <JAVASCRIPTINLINE>memo</JAVASCRIPTINLINE> whenever
-	we construct a stream pair. For example, instead of 
+	we construct a stream pair. For example, instead of
+        </EN>
+        <JA>
+        ストリームペアを構築するときにはいつでも、<JAVASCRIPTINLINE>memo</JAVASCRIPTINLINE>を利用できます。たとえば、次のかわりに、
+        </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="yes">
-          <INDEX><DECLARATION>stream_map</DECLARATION></INDEX> 
+          <INDEX><DECLARATION>stream_map</DECLARATION></INDEX>
 	  <EXAMPLE>stream_map_example</EXAMPLE>
 	  <EXPECTED>3</EXPECTED>
 	  <JAVASCRIPT>
@@ -1284,9 +1606,15 @@ stream_ref(my_stream_2, 1);
 calls;
 	  </JAVASCRIPT_TEST>
 	</SNIPPET>
+        <BILINGUAL>
+        <EN>
 	we can define an optimized function
-	<JAVASCRIPTINLINE>stream_map</JAVASCRIPTINLINE>	as
-	follows:
+	<JAVASCRIPTINLINE>stream_map</JAVASCRIPTINLINE> as follows:
+        </EN>
+        <JA>
+        最適化された関数<JAVASCRIPTINLINE>stream_map</JAVASCRIPTINLINE>を次のように定義できます。
+        </JA>
+        </BILINGUAL>
 	<SNIPPET EVAL="yes" POSTPADDING="no">
           <INDEX><DECLARATION>stream_map_optimized</DECLARATION></INDEX> 
 	  <NAME>stream_map_optimized</NAME>
@@ -1351,10 +1679,19 @@ calls;
       
       <EXERCISE>
 	<LABEL NAME="ex:combine-streams"/>
+	<BILINGUAL>
+	<EN>
 	Declare a function <JAVASCRIPTINLINE>stream_map_2</JAVASCRIPTINLINE>
 	that takes a binary function and two streams as arguments and returns
 	a stream whose elements are the results of applying the function
 	pairwise to the corresponding elements of the argument streams.
+	</EN>
+	<JA>
+	二項関数と 2 つのストリームを引数に取り、それらストリームの対応する要素に
+	ペアごとに関数を適用した結果を要素とするストリームを返す関数
+	<JAVASCRIPTINLINE>stream_map_2</JAVASCRIPTINLINE> を宣言してください。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET EVAL="no">
           <INDEX><USE>stream_map_2</USE><FRAGILE/></INDEX> 
 	  <JAVASCRIPT>
@@ -1378,12 +1715,23 @@ function stream_map_2(f, s1, s2) {
 }
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	Similar to <JAVASCRIPTINLINE>stream_map_optimized</JAVASCRIPTINLINE>,
 	declare a function
 	<JAVASCRIPTINLINE>stream_map_2_optimized</JAVASCRIPTINLINE> by
 	modifying your
 	<JAVASCRIPTINLINE>stream_map_2</JAVASCRIPTINLINE>
 	such that the result stream employs memoization.
+	</EN>
+	<JA>
+	<JAVASCRIPTINLINE>stream_map_optimized</JAVASCRIPTINLINE> と同様に、
+	あなたの <JAVASCRIPTINLINE>stream_map_2</JAVASCRIPTINLINE> を修正して、
+	結果のストリームがメモ化を用いるような関数
+	<JAVASCRIPTINLINE>stream_map_2_optimized</JAVASCRIPTINLINE> を
+	宣言してください。
+	</JA>
+	</BILINGUAL>
 	<SOLUTION>
 	  <SNIPPET HIDE="yes">
 	    <NAME>stream_map_2_optimized_example</NAME>
@@ -1421,11 +1769,21 @@ function stream_map_2_optimized(f, s1, s2) {
 
       <EXERCISE>
 	<LABEL NAME="ex:delayed1"/>
+	<BILINGUAL>
+	<EN>
 	Note that our primitive function
 	<JAVASCRIPTINLINE>display</JAVASCRIPTINLINE> returns its argument
 	after displaying it.
 	What does the interpreter print in response to evaluating each
-	statement in the following sequence?<FOOTNOTE>Exercises such
+	statement in the following sequence?
+	</EN>
+	<JA>
+	プリミティブな関数 <JAVASCRIPTINLINE>display</JAVASCRIPTINLINE> は、
+	引数を表示したあとにその引数を返すことに注意してください。
+	インタプリタは次の一連の文それぞれの評価に対して何を表示するでしょうか。
+	</JA>
+	</BILINGUAL><FOOTNOTE><BILINGUAL>
+	<EN>Exercises such
 	as<SPACE/><REF NAME="ex:delayed1"/> and<SPACE/><REF NAME="ex:delayed2"/>
 	are valuable for testing our understanding of how delayed evaluation
 	works. On the other hand, intermixing delayed evaluation with
@@ -1440,7 +1798,21 @@ function stream_map_2_optimized(f, s1, s2) {
 	that it lets us ignore the order in which events actually happen in
 	our programs.  Unfortunately, this is precisely what we cannot afford
 	to do in the presence of assignment, which forces us to be concerned
-	with time and change.</FOOTNOTE>
+	with time and change.</EN>
+	<JA><REF NAME="ex:delayed1"/> や <REF NAME="ex:delayed2"/> のような
+	練習問題は、遅延評価の動作をどれほど理解しているかを試すのに役立ちます。
+	その一方で、遅延評価を
+	<INDEX>遅延評価<SUBINDEX>表示と</SUBINDEX></INDEX>
+	表示と、さらに悪いことに代入と入り混ぜるのは非常に混乱を招くもので、
+	プログラミング言語の授業の講師は伝統的に、本節のような試験問題で
+	学生を苦しめてきました。言うまでもなく、こうした微妙な点に依存する
+	プログラムを書くのは
+	<INDEX>プログラミング<SUBINDEX>嫌悪を催すスタイル</SUBINDEX></INDEX>
+	嫌悪を催すプログラミングスタイルです。ストリーム処理の力の一部は、
+	プログラム中で実際に出来事が起きる順序を無視できる点にあります。
+	残念ながら、代入が存在する場面ではまさにそれができず、時間と変化を
+	気にせざるを得なくなります。</JA>
+	</BILINGUAL></FOOTNOTE>
 	<SNIPPET EVAL="yes">
           <REQUIRES>stream_enumerate_interval</REQUIRES>
 	  <JAVASCRIPT>
@@ -1451,9 +1823,18 @@ stream_ref(x, 5);
 stream_ref(x, 7);
 	  </JAVASCRIPT>
 	</SNIPPET>
-	What does the interpreter print if 
+	<BILINGUAL>
+	<EN>
+	What does the interpreter print if
 	<JAVASCRIPTINLINE>stream_map_optimized</JAVASCRIPTINLINE>
 	is used instead of <JAVASCRIPTINLINE>stream_map</JAVASCRIPTINLINE>?
+	</EN>
+	<JA>
+	<JAVASCRIPTINLINE>stream_map</JAVASCRIPTINLINE> の代わりに
+	<JAVASCRIPTINLINE>stream_map_optimized</JAVASCRIPTINLINE> を使った場合、
+	インタプリタは何を表示するでしょうか。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET EVAL="yes" POSTPADDING="no">
 	  <NAME>stream_map_optimized_example_2</NAME>
           <REQUIRES>stream_map_optimized</REQUIRES>
@@ -1469,7 +1850,10 @@ stream_ref(x, 7);
       </EXERCISE>
 
       <EXERCISE>
-        Consider the sequence of statements
+        <BILINGUAL>
+        <EN>Consider the sequence of statements</EN>
+        <JA>次の一連の文を考えてみましょう。</JA>
+        </BILINGUAL>
 	<SNIPPET EVAL="yes">
 	  <NAME>assignment_and_streams</NAME>
           <REQUIRES>stream_enumerate_interval</REQUIRES>
@@ -1513,16 +1897,29 @@ stream_ref(y, 7);
 stream_ref(z, 3);
 	  </JAVASCRIPT_TEST>
         </SNIPPET>
+        <INDEX>delayed evaluation<SUBINDEX>assignment and</SUBINDEX></INDEX>
+        <BILINGUAL>
+        <EN>
         What is the value of <SCHEMEINLINE>sum</SCHEMEINLINE> after each of the
 	above statements is evaluated?
-        <INDEX>delayed evaluation<SUBINDEX>assignment and</SUBINDEX></INDEX>
-	What is the printed response to	evaluating the 
-	<JAVASCRIPTINLINE>stream_ref</JAVASCRIPTINLINE> and 
+	What is the printed response to	evaluating the
+	<JAVASCRIPTINLINE>stream_ref</JAVASCRIPTINLINE> and
 	<JAVASCRIPTINLINE>display_stream</JAVASCRIPTINLINE> expressions?
 	Would these responses differ if we had applied the function
 	<JAVASCRIPTINLINE>memo</JAVASCRIPTINLINE>
 	on every tail of every constructed stream pair, as suggested in the
 	optimization above? Explain.
+        </EN>
+        <JA>
+        上の各文が評価されたあと、<SCHEMEINLINE>sum</SCHEMEINLINE> の値は
+        何になるでしょうか。<JAVASCRIPTINLINE>stream_ref</JAVASCRIPTINLINE> と
+        <JAVASCRIPTINLINE>display_stream</JAVASCRIPTINLINE> の式を評価したとき、
+        何が表示されるでしょうか。上で提案したように、構築されるすべての
+        ストリームペアのすべての <JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE> に
+        関数 <JAVASCRIPTINLINE>memo</JAVASCRIPTINLINE> を適用していた場合、
+        これらの応答は変わるでしょうか。説明してください。
+        </JA>
+        </BILINGUAL>
         <LABEL NAME="ex:delayed2"/>
       </EXERCISE>
     </JAVASCRIPT>

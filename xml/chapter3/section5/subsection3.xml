@@ -1,52 +1,73 @@
 <SUBSECTION>
   <NAME>
-    Exploiting the Stream Paradigm
+    <BILINGUAL><EN>Exploiting the Stream Paradigm</EN><JA>ストリームパラダイムを活かす</JA></BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:exploiting-streams"/>
   <TEXT>
-    Streams with delayed evaluation can be a powerful modeling tool,
-    providing many of the benefits of local state and assignment.
-    Moreover, they avoid some of the theoretical tangles that accompany
-    the introduction of assignment into a programming language.
+    <BILINGUAL>
+      <EN>Streams with delayed evaluation can be a powerful modeling tool,
+      providing many of the benefits of local state and assignment.
+      Moreover, they avoid some of the theoretical tangles that accompany
+      the introduction of assignment into a programming language.</EN>
+      <JA>遅延評価を伴うストリームは強力なモデリングツールとなり、ローカル状態と代入がもたらす利点の多くを提供してくれます。さらに、プログラミング言語に代入を導入することに伴う理論的な厄介事の一部を避けられます。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    The stream approach can be illuminating because it allows us to build
-    systems with different
-    <INDEX>modularity<SUBINDEX>streams and</SUBINDEX></INDEX>
-    module boundaries than systems organized around
-    assignment to state variables.  For example, we can think of an entire
-    time series (or signal) as a focus of interest, rather than the values
-    of the state variables at individual moments.  This makes it
-    convenient to combine and compare components of state from different
-    moments.
+    <BILINGUAL>
+      <EN>The stream approach can be illuminating because it allows us to build
+      systems with different
+      <INDEX>modularity<SUBINDEX>streams and</SUBINDEX></INDEX>
+      module boundaries than systems organized around
+      assignment to state variables.  For example, we can think of an entire
+      time series (or signal) as a focus of interest, rather than the values
+      of the state variables at individual moments.  This makes it
+      convenient to combine and compare components of state from different
+      moments.</EN>
+      <JA>ストリームアプローチには示唆に富む面があります。というのも、状態変数への代入を中心に構成されたシステムとは異なる
+      <INDEX>modularity<SUBINDEX>streams and</SUBINDEX></INDEX>
+      モジュール境界を持つシステムを構築できるからです。たとえば、個々の瞬間における状態変数の値ではなく、時系列（あるいは信号）全体を興味の対象として捉えることができます。これにより、異なる瞬間における状態の構成要素を組み合わせたり比較したりすることが容易になります。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Formulating iterations as stream processes</NAME>
+    <NAME><BILINGUAL><EN>Formulating iterations as stream processes</EN><JA>反復をストリームプロセスとして定式化する</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>iterative process<SUBINDEX>as a stream process<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
-    In section<SPACE/><REF NAME="sec:recursion-and-iteration"/>, we introduced
-    iterative processes, which proceed by updating state variables.  We know now
-    that we can represent state as a <QUOTE>timeless</QUOTE> stream of values
-    rather than as a set of variables to be updated.  Let<APOS/>s adopt this
-    perspective in revisiting the square-root
-    <SPLITINLINE>
-      <SCHEME>procedure</SCHEME>
-      <JAVASCRIPT>function</JAVASCRIPT>
-    </SPLITINLINE>
-    from section<SPACE/><REF NAME="sec:sqrt"/>.  Recall that the idea is to
-    generate a sequence of better and better guesses for the square root of
-    <LATEXINLINE>$x$</LATEXINLINE> by applying over and over again the
-    <SPLITINLINE>
-      <SCHEME>procedure</SCHEME>
-      <JAVASCRIPT>function</JAVASCRIPT>
-    </SPLITINLINE>
-    that improves guesses:
+    <BILINGUAL>
+      <EN>In section<SPACE/><REF NAME="sec:recursion-and-iteration"/>, we introduced
+      iterative processes, which proceed by updating state variables.  We know now
+      that we can represent state as a <QUOTE>timeless</QUOTE> stream of values
+      rather than as a set of variables to be updated.  Let<APOS/>s adopt this
+      perspective in revisiting the square-root
+      <SPLITINLINE>
+        <SCHEME>procedure</SCHEME>
+        <JAVASCRIPT>function</JAVASCRIPT>
+      </SPLITINLINE>
+      from section<SPACE/><REF NAME="sec:sqrt"/>.  Recall that the idea is to
+      generate a sequence of better and better guesses for the square root of
+      <LATEXINLINE>$x$</LATEXINLINE> by applying over and over again the
+      <SPLITINLINE>
+        <SCHEME>procedure</SCHEME>
+        <JAVASCRIPT>function</JAVASCRIPT>
+      </SPLITINLINE>
+      that improves guesses:</EN>
+      <JA>セクション<SPACE/><REF NAME="sec:recursion-and-iteration"/>では、状態変数を更新することによって進む反復的プロセスを導入しました。今や状態を、更新される変数の集合としてではなく、値の<QUOTE>時間に依存しない</QUOTE>ストリームとして表現できることを知っています。この観点を取ってセクション<SPACE/><REF NAME="sec:sqrt"/>の平方根
+      <SPLITINLINE>
+        <SCHEME>procedure</SCHEME>
+        <JAVASCRIPT>関数</JAVASCRIPT>
+      </SPLITINLINE>
+      を再訪してみましょう。アイデアは、推測を改善する
+      <SPLITINLINE>
+        <SCHEME>procedure</SCHEME>
+        <JAVASCRIPT>関数</JAVASCRIPT>
+      </SPLITINLINE>
+      を何度も適用することによって、<LATEXINLINE>$x$</LATEXINLINE>の平方根のよりよい推測の列を生成するというものでした。</JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>sqrt_improve_example</NAME>
       <JAVASCRIPT>
@@ -71,30 +92,26 @@ function sqrt_improve(guess, x) {
   </TEXT>
 
   <TEXT>
-    In our original
-    <INDEX>square root<SUBINDEX>stream of approximations</SUBINDEX></INDEX>
-    <SCHEMEINLINE>sqrt</SCHEMEINLINE>
-    <SPLITINLINE>
-      <SCHEME>procedure,</SCHEME>
-      <JAVASCRIPT>function,</JAVASCRIPT>
-    </SPLITINLINE>
-    we made these guesses be the successive values of a state variable. Instead
-    we can generate the infinite stream of guesses, starting with an initial
-    <SPLITINLINE>
-      <SCHEME>
-	guess of 1:<FOOTNOTE>We can't use
-	<SCHEMEINLINE>let</SCHEMEINLINE> to bind the local variable
-	<SCHEMEINLINE>guesses</SCHEMEINLINE> because the value of
-	<SCHEMEINLINE>guesses</SCHEMEINLINE> depends on
-	<SCHEMEINLINE>guesses</SCHEMEINLINE> itself.
-	Exercise<SPACE/><REF NAME="ex:stream-internal-def"/>
-	addresses why we want
-	a local name here.<LABEL NAME="foot:define-for-streams"/></FOOTNOTE>
-      </SCHEME>
-      <JAVASCRIPT>
-	guess of 1:
-      </JAVASCRIPT>
-    </SPLITINLINE>
+    <BILINGUAL>
+      <EN>In our original
+      <INDEX>square root<SUBINDEX>stream of approximations</SUBINDEX></INDEX>
+      <SCHEMEINLINE>sqrt</SCHEMEINLINE>
+      <SPLITINLINE>
+        <SCHEME>procedure,</SCHEME>
+        <JAVASCRIPT>function,</JAVASCRIPT>
+      </SPLITINLINE>
+      we made these guesses be the successive values of a state variable. Instead
+      we can generate the infinite stream of guesses, starting with an initial
+      guess of 1:</EN>
+      <JA>元の
+      <INDEX>square root<SUBINDEX>stream of approximations</SUBINDEX></INDEX>
+      <SCHEMEINLINE>sqrt</SCHEMEINLINE>
+      <SPLITINLINE>
+        <SCHEME>procedure,</SCHEME>
+        <JAVASCRIPT>関数</JAVASCRIPT>
+      </SPLITINLINE>
+      では、これらの推測を状態変数の連続した値としていました。代わりに、初期推測値を1として、推測の無限ストリームを生成できます。</JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>sqrt_stream</DECLARATION></INDEX> 
       <NAME>sqrt_stream</NAME>
@@ -147,17 +164,27 @@ stream_ref(sqrt_stream(2), 5);
 ...
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
-    We can generate more and more terms of the stream to get better and
-    better guesses.  If we like, we can write a
-    <SPLITINLINE>
-      <SCHEME>procedure</SCHEME>
-      <JAVASCRIPT>function</JAVASCRIPT>
-    </SPLITINLINE>
-    that keeps generating terms until the answer is good enough.
-    (See exercise<SPACE/><REF NAME="ex:stream-limit"/>.)
+    <BILINGUAL>
+      <EN>We can generate more and more terms of the stream to get better and
+      better guesses.  If we like, we can write a
+      <SPLITINLINE>
+        <SCHEME>procedure</SCHEME>
+        <JAVASCRIPT>function</JAVASCRIPT>
+      </SPLITINLINE>
+      that keeps generating terms until the answer is good enough.
+      (See exercise<SPACE/><REF NAME="ex:stream-limit"/>.)</EN>
+      <JA>ストリームの項をどんどん生成していけば、よりよい推測が得られます。望むなら、答えが十分よくなるまで項を生成し続ける
+      <SPLITINLINE>
+        <SCHEME>procedure</SCHEME>
+        <JAVASCRIPT>関数</JAVASCRIPT>
+      </SPLITINLINE>
+      を書くこともできます（演習<SPACE/><REF NAME="ex:stream-limit"/>を参照）。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Another iteration that we can treat in the same way is to generate an
     approximation to
     <INDEX><ORDER>pi</ORDER><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<SUBINDEX>Leibniz<APOS/>s series for</SUBINDEX></INDEX>
@@ -169,6 +196,19 @@ stream_ref(sqrt_stream(2), 5);
     <LATEXINLINE>$\pi$</LATEXINLINE>, based upon the
     alternating series that we saw in
     section<SPACE/><REF NAME="sec:procedures-as-parameters"/>:
+      </EN>
+      <JA>
+    同じ方法で扱える別の反復として、
+    <INDEX><ORDER>pi</ORDER><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<SUBINDEX>Leibniz<APOS/>s series for</SUBINDEX></INDEX>
+    <INDEX>Leibniz, Baron Gottfried Wilhelm von<SUBINDEX>series for <LATEXINLINE>$\pi$</LATEXINLINE></SUBINDEX></INDEX>
+    <INDEX><ORDER>pi</ORDER><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<SUBINDEX>stream of approximations<OPEN/></SUBINDEX></INDEX>
+    <INDEX>series, summation of<SUBINDEX>with streams</SUBINDEX></INDEX>
+    <INDEX>summation of a series<SUBINDEX>with streams</SUBINDEX></INDEX>
+    <INDEX>infinite stream(s)<SUBINDEX>to sum a series</SUBINDEX></INDEX>
+    <LATEXINLINE>$\pi$</LATEXINLINE> の近似を生成するというものがあります。これは
+    <REF NAME="sec:procedures-as-parameters"/>節で見た交代級数に基づいています。
+      </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{lll}
@@ -176,15 +216,28 @@ stream_ref(sqrt_stream(2), 5);
       \end{array}
       \]
     </LATEX>
+    <BILINGUAL>
+      <EN>
     We first generate the stream of summands of the series (the reciprocals
     of the odd integers, with alternating signs).  Then we take the stream
-    of sums of more and more terms (using the 
+    of sums of more and more terms (using the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>partial-sums</SCHEMEINLINE> procedure</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>partial_sums</JAVASCRIPTINLINE> function
       </JAVASCRIPT>
     </SPLITINLINE>
     of exercise<SPACE/><REF NAME="ex:partial-sums"/>) and scale the result by 4:
+      </EN>
+      <JA>
+    まず、級数の加数のストリーム（奇数の逆数に交互の符号を付けたもの）を生成します。次に、項をどんどん増やして総和をとったストリーム（演習<SPACE/><REF NAME="ex:partial-sums"/>の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>partial-sums</SCHEMEINLINE>手続き</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>partial_sums</JAVASCRIPTINLINE>関数
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を使います）をとり、結果を 4 倍にスケールします。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>pi_stream</DECLARATION></INDEX> 
       <NAME>pi_stream</NAME>
@@ -243,24 +296,43 @@ stream_ref(pi_stream, 7);
 ...
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     This gives us a stream of better and better approximations to
     <LATEXINLINE>$\pi$</LATEXINLINE>, although the approximations converge
     rather slowly.  Eight terms of the sequence bound the value of
     <LATEXINLINE>$\pi$</LATEXINLINE> between 3.284 and 3.017.
+      </EN>
+      <JA>
+    これにより <LATEXINLINE>$\pi$</LATEXINLINE> に対するどんどん良くなる近似のストリームが得られます。ただし、収束はかなりゆっくりです。この数列を 8 項まで計算すると、<LATEXINLINE>$\pi$</LATEXINLINE> は 3.017 と 3.284 の間に収まります。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <LONG_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+      <EN>
     So far, our use of the stream of states approach is not much different
     from updating state variables.  But streams give us an opportunity to do
-    some interesting tricks.  For example, we can transform a stream with a 
+    some interesting tricks.  For example, we can transform a stream with a
     <INDEX>series, summation of<SUBINDEX>accelerating sequence of approximations</SUBINDEX></INDEX>
     <INDEX>sequence accelerator</INDEX>
     <EM>sequence accelerator</EM> that converts a sequence of approximations to a
     new sequence that converges to the same value as the original, only faster.
+      </EN>
+      <JA>
+    ここまでのところ、状態のストリームというアプローチの使い方は、状態変数を更新するのとあまり変わりません。しかし、ストリームを使うと、いくつかの興味深いトリックを行う機会が得られます。たとえば、近似の数列を、元のものと同じ値に収束する新しい数列（ただし収束はより速い）に変換する
+    <INDEX>series, summation of<SUBINDEX>accelerating sequence of approximations</SUBINDEX></INDEX>
+    <INDEX>sequence accelerator</INDEX>
+    <EM>数列の加速器</EM>でストリームを変換できます。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     One such accelerator, due to the eighteenth-century Swiss mathematician
     <INDEX>Euler, Leonhard<SUBINDEX>series accelerator</SUBINDEX></INDEX>
     Leonhard Euler, works well with sequences that are partial sums of
@@ -268,15 +340,29 @@ stream_ref(pi_stream, 7);
     Euler<APOS/>s technique, if <LATEXINLINE>$S_n$</LATEXINLINE> is the
     <LATEXINLINE>$n$</LATEXINLINE>th term of the original sum sequence, then
     the accelerated sequence has terms
+      </EN>
+      <JA>
+    その一つに、18 世紀のスイスの数学者
+    <INDEX>Euler, Leonhard<SUBINDEX>series accelerator</SUBINDEX></INDEX>
+    レオンハルト・オイラーによる加速器があり、交代級数（項の符号が交互に変わる級数）の部分和である数列に対してよく機能します。オイラーの技法では、<LATEXINLINE>$S_n$</LATEXINLINE> を元の総和数列の <LATEXINLINE>$n$</LATEXINLINE> 番目の項とすると、加速された数列の項は次のようになります。
+      </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{l}
       S_{n+1} - \dfrac{(S_{n+1}-S_n)^2}{S_{n-1}-2S_n+S_{n+1}}
       \end{array}
       \]
-    </LATEX> 
+    </LATEX>
+    <BILINGUAL>
+      <EN>
     Thus, if the original sequence is represented as a stream of values,
     the transformed sequence is given by
+      </EN>
+      <JA>
+    したがって、元の数列が値のストリームとして表現されているなら、変換された数列は次で与えられます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET LATEX="yes">
       <INDEX><DECLARATION>euler_transform</DECLARATION></INDEX> 
       <NAME>euler_transform</NAME>
@@ -305,15 +391,29 @@ function euler_transform(s) {
     </SNIPPET>
     <SPLIT>
       <JAVASCRIPT>
+        <BILINGUAL>
+          <EN>
 	  Note that we make use of the memoization optimization of
 	  section<SPACE/><REF NAME="sec:delayed-lists"/>, because in the
 	  following we will rely on repeated evaluation of the resulting stream.
+          </EN>
+          <JA>
+	  ここでは<REF NAME="sec:delayed-lists"/>節のメモ化の最適化を利用していることに注意してください。以降では、得られたストリームに対する繰り返しの評価に依存するためです。
+          </JA>
+        </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+      <EN>
     We can demonstrate Euler acceleration with our sequence of
     approximations to<SPACE/><LATEXINLINE>$\pi$</LATEXINLINE>:
+      </EN>
+      <JA>
+    オイラー加速を、先ほどの<SPACE/><LATEXINLINE>$\pi$</LATEXINLINE> の近似数列で実演してみましょう。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>euler_transform_example</NAME>
       <REQUIRES>euler_transform</REQUIRES>
@@ -355,11 +455,20 @@ stream_ref(euler_transform(pi_stream), 8);
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Even better, we can accelerate the accelerated sequence, and recursively
     accelerate that, and so on.  Namely, we create a stream of streams (a
-    structure we<APOS/>ll call a 
+    structure we<APOS/>ll call a
     <INDEX>tableau</INDEX>
     <EM>tableau</EM>) in which each stream is the transform of the preceding one:
+    </EN>
+    <JA>
+    さらによいことに、加速された数列をさらに加速し、それを再帰的に加速し、というように繰り返せます。つまり、ストリームのストリーム（
+    <INDEX>tableau</INDEX>
+    <EM>タブロー</EM>と呼ぶ構造）を作り、その各ストリームが前のものの変換となるようにします。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>make_tableau</DECLARATION></INDEX> 
       <NAME>make_tableau</NAME>
@@ -375,7 +484,10 @@ function make_tableau(transform, s) {
 }
       </JAVASCRIPT>
     </SNIPPET>
-    The tableau has the form
+    <BILINGUAL>
+    <EN>The tableau has the form</EN>
+    <JA>このタブローは次の形をしています。</JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{llllll}
@@ -386,10 +498,17 @@ function make_tableau(transform, s) {
       \end{array}
       \]
     </LATEX>
+    <BILINGUAL>
+    <EN>
     Finally, we form a sequence by taking the first term in each row of
     the tableau:
+    </EN>
+    <JA>
+    最後に、タブローの各行の最初の項を取ることで数列を作ります。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
-      <INDEX><DECLARATION>accelerated_sequence</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>accelerated_sequence</DECLARATION></INDEX>
       <NAME>accelerated_sequence</NAME>
       <REQUIRES>make_tableau</REQUIRES>
       <EXAMPLE>accelerated_sequence_example</EXAMPLE>
@@ -406,8 +525,15 @@ function accelerated_sequence(transform, s) {
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can demonstrate this kind of <QUOTE>super-acceleration</QUOTE> of the
     <LATEXINLINE>$\pi$</LATEXINLINE> sequence:
+    </EN>
+    <JA>
+    この種の<QUOTE>超加速</QUOTE>を<LATEXINLINE>$\pi$</LATEXINLINE>の数列で実演できます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>accelerated_sequence_example</NAME>
       <REQUIRES>accelerated_sequence</REQUIRES>
@@ -449,6 +575,8 @@ stream_ref(accelerated_sequence(euler_transform, pi_stream),
 ...
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The result is impressive.  Taking eight terms of the sequence yields the
     correct value of <LATEXINLINE>$\pi$</LATEXINLINE> to 14 decimal places.
     If we had used only the original <LATEXINLINE>$\pi$</LATEXINLINE> sequence,
@@ -456,24 +584,45 @@ stream_ref(accelerated_sequence(euler_transform, pi_stream),
     terms (i.e., expanding the series far enough so that the individual terms
     are less then <LATEXINLINE>$10^{-13}$</LATEXINLINE>) to get that much
     accuracy!
+    </EN>
+    <JA>
+    結果は印象的です。この数列の8項を取るだけで、<LATEXINLINE>$\pi$</LATEXINLINE>の正しい値が小数点以下14桁まで得られます。もし元の<LATEXINLINE>$\pi$</LATEXINLINE>の数列だけを使っていたとすれば、これだけの精度を得るには<LATEXINLINE>$10^{13}$</LATEXINLINE>程度のオーダーの項を計算する必要があるでしょう（つまり、個々の項が<LATEXINLINE>$10^{-13}$</LATEXINLINE>より小さくなるまで級数を展開する必要があります）。
+    </JA>
+    </BILINGUAL>
     <INDEX><ORDER>pi</ORDER><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<SUBINDEX>stream of approximations<CLOSE/></SUBINDEX></INDEX>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We could have implemented these acceleration techniques without using
     streams.  But the stream formulation is particularly elegant and convenient
     because the entire sequence of states is available to us as a data structure
     that can be manipulated with a uniform set of operations.
+    </EN>
+    <JA>
+    これらの加速の技法は、ストリームを使わずに実装することもできたでしょう。しかし、ストリームによる定式化は特にエレガントで便利です。なぜなら、状態の全体の数列が、統一された演算の集合で操作できるデータ構造として手元にあるからです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
     <LABEL NAME="ex:stream-internal-def"/>
     <SPLIT>
       <SCHEME>
-	Louis Reasoner asks why the 
+	<BILINGUAL>
+	<EN>
+	Louis Reasoner asks why the
 	<SCHEMEINLINE>sqrt-stream</SCHEMEINLINE> procedure
 	was not written in the following more straightforward way, without
 	the local variable <SCHEMEINLINE>guesses</SCHEMEINLINE>:
+	</EN>
+	<JA>
+	Louis Reasonerは、なぜ
+	<SCHEMEINLINE>sqrt-stream</SCHEMEINLINE>手続きが、ローカル変数
+	<SCHEMEINLINE>guesses</SCHEMEINLINE>を使わずに、次のようなもっと単純な書き方で書かれていないのかと尋ねます。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET EVAL="no">
 	  <SCHEME>
 (define (sqrt-stream x)
@@ -483,6 +632,8 @@ stream_ref(accelerated_sequence(euler_transform, pi_stream),
                            (sqrt-stream x))))
 	  </SCHEME>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	Alyssa P. Hacker replies that this version of the procedure
 	is considerably less efficient because it performs redundant computation.
 	Explain Alyssa<APOS/>s answer.  Would the two versions still differ in
@@ -491,12 +642,26 @@ stream_ref(accelerated_sequence(euler_transform, pi_stream),
 	without using the optimization provided by
 	<SCHEMEINLINE>memo-proc</SCHEMEINLINE>
 	(section<SPACE/><REF NAME="sec:delayed-lists"/>)?
+	</EN>
+	<JA>
+	Alyssa P. Hackerは、このバージョンの手続きは冗長な計算を行うため、かなり非効率だと答えます。Alyssaの答えを説明してください。もし<SCHEMEINLINE>delay</SCHEMEINLINE>の実装が
+	<SCHEMEINLINE>memo-proc</SCHEMEINLINE>（<REF NAME="sec:delayed-lists"/>節）が提供する最適化を使わずに、単に<SCHEMEINLINE>(lambda () exp)</SCHEMEINLINE>だけを使っていたとしたら、2つのバージョンの効率に違いは出るでしょうか。
+	</JA>
+	</BILINGUAL>
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	Louis Reasoner is not happy with the performance of the stream
 	produced by the
 	<JAVASCRIPTINLINE>sqrt_@stream</JAVASCRIPTINLINE> function and
 	tries to optimize it using memoization:
+	</EN>
+	<JA>
+	Louis Reasonerは、
+	<JAVASCRIPTINLINE>sqrt_@stream</JAVASCRIPTINLINE>関数が生成するストリームの性能に不満で、メモ化を使ってそれを最適化しようとします。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET EVAL="no">
 	  <JAVASCRIPT>
 function sqrt_stream_optimized(x) {
@@ -507,31 +672,43 @@ function sqrt_stream_optimized(x) {
 }
 	  </JAVASCRIPT>
 	</SNIPPET>
-	Alyssa P. Hacker instead proposes
+	<BILINGUAL>
+	<EN>Alyssa P. Hacker instead proposes</EN>
+	<JA>一方、Alyssa P. Hackerは次のように提案します。</JA>
+	</BILINGUAL>
 	<SNIPPET EVAL="no">
 	  <JAVASCRIPT>
 function sqrt_stream_optimized_2(x) {
     const guesses = pair(1,
-                         memo(() => stream_map(guess => 
+                         memo(() => stream_map(guess =>
                                                  sqrt_improve(guess, x),
                                                guesses)));
     return guesses;
 }
 	  </JAVASCRIPT>
 	</SNIPPET>
-        and claims that Louis's version is 
+	<BILINGUAL>
+	<EN>
+        and claims that Louis's version is
 	considerably less efficient than hers, because it performs
 	redundant computation. Explain Alyssa's answer.
 	Would Alyssa's approach without memoization be more
-	efficient 
+	efficient
 	than the original <SCHEMEINLINE>sqrt_stream</SCHEMEINLINE>?
+	</EN>
+	<JA>
+	そして、Louisのバージョンは冗長な計算を行うため、自分のものよりかなり非効率だと主張します。Alyssaの答えを説明してください。Alyssaのアプローチがメモ化なしの場合、元の<SCHEMEINLINE>sqrt_stream</SCHEMEINLINE>よりも効率的になるでしょうか。
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
   </EXERCISE>
 
   <EXERCISE><LABEL NAME="ex:stream-limit"/>
+  <INDEX><USE>stream_limit</USE></INDEX>
+  <BILINGUAL>
+  <EN>
   Write a
-  <INDEX><USE>stream_limit</USE></INDEX> 
   <SPLITINLINE>
     <SCHEME>procedure <SCHEMEINLINE>stream-limit</SCHEMEINLINE></SCHEME>
     <JAVASCRIPT>function <JAVASCRIPTINLINE>stream_limit</JAVASCRIPTINLINE>
@@ -542,6 +719,17 @@ function sqrt_stream_optimized_2(x) {
   finds two successive elements that differ in absolute value by less
   than the tolerance, and return the second of the two elements.  Using
   this, we could compute square roots up to a given tolerance by
+  </EN>
+  <JA>
+  ストリームと数値（許容誤差）を引数に取る
+  <SPLITINLINE>
+    <SCHEME>手続き<SCHEMEINLINE>stream-limit</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT>関数<JAVASCRIPTINLINE>stream_limit</JAVASCRIPTINLINE>
+    </JAVASCRIPT>
+  </SPLITINLINE>
+  を書いてください。この関数は、ストリームを調べていき、絶対値の差が許容誤差未満となる連続した2つの要素が見つかるまで続け、その2つのうち2番目の要素を返します。これを使うと、与えられた許容誤差までの平方根を次のように計算できます。
+  </JA>
+  </BILINGUAL>
   <SNIPPET EVAL="no" POSTPADDING="no">
     <INDEX><DECLARATION>sqrt</DECLARATION><SUBINDEX><ORDER>stream</ORDER>as stream limit</SUBINDEX><FRAGILE/></INDEX>
     <SCHEME>
@@ -557,7 +745,15 @@ function sqrt(x, tolerance) {
   </EXERCISE>
 
   <EXERCISE>
-    Use the series 
+  <INDEX>logarithm, approximating <LATEXINLINE>$\ln 2$</LATEXINLINE></INDEX>
+    <BILINGUAL>
+    <EN>
+    Use the series
+    </EN>
+    <JA>
+    級数
+    </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{lll}
@@ -565,17 +761,23 @@ function sqrt(x, tolerance) {
       \end{array}
       \]
     </LATEX>
+    <BILINGUAL>
+    <EN>
     to compute three sequences of approximations to the natural logarithm of 2,
-  <INDEX>logarithm, approximating <LATEXINLINE>$\ln 2$</LATEXINLINE></INDEX>
     in the same way we did above for <LATEXINLINE>$\pi$</LATEXINLINE>.
     How rapidly do these sequences converge?
+    </EN>
+    <JA>
+    を使って、上で<LATEXINLINE>$\pi$</LATEXINLINE>に対して行ったのと同じ方法で、2 の自然対数の近似を表す 3 つの数列を計算してください。これらの数列はどのくらい急速に収束するでしょうか。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:3_64"/>
   </EXERCISE>
 
   <INDEX>iterative process<SUBINDEX>as a stream process<CLOSE/></SUBINDEX></INDEX>
 
   <SUBHEADING>
-    <NAME>Infinite streams of pairs</NAME>
+    <NAME><BILINGUAL><EN>Infinite streams of pairs</EN><JA>ペアの無限ストリーム</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>pair(s)<SUBINDEX>infinite stream of<OPEN/></SUBINDEX></INDEX>
@@ -583,39 +785,69 @@ function sqrt(x, tolerance) {
   <INDEX>mapping<SUBINDEX>nested<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
-    In section<SPACE/><REF NAME="sec:nested-mappings"/>, we saw how the
-    sequence paradigm handles traditional nested loops as processes defined
-    on sequences of pairs. If we generalize this technique to infinite streams,
-    then we can write programs that are not easily represented as loops, because
-    the <QUOTE>looping</QUOTE> must range over an infinite set.
+    <BILINGUAL>
+      <EN>
+        In section<SPACE/><REF NAME="sec:nested-mappings"/>, we saw how the
+        sequence paradigm handles traditional nested loops as processes defined
+        on sequences of pairs. If we generalize this technique to infinite streams,
+        then we can write programs that are not easily represented as loops, because
+        the <QUOTE>looping</QUOTE> must range over an infinite set.
+      </EN>
+      <JA>
+        セクション<SPACE/><REF NAME="sec:nested-mappings"/>では、シーケンスのパラダイムが、従来の入れ子のループをペアのシーケンス上で定義されたプロセスとしてどう扱うかを見ました。この手法を無限ストリームに一般化すると、ループとしては表現しにくいプログラムを書けるようになります。なぜなら、<QUOTE>ループ</QUOTE>が無限集合にわたって変動しなければならないからです。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    For example, suppose we want to generalize the 
-    <INDEX><USE>prime_sum_pairs</USE><SUBINDEX>infinite stream</SUBINDEX></INDEX> 
-    <SPLITINLINE>
-      <SCHEME><SCHEMEINLINE>prime-sum-pairs</SCHEMEINLINE> procedure</SCHEME>
-      <JAVASCRIPT><JAVASCRIPTINLINE>prime_sum_pairs</JAVASCRIPTINLINE> function
-      </JAVASCRIPT>
-    </SPLITINLINE>
-    of section<SPACE/><REF NAME="sec:nested-mappings"/> to produce the stream
-    of pairs of <EM>all</EM> integers <LATEXINLINE>$(i,j)$</LATEXINLINE> with
-    <LATEXINLINE>$i \leq j$</LATEXINLINE> such that
-    <LATEXINLINE>$i+j$</LATEXINLINE>
-    is prime.  If
-    <SPLITINLINE>
-      <SCHEME><SCHEMEINLINE>int-pairs</SCHEMEINLINE></SCHEME>
-      <JAVASCRIPT><JAVASCRIPTINLINE>int_pairs</JAVASCRIPTINLINE></JAVASCRIPT>
-    </SPLITINLINE>
-    is the sequence of all pairs of integers <LATEXINLINE>$(i,j)$</LATEXINLINE>
-    with <LATEXINLINE>$i \leq j$</LATEXINLINE>, then our required stream is
-    simply<FOOTNOTE>As in
+    <BILINGUAL>
+      <EN>
+        For example, suppose we want to generalize the
+        <INDEX><USE>prime_sum_pairs</USE><SUBINDEX>infinite stream</SUBINDEX></INDEX>
+        <SPLITINLINE>
+          <SCHEME><SCHEMEINLINE>prime-sum-pairs</SCHEMEINLINE> procedure</SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>prime_sum_pairs</JAVASCRIPTINLINE> function
+          </JAVASCRIPT>
+        </SPLITINLINE>
+        of section<SPACE/><REF NAME="sec:nested-mappings"/> to produce the stream
+        of pairs of <EM>all</EM> integers <LATEXINLINE>$(i,j)$</LATEXINLINE> with
+        <LATEXINLINE>$i \leq j$</LATEXINLINE> such that
+        <LATEXINLINE>$i+j$</LATEXINLINE>
+        is prime.  If
+        <SPLITINLINE>
+          <SCHEME><SCHEMEINLINE>int-pairs</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>int_pairs</JAVASCRIPTINLINE></JAVASCRIPT>
+        </SPLITINLINE>
+        is the sequence of all pairs of integers <LATEXINLINE>$(i,j)$</LATEXINLINE>
+        with <LATEXINLINE>$i \leq j$</LATEXINLINE>, then our required stream is
+        simply
+      </EN>
+      <JA>
+        たとえば、セクション<SPACE/><REF NAME="sec:nested-mappings"/>の
+        <INDEX><USE>prime_sum_pairs</USE><SUBINDEX>infinite stream</SUBINDEX></INDEX>
+        <SPLITINLINE>
+          <SCHEME><SCHEMEINLINE>prime-sum-pairs</SCHEMEINLINE>手続き</SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>prime_sum_pairs</JAVASCRIPTINLINE>関数
+          </JAVASCRIPT>
+        </SPLITINLINE>
+        を一般化して、<LATEXINLINE>$i \leq j$</LATEXINLINE>を満たす<EM>すべての</EM>整数のペア<LATEXINLINE>$(i,j)$</LATEXINLINE>のうち、<LATEXINLINE>$i+j$</LATEXINLINE>が素数となるペアからなるストリームを生成したいとしましょう。
+        <SPLITINLINE>
+          <SCHEME><SCHEMEINLINE>int-pairs</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>int_pairs</JAVASCRIPTINLINE></JAVASCRIPT>
+        </SPLITINLINE>
+        が<LATEXINLINE>$i \leq j$</LATEXINLINE>を満たすすべての整数のペア<LATEXINLINE>$(i,j)$</LATEXINLINE>のシーケンスだとすると、求めるストリームは単に次のように書けます。
+      </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>As in
     section<SPACE/><REF NAME="sec:sequences-conventional-interfaces"/>, we
     represent a pair of integers as a list rather than a
     <SPLITINLINE>
       <SCHEME>Lisp</SCHEME>
     </SPLITINLINE>
-    pair.</FOOTNOTE>
+    pair.</EN><JA>セクション<SPACE/><REF NAME="sec:sequences-conventional-interfaces"/>と同様に、整数のペアは
+    <SPLITINLINE>
+      <SCHEME>Lispの</SCHEME>
+    </SPLITINLINE>
+    ペアではなくリストとして表現します。</JA></BILINGUAL></FOOTNOTE>
     <SNIPPET HIDE="yes">
       <NAME>int_pairs</NAME>
       <REQUIRES>pairs_second_attempt</REQUIRES>
@@ -647,15 +879,27 @@ stream_ref(stream_filter(pair => is_prime(head(pair) + head(tail(pair))),
   </TEXT>
 
   <TEXT>
-    Our problem, then, is to produce the stream
-    <SPLITINLINE>
-      <SCHEME><SCHEMEINLINE>int-pairs</SCHEMEINLINE>.</SCHEME>
-      <JAVASCRIPT><JAVASCRIPTINLINE>int_pairs</JAVASCRIPTINLINE>.</JAVASCRIPT>
-    </SPLITINLINE>
-    More generally, suppose we have two streams
-    <LATEXINLINE>$S = (S_i)$</LATEXINLINE> and
-    <LATEXINLINE>$T = (T_j)$</LATEXINLINE>,
-    and imagine the infinite rectangular array
+    <BILINGUAL>
+      <EN>
+        Our problem, then, is to produce the stream
+        <SPLITINLINE>
+          <SCHEME><SCHEMEINLINE>int-pairs</SCHEMEINLINE>.</SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>int_pairs</JAVASCRIPTINLINE>.</JAVASCRIPT>
+        </SPLITINLINE>
+        More generally, suppose we have two streams
+        <LATEXINLINE>$S = (S_i)$</LATEXINLINE> and
+        <LATEXINLINE>$T = (T_j)$</LATEXINLINE>,
+        and imagine the infinite rectangular array
+      </EN>
+      <JA>
+        では、私たちの課題はストリーム
+        <SPLITINLINE>
+          <SCHEME><SCHEMEINLINE>int-pairs</SCHEMEINLINE></SCHEME>
+          <JAVASCRIPT><JAVASCRIPTINLINE>int_pairs</JAVASCRIPTINLINE></JAVASCRIPT>
+        </SPLITINLINE>
+        を生成することです。より一般的に、2つのストリーム<LATEXINLINE>$S = (S_i)$</LATEXINLINE>と<LATEXINLINE>$T = (T_j)$</LATEXINLINE>があるとして、次のような無限の矩形配列を考えます。
+      </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{cccc}
@@ -666,8 +910,15 @@ stream_ref(stream_filter(pair => is_prime(head(pair) + head(tail(pair))),
       \end{array}
       \]
     </LATEX>
-    We wish to generate a stream that contains all the pairs in the array
-    that lie on or above the diagonal, i.e., the pairs
+    <BILINGUAL>
+      <EN>
+        We wish to generate a stream that contains all the pairs in the array
+        that lie on or above the diagonal, i.e., the pairs
+      </EN>
+      <JA>
+        この配列の中で、対角線上またはその上にあるすべてのペアを含むストリームを生成したいのです。すなわち、次のペア群です。
+      </JA>
+    </BILINGUAL>
     <LATEX>
       \[
       \begin{array}{cccc}
@@ -678,25 +929,47 @@ stream_ref(stream_filter(pair => is_prime(head(pair) + head(tail(pair))),
       \end{array}
       \]
     </LATEX>
-    (If we take both <LATEXINLINE>$S$</LATEXINLINE> and
-    <LATEXINLINE>$T$</LATEXINLINE> to be the stream of integers, then this
-    will be our desired stream
-    <SPLITINLINE><SCHEME><SCHEMEINLINE>int-pairs</SCHEMEINLINE>.)</SCHEME>
-    <JAVASCRIPT><JAVASCRIPTINLINE>int_pairs</JAVASCRIPTINLINE>.)</JAVASCRIPT>
-    </SPLITINLINE>
+    <BILINGUAL>
+      <EN>
+        (If we take both <LATEXINLINE>$S$</LATEXINLINE> and
+        <LATEXINLINE>$T$</LATEXINLINE> to be the stream of integers, then this
+        will be our desired stream
+        <SPLITINLINE><SCHEME><SCHEMEINLINE>int-pairs</SCHEMEINLINE>.)</SCHEME>
+        <JAVASCRIPT><JAVASCRIPTINLINE>int_pairs</JAVASCRIPTINLINE>.)</JAVASCRIPT>
+        </SPLITINLINE>
+      </EN>
+      <JA>
+        （<LATEXINLINE>$S$</LATEXINLINE>と<LATEXINLINE>$T$</LATEXINLINE>の両方を整数のストリームとすれば、これが求めるストリーム
+        <SPLITINLINE><SCHEME><SCHEMEINLINE>int-pairs</SCHEMEINLINE>になります。）</SCHEME>
+        <JAVASCRIPT><JAVASCRIPTINLINE>int_pairs</JAVASCRIPTINLINE>になります。）</JAVASCRIPT>
+        </SPLITINLINE>
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <LONG_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Call the general stream of pairs
     <SPLITINLINE><SCHEME><SCHEMEINLINE>(pairs S T)</SCHEMEINLINE>,</SCHEME>
     <JAVASCRIPT><JAVASCRIPTINLINE>pairs(S, T)</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
     and consider it to be composed of three parts: the pair
     <LATEXINLINE>$(S_0,T_0)$</LATEXINLINE>, the rest of the pairs in the first
-    row, and the remaining pairs:<FOOTNOTE>See
+    row, and the remaining pairs:</EN>
+    <JA>ペアの一般的なストリームを
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>(pairs S T)</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>pairs(S, T)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と呼ぶことにし、それを 3 つの部分から構成されると考えます。すなわち、ペア
+    <LATEXINLINE>$(S_0,T_0)$</LATEXINLINE>、最初の行の残りのペア、そしてそれ以外のペアです。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>See
     exercise<SPACE/><REF NAME="ex:pairs-array"/> for some insight into why we
-    chose this decomposition.</FOOTNOTE>
+    chose this decomposition.</EN>
+    <JA>この分解を選んだ理由については、練習問題<SPACE/><REF NAME="ex:pairs-array"/>を参照してください。</JA>
+    </BILINGUAL></FOOTNOTE>
     <DO_BREAK_PAGE/>
     <LATEX>
       \[
@@ -709,8 +982,10 @@ stream_ref(stream_filter(pair => is_prime(head(pair) + head(tail(pair))),
       \end{array}
       \]
     </LATEX>
+    <BILINGUAL>
+    <EN>
     Observe that the third piece in this decomposition (pairs that are not in
-    the first row) is (recursively) the pairs formed from 
+    the first row) is (recursively) the pairs formed from
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>(stream-cdr S)</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>stream_tail(S)</JAVASCRIPTINLINE>
@@ -722,7 +997,22 @@ stream_ref(stream_filter(pair => is_prime(head(pair) + head(tail(pair))),
       <JAVASCRIPT><JAVASCRIPTINLINE>stream_tail(T)</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
     </SPLITINLINE>
-    Also note that the second piece (the rest of the first row) is
+    Also note that the second piece (the rest of the first row) is</EN>
+    <JA>
+    この分解における 3 つ目の部分（最初の行にないペア）は、(再帰的に)
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(stream-cdr S)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>stream_tail(S)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(stream-cdr T)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>stream_tail(T)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    から作られるペアであることに注意してください。また、2 つ目の部分（最初の行の残り）は次のように書けることにも注意してください。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (stream-map (lambda (x) (list (stream-car s) x))
@@ -733,7 +1023,10 @@ stream_map(x => list(head(s), x),
            stream_tail(t));
       </JAVASCRIPT>
     </SNIPPET>
-    Thus we can form our stream of pairs as follows:
+    <BILINGUAL>
+    <EN>Thus we can form our stream of pairs as follows:</EN>
+    <JA>したがって、ペアのストリームは次のように作ることができます。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <SCHEME>
 (define (pairs s t)
@@ -757,19 +1050,33 @@ function pairs(s, t) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In order to complete the
     <SPLITINLINE>
       <SCHEME>procedure,</SCHEME><JAVASCRIPT>function,</JAVASCRIPT>
     </SPLITINLINE>
     we must choose some way to
-    <INDEX>infinite stream(s)<SUBINDEX>merging</SUBINDEX></INDEX>
     combine the two inner streams.  One idea is to
     use the stream analog of the <SCHEMEINLINE>append</SCHEMEINLINE>
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    from section<SPACE/><REF NAME="sec:sequences"/>:
+    from section<SPACE/><REF NAME="sec:sequences"/>:</EN>
+    <JA>
+    この
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を完成させるには、内側の 2 つのストリームを組み合わせる方法を選ぶ必要があります。一つのアイデアは、セクション<SPACE/><REF NAME="sec:sequences"/>の <SCHEMEINLINE>append</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    に対応する版をストリームに対して使うというものです。</JA>
+    </BILINGUAL>
+    <INDEX>infinite stream(s)<SUBINDEX>merging</SUBINDEX></INDEX>
     <SNIPPET HIDE="yes">
       <NAME>stream_append_example</NAME>
       <JAVASCRIPT>
@@ -800,9 +1107,12 @@ function stream_append(s1, s2) {
 }
       </JAVASCRIPT>
     </SNIPPET>
-    This is unsuitable for infinite streams, however, because it takes all the
+    <BILINGUAL>
+    <EN>This is unsuitable for infinite streams, however, because it takes all the
     elements from the first stream before incorporating the second stream. In
-    particular, if we try to generate all pairs of positive integers using
+    particular, if we try to generate all pairs of positive integers using</EN>
+    <JA>しかしこれは無限ストリームには適しません。なぜなら、2 つ目のストリームを取り込む前に 1 つ目のストリームのすべての要素を取り尽くしてしまうからです。特に、次のコードを使って正の整数のすべてのペアを生成しようとすると、</JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>pairs_first_attempt</NAME>
       <REQUIRES>stream_append</REQUIRES>
@@ -843,17 +1153,26 @@ display_stream(pairs(integers, integers));
 stream_ref(pairs(integers, integers), 8);
       </JAVASCRIPT_TEST>
     </SNIPPET>
-    our stream of results will first try to run through all pairs with the
+    <BILINGUAL>
+    <EN>our stream of results will first try to run through all pairs with the
     first integer equal to 1, and hence will never produce pairs with any
-    other value of the first integer.
+    other value of the first integer.</EN>
+    <JA>結果のストリームは、まず 1 つ目の整数が 1 に等しいすべてのペアを走査しようとしてしまい、したがって 1 つ目の整数が他の値を取るペアを決して生成しません。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To handle infinite streams, we need to devise an order of combination
     that ensures that every element will eventually be reached if we let
     our program run long enough.  An elegant way to accomplish this is
     with the following <SCHEMEINLINE>interleave</SCHEMEINLINE>
-    <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>:<FOOTNOTE>The
+    <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>:</EN>
+    <JA>無限ストリームを扱うには、プログラムを十分長く実行すれば結局どの要素にも到達することが保証されるような結合の順序を考案する必要があります。これをエレガントに実現する方法が、次の <SCHEMEINLINE>interleave</SCHEMEINLINE>
+    <SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>です。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>The
     precise statement of the required property on the order of combination is
     as follows: There should be a function <LATEXINLINE>$f$</LATEXINLINE> of
     two arguments such that the pair corresponding to
@@ -861,11 +1180,11 @@ stream_ref(pairs(integers, integers), 8);
     element<SPACE/><LATEXINLINE>$j$</LATEXINLINE> of the second stream will
     appear as element number <LATEXINLINE>$f(i,j)$</LATEXINLINE> of the output
     stream.  The trick of using <SCHEMEINLINE>interleave</SCHEMEINLINE>
-    to accomplish this was shown to us by 
-    <INDEX>Turner, David</INDEX>
-    David Turner, who employed it in the language 
-    <INDEX>KRC</INDEX>
-    KRC (<CITATION>Turner 1981</CITATION>).</FOOTNOTE>
+    to accomplish this was shown to us by
+    David Turner, who employed it in the language
+    KRC (<CITATION>Turner 1981</CITATION>).</EN>
+    <JA>結合の順序に求められる性質を厳密に述べると次のようになります。すなわち、2 引数の関数 <LATEXINLINE>$f$</LATEXINLINE> が存在して、1 つ目のストリームの要素<SPACE/><LATEXINLINE>$i$</LATEXINLINE> と 2 つ目のストリームの要素<SPACE/><LATEXINLINE>$j$</LATEXINLINE> に対応するペアが、出力ストリームの <LATEXINLINE>$f(i,j)$</LATEXINLINE> 番目の要素として現れる、というものです。これを実現するために <SCHEMEINLINE>interleave</SCHEMEINLINE> を使うというトリックは、David Turner によって示されました。彼はそれを KRC という言語で用いていました (<CITATION>Turner 1981</CITATION>)。</JA>
+    </BILINGUAL><INDEX>Turner, David</INDEX><INDEX>KRC</INDEX></FOOTNOTE>
     <SNIPPET HIDE="yes">
       <NAME>interleave_example</NAME>
       <REQUIRES>display_stream</REQUIRES>
@@ -903,14 +1222,24 @@ function interleave(s1, s2) {
 }
       </JAVASCRIPT>
     </SNIPPET>
-    Since <SCHEMEINLINE>interleave</SCHEMEINLINE> takes elements alternately
+    <BILINGUAL>
+    <EN>Since <SCHEMEINLINE>interleave</SCHEMEINLINE> takes elements alternately
     from the two streams, every element of the second stream will eventually
     find its way into the interleaved stream, even if the first stream is
-    infinite.
+    infinite.</EN>
+    <JA><SCHEMEINLINE>interleave</SCHEMEINLINE> は 2 つのストリームから交互に要素を取り出すので、たとえ 1 つ目のストリームが無限であっても、2 つ目のストリームのすべての要素は結局インターリーブされたストリームに入り込みます。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can thus generate the required stream of pairs as
+    </EN>
+    <JA>
+    こうして、求めるペアのストリームを次のように生成できます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET POSTPADDING="no">
       <INDEX><DECLARATION>pairs</DECLARATION></INDEX> 
       <NAME>pairs_second_attempt</NAME>
@@ -954,6 +1283,8 @@ stream_ref(pairs(integers, integers), 8);
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Examine the stream
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>(pairs integers integers)</SCHEMEINLINE>.</SCHEME>
@@ -965,10 +1296,23 @@ stream_ref(pairs(integers, integers), 8);
     the pair (1,100)? the pair (99,100)? the pair (100,100)? (If you can make
     precise mathematical statements here, all the better. But feel free to give
     more qualitative answers if you find yourself getting bogged down.)
+    </EN>
+    <JA>
+    ストリーム
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(pairs integers integers)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pairs(integers, integers)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を調べてください。ペアがストリームに置かれる順序について、何か一般的なコメントはできますか。たとえば、ペア (1,100) に先行するペアはおよそいくつありますか。ペア (99,100) では？ペア (100,100) では？（ここで厳密な数学的な記述ができればそれに越したことはありません。しかし、行き詰まってしまうようであれば、もっと定性的な答えで構いません。）
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:stream-pair-order"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Modify the <SCHEMEINLINE>pairs</SCHEMEINLINE>
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -984,14 +1328,37 @@ stream_ref(pairs(integers, integers), 8);
     <LATEXINLINE>$(i,j)$</LATEXINLINE> (without the condition
     <LATEXINLINE>$i \leq j$</LATEXINLINE>).  Hint: You will need to
     mix in an additional stream.
+    </EN>
+    <JA>
+    <SCHEMEINLINE>pairs</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を修正して、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(pairs integers integers)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pairs(integers, integers)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    が（<LATEXINLINE>$i \leq j$</LATEXINLINE> という条件なしに）整数の<EM>すべての</EM>ペア <LATEXINLINE>$(i,j)$</LATEXINLINE> のストリームを生成するようにしてください。ヒント: 追加のストリームを混ぜる必要があります。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:3_67"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Louis Reasoner thinks that building a stream of pairs from three parts is
     unnecessarily complicated.  Instead of separating the pair
     <LATEXINLINE>$(S_0,T_0)$</LATEXINLINE> from the rest of the pairs in the
     first row, he proposes to work with the whole first row, as follows:
+    </EN>
+    <JA>
+    Louis Reasoner は、ペアのストリームを 3 つの部分から組み立てるのは不必要に複雑だと考えています。彼は、ペア <LATEXINLINE>$(S_0,T_0)$</LATEXINLINE> を 1 行目の残りのペアから切り離すのではなく、次のように 1 行目全体をひとまとめに扱うことを提案します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (define (pairs s t)
@@ -1008,6 +1375,8 @@ function pairs(s, t) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Does this work?  Consider what happens if we evaluate
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>(pairs integers integers)</SCHEMEINLINE></SCHEME>
@@ -1015,10 +1384,24 @@ function pairs(s, t) {
       </JAVASCRIPT>
     </SPLITINLINE>
     using Louis<APOS/>s definition of <SCHEMEINLINE>pairs</SCHEMEINLINE>.
+    </EN>
+    <JA>
+    これはうまくいくでしょうか。Louis の <SCHEMEINLINE>pairs</SCHEMEINLINE> の定義を使って
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(pairs integers integers)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pairs(integers, integers)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を評価したら何が起こるか考えてみてください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:pairs-array"/>
   </EXERCISE>
 
   <EXERCISE>
+    <INDEX>Pythagorean triples<SUBINDEX>with streams</SUBINDEX></INDEX>
+    <BILINGUAL>
+    <EN>
     Write a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -1029,17 +1412,28 @@ function pairs(s, t) {
     <LATEXINLINE>$U$</LATEXINLINE>, and produces the stream of triples
     <LATEXINLINE>$(S_i,T_j,U_k)$</LATEXINLINE> such that
     <LATEXINLINE>$i \leq j \leq k$</LATEXINLINE>. Use
-    <SCHEMEINLINE>triples</SCHEMEINLINE> to generate the stream of all 
-    <INDEX>Pythagorean triples<SUBINDEX>with streams</SUBINDEX></INDEX>
+    <SCHEMEINLINE>triples</SCHEMEINLINE> to generate the stream of all
     Pythagorean triples of positive integers, i.e., the triples
     <LATEXINLINE>$(i,j,k)$</LATEXINLINE> such that
     <LATEXINLINE>$i \leq j$</LATEXINLINE> and
     <LATEXINLINE>$i^2 + j^2 =k^2$</LATEXINLINE>.
+    </EN>
+    <JA>
+    3 つの無限ストリーム <LATEXINLINE>$S$</LATEXINLINE>、<LATEXINLINE>$T$</LATEXINLINE>、<LATEXINLINE>$U$</LATEXINLINE> を取り、<LATEXINLINE>$i \leq j \leq k$</LATEXINLINE> となる 3 つ組 <LATEXINLINE>$(S_i,T_j,U_k)$</LATEXINLINE> のストリームを生成する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>triples</SCHEMEINLINE> を書いてください。<SCHEMEINLINE>triples</SCHEMEINLINE> を使って、正の整数のピタゴラス数、すなわち <LATEXINLINE>$i \leq j$</LATEXINLINE> かつ <LATEXINLINE>$i^2 + j^2 =k^2$</LATEXINLINE> を満たす 3 つ組 <LATEXINLINE>$(i,j,k)$</LATEXINLINE> のストリームをすべて生成してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:stream-pythagorean-triples"/>
   </EXERCISE>
 
   <EXERCISE>
     <LABEL NAME="ex:weighted-pairs"/>
+    <BILINGUAL>
+      <EN>
     It would be nice to be able to generate
     <INDEX>infinite stream(s)<SUBINDEX>merging</SUBINDEX></INDEX>
     streams in which the pairs
@@ -1058,7 +1452,7 @@ function pairs(s, t) {
     <LATEXINLINE>$(i_1,j_1)$</LATEXINLINE> is less than
     <LATEXINLINE>$(i_2,j_2)$</LATEXINLINE> if
     <LATEXINLINE>$W(i_1,j_1) &lt; W(i_2,j_2)$</LATEXINLINE>.  Write a
-    <INDEX><USE>merge_weighted</USE></INDEX> 
+    <INDEX><USE>merge_weighted</USE></INDEX>
     <SPLITINLINE>
       <SCHEME>procedure <SCHEMEINLINE>merge-weighted</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>function <JAVASCRIPTINLINE>merge_weighted</JAVASCRIPTINLINE>
@@ -1076,10 +1470,18 @@ function pairs(s, t) {
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     that computes the weight of a pair, and is used to determine the order in
-    which elements should appear in the resulting merged stream.<FOOTNOTE>We
+    which elements should appear in the resulting merged stream.</EN>
+      <JA>場当たり的なインターリーブ処理から得られる順序ではなく、何らかの有用な順序でペアが現れるストリームを生成できると嬉しいでしょう。
+    <INDEX>無限ストリーム<SUBINDEX>マージ</SUBINDEX></INDEX>
+    整数のペアの一方が他方より<QUOTE>小さい</QUOTE>と言う方法を定義すれば、演習<SPACE/><REF NAME="ex:merge"/>の<SCHEMEINLINE>merge</SCHEMEINLINE><SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>と似た技法が使えます。これを行う一つの方法は、<QUOTE>重み付け関数</QUOTE><LATEXINLINE>$W(i,j)$</LATEXINLINE>を定義し、<LATEXINLINE>$W(i_1,j_1) &lt; W(i_2,j_2)$</LATEXINLINE>のとき<LATEXINLINE>$(i_1,j_1)$</LATEXINLINE>は<LATEXINLINE>$(i_2,j_2)$</LATEXINLINE>より小さいと規定することです。
+    <INDEX><USE>merge_weighted</USE></INDEX>
+    <SCHEMEINLINE>merge</SCHEMEINLINE>と似た<SPLITINLINE><SCHEME>手続き<SCHEMEINLINE>merge-weighted</SCHEMEINLINE></SCHEME><JAVASCRIPT>関数<JAVASCRIPTINLINE>merge_weighted</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を書いてください。ただし<SPLITINLINE><SCHEME><SCHEMEINLINE>merge-weighted</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>merge_weighted</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>は追加の引数<SCHEMEINLINE>weight</SCHEMEINLINE>を取ります。これはペアの重みを計算する<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>であり、結果としてマージされたストリーム内に要素が現れる順序を決定するのに使われます。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>We
     will require that the weighting function be such that the weight of a pair
     increases as we move out along a row or down along a column of the array of
-    pairs.</FOOTNOTE> Using this, generalize <SCHEMEINLINE>pairs</SCHEMEINLINE>
+    pairs.</EN><JA>重み付け関数は、ペアの配列の行に沿って外側へ進んだり列に沿って下方へ進んだりするにつれてペアの重みが増加するようなものであることを要求します。</JA></BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+      <EN> Using this, generalize <SCHEMEINLINE>pairs</SCHEMEINLINE>
     to a
     <SPLITINLINE>
       <SCHEME>procedure <SCHEMEINLINE>weighted-pairs</SCHEMEINLINE></SCHEME>
@@ -1113,15 +1515,30 @@ function pairs(s, t) {
 	pairs are ordered according to the sum
 	<LATEXINLINE>$2 i + 3 j + 5 i j$</LATEXINLINE>.
       </LI>
-    </OL>
+    </OL></EN>
+      <JA>これを用いて、<SCHEMEINLINE>pairs</SCHEMEINLINE>を、2 つのストリームと重み付け関数を計算する<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を取り、重みに従って順序付けられたペアのストリームを生成する<SPLITINLINE><SCHEME>手続き<SCHEMEINLINE>weighted-pairs</SCHEMEINLINE></SCHEME><JAVASCRIPT>関数<JAVASCRIPTINLINE>weighted_pairs</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>に一般化してください。あなたの<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を使って、次のものを生成してください。
+    <OL>
+      <LI>
+	<LATEXINLINE>$i \leq j$</LATEXINLINE>を満たし、和<LATEXINLINE>$i + j$</LATEXINLINE>に従って順序付けられた、正の整数のすべてのペア<LATEXINLINE>$(i,j)$</LATEXINLINE>のストリーム
+      </LI>
+      <LI>
+	<LATEXINLINE>$i \leq j$</LATEXINLINE>を満たし、<LATEXINLINE>$i$</LATEXINLINE>も<LATEXINLINE>$j$</LATEXINLINE>も 2、3、5 のいずれでも割り切れず、和<LATEXINLINE>$2 i + 3 j + 5 i j$</LATEXINLINE>に従って順序付けられた、正の整数のすべてのペア<LATEXINLINE>$(i,j)$</LATEXINLINE>のストリーム。
+      </LI>
+    </OL></JA>
+    </BILINGUAL>
   </EXERCISE>
 
   <EXERCISE>
-    Numbers that can be expressed as the sum of two cubes in more than one
+    <BILINGUAL>
+      <EN>Numbers that can be expressed as the sum of two cubes in more than one
     way are sometimes called
     <INDEX>Ramanujan numbers</INDEX>
     <EM>Ramanujan numbers</EM>, in honor of the
-    mathematician Srinivasa Ramanujan.<FOOTNOTE>To quote from G. H.
+    mathematician Srinivasa Ramanujan.</EN>
+      <JA>2 つの立方の和として 2 通り以上の方法で表現できる数は、数学者シュリニヴァーサ・ラマヌジャンを称えて、
+    <INDEX>ラマヌジャン数</INDEX>
+    <EM>ラマヌジャン数</EM>と呼ばれることがあります。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>To quote from G. H.
     Hardy<APOS/>s obituary of
     <INDEX>Hardy, Godfrey Harold</INDEX>
     <INDEX>Ramanujan, Srinivasa</INDEX>
@@ -1137,7 +1554,14 @@ function pairs(s, t) {
     generate the Ramanujan numbers was shown to us by
     <INDEX>Leiserson, Charles E.</INDEX>
     Charles
-    Leiserson.</FOOTNOTE> Ordered streams of pairs provide an elegant solution
+    Leiserson.</EN><JA>G. H. ハーディによるラマヌジャンの追悼文(<CITATION>Hardy 1921</CITATION>)から引用します。
+    <INDEX>Hardy, Godfrey Harold</INDEX>
+    <INDEX>Ramanujan, Srinivasa</INDEX>
+    <QUOTE><QUOTE>すべての正の整数は彼の友人の一人だった</QUOTE>と評したのはリトルウッド氏(だったと思う)でした。あるとき、プットニーで病に伏せている彼を見舞いに行ったときのことです。私はナンバー 1729 のタクシーに乗ってきたのですが、その番号はどうもつまらない数のように思え、不吉な前兆でなければよいのですがと申し上げました。<QUOTE>いいえ</QUOTE>と彼は答えました、<QUOTE>それはとても興味深い数です。2 つの立方の和として 2 通りの異なる方法で表現できる最小の数なのです。</QUOTE></QUOTE>重み付きペアを使ってラマヌジャン数を生成するというトリックは、
+    <INDEX>Leiserson, Charles E.</INDEX>
+    チャールズ・レイザーソンが私たちに示してくれたものです。</JA></BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+      <EN> Ordered streams of pairs provide an elegant solution
     to the problem of computing these numbers.  To find a number that can be
     written as the sum of two cubes in two different ways, we need only generate
     the stream of pairs of integers <LATEXINLINE>$(i,j)$</LATEXINLINE> weighted
@@ -1149,14 +1573,19 @@ function pairs(s, t) {
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     to generate the Ramanujan numbers.  The first
-    such number is 1,729.  What are the next five?
+    such number is 1,729.  What are the next five?</EN>
+      <JA>順序付けられたペアのストリームは、これらの数を計算する問題に対するエレガントな解決策を提供します。2 つの立方の和として 2 通りの異なる方法で書ける数を見つけるには、和<LATEXINLINE>$i^3 + j^3$</LATEXINLINE>に従って重み付けされた整数のペア<LATEXINLINE>$(i,j)$</LATEXINLINE>のストリームを生成し(演習<SPACE/><REF NAME="ex:weighted-pairs"/>参照)、同じ重みを持つ連続するペアをそのストリームから探すだけで済みます。ラマヌジャン数を生成する<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を書いてください。最初のそのような数は 1,729 です。次の 5 つは何でしょうか。</JA>
+    </BILINGUAL>
     <LABEL NAME="ex:ramanujan-nums"/>
   </EXERCISE>
 
   <EXERCISE>
-    In a similar way to exercise<SPACE/><REF NAME="ex:ramanujan-nums"/> generate
+    <BILINGUAL>
+      <EN>In a similar way to exercise<SPACE/><REF NAME="ex:ramanujan-nums"/> generate
     a stream of all numbers that can be written as the sum of two squares in
-    three different ways (showing how they can be so written).
+    three different ways (showing how they can be so written).</EN>
+      <JA>演習<SPACE/><REF NAME="ex:ramanujan-nums"/>と同様の方法で、2 つの平方の和として 3 通りの異なる方法で書けるすべての数のストリームを生成してください(どのように書けるかも示すこと)。</JA>
+    </BILINGUAL>
     <LABEL NAME="ex:3_72"/>
   </EXERCISE>
 
@@ -1165,7 +1594,7 @@ function pairs(s, t) {
   <INDEX>mapping<SUBINDEX>nested<CLOSE/></SUBINDEX></INDEX>
 
   <SUBHEADING> 
-    <NAME>Streams as signals</NAME>
+    <NAME><BILINGUAL><EN>Streams as signals</EN><JA>信号としてのストリーム</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>signal processing<SUBINDEX>stream model of<OPEN/></SUBINDEX></INDEX>
@@ -1173,14 +1602,16 @@ function pairs(s, t) {
   
   <SHORT_PAGE lines="3"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We began our discussion of streams by describing them as computational
     analogs of the <QUOTE>signals</QUOTE> in signal-processing systems.
     In fact, we can use streams to model signal-processing systems in a very
     direct way, representing the values of a signal at successive time
     intervals as consecutive elements of a stream.  For instance, we can
-    implement an 
+    implement an
     <INDEX>integrator, for signals</INDEX>
-    <EM>integrator</EM> or 
+    <EM>integrator</EM> or
     <EM>summer</EM> that, for an input stream
     <LATEXINLINE>$x=(x_{i})$</LATEXINLINE>, an initial value<SPACE/><LATEXINLINE>$C$</LATEXINLINE>, and a small increment <LATEXINLINE>$dt$</LATEXINLINE>,
     accumulates the sum
@@ -1199,6 +1630,20 @@ function pairs(s, t) {
     </SPLITINLINE>
     is reminiscent of the <QUOTE>implicit style</QUOTE> definition of the
     stream of integers (section<SPACE/><REF NAME="sec:infinite-streams"/>):
+    </EN>
+    <JA>
+    ストリームに関する議論を始めたとき、私たちはストリームを信号処理システムにおける<QUOTE>信号</QUOTE>の計算上の対応物として説明しました。実際、ストリームを使えば信号処理システムを非常に直接的にモデル化でき、連続した時刻における信号の値をストリームの連続する要素として表現できます。たとえば、入力ストリーム<LATEXINLINE>$x=(x_{i})$</LATEXINLINE>、初期値<SPACE/><LATEXINLINE>$C$</LATEXINLINE>、小さい増分<LATEXINLINE>$dt$</LATEXINLINE>に対して、次の和
+    <INDEX>integrator, for signals</INDEX>
+    <LATEX>
+      \[
+      \begin{array}{lll}
+      S_i &amp;=&amp; C +\sum_{j=1}^{i} x_{j} \, dt
+      \end{array}
+      \]
+    </LATEX>
+    を累積し、値のストリーム<LATEXINLINE>$S=(S_{i})$</LATEXINLINE>を返す<EM>積分器</EM>または<EM>加算器</EM>を実装できます。次の<SCHEMEINLINE>integral</SCHEMEINLINE><SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>は、整数のストリームの<QUOTE>暗黙的なスタイル</QUOTE>による定義（<REF NAME="sec:infinite-streams"/>節）を彷彿とさせます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>integral_1_example</NAME>
       <JAVASCRIPT>
@@ -1243,16 +1688,16 @@ function integral(integrand, initial_value, dt) {
     <SPLIT>
       <SCHEME>
         <FIGURE split_scale="1" web_scale="0.9" src="img_original/ch3-Z-G-49.svg">
-          <CAPTION>The <SCHEMEINLINE>integral</SCHEMEINLINE>
-          procedure viewed as a signal-processing system.
+          <CAPTION><BILINGUAL><EN>The <SCHEMEINLINE>integral</SCHEMEINLINE>
+          procedure viewed as a signal-processing system.</EN><JA><SCHEMEINLINE>integral</SCHEMEINLINE>手続きを信号処理システムとみなしたもの。</JA></BILINGUAL>
           </CAPTION>
           <LABEL NAME="fig:integral_scheme"/>
         </FIGURE>
       </SCHEME>
       <JAVASCRIPT>
         <FIGURE split_scale="1" web_scale="0.9" scale="0.544" src="img_javascript/ch3-Z-G-49.svg">
-          <CAPTION>The <SCHEMEINLINE>integral</SCHEMEINLINE>
-          function viewed as a signal-processing system.
+          <CAPTION><BILINGUAL><EN>The <SCHEMEINLINE>integral</SCHEMEINLINE>
+          function viewed as a signal-processing system.</EN><JA><SCHEMEINLINE>integral</SCHEMEINLINE>関数を信号処理システムとみなしたもの。</JA></BILINGUAL>
           </CAPTION>
           <LABEL NAME="fig:integral"/>
         </FIGURE>
@@ -1261,6 +1706,8 @@ function integral(integrand, initial_value, dt) {
 </TEXT>
 <TEXT>
 <PDF_ONLY>\noindent</PDF_ONLY>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	Figure<SPACE/><REF NAME="fig:integral_scheme"/>
@@ -1288,16 +1735,26 @@ function integral(integrand, initial_value, dt) {
     </SPLITINLINE>
     is reflected in the figure by the feedback loop that
     connects the output of the adder to one of the inputs.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>図<SPACE/><REF NAME="fig:integral_scheme"/></SCHEME>
+      <JAVASCRIPT>図<SPACE/><REF NAME="fig:integral"/></JAVASCRIPT>
+    </SPLITINLINE>は、<SCHEMEINLINE>integral</SCHEMEINLINE><SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>に対応する信号処理システムを描いたものです。入力ストリームは<LATEXINLINE>$dt$</LATEXINLINE>でスケーリングされ、加算器を通り、その出力が同じ加算器に戻されます。<SPLITINLINE><SCHEME><SCHEMEINLINE>int</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>integ</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>の定義における自己参照は、図中では加算器の出力をその入力の一つに接続するフィードバックループとして表現されています。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
     <LABEL NAME="ex:rc-circuit"/>
-      We can model electrical circuits using streams to represent the values
-      of currents or voltages at a sequence of times.  For instance, suppose
-      we have an
       <INDEX>RC circuit</INDEX>
       <INDEX>circuit<SUBINDEX>modeled with streams</SUBINDEX></INDEX>
       <INDEX>electrical circuits, modeled with streams</INDEX>
+      <BILINGUAL>
+      <EN>
+      We can model electrical circuits using streams to represent the values
+      of currents or voltages at a sequence of times.  For instance, suppose
+      we have an
       <EM>RC circuit</EM> consisting of a resistor of resistance
       <LATEXINLINE>$R$</LATEXINLINE> and a capacitor of capacitance
       <LATEXINLINE>$C$</LATEXINLINE> in series.  The voltage response
@@ -1305,19 +1762,37 @@ function integral(integrand, initial_value, dt) {
       <LATEXINLINE>$i$</LATEXINLINE> is determined by the formula in
       figure<SPACE/><REF NAME="fig:rc"/>, whose structure is shown by the
       accompanying signal-flow diagram.
+      </EN>
+      <JA>
+      電気回路は、時系列の電流や電圧の値をストリームで表現することによってモデル化できます。たとえば、抵抗
+      <LATEXINLINE>$R$</LATEXINLINE>の抵抗器と静電容量
+      <LATEXINLINE>$C$</LATEXINLINE>のコンデンサを直列に接続した
+      <EM>RC 回路</EM>があるとします。この回路に注入された電流
+      <LATEXINLINE>$i$</LATEXINLINE>に対する電圧応答
+      <LATEXINLINE>$v$</LATEXINLINE>は、図<SPACE/><REF NAME="fig:rc"/>の式で決まり、その構造は併記された信号フロー図に示されています。
+      </JA>
+      </BILINGUAL>
   <WEB_ONLY>
     <!-- Figure moved later for SICP JS pagination -->
     <!-- Figure code is duplicated later in this file in a PDF_ONLY -->
       <FIGURE>
 	<FIGURE split_scale="0.5" web_scale="0.8" scale="0.544" src="img_original/ch3-Z-G-51.svg"></FIGURE>
-	<CAPTION>An RC circuit and the associated
 	<INDEX>signal-flow diagram</INDEX>
+	<CAPTION>
+	<BILINGUAL>
+	<EN>An RC circuit and the associated
 	signal-flow diagram.
+	</EN>
+	<JA>RC 回路と、それに対応する信号フロー図。
+	</JA>
+	</BILINGUAL>
 	</CAPTION>
 	<LABEL NAME="fig:rc"/>
       </FIGURE>
   </WEB_ONLY>
     <P>
+      <BILINGUAL>
+      <EN>
       Write a
       <SPLITINLINE>
 	<SCHEME>procedure</SCHEME>
@@ -1353,15 +1828,50 @@ function integral(integrand, initial_value, dt) {
       </SPLITINLINE>
       that takes a stream representing the time sequence of currents and an
       initial capacitor voltage and produces the output stream of voltages.
+      </EN>
+      <JA>
+      この回路をモデル化する
+      <SPLITINLINE>
+	<SCHEME>手続き</SCHEME>
+	<JAVASCRIPT>関数</JAVASCRIPT>
+      </SPLITINLINE>
+      <SCHEMEINLINE>RC</SCHEMEINLINE>を書いてください。<SCHEMEINLINE>RC</SCHEMEINLINE>は
+      <LATEXINLINE>$R$</LATEXINLINE>、<LATEXINLINE>$C$</LATEXINLINE>、
+      <LATEXINLINE>$dt$</LATEXINLINE>の値を入力として受け取り、電流
+      <LATEXINLINE>$i$</LATEXINLINE>を表すストリームとコンデンサ電圧の初期値
+      <LATEXINLINE>$v_{0}$</LATEXINLINE>を入力として受け取って電圧
+      <LATEXINLINE>$v$</LATEXINLINE>のストリームを出力として生成する
+      <SPLITINLINE>
+	<SCHEME>手続き</SCHEME>
+	<JAVASCRIPT>関数</JAVASCRIPT>
+      </SPLITINLINE>
+      を返すべきです。たとえば、<SCHEMEINLINE>RC</SCHEMEINLINE>を使って、<LATEXINLINE>$R = 5$</LATEXINLINE>オーム、<LATEXINLINE>$C = 1$</LATEXINLINE>ファラド、時間ステップ 0.5 秒の RC 回路をモデル化できるはずで、それには
+      <SPLITINLINE>
+	<SCHEME><SCHEMEINLINE>(define RC1 (RC 5 1 0.5))</SCHEMEINLINE>
+	</SCHEME>
+	<JAVASCRIPT>
+	  <JAVASCRIPTINLINE>const RC1 = RC(5, 1, 0.5)</JAVASCRIPTINLINE>
+	</JAVASCRIPT>
+      </SPLITINLINE>
+      を評価します。これにより<SCHEMEINLINE>RC1</SCHEMEINLINE>は、電流の時系列を表すストリームとコンデンサ電圧の初期値を受け取って電圧の出力ストリームを生成する
+      <SPLITINLINE>
+	<SCHEME>手続き</SCHEME>
+	<JAVASCRIPT>関数</JAVASCRIPT>
+      </SPLITINLINE>
+      として定義されます。
+      </JA>
+      </BILINGUAL>
     </P>
   </EXERCISE>
 
   <EXERCISE>
+    <INDEX>signal processing<SUBINDEX>zero crossings of a signal</SUBINDEX></INDEX>
+    <INDEX>zero crossings of a signal</INDEX>
+    <BILINGUAL>
+    <EN>
     Alyssa P. Hacker is designing a system to process signals coming from
     physical sensors.  One important feature she wishes to produce is a signal
     that describes the
-    <INDEX>signal processing<SUBINDEX>zero crossings of a signal</SUBINDEX></INDEX>
-    <INDEX>zero crossings of a signal</INDEX>
     <EM>zero crossings</EM> of the input signal. That is,
     the resulting signal should be <LATEXINLINE>$+1$</LATEXINLINE> whenever the
     input signal changes from negative to positive,
@@ -1369,6 +1879,14 @@ function integral(integrand, initial_value, dt) {
     positive to negative, and 0 otherwise.  (Assume that the sign of a 0 input
     is positive.)  For example, a typical input signal with its associated
     zero-crossing signal would be
+    </EN>
+    <JA>
+    Alyssa P. Hacker は、物理センサーから入ってくる信号を処理するシステムを設計しています。彼女が生成したい重要な機能の一つは、入力信号の
+    <EM>ゼロ交差</EM>を記述する信号です。すなわち、結果の信号は、入力信号が負から正に変化したときには
+    <LATEXINLINE>$+1$</LATEXINLINE>、正から負に変化したときには
+    <LATEXINLINE>$-1$</LATEXINLINE>、それ以外のときには 0 になるべきです（0 の入力の符号は正であるとみなします）。たとえば、典型的な入力信号とそれに対応するゼロ交差信号は次のようになります。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <SCHEME>
 $\ldots$ 1  2  1.5  1  0.5  -0.1  -2  -3  -2  -0.5  0.2  3  4 $\ldots$
@@ -1380,12 +1898,14 @@ $\ldots\;$  0  0    0  0    0     -1  0   0   0     0    1  0  0 $\ldots$
       </JAVASCRIPT>
     </SNIPPET>
 
+    <BILINGUAL>
+    <EN>
     In Alyssa<APOS/>s system, the signal from the sensor is represented as a
     stream
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>sense-data</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>sense_data</JAVASCRIPTINLINE></JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     and the stream
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>zero-crossings</SCHEMEINLINE></SCHEME>
@@ -1406,6 +1926,34 @@ $\ldots\;$  0  0    0  0    0     -1  0   0   0     0    1  0  0 $\ldots$
     produce an appropriate <LATEXINLINE>$0$</LATEXINLINE>,
     <LATEXINLINE>$1$</LATEXINLINE>, or <LATEXINLINE>$-1$</LATEXINLINE>.  She
     then constructs her zero-crossing stream as follows:
+    </EN>
+    <JA>
+    Alyssa のシステムでは、センサーからの信号はストリーム
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sense-data</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sense_data</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    として表現され、ストリーム
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>zero-crossings</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>zero_crossings</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    がそれに対応するゼロ交差のストリームです。Alyssa はまず、二つの値を引数として受け取り、それらの値の符号を比較して適切な
+    <LATEXINLINE>$0$</LATEXINLINE>、<LATEXINLINE>$1$</LATEXINLINE>、または
+    <LATEXINLINE>$-1$</LATEXINLINE>を生成する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sign-change-detector</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sign_change_detector</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    （符号変化検出器）を書きます。そして次のようにしてゼロ交差ストリームを構築します。
+    </JA>
+    </BILINGUAL>
 
     <SNIPPET EVAL="no">
       <SCHEME>
@@ -1427,6 +1975,8 @@ const zero_crossings = make_zero_crossings(sense_data, 0);
       </JAVASCRIPT>
     </SNIPPET>
 
+    <BILINGUAL>
+    <EN>
     Alyssa<APOS/>s boss, Eva Lu Ator, walks by and suggests that this program is
     approximately equivalent to the following one, which uses
     <SPLITINLINE>
@@ -1436,11 +1986,26 @@ const zero_crossings = make_zero_crossings(sense_data, 0);
 	from exercise<SPACE/><REF NAME="ex:general-stream-map"/>:
       </SCHEME>
       <JAVASCRIPT>
-	the function 
+	the function
 	<JAVASCRIPTINLINE>stream_map_2</JAVASCRIPTINLINE>
 	from exercise<SPACE/><REF NAME="ex:combine-streams"/>:
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    Alyssa の上司である Eva Lu Ator が通りかかり、このプログラムは以下のものとほぼ等価だと示唆します。これは
+    <SPLITINLINE>
+      <SCHEME>
+	演習<SPACE/><REF NAME="ex:general-stream-map"/>の
+	<SCHEMEINLINE>stream-map</SCHEMEINLINE>の一般化された版を使っています。
+      </SCHEME>
+      <JAVASCRIPT>
+	演習<SPACE/><REF NAME="ex:combine-streams"/>の関数
+	<JAVASCRIPTINLINE>stream_map_2</JAVASCRIPTINLINE>を使っています。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <SCHEME>
 (define zero-crossings
@@ -1452,17 +2017,26 @@ const zero_crossings = stream_map_2(sign_change_detector,
                                     <META>expression</META>);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Complete the program by supplying the indicated
     <META>expression</META>.
+    </EN>
+    <JA>
+    示された<META>expression</META>を補ってプログラムを完成させてください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:zero-crossing"/>
   </EXERCISE>
 
   <EXERCISE>
-    Unfortunately, Alyssa<APOS/>s
     <INDEX>signal processing<SUBINDEX>zero crossings of a signal</SUBINDEX></INDEX>
     <INDEX>zero crossings of a signal</INDEX>
     <INDEX>signal processing<SUBINDEX>smoothing a signal</SUBINDEX></INDEX>
     <INDEX>smoothing a signal</INDEX>
+    <BILINGUAL>
+    <EN>
+    Unfortunately, Alyssa<APOS/>s
     zero-crossing detector in
     exercise<SPACE/><REF NAME="ex:zero-crossing"/> proves to be insufficient,
     because the noisy signal from the sensor leads to spurious zero crossings.
@@ -1473,6 +2047,11 @@ const zero_crossings = stream_map_2(sign_change_detector,
     the previous value.  She explains the problem to her assistant, Louis
     Reasoner, who attempts to implement the idea, altering Alyssa<APOS/>s
     program as follows:
+    </EN>
+    <JA>
+    残念ながら、演習<SPACE/><REF NAME="ex:zero-crossing"/>の Alyssa のゼロ交差検出器は不十分であることがわかります。センサーからのノイズの多い信号が誤ったゼロ交差を引き起こすからです。ハードウェアの専門家である Lem E. Tweakit は、ゼロ交差を抽出する前にノイズを除去するために信号を平滑化することを提案します。Alyssa はその助言を受け入れ、センサーデータの各値を一つ前の値と平均することで構築した信号からゼロ交差を抽出することにします。彼女はこの問題をアシスタントの Louis Reasoner に説明し、Louis はそのアイデアを実装しようとして、Alyssa のプログラムを次のように変更します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (define (make-zero-crossings input-stream last-value)
@@ -1490,6 +2069,8 @@ function make_zero_crossings(input_stream, last_value) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     This does not correctly implement Alyssa<APOS/>s plan.
     Find the bug that Louis has installed
     and fix it without changing the structure of the program.  (Hint: You
@@ -1500,6 +2081,18 @@ function make_zero_crossings(input_stream, last_value) {
       <JAVASCRIPT><JAVASCRIPTINLINE>make_zero_crossings</JAVASCRIPTINLINE>.)
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    これは Alyssa の計画を正しく実装していません。Louis が混入させたバグを見つけ、プログラムの構造を変えずに修正してください。（ヒント:
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-zero-crossings</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_zero_crossings</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の引数の数を増やす必要があります。）
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:zero-crossing-2"/>
   </EXERCISE>
 
@@ -1508,21 +2101,29 @@ function make_zero_crossings(input_stream, last_value) {
     <!-- Figure code is copy of code earlier in this file in a WEB_ONLY -->
       <FIGURE>
 	<FIGURE split_scale="0.5" web_scale="0.8" scale="0.544" src="img_original/ch3-Z-G-51.svg"></FIGURE>
-	<CAPTION>An RC circuit and the associated
 	<INDEX>signal-flow diagram</INDEX>
+	<CAPTION>
+	<BILINGUAL>
+	<EN>An RC circuit and the associated
 	signal-flow diagram.
+	</EN>
+	<JA>RC 回路と、それに対応する信号フロー図。
+	</JA>
+	</BILINGUAL>
 	</CAPTION>
 	<LABEL NAME="fig:rc"/>
       </FIGURE>
   </PDF_ONLY>
 
   <EXERCISE>
-    Eva Lu Ator has a criticism of Louis<APOS/>s approach in
-    exercise<SPACE/><REF NAME="ex:zero-crossing-2"/>.
     <INDEX>signal processing<SUBINDEX>zero crossings of a signal</SUBINDEX></INDEX>
     <INDEX>zero crossings of a signal</INDEX>
     <INDEX>signal processing<SUBINDEX>smoothing a signal</SUBINDEX></INDEX>
     <INDEX>smoothing a signal</INDEX>
+    <BILINGUAL>
+    <EN>
+    Eva Lu Ator has a criticism of Louis<APOS/>s approach in
+    exercise<SPACE/><REF NAME="ex:zero-crossing-2"/>.
     The program he wrote is
     not modular, because it intermixes the operation of smoothing with the
     zero-crossing extraction.  For example, the extractor should not have
@@ -1536,6 +2137,16 @@ function make_zero_crossings(input_stream, last_value) {
     produces a stream in which each element is the average of two successive
     input stream elements.  Then use <SCHEMEINLINE>smooth</SCHEMEINLINE> as a
     component to implement the zero-crossing detector in a more modular style.
+    </EN>
+    <JA>
+    Eva Lu Ator は、演習<SPACE/><REF NAME="ex:zero-crossing-2"/>での Louis のアプローチに批判があります。彼が書いたプログラムはモジュール的ではありません。なぜなら平滑化の操作とゼロ交差の抽出が混在しているからです。たとえば、Alyssa が入力信号を整えるよりよい方法を見つけたとしても、抽出器を変更する必要があってはいけません。Louis を助けるため、ストリームを入力として受け取り、各要素が連続する二つの入力ストリーム要素の平均となるストリームを生成する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>smooth</SCHEMEINLINE>を書いてください。そして<SCHEMEINLINE>smooth</SCHEMEINLINE>を部品として使い、よりモジュール的なスタイルでゼロ交差検出器を実装してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:3_76"/>
   </EXERCISE>
 

@@ -140,7 +140,13 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 3.4 Concurrency: Time Is of the Essence (導入部)
 - [x] Section 3.4.1 The Nature of Time in Concurrent Systems
 - [x] Section 3.4.2 Mechanisms for Controlling Concurrency
-- [ ] Chapter 3 (残り: 3.5)〜5
+- [x] Section 3.5 Streams (導入部)
+- [x] Section 3.5.1 Streams Are Delayed Lists
+- [x] Section 3.5.2 Infinite Streams
+- [x] Section 3.5.3 Exploiting the Stream Paradigm
+- [x] Section 3.5.4 Streams and Delayed Evaluation
+- [x] Section 3.5.5 Modularity of Functional Programs and Modularity of Objects
+- [ ] Chapter 4〜5
 
 ## インライン実行
 

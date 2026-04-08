@@ -1,6 +1,6 @@
 <SUBSECTION>
   <NAME>
-    Infinite Streams
+    <BILINGUAL><EN>Infinite Streams</EN><JA>無限ストリーム</JA></BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:infinite-streams"/>
@@ -8,6 +8,8 @@
   <INDEX>infinite stream(s)<OPEN/></INDEX>
   
   <TEXT>
+    <BILINGUAL>
+      <EN>
     We have seen how to support the illusion of manipulating streams
     as complete entities even though, in actuality, we compute only
     as much of the stream as we need to access.  We can exploit this
@@ -15,6 +17,11 @@
     sequences are very long.  What is more striking, we can use streams to
     represent sequences that are infinitely long.  For instance, consider
     the following definition of the stream of positive integers:
+      </EN>
+      <JA>
+    ストリームを完全な実体として扱っているかのような錯覚をどのように支えるかを見てきました。実際にはアクセスに必要な分だけストリームを計算しているにすぎません。この技法を活用すると、非常に長い列であってもストリームとして効率的に表現できます。さらに驚くべきことに、ストリームを使えば無限に長い列も表現できます。たとえば、正の整数のストリームの次の定義を考えてみましょう。
+      </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>integers_starting_from_example</NAME>
       <JAVASCRIPT>
@@ -63,6 +70,8 @@ eval_stream(integers, 50);
 stream_ref(integers, 50);
       </JAVASCRIPT_TEST>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     This makes sense because <SCHEMEINLINE>integers</SCHEMEINLINE> will be a
     pair whose
     <SPLITINLINE>
@@ -78,11 +87,31 @@ stream_ref(integers, 50);
     long stream, but in any given time we can examine only a finite portion of
     it.  Thus, our programs will never know that the entire infinite stream is
     not there.
+      </EN>
+      <JA>
+    これは意味をなします。なぜなら<SCHEMEINLINE>integers</SCHEMEINLINE>は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>が 1 で、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>が 2 から始まる整数を生成するプロミスであるようなペアになるからです。これは無限に長いストリームですが、ある時点で調べられるのはその有限の部分だけです。したがって、私たちのプログラムからは、無限ストリーム全体がそこに存在しているかのように見えるのです。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Using <SCHEMEINLINE>integers</SCHEMEINLINE> we can define other infinite
     streams, such as the stream of integers that are not divisible by 7:
+      </EN>
+      <JA>
+    <SCHEMEINLINE>integers</SCHEMEINLINE> を使って、他の無限ストリームを定義できます。たとえば、7 で割り切れない整数のストリームです。
+      </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>is_divisible2_example</NAME>
       <JAVASCRIPT>
@@ -125,8 +154,15 @@ eval_stream(no_sevens, 23);
 stream_ref(no_sevens, 23);
       </JAVASCRIPT_TEST>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     Then we can find integers not divisible by 7 simply by accessing
     elements of this stream:
+      </EN>
+      <JA>
+    これで、このストリームの要素にアクセスするだけで、7 で割り切れない整数を求めることができます。
+      </JA>
+    </BILINGUAL>
     <DO_BREAK_PAGE/>
     <SNIPPET EVAL="yes">
       <NAME>on_sevens_example</NAME>
@@ -148,8 +184,15 @@ stream_ref(no_sevens, 100);
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     In analogy with <SCHEMEINLINE>integers</SCHEMEINLINE>, we can define the
     infinite stream of Fibonacci numbers:
+      </EN>
+      <JA>
+    <SCHEMEINLINE>integers</SCHEMEINLINE> と同じように、フィボナッチ数の無限ストリームを定義できます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>fibgen_example</NAME>
       <JAVASCRIPT>
@@ -178,6 +221,8 @@ function fibgen(a, b) {
 const fibs = fibgen(0, 1);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Fibs</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The constant <JAVASCRIPTINLINE>fibs</JAVASCRIPTINLINE>
@@ -219,9 +264,56 @@ const fibs = fibgen(0, 1);
       <JAVASCRIPT><JAVASCRIPTINLINE>fibgen(1, 2)</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
     and so on.
+      </EN>
+      <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Fibs</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>定数 <JAVASCRIPTINLINE>fibs</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が 0 で、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(fibgen 1 1)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fibgen(1, 1)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を評価するプロミスであるようなペアです。この遅延された
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(fibgen 1 1)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fibgen(1, 1)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を評価すると、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が 1 で、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(fibgen<SPACE/>1<SPACE/>2)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fibgen(1, 2)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を評価するプロミスであるようなペアが生成され、以下同様に続きます。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     For a look at a more exciting infinite stream, we can generalize the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>no-sevens</SCHEMEINLINE></SCHEME>
@@ -232,7 +324,18 @@ const fibs = fibgen(0, 1);
     <INDEX>prime number(s)<SUBINDEX>Eratosthenes<APOS/>s sieve for</SUBINDEX></INDEX>
     <INDEX>sieve of Eratosthenes</INDEX>
     <EM>sieve of
-    Eratosthenes</EM>.<FOOTNOTE>Eratosthenes,
+    Eratosthenes</EM>.</EN>
+      <JA>
+    より面白い無限ストリームの例として、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>no-sevens</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>no_sevens</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の例を一般化して素数の無限ストリームを構築してみましょう。ここでは
+    <INDEX>prime number(s)<SUBINDEX>Eratosthenes<APOS/>s sieve for</SUBINDEX></INDEX>
+    <INDEX>sieve of Eratosthenes</INDEX>
+    <EM>エラトステネスのふるい</EM>として知られる方法を使います。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>Eratosthenes,
     <INDEX>Eratosthenes</INDEX>
     a third-century BCE
     Alexandrian Greek philosopher, is famous for giving the first accurate
@@ -247,7 +350,16 @@ const fibs = fibgen(0, 1);
     however, these methods have been superseded by outgrowths of the
     <INDEX>probabilistic algorithm</INDEX>
     probabilistic techniques discussed in
-    section<SPACE/><REF NAME="sec:primality"/>.</FOOTNOTE>
+    section<SPACE/><REF NAME="sec:primality"/>.</EN>
+    <JA>エラトステネスは、
+    <INDEX>Eratosthenes</INDEX>
+    紀元前3世紀のアレクサンドリアのギリシャ人哲学者で、
+    <INDEX>Earth, measuring circumference of</INDEX>
+    地球の円周の最初の正確な推定値を与えたことで有名です。これは夏至の日の正午に落ちる影を観察して計算されました。エラトステネスのふるい法は古代のものですが、1970 年代まで大きな素数を見つけるための最強のツールだった特殊目的ハードウェア<QUOTE>ふるい</QUOTE>の基礎をなしました。しかし、それ以降これらの方法は、
+    <INDEX>probabilistic algorithm</INDEX>
+    節<SPACE/><REF NAME="sec:primality"/>で議論した確率的手法の発展形に取って代わられました。</JA></BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+      <EN>
     We start with the integers beginning with 2, which is the first prime.
     To get the rest of the primes, we start by filtering the multiples of
     2 from the rest of the integers.  This leaves a stream beginning with
@@ -262,6 +374,11 @@ const fibs = fibgen(0, 1);
     first element of S out of the rest
     of S and sieving the result. This
     process is readily described in terms of stream operations:
+      </EN>
+      <JA>
+    まず最初の素数である 2 から始まる整数から出発します。残りの素数を得るために、2 の倍数を残りの整数からフィルタリングすることから始めます。これにより、次の素数である 3 から始まるストリームが残ります。次に、このストリームの残りから 3 の倍数をフィルタリングします。これにより、次の素数である 5 から始まるストリームが残り、以下同様です。言い換えると、次のようなふるい分けプロセスによって素数を構築します。ストリーム S をふるい分けるには、先頭要素が S の先頭要素であり、残りの部分が S の残りから S の先頭要素のすべての倍数をフィルタリングし、その結果をふるい分けることで得られるストリームを作ります。このプロセスはストリーム操作で簡単に記述できます。
+      </JA>
+    </BILINGUAL>
 
     <SNIPPET HIDE="yes">
       <NAME>sieve_example</NAME>
@@ -301,7 +418,10 @@ function sieve(stream) {
 const primes = sieve(integers_starting_from(2));
       </JAVASCRIPT>
     </SNIPPET>
-    Now to find a particular prime we need only ask for it:
+    <BILINGUAL>
+      <EN>Now to find a particular prime we need only ask for it:</EN>
+      <JA>ここで特定の素数を見つけるには、それを尋ねるだけで済みます。</JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>sieve_example_2</NAME>
       <REQUIRES>sieve</REQUIRES>
@@ -322,15 +442,27 @@ stream_ref(primes, 50);
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     It is interesting to contemplate the signal-processing system set up
     by <SCHEMEINLINE>sieve</SCHEMEINLINE>, shown in the
     <INDEX>Henderson, Peter<SUBINDEX>Henderson diagram</SUBINDEX></INDEX>
     <QUOTE>Henderson diagram</QUOTE> in
-    <SPLITINLINE><SCHEME>figure<SPACE/><REF NAME="fig:primesieve_scheme"/></SCHEME><JAVASCRIPT>figure<SPACE/><REF NAME="fig:primesieve"/></JAVASCRIPT></SPLITINLINE>.<FOOTNOTE>We have named these
+    <SPLITINLINE><SCHEME>figure<SPACE/><REF NAME="fig:primesieve_scheme"/></SCHEME><JAVASCRIPT>figure<SPACE/><REF NAME="fig:primesieve"/></JAVASCRIPT></SPLITINLINE>.</EN>
+      <JA>
+    <SCHEMEINLINE>sieve</SCHEMEINLINE> によって構築される信号処理システムを考えてみると興味深いです。これは
+    <INDEX>Henderson, Peter<SUBINDEX>Henderson diagram</SUBINDEX></INDEX>
+    <SPLITINLINE><SCHEME>図<SPACE/><REF NAME="fig:primesieve_scheme"/></SCHEME><JAVASCRIPT>図<SPACE/><REF NAME="fig:primesieve"/></JAVASCRIPT></SPLITINLINE>の<QUOTE>ヘンダーソン図</QUOTE>に示されています。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>We have named these
     figures after
     <INDEX>Henderson, Peter</INDEX>
     Peter Henderson, who was the first person to show us diagrams of this sort
-    as a way of thinking about stream processing.</FOOTNOTE> The input stream feeds into an
+    as a way of thinking about stream processing.</EN>
+    <JA>これらの図は、
+    <INDEX>Henderson, Peter</INDEX>
+    ストリーム処理について考える方法としてこの種の図を最初に私たちに示してくれたピーター・ヘンダーソンにちなんで名付けました。</JA></BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+      <EN>The input stream feeds into an
     <SPLITINLINE>
       <SCHEME><QUOTE>un<SCHEMEINLINE>cons</SCHEMEINLINE>er</QUOTE>
       </SCHEME>
@@ -352,32 +484,50 @@ stream_ref(primes, 50);
       </JAVASCRIPT>
     </SPLITINLINE>
     Thus, not only is the stream infinite, but the signal processor is also
-    infinite, because the sieve contains a sieve within it.
+    infinite, because the sieve contains a sieve within it.</EN>
+      <JA>入力ストリームは
+    <SPLITINLINE>
+      <SCHEME><QUOTE>un<SCHEMEINLINE>cons</SCHEMEINLINE>er</QUOTE>
+      </SCHEME>
+      <JAVASCRIPT><QUOTE>un<JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE>er</QUOTE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に供給され、ストリームの先頭要素をストリームの残りから分離します。先頭要素は可除性フィルタの構築に使われ、残りはそこを通過し、フィルタの出力は別のふるいボックスに供給されます。そして元の先頭要素が
+    <SPLITINLINE>
+      <SCHEME>
+	内部ふるいの出力に <SCHEMEINLINE>cons</SCHEMEINLINE> され、出力ストリームを形成します。
+      </SCHEME>
+      <JAVASCRIPT>
+	内部ふるいの出力に接合され、出力ストリームを形成します。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    このようにして、ストリームが無限であるだけでなく、ふるいが内部にふるいを含むため、信号プロセッサもまた無限になります。</JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
         <FIGURE src="img_original/ch3-Z-G-35.svg">
-          <CAPTION>The prime sieve viewed as a signal-processing system.
+          <CAPTION><BILINGUAL><EN>The prime sieve viewed as a signal-processing system.
 Each solid line represents a
     stream of values being transmitted.  The dashed line from the
     <SCHEMEINLINE>car</SCHEMEINLINE>
     to the
     <SCHEMEINLINE>cons</SCHEMEINLINE>
     and the <SCHEMEINLINE>filter</SCHEMEINLINE> indicates that this is a single
-    value rather than a stream.
+    value rather than a stream.</EN><JA>素数のふるいを信号処理システムとみなしたもの。各実線は伝送される値のストリームを表します。<SCHEMEINLINE>car</SCHEMEINLINE> から <SCHEMEINLINE>cons</SCHEMEINLINE> と <SCHEMEINLINE>filter</SCHEMEINLINE> への破線は、これがストリームではなく単一の値であることを示しています。</JA></BILINGUAL>
           </CAPTION>
           <LABEL NAME="fig:primesieve_scheme"/>
         </FIGURE>
       </SCHEME>
       <JAVASCRIPT>
         <FIGURE scale="0.57" src="img_javascript/ch3-Z-G-35.svg">
-          <CAPTION>The prime sieve viewed as a signal-processing system.
+          <CAPTION><BILINGUAL><EN>The prime sieve viewed as a signal-processing system.
 Each solid line represents a
     stream of values being transmitted.  The dashed line from the
     <JAVASCRIPTINLINE>head</JAVASCRIPTINLINE>
     to the
     <JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE>
     and the <SCHEMEINLINE>filter</SCHEMEINLINE> indicates that this is a single
-    value rather than a stream.
+    value rather than a stream.</EN><JA>素数のふるいを信号処理システムとみなしたもの。各実線は伝送される値のストリームを表します。<JAVASCRIPTINLINE>head</JAVASCRIPTINLINE> から <JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE> と <SCHEMEINLINE>filter</SCHEMEINLINE> への破線は、これがストリームではなく単一の値であることを示しています。</JA></BILINGUAL>
           </CAPTION>
           <LABEL NAME="fig:primesieve"/>
         </FIGURE>
@@ -386,12 +536,14 @@ Each solid line represents a
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Defining streams implicitly</NAME>
+    <NAME><BILINGUAL><EN>Defining streams implicitly</EN><JA>ストリームを暗黙的に定義する</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>stream(s)<SUBINDEX>implicit definition<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The <SCHEMEINLINE>integers</SCHEMEINLINE> and
     <SCHEMEINLINE>fibs</SCHEMEINLINE> streams above were defined by specifying
     <QUOTE>generating</QUOTE>
@@ -408,6 +560,20 @@ Each solid line represents a
     </SPLITINLINE>
     defines the
     stream <SCHEMEINLINE>ones</SCHEMEINLINE> to be an infinite stream of ones:
+      </EN>
+      <JA>
+    先ほどの <SCHEMEINLINE>integers</SCHEMEINLINE> や
+    <SCHEMEINLINE>fibs</SCHEMEINLINE> のストリームは、ストリームの要素を 1 つずつ明示的に計算する<QUOTE>生成</QUOTE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を指定することで定義していました。ストリームを指定する別のやり方として、遅延評価を利用してストリームを暗黙的に定義するという方法があります。例えば、次の
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>文</JAVASCRIPT>
+    </SPLITINLINE>は、ストリーム <SCHEMEINLINE>ones</SCHEMEINLINE> を 1 の無限ストリームとして定義します。
+      </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>ones_example</NAME>
       <JAVASCRIPT>
@@ -429,6 +595,8 @@ stream_ref(ones, 50);
 const ones = pair(1, () => ones);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     This works much like the declaration of a recursive
     <SPLITINLINE>
       <SCHEME>procedure:</SCHEME>
@@ -451,27 +619,75 @@ const ones = pair(1, () => ones);
     </SPLITINLINE>
     gives us again a 1 and a promise to evaluate
     <SCHEMEINLINE>ones</SCHEMEINLINE>, and so on.
+      </EN>
+      <JA>
+    これは再帰的な
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の宣言とよく似た働きをします。<SCHEMEINLINE>ones</SCHEMEINLINE> は、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>が 1 で、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>が <SCHEMEINLINE>ones</SCHEMEINLINE> を評価するプロミスであるようなペアです。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>を評価すると、再び 1 と <SCHEMEINLINE>ones</SCHEMEINLINE> を評価するプロミスが得られ、これが繰り返されます。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <LONG_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+      <EN>
     We can do more interesting things by manipulating streams with
     operations such as
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>add-streams</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>add_streams</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
-    which produces the elementwise sum of two given streams:<FOOTNOTE>
+    which produces the elementwise sum of two given streams:
+      </EN>
+      <JA>
+    与えられた 2 つのストリームの要素ごとの和を生成する
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-streams</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_streams</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>のような演算を使ってストリームを操作すれば、もっと面白いことができます。
+      </JA>
+    </BILINGUAL><FOOTNOTE>
     <SPLIT>
       <SCHEME>
+        <BILINGUAL>
+          <EN>
 	This uses the generalized version of
 	<SCHEMEINLINE>stream-map</SCHEMEINLINE>
 	from exercise<SPACE/><REF NAME="ex:general-stream-map"/>.
+          </EN>
+          <JA>
+	これは演習<SPACE/><REF NAME="ex:general-stream-map"/>の
+	<SCHEMEINLINE>stream-map</SCHEMEINLINE>の一般化された版を使っています。
+          </JA>
+        </BILINGUAL>
       </SCHEME>
       <JAVASCRIPT>
+        <BILINGUAL>
+          <EN>
 	This uses the function
 	<JAVASCRIPTINLINE>stream_map_2</JAVASCRIPTINLINE>
 	from exercise<SPACE/><REF NAME="ex:combine-streams"/>.
+          </EN>
+          <JA>
+	これは演習<SPACE/><REF NAME="ex:combine-streams"/>の関数
+	<JAVASCRIPTINLINE>stream_map_2</JAVASCRIPTINLINE>を使っています。
+          </JA>
+        </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT></FOOTNOTE>
 
@@ -506,7 +722,10 @@ function add_streams(s1, s2) {
 }
       </JAVASCRIPT>
     </SNIPPET>
-    Now we can define the integers as follows:
+    <BILINGUAL>
+      <EN>Now we can define the integers as follows:</EN>
+      <JA>これで、整数のストリームを次のように定義できます。</JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>integers_definition_2_example</NAME>
       <JAVASCRIPT>
@@ -530,6 +749,8 @@ stream_ref(integers, 50);
 const integers = pair(1, () => add_streams(ones, integers));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     This defines <SCHEMEINLINE>integers</SCHEMEINLINE> to be a stream whose
     first element is 1 and the rest of which is the sum of
     <SCHEMEINLINE>ones</SCHEMEINLINE> and <SCHEMEINLINE>integers</SCHEMEINLINE>.
@@ -540,10 +761,22 @@ const integers = pair(1, () => add_streams(ones, integers));
     definition works because, at any point, enough of the
     <SCHEMEINLINE>integers</SCHEMEINLINE> stream has been generated so that we
     can feed it back into the definition to produce the next integer.
+      </EN>
+      <JA>
+    この定義は、<SCHEMEINLINE>integers</SCHEMEINLINE> を、最初の要素が 1 で、残りが <SCHEMEINLINE>ones</SCHEMEINLINE> と <SCHEMEINLINE>integers</SCHEMEINLINE> の和であるようなストリームとして定義しています。したがって、<SCHEMEINLINE>integers</SCHEMEINLINE> の 2 番目の要素は 1 に <SCHEMEINLINE>integers</SCHEMEINLINE> の最初の要素を足したもの、つまり 2 です。<SCHEMEINLINE>integers</SCHEMEINLINE> の 3 番目の要素は 1 に <SCHEMEINLINE>integers</SCHEMEINLINE> の 2 番目の要素を足したもの、つまり 3 です。以下同様に続きます。この定義が機能するのは、どの時点においても、次の整数を生成するために定義へとフィードバックするのに十分なだけの <SCHEMEINLINE>integers</SCHEMEINLINE> ストリームが、その時点ですでに生成されているからです。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     We can define the Fibonacci numbers in the same style:
+      </EN>
+      <JA>
+    フィボナッチ数も同じスタイルで定義できます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>fibs_by_magic_example</NAME>
       <JAVASCRIPT>
@@ -573,9 +806,16 @@ const fibs = pair(0,
                                                fibs)));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     This definition says that <SCHEMEINLINE>fibs</SCHEMEINLINE> is a stream
     beginning with 0 and 1, such that the rest of the stream can be generated
     by adding <SCHEMEINLINE>fibs</SCHEMEINLINE> to itself shifted by one place:
+      </EN>
+      <JA>
+    この定義は、<SCHEMEINLINE>fibs</SCHEMEINLINE> を 0 と 1 で始まるストリームであって、残りの部分は <SCHEMEINLINE>fibs</SCHEMEINLINE> とそれを 1 つずらしたものを足し合わせて生成できる、と述べています。
+      </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
 	<LATEX>
@@ -603,6 +843,8 @@ const fibs = pair(0,
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>Scale-stream</SCHEMEINLINE>
@@ -616,6 +858,11 @@ const fibs = pair(0,
     </SPLITINLINE>
     in formulating such stream definitions. This multiplies each item in a
     stream by a given constant:
+      </EN>
+      <JA>
+    こうしたストリームの定義を組み立てる際には、<SPLITINLINE><SCHEME><SCHEMEINLINE>Scale-stream</SCHEMEINLINE> という手続き</SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>scale_stream</JAVASCRIPTINLINE> という関数</JAVASCRIPT></SPLITINLINE>も便利です。これはストリームの各要素に与えられた定数を掛けます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>scale_stream_example</NAME>
       <JAVASCRIPT>
@@ -645,7 +892,14 @@ function scale_stream(stream, factor) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     For example,
+      </EN>
+      <JA>
+    たとえば、
+      </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>double_stream_example</NAME>
       <JAVASCRIPT>
@@ -667,15 +921,29 @@ stream_ref(double, 50);
 const double = pair(1, () => scale_stream(double, 2));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     produces the stream of powers of 2:
     <LATEXINLINE>$1, 2, 4, 8, 16, 32,$</LATEXINLINE> <ELLIPSIS/>.
+      </EN>
+      <JA>
+    は 2 のべき乗のストリーム <LATEXINLINE>$1, 2, 4, 8, 16, 32,$</LATEXINLINE> <ELLIPSIS/> を生成します。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <LONG_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+      <EN>
     An alternate definition of the stream of primes can be given by
     starting with the integers and filtering them by testing for
     primality.  We will need the first prime, 2, to get started:
+      </EN>
+      <JA>
+    素数のストリームの別の定義は、整数から始めて素数性の判定によってフィルタリングする方法で与えられます。始めるためには最初の素数 2 が必要です。
+      </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>primes_example</NAME>
       <JAVASCRIPT>
@@ -721,10 +989,17 @@ const primes = pair(2,
                                         integers_starting_from(3)));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     This definition is not so straightforward as it appears, because we will
     test whether a number <LATEXINLINE>$n$</LATEXINLINE> is prime by checking
     whether <LATEXINLINE>$n$</LATEXINLINE> is divisible by a prime (not by just
     any integer) less than or equal to <LATEXINLINE>$\sqrt{n}$</LATEXINLINE>:
+      </EN>
+      <JA>
+    この定義は見た目ほど単純ではありません。というのも、数 <LATEXINLINE>$n$</LATEXINLINE> が素数かどうかを判定するには、<LATEXINLINE>$n$</LATEXINLINE> が <LATEXINLINE>$\sqrt{n}$</LATEXINLINE> 以下の素数（任意の整数ではなく）で割り切れるかどうかを調べるからです。
+      </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>is_prime2_example</NAME>
       <JAVASCRIPT>
@@ -777,6 +1052,8 @@ const primes = pair(2,
                    );
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     This is a recursive definition, since <SCHEMEINLINE>primes</SCHEMEINLINE>
     is defined in terms of the
     <SPLITINLINE>
@@ -797,7 +1074,12 @@ const primes = pair(2,
     already generated that divides it) or <LATEXINLINE>$n$</LATEXINLINE> is
     prime (in which case there is a prime already generated<EMDASH/>i.e., a
     prime less than <LATEXINLINE>$n$</LATEXINLINE><EMDASH/>that is greater than
-    <LATEXINLINE>$\sqrt{n}$</LATEXINLINE>).<FOOTNOTE>This last point is very
+    <LATEXINLINE>$\sqrt{n}$</LATEXINLINE>).
+      </EN>
+      <JA>
+    これは再帰的な定義です。なぜなら <SCHEMEINLINE>primes</SCHEMEINLINE> が <SPLITINLINE><SCHEME><SCHEMEINLINE>prime?</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>is_prime</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> 述語を使って定義されており、その述語自身が <SCHEMEINLINE>primes</SCHEMEINLINE> ストリームを利用しているからです。この<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>が機能する理由は、どの時点においても、次に確認すべき数の素数性を判定するのに十分なだけの <SCHEMEINLINE>primes</SCHEMEINLINE> ストリームがすでに生成されているからです。つまり、素数性を判定する任意の <LATEXINLINE>$n$</LATEXINLINE> について、<LATEXINLINE>$n$</LATEXINLINE> が素数でないか（この場合はそれを割り切る素数がすでに生成されています）、あるいは <LATEXINLINE>$n$</LATEXINLINE> が素数か（この場合はすでに生成されている素数のうちに、<LATEXINLINE>$\sqrt{n}$</LATEXINLINE> より大きく <LATEXINLINE>$n$</LATEXINLINE> 未満のものが存在します）のいずれかになります。
+      </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>This last point is very
     subtle and relies on the fact that <LATEXINLINE>$p_{n+1} \leq p_{n}^2$</LATEXINLINE>. (Here, <LATEXINLINE>$p_{k}$</LATEXINLINE> denotes the
     <LATEXINLINE>$k$</LATEXINLINE>th prime.)  Estimates such as these are very
     difficult to establish.  The ancient proof by
@@ -816,14 +1098,21 @@ const primes = pair(2,
     found in section 22.3 of
     <INDEX>Hardy, Godfrey Harold</INDEX>
     <INDEX>Wright, E. M.</INDEX>
-    <CITATION>Hardy and Wright 1960</CITATION>.</FOOTNOTE>
+    <CITATION>Hardy and Wright 1960</CITATION>.</EN><JA>この最後の点は非常に微妙で、<LATEXINLINE>$p_{n+1} \leq p_{n}^2$</LATEXINLINE> という事実に依拠しています（ここで <LATEXINLINE>$p_{k}$</LATEXINLINE> は <LATEXINLINE>$k$</LATEXINLINE> 番目の素数を表します）。この種の評価を確立するのは非常に難しい問題です。素数が無限に存在することを示した<INDEX>エウクレイデスによる素数無限の証明</INDEX>エウクレイデスの古代の証明は <LATEXINLINE>$p_{n+1}\leq p_{1} p_{2}\,\cdots\,\, p_{n} +1$</LATEXINLINE> を示していますが、これより本質的に良い結果は 1851 年までは得られていませんでした。その年、ロシアの数学者<INDEX>Chebyshev, Pafnutii L<APOS/>vovich</INDEX> P. L. チェビシェフがすべての <LATEXINLINE>$n$</LATEXINLINE> について <LATEXINLINE>$p_{n+1}\leq 2p_{n}$</LATEXINLINE> が成り立つことを証明したのです。この結果はもともと 1845 年に予想されたもので、<INDEX>ベルトランの仮説</INDEX><EM>ベルトランの仮説</EM>として知られています。証明は <INDEX>Hardy, Godfrey Harold</INDEX><INDEX>Wright, E. M.</INDEX><CITATION>Hardy and Wright 1960</CITATION> の 22.3 節に見ることができます。</JA></BILINGUAL></FOOTNOTE>
     <INDEX>stream(s)<SUBINDEX>implicit definition<CLOSE/></SUBINDEX></INDEX>
   </TEXT>
 
   <EXERCISE>
     <LABEL NAME="ex:without_running"/>
+    <BILINGUAL>
+      <EN>
     Without running the program, describe the elements of the
     stream defined by
+      </EN>
+      <JA>
+    プログラムを実行せずに、次のように定義されるストリームの要素を説明してください。
+      </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>add_streams_exercise_example</NAME>
       <JAVASCRIPT>
@@ -842,23 +1131,32 @@ const s = pair(1, () => add_streams(s, s));
       </JAVASCRIPT>
     </SNIPPET>
     <SOLUTION>
+      <BILINGUAL>
+        <EN>
       This program defines <JAVASCRIPTINLINE>s</JAVASCRIPTINLINE> to be a stream whose
       first element is 1 and each next element is the double of the stream's previous
       element. The elements of <JAVASCRIPTINLINE>s</JAVASCRIPTINLINE> are therefore
       1, 2, 4, 8, 16,... .
+        </EN>
+        <JA>
+      このプログラムは <JAVASCRIPTINLINE>s</JAVASCRIPTINLINE> を、最初の要素が 1 で、続く各要素がストリームの直前の要素の 2 倍となるストリームとして定義します。したがって <JAVASCRIPTINLINE>s</JAVASCRIPTINLINE> の要素は 1, 2, 4, 8, 16, ... となります。
+        </JA>
+      </BILINGUAL>
     </SOLUTION>
   </EXERCISE>
 
   <EXERCISE>
     <LABEL NAME="ex:element_wise_product"/>
+    <INDEX><USE>mul_streams</USE></INDEX>
+    <INDEX>infinite stream(s)<SUBINDEX>of factorials</SUBINDEX></INDEX>
+    <INDEX>factorial<SUBINDEX>infinite stream</SUBINDEX></INDEX>
+    <BILINGUAL>
+      <EN>
     Define a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX><USE>mul_streams</USE></INDEX> 
-    <INDEX>infinite stream(s)<SUBINDEX>of factorials</SUBINDEX></INDEX>
-    <INDEX>factorial<SUBINDEX>infinite stream</SUBINDEX></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>mul-streams</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>mul_streams</JAVASCRIPTINLINE>,</JAVASCRIPT>
@@ -873,6 +1171,24 @@ const s = pair(1, () => add_streams(s, s));
     complete the following definition of the stream whose
     <LATEXINLINE>$n$</LATEXINLINE>th element (counting from 0) is
     <LATEXINLINE>$n+1$</LATEXINLINE> factorial:
+      </EN>
+      <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>add-streams</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>add_streams</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と同様に、2 つの入力ストリームの要素ごとの積を生成する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-streams</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_streams</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を定義してください。これを整数のストリーム <SCHEMEINLINE>integers</SCHEMEINLINE> と組み合わせて、<LATEXINLINE>$n$</LATEXINLINE> 番目の要素（0 から数える）が <LATEXINLINE>$n+1$</LATEXINLINE> の階乗となるストリームの次の定義を完成させてください。
+      </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>mul_streams_students</NAME>
       <JAVASCRIPT>
@@ -900,12 +1216,14 @@ const factorials = pair(1, () => mul_streams(factorials, integers));
 
   <EXERCISE>
     <LABEL NAME="ex:partial-sums"/>
+    <INDEX><USE>partial_sums</USE></INDEX>
+    <BILINGUAL>
+      <EN>
     Define a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX><USE>partial_sums</USE></INDEX> 
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>partial-sums</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>partial_sums</JAVASCRIPTINLINE>
@@ -921,6 +1239,27 @@ const factorials = pair(1, () => mul_streams(factorials, integers));
       </JAVASCRIPT>
     </SPLITINLINE>
     should be the stream <LATEXINLINE>$1, 3, 6, 10, 15,\ldots$</LATEXINLINE>.
+      </EN>
+      <JA>
+    引数としてストリーム <LATEXINLINE>$S$</LATEXINLINE> を取り、要素が <LATEXINLINE>$S_0, S_0+S_1, S_0+S_1+S_2,$</LATEXINLINE> <ELLIPSIS/> であるようなストリーム（部分和のストリーム）を返す
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>partial-sums</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>partial_sums</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を定義してください。たとえば
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(partial-sums integers)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>partial_sums(integers)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    はストリーム <LATEXINLINE>$1, 3, 6, 10, 15,\ldots$</LATEXINLINE> となるはずです。
+      </JA>
+    </BILINGUAL>
 
     <SOLUTION>
       <SNIPPET EVAL="no">
@@ -946,8 +1285,10 @@ function partial_sums(s) {
 
   <EXERCISE>
     <LABEL NAME="ex:merge"/>
-    A famous problem, first raised by
     <INDEX>Hamming, Richard Wesley</INDEX>
+    <BILINGUAL>
+      <EN>
+    A famous problem, first raised by
     R. Hamming, is to enumerate, in ascending order with no repetitions, all
     positive integers with no prime factors other than 2, 3, or 5.  One obvious
     way to do this is to simply test each integer in turn to see whether it has
@@ -986,15 +1327,62 @@ function partial_sums(s) {
         These are all the elements of <SCHEMEINLINE>S</SCHEMEINLINE>.
       </LI>
     </UL>
+      </EN>
+      <JA>
+    R. ハミングによって最初に提起された有名な問題があります。それは、2、3、5 以外の素因数を持たないすべての正の整数を、昇順かつ重複なく列挙するというものです。これを行う明白な方法の 1 つは、単に各整数を順番に調べて、2、3、5 以外の因数を持つかどうかを確認することです。しかし、これは非常に非効率です。整数が大きくなるにつれて、条件を満たすものがどんどん少なくなっていくからです。別のアプローチとして、求めたい数のストリームを <SCHEMEINLINE>S</SCHEMEINLINE> と呼び、それについて次の事実に着目しましょう。
+    <UL>
+      <LI>
+        <SCHEMEINLINE>S</SCHEMEINLINE> は 1 から始まる。
+      </LI>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(scale-stream S 2)</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>scale_stream(S, 2)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	の要素もまた <SCHEMEINLINE>S</SCHEMEINLINE> の要素である。
+      </LI>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(scale-stream S 3)</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>scale_stream(S, 3)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+        と
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(scale-stream S 5)</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>scale_stream(S, 5)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+        についても同じことが言える。
+      </LI>
+      <LI>
+        以上が <SCHEMEINLINE>S</SCHEMEINLINE> のすべての要素である。
+      </LI>
+    </UL>
+      </JA>
+    </BILINGUAL>
+    <BILINGUAL>
+      <EN>
     Now all we have to do is combine elements from these sources. For this we
     define a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX>infinite stream(s)<SUBINDEX>merging</SUBINDEX></INDEX>
     <SCHEMEINLINE>merge</SCHEMEINLINE> that combines two ordered
     streams into one ordered result stream, eliminating repetitions:
+      </EN>
+      <JA>
+    あとはこれらのソースからの要素を組み合わせるだけです。そのために、2 つの順序付けられたストリームを 1 つの順序付けられた結果ストリームに結合し、重複を除去する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>merge</SCHEMEINLINE> を定義します。
+      </JA>
+    </BILINGUAL>
+    <INDEX>infinite stream(s)<SUBINDEX>merging</SUBINDEX></INDEX>
     <SNIPPET HIDE="yes">
       <NAME>merge_function_example</NAME>
       <REQUIRES>integers_starting_from</REQUIRES>
@@ -1053,8 +1441,15 @@ function merge(s1, s2) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     Then the required stream may be constructed with
     <SCHEMEINLINE>merge</SCHEMEINLINE>, as follows:
+      </EN>
+      <JA>
+    そうすれば、求めるストリームは <SCHEMEINLINE>merge</SCHEMEINLINE> を用いて次のように構築できます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <REQUIRES>merge_function</REQUIRES>
       <SCHEME>
@@ -1064,8 +1459,15 @@ function merge(s1, s2) {
 const S = pair(1, () => merge(<METAPHRASE>??</METAPHRASE>, <METAPHRASE>??</METAPHRASE>));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     Fill in the missing expressions in the places marked
     <METAPHRASE>??</METAPHRASE> above.
+      </EN>
+      <JA>
+    上の <METAPHRASE>??</METAPHRASE> で示された箇所に、欠けている式を埋めてください。
+      </JA>
+    </BILINGUAL>
     <SOLUTION>
       <SNIPPET HIDE="yes">
 	<NAME>hamming_example</NAME>
@@ -1092,7 +1494,8 @@ const S = pair(1, () => merge(scale_stream(S, 2),
     <LABEL NAME="ex:fib-stream-efficiency"/>
     <SPLITINLINE>
       <SCHEME>
-	How many additions are performed when we compute the
+	<BILINGUAL>
+	<EN>How many additions are performed when we compute the
 	<LATEXINLINE>$n$</LATEXINLINE>th Fibonacci number using the definition of
 	<SCHEMEINLINE>fibs</SCHEMEINLINE> based on the
       <SCHEMEINLINE>add-streams</SCHEMEINLINE> procedure?
@@ -1101,7 +1504,18 @@ const S = pair(1, () => merge(scale_stream(S, 2),
 	<SCHEMEINLINE>(lambda () exp)</SCHEMEINLINE>, without using the
 	optimization provided by the <SCHEMEINLINE>memo-proc</SCHEMEINLINE>
 	procedure described in
-	section<SPACE/><REF NAME="sec:delayed-lists"/>.<FOOTNOTE>This
+	section<SPACE/><REF NAME="sec:delayed-lists"/>.</EN>
+	<JA><SCHEMEINLINE>add-streams</SCHEMEINLINE> 手続きに基づく
+	<SCHEMEINLINE>fibs</SCHEMEINLINE> の定義を使って
+	<LATEXINLINE>$n$</LATEXINLINE> 番目のフィボナッチ数を計算するとき、
+	加算は何回実行されるでしょうか。
+	セクション<SPACE/><REF NAME="sec:delayed-lists"/> で説明した
+	<SCHEMEINLINE>memo-proc</SCHEMEINLINE> 手続きによる最適化を使わず、
+	<SCHEMEINLINE>(delay exp)</SCHEMEINLINE> を単に
+	<SCHEMEINLINE>(lambda () exp)</SCHEMEINLINE> として実装していた場合、
+	加算の回数が指数関数的に多くなることを示してください。</JA>
+	</BILINGUAL><FOOTNOTE><BILINGUAL>
+	<EN>This
 	exercise shows how call-by-need is closely related to
 	<INDEX>call-by-need argument passing<SUBINDEX>memoization and</SUBINDEX></INDEX>
 	<INDEX>memoization<SUBINDEX>call-by-need and</SUBINDEX></INDEX>
@@ -1110,18 +1524,40 @@ const S = pair(1, () => merge(scale_stream(S, 2),
 	exercise<SPACE/><REF NAME="ex:memoization"/>. In that exercise, we used
 	assignment to explicitly construct a local table.  Our call-by-need stream
 	optimization effectively constructs such a table automatically, storing
-	values in the previously forced parts of the stream.</FOOTNOTE>
+	values in the previously forced parts of the stream.</EN>
+	<JA>この演習は、必要呼び（call-by-need）が
+	<INDEX>call-by-need argument passing<SUBINDEX>memoization and</SUBINDEX></INDEX>
+	<INDEX>memoization<SUBINDEX>call-by-need and</SUBINDEX></INDEX>
+	<INDEX>delay<SUBINDEX>memoized</SUBINDEX></INDEX>
+	演習<SPACE/><REF NAME="ex:memoization"/> で説明した通常のメモ化と
+	密接に関係していることを示しています。その演習では、代入を使って
+	ローカルテーブルを明示的に構築しました。私たちの必要呼びによる
+	ストリームの最適化は、以前に強制されたストリームの部分に値を格納することで、
+	実質的にそのようなテーブルを自動的に構築しています。</JA>
+	</BILINGUAL></FOOTNOTE>
       </SCHEME>
       <JAVASCRIPT>
-	How many additions are performed when we compute the
+	<BILINGUAL>
+	<EN>How many additions are performed when we compute the
 	<LATEXINLINE>$n$</LATEXINLINE>th Fibonacci number using the declaration of
 	<SCHEMEINLINE>fibs</SCHEMEINLINE> based on the
 	<JAVASCRIPTINLINE>add_streams</JAVASCRIPTINLINE> function?
 	Show that this number is exponentially greater than the number
-	of additions performed if 
+	of additions performed if
 	<JAVASCRIPTINLINE>add_streams</JAVASCRIPTINLINE> had used the function
 	<JAVASCRIPTINLINE>stream_map_2_optimized</JAVASCRIPTINLINE>
-	described in exercise<SPACE/><REF NAME="ex:combine-streams"/>.<FOOTNOTE>This
+	described in exercise<SPACE/><REF NAME="ex:combine-streams"/>.</EN>
+	<JA><JAVASCRIPTINLINE>add_streams</JAVASCRIPTINLINE> 関数に基づく
+	<SCHEMEINLINE>fibs</SCHEMEINLINE> の宣言を使って
+	<LATEXINLINE>$n$</LATEXINLINE> 番目のフィボナッチ数を計算するとき、
+	加算は何回実行されるでしょうか。
+	<JAVASCRIPTINLINE>add_streams</JAVASCRIPTINLINE> が
+	演習<SPACE/><REF NAME="ex:combine-streams"/> で説明した
+	<JAVASCRIPTINLINE>stream_map_2_optimized</JAVASCRIPTINLINE> 関数を
+	使っていた場合に実行される加算の回数と比べて、
+	この回数が指数関数的に多くなることを示してください。</JA>
+	</BILINGUAL><FOOTNOTE><BILINGUAL>
+	<EN>This
 	exercise shows how call-by-need is closely related to
 	<INDEX>delayed expression<SUBINDEX>memoized</SUBINDEX></INDEX>
 	<INDEX>call-by-need argument passing<SUBINDEX>memoization and</SUBINDEX></INDEX>
@@ -1130,18 +1566,36 @@ const S = pair(1, () => merge(scale_stream(S, 2),
 	exercise<SPACE/><REF NAME="ex:memoization"/>. In that exercise, we used
 	assignment to explicitly construct a local table.  Our call-by-need stream
 	optimization effectively constructs such a table automatically, storing
-	values in the previously forced parts of the stream.</FOOTNOTE>
+	values in the previously forced parts of the stream.</EN>
+	<JA>この演習は、必要呼び（call-by-need）が
+	<INDEX>delayed expression<SUBINDEX>memoized</SUBINDEX></INDEX>
+	<INDEX>call-by-need argument passing<SUBINDEX>memoization and</SUBINDEX></INDEX>
+	<INDEX>memoization<SUBINDEX>call-by-need and</SUBINDEX></INDEX>
+	演習<SPACE/><REF NAME="ex:memoization"/> で説明した通常のメモ化と
+	密接に関係していることを示しています。その演習では、代入を使って
+	ローカルテーブルを明示的に構築しました。私たちの必要呼びによる
+	ストリームの最適化は、以前に強制されたストリームの部分に値を格納することで、
+	実質的にそのようなテーブルを自動的に構築しています。</JA>
+	</BILINGUAL></FOOTNOTE>
       </JAVASCRIPT>
     </SPLITINLINE>
   </EXERCISE>
 
   <EXERCISE>
     <LABEL NAME="ex:quotient"/>
-    Give an interpretation of the stream computed by the 
+    <BILINGUAL>
+    <EN>Give an interpretation of the stream computed by the
     <SPLITINLINE>
       <SCHEME>following procedure:</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
+    </SPLITINLINE></EN>
+    <JA>次の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
     </SPLITINLINE>
+    が計算するストリームの解釈を与えてください。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (define (expand num den radix)
@@ -1157,7 +1611,8 @@ function expand(num, den, radix) {
       </JAVASCRIPT>
     </SNIPPET>
     
-    <SPLITINLINE>
+    <BILINGUAL>
+    <EN><SPLITINLINE>
       <SCHEME>
 	(<SCHEMEINLINE>Quotient</SCHEMEINLINE>
 	<INDEX>primitive procedures (those marked <EM>ns</EM> are not in the IEEE Scheme standard)<SUBINDEX><DECLARATION>quotient</DECLARATION></SUBINDEX></INDEX>
@@ -1189,22 +1644,59 @@ function expand(num, den, radix) {
       <JAVASCRIPT>
 	<JAVASCRIPTINLINE>expand(3, 8, 10)</JAVASCRIPTINLINE>?
       </JAVASCRIPT>
+    </SPLITINLINE></EN>
+    <JA><SPLITINLINE>
+      <SCHEME>
+	（<SCHEMEINLINE>Quotient</SCHEMEINLINE> は
+	<INDEX>primitive procedures (those marked <EM>ns</EM> are not in the IEEE Scheme standard)<SUBINDEX><DECLARATION>quotient</DECLARATION></SUBINDEX></INDEX>
+	<INDEX><USE>quotient</USE> (primitive function)<FRAGILE/></INDEX>
+	2 つの整数の整数商を返すプリミティブです。）
+      </SCHEME>
+      <JAVASCRIPT>
+	ここで
+	<INDEX><PRIMITIVE/><SUBINDEX><USE>math_trunc</USE><ECMA>Math.trunc</ECMA></SUBINDEX><FRAGILE/></INDEX>
+	<INDEX><USE>math_trunc</USE> (primitive function)<FRAGILE/></INDEX>
+	<JAVASCRIPTINLINE>math_trunc</JAVASCRIPTINLINE> は
+	引数の小数部を捨てます。ここでは除算の余りの小数部を捨てます。
+      </JAVASCRIPT>
     </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(expand 1 7 10)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>expand(1, 7, 10)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が生成する連続する要素は何でしょうか。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(expand 3 8 10)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>expand(3, 8, 10)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は何を生成するでしょうか。</JA>
+    </BILINGUAL>
     <SOLUTION>
-    This function will produce a infinite stream of numbers which represent the digits of 
+    <BILINGUAL>
+    <EN>This function will produce a infinite stream of numbers which represent the digits of
     <JAVASCRIPTINLINE>num / den</JAVASCRIPTINLINE>
     in base-<JAVASCRIPTINLINE>radix</JAVASCRIPTINLINE>
     system.
     <JAVASCRIPTINLINE>expand(1, 7, 10)</JAVASCRIPTINLINE>
-    will produce a infinite stream of numbers: 1, 4, 2, 8, 5, 7, 1, 4, 2, 8, 5, 7... While 
+    will produce a infinite stream of numbers: 1, 4, 2, 8, 5, 7, 1, 4, 2, 8, 5, 7... While
     <JAVASCRIPTINLINE>expand(3, 8, 10)</JAVASCRIPTINLINE>
-    will produce a stream of numbers: 3, 7, 5, 0, 0, 0, 0 ...
-    </SOLUTION>    
+    will produce a stream of numbers: 3, 7, 5, 0, 0, 0, 0 ...</EN>
+    <JA>この関数は、
+    <JAVASCRIPTINLINE>num / den</JAVASCRIPTINLINE> を
+    基数 <JAVASCRIPTINLINE>radix</JAVASCRIPTINLINE> の体系で表したときの
+    桁を表す数の無限ストリームを生成します。
+    <JAVASCRIPTINLINE>expand(1, 7, 10)</JAVASCRIPTINLINE> は
+    1, 4, 2, 8, 5, 7, 1, 4, 2, 8, 5, 7... という数の無限ストリームを生成します。
+    一方、<JAVASCRIPTINLINE>expand(3, 8, 10)</JAVASCRIPTINLINE> は
+    3, 7, 5, 0, 0, 0, 0 ... という数のストリームを生成します。</JA>
+    </BILINGUAL>
+    </SOLUTION>
   </EXERCISE>
 
   <EXERCISE>
     <LABEL NAME="ex:powerseries"/>
-  In section<SPACE/><REF NAME="sec:symbolic-algebra"/> we saw how to implement a
+  <BILINGUAL>
+  <EN>In section<SPACE/><REF NAME="sec:symbolic-algebra"/> we saw how to implement a
   polynomial arithmetic system representing polynomials as lists of
   terms.  In a similar way, we can work with
   <INDEX>power series, as stream</INDEX>
@@ -1229,10 +1721,36 @@ function expand(num, den, radix) {
   We will represent the series
   <LATEXINLINE>$a_0 + a_1 x + a_2 x^2 + a_3 x^3 + \cdots$</LATEXINLINE>
   as the stream whose elements are the coefficients
-  <LATEXINLINE>$a_0, a_1, a_2, a_3,$</LATEXINLINE> <ELLIPSIS/>.
+  <LATEXINLINE>$a_0, a_1, a_2, a_3,$</LATEXINLINE> <ELLIPSIS/>.</EN>
+  <JA>セクション<SPACE/><REF NAME="sec:symbolic-algebra"/> では、多項式を項のリストとして表現する
+  多項式演算システムの実装方法を見ました。同じような方法で、
+  <INDEX>power series, as stream</INDEX>
+  <INDEX>infinite stream(s)<SUBINDEX>representing power series</SUBINDEX></INDEX>
+  <INDEX><ORDER>e</ORDER><LATEXINLINE>$e^x$</LATEXINLINE>, power series for</INDEX>
+  <INDEX>cosine<SUBINDEX>power series for</SUBINDEX></INDEX>
+  <INDEX>sine<SUBINDEX>power series for</SUBINDEX></INDEX>
+  次のような <EM>べき級数</EM> を
+  <LATEX>
+    \[
+    \begin{array}{rll}
+    e^{x} &amp;=&amp;
+    1+x+\dfrac{x^{2}}{2}+\dfrac{x^{3}}{3\cdot2}
+                       +\dfrac{x^{4}}{4\cdot 3\cdot 2}+\cdots, \\[9pt]
+    \cos x &amp;=&amp; 1-\dfrac{x^{2}}{2}+\dfrac{x^{4}}{4\cdot 3\cdot 2}-\cdots, \\[9pt]
+    \sin x &amp;=&amp; x-\dfrac{x^{3}}{3\cdot 2}
+                          +\dfrac{x^{5}}{5\cdot 4\cdot 3\cdot 2}- \cdots,
+    \end{array}
+    \]
+  </LATEX>
+  無限ストリームとして表現して扱うことができます。
+  級数 <LATEXINLINE>$a_0 + a_1 x + a_2 x^2 + a_3 x^3 + \cdots$</LATEXINLINE> を、
+  係数 <LATEXINLINE>$a_0, a_1, a_2, a_3,$</LATEXINLINE> <ELLIPSIS/> を要素とする
+  ストリームとして表現することにします。</JA>
+  </BILINGUAL>
   <OL>
     <LI>
-      The
+      <BILINGUAL>
+      <EN>The
       <INDEX>integral<SUBINDEX>of a power series</SUBINDEX></INDEX>
       <INDEX>power series, as stream<SUBINDEX>integrating</SUBINDEX></INDEX>
       integral of the series
@@ -1251,7 +1769,7 @@ function expand(num, den, radix) {
       <SPLITINLINE><SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
       </SPLITINLINE>
-      <INDEX><USE>integrate_series</USE></INDEX> 
+      <INDEX><USE>integrate_series</USE></INDEX>
       <SPLITINLINE>
 	<SCHEME><SCHEMEINLINE>integrate-series</SCHEMEINLINE></SCHEME>
 	<JAVASCRIPT><JAVASCRIPTINLINE>integrate_series</JAVASCRIPTINLINE>
@@ -1280,15 +1798,66 @@ function expand(num, den, radix) {
 	  adjoin the appropriate constant to the beginning
 	  of the stream.)
 	</JAVASCRIPT>
+      </SPLITINLINE></EN>
+      <JA>級数
+      <INDEX>integral<SUBINDEX>of a power series</SUBINDEX></INDEX>
+      <INDEX>power series, as stream<SUBINDEX>integrating</SUBINDEX></INDEX>
+      <LATEXINLINE>$a_0 + a_1 x + a_2 x^2 + a_3 x^3 + \cdots$</LATEXINLINE>
+      の積分は、
+      <LATEX>
+	\[
+	\begin{array}{l}
+         c + a_0 x + \frac{1}{2}a_1 x^2 + \frac{1}{3}a_2 x^3 + \frac{1}{4}a_3
+         x^4 + \cdots
+	 \end{array}
+	 \]
+      </LATEX>
+      という級数です。ここで <LATEXINLINE>$c$</LATEXINLINE> は任意の定数です。
+      べき級数を表すストリーム
+      <LATEXINLINE>$a_0, a_1, a_2,\ldots$</LATEXINLINE><SPACE/>
+      を入力として受け取り、その級数の積分の定数項以外の項の係数のストリーム
+      <LATEXINLINE>$a_0, \frac{1}{2}a_1, \frac{1}{3}a_2,\ldots$</LATEXINLINE>
+      を返す
+      <SPLITINLINE><SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
       </SPLITINLINE>
+      <INDEX><USE>integrate_series</USE></INDEX>
+      <SPLITINLINE>
+	<SCHEME><SCHEMEINLINE>integrate-series</SCHEMEINLINE></SCHEME>
+	<JAVASCRIPT><JAVASCRIPTINLINE>integrate_series</JAVASCRIPTINLINE></JAVASCRIPT>
+      </SPLITINLINE>
+      を定義してください。（結果には定数項が含まれないため、
+      それ自身はべき級数を表しません。
+      <SPLITINLINE>
+	<SCHEME><SCHEMEINLINE>integrate-series</SCHEMEINLINE></SCHEME>
+	<JAVASCRIPT><JAVASCRIPTINLINE>integrate_series</JAVASCRIPTINLINE></JAVASCRIPT>
+      </SPLITINLINE>
+      を使うときは、
+      <SPLITINLINE>
+	<SCHEME>
+	  適切な定数を <SCHEMEINLINE>cons</SCHEMEINLINE> で先頭に付加することにします。）
+	</SCHEME>
+	<JAVASCRIPT>
+	  <JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE> を使って
+	  適切な定数をストリームの先頭に結合することにします。）
+	</JAVASCRIPT>
+      </SPLITINLINE></JA>
+      </BILINGUAL>
     </LI>
     <LI>
-      The function <LATEXINLINE>$x\mapsto e^x$</LATEXINLINE> is its own
+      <BILINGUAL>
+      <EN>The function <LATEXINLINE>$x\mapsto e^x$</LATEXINLINE> is its own
       derivative.  This implies that <LATEXINLINE>$e^x$</LATEXINLINE> and the
       integral of<SPACE/><LATEXINLINE>$e^x$</LATEXINLINE> are the
       same series, except for the constant term, which is
       <LATEXINLINE>$e^0 = 1$</LATEXINLINE>. Accordingly, we can generate the
-      series for <LATEXINLINE>$e^x$</LATEXINLINE> as
+      series for <LATEXINLINE>$e^x$</LATEXINLINE> as</EN>
+      <JA>関数 <LATEXINLINE>$x\mapsto e^x$</LATEXINLINE> はそれ自身が自身の導関数です。
+      このことは、<LATEXINLINE>$e^x$</LATEXINLINE> と
+      <LATEXINLINE>$e^x$</LATEXINLINE><SPACE/>の積分が、
+      定数項 <LATEXINLINE>$e^0 = 1$</LATEXINLINE> を除いて同じ級数であることを意味します。
+      したがって、<LATEXINLINE>$e^x$</LATEXINLINE> の級数は次のように生成できます。</JA>
+      </BILINGUAL>
       <SNIPPET EVAL="no">
         <SCHEME>
 (define exp-series
@@ -1298,9 +1867,13 @@ function expand(num, den, radix) {
 const exp_series = pair(1, () => integrate_series(exp_series));
 	</JAVASCRIPT>
       </SNIPPET>
-      Show how to generate the series for sine and cosine, starting from the
+      <BILINGUAL>
+      <EN>Show how to generate the series for sine and cosine, starting from the
       facts that the derivative of sine is cosine and the derivative of cosine
-      is the negative of sine:
+      is the negative of sine:</EN>
+      <JA>sin の導関数は cos であり、cos の導関数は sin の符号を反転したものであるという
+      事実から出発して、sin と cos の級数を生成する方法を示してください。</JA>
+      </BILINGUAL>
       <SNIPPET EVAL="no" LATEX="yes">
         <SCHEME>
 (define cosine-series
@@ -1345,11 +1918,13 @@ const sin_series = pair(0, () => integrate_series(
 
   <EXERCISE>
     <LABEL NAME="ex:mul-series"/>
+    <BILINGUAL>
+    <EN>
     With
     <INDEX>power series, as stream<SUBINDEX>adding</SUBINDEX></INDEX>
     <INDEX>power series, as stream<SUBINDEX>multiplying</SUBINDEX></INDEX>
     <INDEX>arithmetic<SUBINDEX>on power series</SUBINDEX></INDEX>
-    <INDEX><USE>mul_series</USE></INDEX> 
+    <INDEX><USE>mul_series</USE></INDEX>
     power series represented as streams of coefficients as in
     exercise<SPACE/><REF NAME="ex:powerseries"/>, adding series is implemented
     by
@@ -1368,6 +1943,29 @@ const sin_series = pair(0, () => integrate_series(
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     for multiplying series:
+    </EN>
+    <JA>
+    <INDEX>power series, as stream<SUBINDEX>adding</SUBINDEX></INDEX>
+    <INDEX>power series, as stream<SUBINDEX>multiplying</SUBINDEX></INDEX>
+    <INDEX>arithmetic<SUBINDEX>on power series</SUBINDEX></INDEX>
+    <INDEX><USE>mul_series</USE></INDEX>
+    演習<SPACE/><REF NAME="ex:powerseries"/>のようにべき級数を係数のストリームで表現したとき、級数の加算は
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>add-streams</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>add_streams</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    で実装されます。級数の乗算を行う次の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の宣言を完成させてください。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <SCHEME>
 (define (mul-series s1 s2)
@@ -1380,6 +1978,8 @@ function mul_series(s1, s2) {
       </JAVASCRIPT>
     </SNIPPET>
 
+    <BILINGUAL>
+    <EN>
     You can test your
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -1387,6 +1987,16 @@ function mul_series(s1, s2) {
     </SPLITINLINE>
     by verifying that <LATEXINLINE>$sin^2 x + cos^2 x = 1$</LATEXINLINE>,
     using the series from exercise<SPACE/><REF NAME="ex:powerseries"/>.
+    </EN>
+    <JA>
+    演習<SPACE/><REF NAME="ex:powerseries"/>の級数を使い、<LATEXINLINE>$sin^2 x + cos^2 x = 1$</LATEXINLINE>を検証することで
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    をテストできます。
+    </JA>
+    </BILINGUAL>
   <SOLUTION>
     <SNIPPET EVAL = "no">
       <JAVASCRIPT>
@@ -1404,6 +2014,8 @@ function mul_series(s1, s2) {
   <DO_BREAK_PAGE/>
   <EXERCISE>
     <LABEL NAME="ex:invert-unit-series"/>
+    <BILINGUAL>
+    <EN>
     Let <LATEXINLINE>$S$</LATEXINLINE> be a power series
     (exercise<SPACE/><REF NAME="ex:powerseries"/>)
     whose constant term is 1.  Suppose we want to find the power series
@@ -1442,6 +2054,35 @@ function mul_series(s1, s2) {
       <JAVASCRIPT><JAVASCRIPTINLINE>mul_series</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     from exercise<SPACE/><REF NAME="ex:mul-series"/>.
+    </EN>
+    <JA>
+    <LATEXINLINE>$S$</LATEXINLINE>を定数項が1であるべき級数（演習<SPACE/><REF NAME="ex:powerseries"/>）とします。べき級数<LATEXINLINE>$1/S$</LATEXINLINE>、すなわち<LATEXINLINE>$S\cdot X= 1$</LATEXINLINE>となる級数<LATEXINLINE>$X$</LATEXINLINE>を求めたいとします。<LATEXINLINE>$S=1+S_R$</LATEXINLINE>と書きます。ここで<LATEXINLINE>$S_R$</LATEXINLINE>は<LATEXINLINE>$S$</LATEXINLINE>の定数項以降の部分です。すると<LATEXINLINE>$X$</LATEXINLINE>について次のように解けます。
+    \[
+    \begin{array}{rll}
+    S \cdot X &amp;=&amp; 1 \\
+    (1+S_R)\cdot X &amp;=&amp; 1 \\
+    X + S_R \cdot X &amp;=&amp; 1 \\
+    X &amp;=&amp; 1 - S_R \cdot X
+    \end{array}
+    \]
+    言い換えると、<LATEXINLINE>$X$</LATEXINLINE>は定数項が1であり、より高次の項が<LATEXINLINE>$S_R$</LATEXINLINE>と<LATEXINLINE>$X$</LATEXINLINE>の積の符号を反転したものであるようなべき級数です。このアイデアを使って、定数項が1であるべき級数<LATEXINLINE>$S$</LATEXINLINE>に対して<LATEXINLINE>$1/S$</LATEXINLINE>を計算する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>invert-unit-series</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>invert_@unit_@series</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を書いてください。演習<SPACE/><REF NAME="ex:mul-series"/>の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>mul-series</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>mul_series</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使う必要があります。
+    </JA>
+    </BILINGUAL>
     <SOLUTION>
       <SNIPPET EVAL = "no">
         <JAVASCRIPT>
@@ -1456,6 +2097,8 @@ function invert_unit_series(s) {
 
   <EXERCISE>
     <LABEL NAME="ex:diving_power_series"/>
+    <BILINGUAL>
+    <EN>
     Use the results of exercises<SPACE/><REF NAME="ex:mul-series"/>
     and<SPACE/><REF NAME="ex:invert-unit-series"/>
     to define a
@@ -1465,7 +2108,7 @@ function invert_unit_series(s) {
     </SPLITINLINE>
     <INDEX>power series, as stream<SUBINDEX>dividing</SUBINDEX></INDEX>
     <INDEX>arithmetic<SUBINDEX>on power series</SUBINDEX></INDEX>
-    <INDEX><USE>div_series</USE></INDEX> 
+    <INDEX><USE>div_series</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>div-series</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>div_series</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -1492,6 +2135,40 @@ function invert_unit_series(s) {
     to generate the power series for
     <INDEX>tangent<SUBINDEX>power series for</SUBINDEX></INDEX>
     tangent.
+    </EN>
+    <JA>
+    <INDEX>power series, as stream<SUBINDEX>dividing</SUBINDEX></INDEX>
+    <INDEX>arithmetic<SUBINDEX>on power series</SUBINDEX></INDEX>
+    <INDEX><USE>div_series</USE></INDEX>
+    <INDEX>tangent<SUBINDEX>power series for</SUBINDEX></INDEX>
+    演習<SPACE/><REF NAME="ex:mul-series"/>と演習<SPACE/><REF NAME="ex:invert-unit-series"/>の結果を使って、2つのべき級数を割り算する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-series</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_series</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を定義してください。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Div-series</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数
+      <JAVASCRIPTINLINE>div_series</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は、分母の級数が0でない定数項で始まっていれば、任意の2つの級数に対して動作すべきです。（分母の定数項が0である場合は、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-series</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_series</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    はエラーを通知すべきです。）
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>div-series</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>div_series</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を演習<SPACE/><REF NAME="ex:powerseries"/>の結果と組み合わせて、tanのべき級数を生成する方法を示してください。
+    </JA>
+    </BILINGUAL>
   </EXERCISE>
 
   <INDEX>infinite stream(s)<CLOSE/></INDEX>

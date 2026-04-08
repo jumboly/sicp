@@ -1,6 +1,6 @@
 <SUBSECTION>
   <NAME>
-    Modularity of Functional Programs and Modularity of Objects
+    <BILINGUAL><EN>Modularity of Functional Programs and Modularity of Objects</EN><JA>関数型プログラムのモジュール性とオブジェクトのモジュール性</JA></BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:functions-and-objects"/>
@@ -9,21 +9,30 @@
   <INDEX>functional programming<OPEN/></INDEX>
 
   <TEXT>
+    <INDEX><ORDER>pi</ORDER><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<SUBINDEX>Dirichlet estimate for</SUBINDEX></INDEX>
+    <INDEX>Monte Carlo simulation<SUBINDEX>stream formulation</SUBINDEX></INDEX>
+    <BILINGUAL>
+      <EN>
     As we saw in section<SPACE/><REF NAME="sec:benefits-of-assignment"/>, one of
     the major benefits of introducing assignment is that we can increase the
     modularity of our systems by encapsulating, or <QUOTE>hiding,</QUOTE> parts
     of the state of a large system within local variables.  Stream models can
     provide an equivalent modularity without the use of assignment.  As an
     illustration, we can reimplement the
-    <INDEX><ORDER>pi</ORDER><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<SUBINDEX>Dirichlet estimate for</SUBINDEX></INDEX>
-    <INDEX>Monte Carlo simulation<SUBINDEX>stream formulation</SUBINDEX></INDEX>
     Monte Carlo estimation
     of<SPACE/><LATEXINLINE>$\pi$</LATEXINLINE>, which we examined in
     section<SPACE/><REF NAME="sec:benefits-of-assignment"/>, from a
     stream-processing point of view.
+      </EN>
+      <JA>
+    セクション<SPACE/><REF NAME="sec:benefits-of-assignment"/>で見たように、代入の導入がもたらす主要な利点の一つは、大きなシステムの状態の一部をローカル変数内にカプセル化（あるいは<QUOTE>隠蔽</QUOTE>）することで、システムのモジュール性を高められる点でした。ストリームモデルは、代入を使わずに同等のモジュール性を提供できます。その例として、セクション<SPACE/><REF NAME="sec:benefits-of-assignment"/>で扱った<LATEXINLINE>$\pi$</LATEXINLINE>のモンテカルロ推定を、ストリーム処理の観点から再実装してみましょう。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The key modularity issue was that we wished to hide the internal state
     of a random-number generator from programs that used random numbers.
     We began with a
@@ -34,6 +43,11 @@
     </SPLITINLINE>
     whose successive values furnished our supply of random numbers, and used
     this to produce a random-number generator:
+      </EN>
+      <JA>
+    モジュール性に関する重要な論点は、乱数を使うプログラムから乱数生成器の内部状態を隠したい、という点でした。まず、連続する値が乱数の供給源となる<SPLITINLINE><SCHEME>手続き<SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME><JAVASCRIPT>関数<JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>から始め、これを使って乱数生成器を作りました。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <REQUIRES>rand_update</REQUIRES>
       <REQUIRES>random_init</REQUIRES>
@@ -61,6 +75,8 @@ const rand = make_rand();
 
   <DO_BREAK_PAGE/>
   <TEXT>
+    <BILINGUAL>
+      <EN>
     In the stream formulation there is no random-number generator <EM>per
     se</EM>, just a stream of random numbers produced by successive calls to
     <SPLITINLINE>
@@ -69,6 +85,11 @@ const rand = make_rand();
       <JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE>:
       </JAVASCRIPT>
     </SPLITINLINE>
+      </EN>
+      <JA>
+    ストリームによる定式化では、乱数生成器<EM>それ自体としては</EM>存在せず、<SPLITINLINE><SCHEME><SCHEMEINLINE>rand-update</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>rand_update</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を連続的に呼び出して生成される乱数のストリームがあるだけです。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>random_numbers</DECLARATION> (infinite stream)</INDEX>
       <INDEX>infinite stream(s)<SUBINDEX>of random numbers</SUBINDEX></INDEX>
@@ -97,6 +118,8 @@ eval_stream(random_numbers, 5);
 stream_ref(random_numbers, 4);
       </JAVASCRIPT_TEST>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     We use this to construct the stream of outcomes of the Ces<AGRAVE_LOWER/>ro
     experiment performed on consecutive pairs in the
     <SPLITINLINE>
@@ -108,6 +131,11 @@ stream_ref(random_numbers, 4);
       </JAVASCRIPT>
     </SPLITINLINE>
     stream:
+      </EN>
+      <JA>
+    これを使って、<SPLITINLINE><SCHEME><SCHEMEINLINE>random-numbers</SCHEMEINLINE></SCHEME><JAVASCRIPT><SCHEMEINLINE>random_numbers</SCHEMEINLINE></JAVASCRIPT></SPLITINLINE>ストリーム中の連続するペアに対して行ったチェザロ（Ces<AGRAVE_LOWER/>ro）の実験の結果のストリームを構築します。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>dirichlet_stream</DECLARATION></INDEX> 
       <INDEX><DECLARATION>map_successive_pairs</DECLARATION></INDEX> 
@@ -147,6 +175,8 @@ eval_stream(dirichlet_stream, 20);
 stream_ref(dirichlet_stream, 42);
       </JAVASCRIPT_TEST>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     The
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>cesaro-stream</SCHEMEINLINE></SCHEME>
@@ -167,6 +197,11 @@ stream_ref(dirichlet_stream, 42);
     trials to perform.  Better estimates of <LATEXINLINE>$\pi$</LATEXINLINE>
     (from performing more experiments) are obtained by looking farther into the
     <SCHEMEINLINE>pi</SCHEMEINLINE> stream:
+      </EN>
+      <JA>
+    この<SPLITINLINE><SCHEME><SCHEMEINLINE>cesaro-stream</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>dirichlet_stream</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を<SPLITINLINE><SCHEME><SCHEMEINLINE>monte-carlo</SCHEMEINLINE>手続き</SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>monte_carlo</JAVASCRIPTINLINE>関数</JAVASCRIPT></SPLITINLINE>に渡すと、確率の推定のストリームが生成されます。そしてその結果を<LATEXINLINE>$\pi$</LATEXINLINE>の推定のストリームに変換します。このバージョンのプログラムでは、試行を何回行うかを指定するパラメータは必要ありません。<LATEXINLINE>$\pi$</LATEXINLINE>のより良い推定値（より多くの実験を行った結果）は、<SCHEMEINLINE>pi</SCHEMEINLINE>ストリームの先を覗き込むことで得られます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>monte_carlo</DECLARATION><SUBINDEX>infinite stream</SUBINDEX></INDEX>
       <NAME>monte_carlo_stream</NAME>
@@ -210,10 +245,12 @@ const pi = stream_map(p => math_sqrt(6 / p),
 stream_ref(pi, 100);	
       </JAVASCRIPT>
     </SNIPPET>
-    There is considerable
     <INDEX>modularity<SUBINDEX>through infinite streams</SUBINDEX></INDEX>
+    <BILINGUAL>
+      <EN>
+    There is considerable
     modularity in this approach, because we still
-    can formulate a general 
+    can formulate a general
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>monte-carlo</SCHEMEINLINE> procedure</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>monte_carlo</JAVASCRIPTINLINE> function
@@ -221,13 +258,20 @@ stream_ref(pi, 100);
     </SPLITINLINE>
     that can deal with arbitrary experiments.  Yet there is no assignment or
     local state.
+      </EN>
+      <JA>
+    このアプローチにはかなりのモジュール性があります。なぜなら、任意の実験を扱える汎用の<SPLITINLINE><SCHEME><SCHEMEINLINE>monte-carlo</SCHEMEINLINE>手続き</SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>monte_carlo</JAVASCRIPTINLINE>関数</JAVASCRIPT></SPLITINLINE>を依然として定式化できるからです。それでいて、代入もローカル状態もまったくありません。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <LONG_PAGE lines="2"/>
   <EXERCISE>
+    <INDEX>random-number generator<SUBINDEX>with reset, stream version</SUBINDEX></INDEX>
+    <BILINGUAL>
+      <EN>
     Exercise<SPACE/><REF NAME="ex:random-with-reset"/> discussed generalizing
     the random-number generator to allow one to
-    <INDEX>random-number generator<SUBINDEX>with reset, stream version</SUBINDEX></INDEX>
     reset the random-number sequence
     so as to produce repeatable sequences of <QUOTE>random</QUOTE> numbers.
     Produce a stream formulation of this same generator that operates on an
@@ -253,14 +297,21 @@ stream_ref(pi, 100);
     the sequence to a
     specified value and that produces the desired stream of random numbers.
     Don<APOS/>t use assignment in your solution.
+      </EN>
+      <JA>
+    演習<SPACE/><REF NAME="ex:random-with-reset"/>では、乱数生成器を一般化して、乱数列をリセットできるようにし、再現可能な<QUOTE>乱数</QUOTE>の列を生成できるようにすることを議論しました。同じ生成器をストリームで定式化してください。新しい乱数を<SPLITINLINE><SCHEME><SCHEMEINLINE>generate</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>"generate"</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>するか、列を指定された値に<SPLITINLINE><SCHEME><SCHEMEINLINE>reset</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>"reset"</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>するかというリクエストの入力ストリームを受け取って、求める乱数のストリームを生成するものです。解答では代入を使わないでください。
+      </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:3_81"/>
   </EXERCISE>
 
   <EXERCISE>
-    Redo exercise<SPACE/><REF NAME="ex:monte-carlo-integration"/> on
     <INDEX>Monte Carlo integration<SUBINDEX>stream formulation</SUBINDEX></INDEX>
     <INDEX><ORDER>pi</ORDER><LATEXINLINE>$\pi$</LATEXINLINE> (pi)<SUBINDEX>approximation with Monte Carlo integration</SUBINDEX></INDEX>
     <INDEX>definite integral<SUBINDEX>estimated with Monte Carlo simulation</SUBINDEX></INDEX>
+    <BILINGUAL>
+      <EN>
+    Redo exercise<SPACE/><REF NAME="ex:monte-carlo-integration"/> on
     Monte Carlo integration in terms of streams.  The stream version of
     <SPLITINLINE>
       <SCHEME>
@@ -272,17 +323,24 @@ stream_ref(pi, 100);
     </SPLITINLINE>
     will not have an argument telling how many trials to perform.  Instead, it
     will produce a stream of estimates based on successively more trials.
+      </EN>
+      <JA>
+    モンテカルロ積分に関する演習<SPACE/><REF NAME="ex:monte-carlo-integration"/>を、ストリームを用いてやり直してください。<SPLITINLINE><SCHEME><SCHEMEINLINE>estimate-integral</SCHEMEINLINE></SCHEME><JAVASCRIPT><SCHEMEINLINE>estimate_integral</SCHEMEINLINE></JAVASCRIPT></SPLITINLINE>のストリーム版は、何回試行を行うかを指定する引数を持ちません。その代わり、試行回数が次第に増えていくときの推定値のストリームを生成します。
+      </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:3_82"/>
   </EXERCISE>
 
   <SUBHEADING>
-    <NAME>A functional-programming view of time</NAME>
+    <NAME><BILINGUAL><EN>A functional-programming view of time</EN><JA>関数型プログラミングから見た時間</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>time<SUBINDEX>functional programming and<OPEN/></SUBINDEX></INDEX>
   <INDEX>functional programming<SUBINDEX>time and<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Let us now return to the issues of objects and state that were raised
     at the beginning of this chapter and examine them in a new light.  We
     introduced assignment and mutable objects to provide a mechanism for
@@ -291,9 +349,16 @@ stream_ref(pi, 100);
     assignment to modify these variables.  We modeled the temporal behavior of
     the objects in the world by the temporal behavior of the corresponding
     computational objects.
+      </EN>
+      <JA>
+    ここで、本章の冒頭で提起したオブジェクトと状態の問題に戻り、それらを新しい光のもとで考察してみましょう。私たちは、状態を持つシステムをモデル化するプログラムをモジュール的に構築するための機構として、代入とミュータブルなオブジェクトを導入しました。そして、ローカル状態変数を持つ計算オブジェクトを構築し、代入を使ってそれらの変数を変更しました。現実世界のオブジェクトの時間的な振る舞いを、対応する計算オブジェクトの時間的な振る舞いによってモデル化したのです。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Now we have seen that streams provide an alternative way to model
     objects with local state.  We can model a changing quantity, such as
     the local state of some object, using a stream that represents the
@@ -311,18 +376,30 @@ stream_ref(pi, 100);
     </SPLITINLINE>
     there may be little relation between simulated time in the model and the
     order of events during the evaluation.
+      </EN>
+      <JA>
+    さて、ローカル状態を持つオブジェクトをモデル化するもうひとつのやり方をストリームが提供してくれることを見てきました。あるオブジェクトのローカル状態のような変化する量を、連続する状態の時間履歴を表すストリームを使ってモデル化できます。本質的に、ストリームを使って時間を明示的に表現しているため、シミュレートされた世界での時間を、評価中に起こるイベントの順序から切り離せます。実際、<SPLITINLINE><SCHEME><SCHEMEINLINE>delay</SCHEMEINLINE></SCHEME><JAVASCRIPT>遅延評価</JAVASCRIPT></SPLITINLINE>の存在により、モデル内のシミュレートされた時間と、評価中のイベントの順序との間にはほとんど関係がない場合もあります。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <INDEX>bank account<SUBINDEX>stream model</SUBINDEX></INDEX>
+    <BILINGUAL>
+      <EN>
     In order to contrast these two approaches to modeling, let us
     reconsider the implementation of a <QUOTE>withdrawal processor</QUOTE> that
     monitors the balance in a
-    <INDEX>bank account<SUBINDEX>stream model</SUBINDEX></INDEX>
     bank account.  In
     section<SPACE/><REF NAME="sec:costs-of-assignment"/> we implemented a
     simplified version of such a processor:
+      </EN>
+      <JA>
+    モデル化に対するこれら2つのアプローチを対比するため、銀行口座の残高を監視する<QUOTE>引き出しプロセッサ</QUOTE>の実装を再考してみましょう。節<SPACE/><REF NAME="sec:costs-of-assignment"/>では、このようなプロセッサの簡略版を実装しました。
+      </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
-      <INDEX><DECLARATION>make_simplified_withdraw</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>make_simplified_withdraw</DECLARATION></INDEX>
       <EXAMPLE>make_simplified_withdraw_example</EXAMPLE>
       <EXAMPLE>make_simplified_withdraw_example1</EXAMPLE>
       <EXAMPLE>make_simplified_withdraw_example2</EXAMPLE>
@@ -341,6 +418,8 @@ function make_simplified_withdraw(balance) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     Calls to
     <SPLITINLINE>
       <SCHEME>
@@ -356,9 +435,16 @@ function make_simplified_withdraw(balance) {
     an argument and returns the new balance.  We can imagine the user of a bank
     account typing a sequence of inputs to such an object and observing the
     sequence of returned values shown on a display screen.
+      </EN>
+      <JA>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>make-simplified-withdraw</SCHEMEINLINE></SCHEME><JAVASCRIPT><SCHEMEINLINE>make_simplified_withdraw</SCHEMEINLINE></JAVASCRIPT></SPLITINLINE>の呼び出しは計算オブジェクトを生成します。各オブジェクトはローカル状態変数<SCHEMEINLINE>balance</SCHEMEINLINE>を持ち、オブジェクトへの連続した呼び出しによって減算されます。オブジェクトは<SCHEMEINLINE>amount</SCHEMEINLINE>を引数として受け取り、新しい残高を返します。銀行口座のユーザーがこのようなオブジェクトに一連の入力を入力し、ディスプレイ画面に表示される返される値の列を観察する様子を思い浮かべることができます。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Alternatively, we can model a withdrawal processor as a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -366,6 +452,11 @@ function make_simplified_withdraw(balance) {
     </SPLITINLINE>
     that takes as input a balance and a stream of amounts to withdraw and
     produces the stream of successive balances in the account:
+      </EN>
+      <JA>
+    あるいは、引き出しプロセッサを、残高と引き出す金額のストリームを入力として受け取り、口座の連続した残高のストリームを生成する<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>としてモデル化することもできます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>stream_withdraw</DECLARATION></INDEX> 
       <NAME>stream_withdraw</NAME>
@@ -399,9 +490,12 @@ const my_account_stream = stream_withdraw(200, my_amounts);
 stream_ref(my_account_stream, 2);
       </JAVASCRIPT_TEST>
     </SNIPPET>
+    <INDEX>state<SUBINDEX>vanishes in stream formulation</SUBINDEX></INDEX>
+    <BILINGUAL>
+      <EN>
     <SPLITINLINE>
       <SCHEME>
-	<SCHEMEINLINE>Stream-withdraw</SCHEMEINLINE>	
+	<SCHEMEINLINE>Stream-withdraw</SCHEMEINLINE>
       </SCHEME>
       <JAVASCRIPT>
 	The function <JAVASCRIPTINLINE>stream_withdraw</JAVASCRIPTINLINE>
@@ -429,12 +523,18 @@ stream_ref(my_account_stream, 2);
     However, with the stream version, there is no assignment, no local state
     variable, and consequently none of the theoretical difficulties that we
     encountered
-    <INDEX>state<SUBINDEX>vanishes in stream formulation</SUBINDEX></INDEX>
     in section<SPACE/><REF NAME="sec:costs-of-assignment"/>.  Yet the system
     has state!
+      </EN>
+      <JA>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>Stream-withdraw</SCHEMEINLINE></SCHEME><JAVASCRIPT>関数<JAVASCRIPTINLINE>stream_withdraw</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>は、出力が入力によって完全に決定される、定義の明確な数学関数を実装しています。しかし、入力<SPLITINLINE><SCHEME><SCHEMEINLINE>amount-stream</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>amount_stream</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>がユーザーがタイプした連続した値のストリームであり、結果として得られる残高のストリームが表示されるとしましょう。すると、値を入力して結果を見るユーザーの観点からは、このストリームプロセスは<SPLITINLINE><SCHEME><SCHEMEINLINE>make-simplified-withdraw</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>make_simplified_withdraw</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>によって作られたオブジェクトと同じふるまいをします。しかし、ストリーム版では代入もローカル状態変数もなく、その結果として<REF NAME="sec:costs-of-assignment"/>節で遭遇した理論的な困難もまったくありません。それでもシステムは状態を持つのです！
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     This is really remarkable.  Even though
     <SPLITINLINE>
       <SCHEME>
@@ -450,14 +550,29 @@ stream_ref(my_account_stream, 2);
     that it is the user<APOS/>s temporal existence that imposes state on the
     system.  If the user could step back from the interaction and think in terms
     of streams of balances rather than individual transactions, the system
-    would appear stateless.<FOOTNOTE>Similarly in physics, when we observe a
+    would appear stateless.
+      </EN>
+      <JA>
+    これは実に注目すべきことです。
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>stream-withdraw</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>stream_withdraw</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>はふるまいが変わらない定義の明確な数学関数を実装しているにもかかわらず、ここでのユーザーの知覚は変化する状態を持つシステムと相互作用しているというものです。このパラドックスを解消する一つの方法は、システムに状態を課しているのはユーザーの時間的な存在であると認識することです。もしユーザーが相互作用から一歩退いて、個々の取引ではなく残高のストリームという観点で考えることができたなら、システムは状態を持たないように見えるでしょう。
+      </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>Similarly in physics, when we observe a
     moving particle, we say that the position (state) of the particle is
-    changing.  However, from the perspective of the particle<APOS/>s 
+    changing.  However, from the perspective of the particle<APOS/>s
     <INDEX>world line of a particle</INDEX>
-    world line in space-time there is no change involved.</FOOTNOTE>
+    world line in space-time there is no change involved.</EN><JA>同様に物理学では、動いている粒子を観測するとき、我々はその粒子の位置（状態）が変化していると言います。しかし、粒子の<INDEX>粒子の世界線</INDEX>時空における世界線の観点からは、変化は一切関係していません。</JA></BILINGUAL></FOOTNOTE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     From the point of view of one part of a complex process, the other parts
     appear to change with time.  They have hidden time-varying local state.  If
     we wish to write programs that model this kind of natural decomposition in
@@ -468,15 +583,22 @@ stream_ref(my_account_stream, 2);
     those variables.  By doing this we make the time of execution of a
     computation model time in the world that we are part of, and thus we
     get <QUOTE>objects</QUOTE> in our computer.
+      </EN>
+      <JA>
+    複雑なプロセスのある部分の視点からすると、他の部分は時間とともに変化するように見えます。それらは隠れた時間とともに変化するローカル状態を持っています。もし我々が、我々の世界（その世界の一部としての我々の視点から見たもの）におけるこの種の自然な分解を、コンピュータ内の構造でモデル化するプログラムを書きたいのであれば、関数的でない計算オブジェクト<EMDASH/>つまり時間とともに変化しなければならないオブジェクトを作ることになります。我々は状態をローカル状態変数でモデル化し、状態の変化をそれらの変数への代入でモデル化します。こうすることで、計算が実行される時間を、我々が住んでいる世界の時間のモデルとして使うことになり、その結果としてコンピュータ内に<QUOTE>オブジェクト</QUOTE>が生まれるのです。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Modeling with objects is powerful and intuitive, largely because this
     matches the perception of interacting with a world of which we are
     part.  However, as we<APOS/>ve seen repeatedly throughout this chapter,
     these models raise thorny problems of constraining the order of events
     and of synchronizing multiple processes.  The possibility of avoiding
-    these problems has stimulated the development of 
+    these problems has stimulated the development of
     <INDEX>programming language<SUBINDEX>functional</SUBINDEX></INDEX>
     <INDEX>functional programming<SUBINDEX>functional programming languages</SUBINDEX></INDEX>
     <EM>functional programming languages</EM>, which do not include any
@@ -490,7 +612,23 @@ stream_ref(my_account_stream, 2);
     attractive for dealing with
     <INDEX>concurrency<SUBINDEX>functional programming and</SUBINDEX></INDEX>
     <INDEX>functional programming<SUBINDEX>concurrency and</SUBINDEX></INDEX>
-    concurrent systems.<FOOTNOTE>John Backus, the
+    concurrent systems.
+      </EN>
+      <JA>
+    オブジェクトによるモデリングは強力で直観的です。それは主として、我々が一部であるところの世界との相互作用についての知覚にこの方法が合致しているからです。しかし、本章を通じて繰り返し見てきたように、これらのモデルはイベントの順序を制約することと複数のプロセスを同期することに関する厄介な問題を引き起こします。これらの問題を回避できる可能性は、
+    <INDEX>programming language<SUBINDEX>functional</SUBINDEX></INDEX>
+    <INDEX>functional programming<SUBINDEX>functional programming languages</SUBINDEX></INDEX>
+    <EM>関数型プログラミング言語</EM>の開発を促してきました。関数型プログラミング言語は代入やミュータブルなデータのための仕組みを一切含みません。そのような言語では、すべての
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は引数についての定義の明確な数学関数を実装し、その振る舞いは変化しません。関数型のアプローチは
+    <INDEX>concurrency<SUBINDEX>functional programming and</SUBINDEX></INDEX>
+    <INDEX>functional programming<SUBINDEX>concurrency and</SUBINDEX></INDEX>
+    並行システムを扱う上で極めて魅力的です。
+      </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>John Backus, the
     <INDEX>Fortran<SUBINDEX>inventor of</SUBINDEX></INDEX>
     inventor of Fortran, gave high
     visibility to functional programming when he was awarded the ACM Turing
@@ -498,16 +636,25 @@ stream_ref(my_account_stream, 2);
     <INDEX>Backus, John</INDEX>
     (<CITATION>Backus 1978</CITATION>)
     strongly advocated the functional approach.  A good overview of functional
-    programming is given in 
+    programming is given in
     <INDEX>Henderson, Peter</INDEX>
-    <CITATION>Henderson 1980</CITATION> and in 
+    <CITATION>Henderson 1980</CITATION> and in
     <INDEX>Darlington, John</INDEX>
     <INDEX>Turner, David</INDEX>
-    <CITATION>Darlington, Henderson, and Turner 1982</CITATION>.</FOOTNOTE>
+    <CITATION>Darlington, Henderson, and Turner 1982</CITATION>.</EN><JA>Fortran の発明者である John Backus は、1978 年に ACM チューリング賞を受賞したとき、関数型プログラミングに高い注目を集めました。彼の受賞講演
+    <INDEX>Fortran<SUBINDEX>inventor of</SUBINDEX></INDEX>
+    <INDEX>Backus, John</INDEX>
+    （<CITATION>Backus 1978</CITATION>）は関数型のアプローチを強く擁護しました。関数型プログラミングの良い概観は
+    <INDEX>Henderson, Peter</INDEX>
+    <CITATION>Henderson 1980</CITATION> および
+    <INDEX>Darlington, John</INDEX>
+    <INDEX>Turner, David</INDEX>
+    <CITATION>Darlington, Henderson, and Turner 1982</CITATION> に与えられています。</JA></BILINGUAL></FOOTNOTE>
   </TEXT>
 
   <TEXT>
-    On the other hand, if we look closely, we can see time-related problems
+    <BILINGUAL>
+    <EN>On the other hand, if we look closely, we can see time-related problems
     creeping into functional models as well.  One particularly troublesome area
     arises when we wish to design interactive systems, especially ones that
     model interactions between independent entities. For instance, consider once
@@ -523,32 +670,54 @@ stream_ref(my_account_stream, 2);
     joint bank account by merging Peter<APOS/>s stream of transaction requests
     with Paul<APOS/>s stream of requests and feeding the result to the
     bank-account stream process, as shown in
-    figure<SPACE/><REF NAME="fig:joint-account-stream"/>.
+    figure<SPACE/><REF NAME="fig:joint-account-stream"/>.</EN>
+    <JA>一方で、注意深く見ると、関数型のモデルにも時間に関係する問題が忍び込んでくるのがわかります。特に厄介な領域が現れるのは、対話的システム、とりわけ独立したエンティティ同士の相互作用をモデル化するシステムを設計したいときです。たとえば、共同銀行口座を許可する銀行システムの実装を改めて考えてみましょう。代入とオブジェクトを使う従来のシステムでは、セクション<SPACE/><REF NAME="sec:costs-of-assignment"/>で見たように、Peter と Paul が口座を共有している事実を、Peter と Paul の両方が同じ銀行口座オブジェクトに取引リクエストを送ることでモデル化します。ストリームの観点からは、<QUOTE>オブジェクト</QUOTE><EM>そのもの</EM>というものはありませんが、銀行口座は取引リクエストのストリームに対して動作して応答のストリームを生成するプロセスとしてモデル化できることをすでに示しました。これに応じて、Peter と Paul が共同銀行口座を持っている事実は、図<SPACE/><REF NAME="fig:joint-account-stream"/>に示すように、Peter の取引リクエストのストリームと Paul のリクエストのストリームをマージし、その結果を銀行口座ストリームプロセスに渡すことでモデル化できます。</JA>
+    </BILINGUAL>
     <FIGURE>
       <FIGURE split_scale="0.5" web_scale="0.7" scale="0.59" src="img_original/ch3-Z-G-60.svg"></FIGURE>
       <CAPTION>
-	A joint
+	<BILINGUAL>
+	<EN>A joint
 	<INDEX>bank account<SUBINDEX>joint, modeled with streams</SUBINDEX></INDEX>
 	bank account, modeled by merging two streams of transaction
-	requests.
+	requests.</EN>
+	<JA><INDEX>bank account<SUBINDEX>joint, modeled with streams</SUBINDEX></INDEX>2 つの取引リクエストのストリームをマージしてモデル化された共同銀行口座。</JA>
+	</BILINGUAL>
       </CAPTION>
       <LABEL NAME="fig:joint-account-stream"/>
     </FIGURE>
   </TEXT>
 
   <TEXT>
-    The trouble with this formulation is in the notion of <EM>merge</EM>.  It
-    will not do to merge the two streams by simply taking alternately one
-    request from Peter and one request from Paul. Suppose Paul accesses
-    the account only very rarely.  We could hardly force Peter to wait for
-    Paul to access the account before he could issue a second transaction.
-    <INDEX>infinite stream(s)<SUBINDEX>merging</SUBINDEX></INDEX>
-    However such a merge is implemented, it must interleave the two
-    transaction streams in some way that is constrained by <QUOTE>real
-    time</QUOTE> as perceived by Peter and Paul, in the sense that, if Peter and
-    Paul meet, they can agree that certain transactions were processed
-    before the meeting, and other transactions were processed after the
-    meeting.<FOOTNOTE>Observe that, for any two streams, there is in general
+    <BILINGUAL>
+      <EN>
+        The trouble with this formulation is in the notion of <EM>merge</EM>.  It
+        will not do to merge the two streams by simply taking alternately one
+        request from Peter and one request from Paul. Suppose Paul accesses
+        the account only very rarely.  We could hardly force Peter to wait for
+        Paul to access the account before he could issue a second transaction.
+        <INDEX>infinite stream(s)<SUBINDEX>merging</SUBINDEX></INDEX>
+        However such a merge is implemented, it must interleave the two
+        transaction streams in some way that is constrained by <QUOTE>real
+        time</QUOTE> as perceived by Peter and Paul, in the sense that, if Peter and
+        Paul meet, they can agree that certain transactions were processed
+        before the meeting, and other transactions were processed after the
+        meeting.
+      </EN>
+      <JA>
+        この定式化で問題なのは<EM>マージ</EM>という概念です。二つのストリームを
+        単にピーターからの要求とポールからの要求を交互に取り出してマージする
+        のでは駄目です。ポールがごくまれにしか口座にアクセスしないとしましょう。
+        ポールが口座にアクセスするまでピーターが次の取引を発行できずに待たされる
+        ようなことを強いるわけにはいきません。
+        <INDEX>無限ストリーム<SUBINDEX>マージ</SUBINDEX></INDEX>
+        そのようなマージがどう実装されるにせよ、二つの取引ストリームを何らかの
+        形で交互に並べる必要があり、その並べ方はピーターとポールが知覚する
+        <QUOTE>実時間</QUOTE>によって制約されます。つまり、ピーターとポールが
+        出会ったとき、ある取引が出会いより前に処理され、別の取引が出会いより
+        後に処理されたと両者が合意できる必要があるのです。
+      </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>Observe that, for any two streams, there is in general
     more than one
     acceptable order of interleaving.  Thus, technically, <QUOTE>merge</QUOTE>
     is a
@@ -560,36 +729,77 @@ stream_ref(my_account_stream, 2);
     is essential when dealing with concurrency.  The merge relation illustrates
     the same essential nondeterminism, from the functional perspective.
     In section<SPACE/><REF NAME="sec:nondeterministic-evaluation"/>, we
-    will look at nondeterminism from yet another point of view.</FOOTNOTE>
-    This is precisely the same constraint that we had to deal with in
-    section<SPACE/><REF NAME="sec:nature-of-time"/>, where we found the need to
-    introduce explicit synchronization to ensure a <QUOTE>correct</QUOTE> order
-    of events in concurrent processing of objects with state.  Thus, in an
-    attempt to support the functional style, the need to merge inputs from
-    different agents reintroduces the same problems that the functional style
-    was meant to eliminate.
+    will look at nondeterminism from yet another point of view.</EN><JA>任意の二つのストリームについて、
+    受け入れられる交互の順序は一般に複数あることに注意してください。したがって
+    厳密に言えば、<QUOTE>マージ</QUOTE>は
+    <INDEX>非決定性, 並行プログラムの振る舞いにおける</INDEX>
+    <INDEX>無限ストリーム<SUBINDEX>関係としてのマージ</SUBINDEX></INDEX>
+    関数ではなく関係です<EMDASH/>答えは入力の決定的な関数ではないのです。
+    並行性を扱う際には非決定性が本質的であることは
+    すでに（脚注<SPACE/><REF NAME="foot:nondeterministic"/>で）述べました。
+    マージ関係は、関数型の観点から見て、同じ本質的な非決定性を例示しています。
+    節<SPACE/><REF NAME="sec:nondeterministic-evaluation"/>では、
+    非決定性をさらに別の観点から見ていきます。</JA></BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+      <EN>
+        This is precisely the same constraint that we had to deal with in
+        section<SPACE/><REF NAME="sec:nature-of-time"/>, where we found the need to
+        introduce explicit synchronization to ensure a <QUOTE>correct</QUOTE> order
+        of events in concurrent processing of objects with state.  Thus, in an
+        attempt to support the functional style, the need to merge inputs from
+        different agents reintroduces the same problems that the functional style
+        was meant to eliminate.
+      </EN>
+      <JA>
+        これはまさに、節<SPACE/><REF NAME="sec:nature-of-time"/>で扱わざるを
+        得なかったのと同じ制約です。そこでは、状態を持つオブジェクトの並行処理
+        においてイベントの<QUOTE>正しい</QUOTE>順序を保証するために、明示的な
+        同期を導入する必要があることを見ました。このように、関数型のスタイルを
+        支援しようとする中で、異なるエージェントからの入力をマージする必要性が、
+        関数型のスタイルが取り除こうとしていた問題を再び持ち込むことになるのです。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     We began this chapter with the goal of building computational models
     whose structure matches our perception of the real world we are trying
     to model.  We can model the world as a collection of separate,
     time-bound, interacting objects with state, or we can model the world
     as a single, timeless, stateless unity.  Each view has powerful
     advantages, but neither view alone is completely satisfactory.  A
-    grand unification has yet to emerge.<FOOTNOTE>The object model approximates
+    grand unification has yet to emerge.
+      </EN>
+      <JA>
+    我々はこの章を、モデル化しようとしている現実世界についての我々の知覚と
+    構造が一致する計算モデルを構築するという目標とともに始めました。世界を、
+    状態を持つ別々の時間に縛られた相互作用するオブジェクトの集まりとして
+    モデル化することもできますし、世界を単一の時間に依存しない状態を持たない
+    統一体としてモデル化することもできます。どちらの見方にも強力な利点が
+    ありますが、どちらの見方単独では完全に満足できるものではありません。
+    大統一はまだ現れていないのです。
+      </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>The object model approximates
     the world by dividing it into separate pieces.  The functional model does
     not
-    <INDEX>modularity<SUBINDEX>along object boundaries</SUBINDEX></INDEX>
     modularize along object boundaries.  The object model is useful when
     the unshared state of the <QUOTE>objects</QUOTE> is much larger than the
     state that they share.  An example of a place where the object viewpoint
-    fails is 
-    <INDEX>quantum mechanics</INDEX>
+    fails is
     quantum mechanics, where thinking of things as individual particles leads
     to paradoxes and confusions.  Unifying the object view with the
     functional view may have little to do with programming, but rather
-    with fundamental epistemological issues.</FOOTNOTE>
+    with fundamental epistemological issues.</EN><JA>オブジェクトモデルは、
+    世界を別々の部分に分割することで近似します。関数型モデルは
+    オブジェクトの境界に沿ってモジュール化しません。オブジェクトモデルは、
+    <QUOTE>オブジェクト</QUOTE>の共有されない状態が、それらが共有する状態よりも
+    ずっと大きい場合に有用です。オブジェクトの視点が失敗する場所の例は
+    量子力学で、物事を個々の粒子として考えるとパラドックスと混乱に
+    至ります。オブジェクトの見方と関数型の見方を統一することは、
+    プログラミングとはほとんど関係がなく、むしろ根源的な認識論の
+    問題と関係があるのかもしれません。</JA></BILINGUAL><INDEX>modularity<SUBINDEX>along object boundaries</SUBINDEX></INDEX><INDEX>quantum mechanics</INDEX></FOOTNOTE>
 
     <INDEX>stream(s)<CLOSE/></INDEX>
     <INDEX>modularity<SUBINDEX>functional programs vs.<SPACE/>objects<CLOSE/></SUBINDEX></INDEX>

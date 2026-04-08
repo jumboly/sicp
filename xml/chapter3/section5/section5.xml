@@ -1,5 +1,5 @@
 <SECTION>
-  <NAME>Streams</NAME>
+  <NAME><BILINGUAL><EN>Streams</EN><JA>ストリーム</JA></BILINGUAL></NAME>
 
   <SECTIONCONTENT/>
 
@@ -8,6 +8,8 @@
   <INDEX>stream(s)<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We<APOS/>ve gained a good understanding of assignment as a tool in modeling,
     as well as an appreciation of the complex problems that assignment
     raises. It is time to ask whether we could have gone about things in a
@@ -15,9 +17,16 @@
     section, we explore an alternative approach to modeling state, based
     on data structures called <EM>streams</EM>.  As we shall see, streams can
     mitigate some of the complexity of modeling state.
+    </EN>
+    <JA>
+    これまでに、モデリングの道具としての代入についてよく理解するとともに、代入が引き起こす複雑な問題についても認識してきました。ここで、こうした問題のいくつかを避けるために、別のやり方で進められなかったかを問い直してみましょう。このセクションでは、<EM>ストリーム</EM>と呼ばれるデータ構造に基づく、状態をモデル化するための別のアプローチを探っていきます。これから見ていくように、ストリームは状態をモデル化する際の複雑さをある程度軽減してくれます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Let<APOS/>s step back and review where this complexity comes from.  In an
     attempt to model real-world phenomena, we made some apparently
     reasonable decisions: We modeled real-world objects with local state
@@ -26,21 +35,35 @@
     implemented the time variation of the states of the model objects in
     the computer with assignments to the local variables of the model
     objects.
+    </EN>
+    <JA>
+    ここで一歩引いて、この複雑さがどこから来ているのかを振り返ってみましょう。現実世界の現象をモデル化しようとする中で、私たちは一見もっともらしい決断をいくつか下してきました。ローカル状態をもつ現実世界のオブジェクトを、ローカル変数をもつ計算上のオブジェクトでモデル化しました。現実世界における時間変動を、コンピュータ内部での時間変動と同一視しました。そしてモデルオブジェクトの状態がコンピュータ内で時間とともに変化していく様子を、モデルオブジェクトのローカル変数への代入によって実装しました。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SHORT_PAGE lines="4"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Is there another approach?  Can we avoid identifying time in the
     computer with time in the modeled world?  Must we make the model
     change with time in order to model phenomena in a changing world?
     Think about the issue in terms of mathematical functions.  We can
     describe the time-varying behavior of a quantity
     <LATEXINLINE>$x$</LATEXINLINE> as a function of time
-    <LATEXINLINE>$x(t)$</LATEXINLINE>.  
+    <LATEXINLINE>$x(t)$</LATEXINLINE>.
     If we concentrate on <LATEXINLINE>$x$</LATEXINLINE> instant by instant,
     we think of it as a changing quantity.  Yet if we concentrate on the entire
     time history of values, we do not emphasize change<EMDASH/>the function
-    itself does not change.<FOOTNOTE>Physicists sometimes adopt this view by
+    itself does not change.
+    </EN>
+    <JA>
+    別のアプローチはないのでしょうか。コンピュータ内の時間と、モデル化される世界の時間とを同一視しなくて済む方法はあるのでしょうか。変化する世界の現象をモデル化するために、本当にモデル自体を時間とともに変化させなければならないのでしょうか。この問題を数学的な関数の観点から考えてみましょう。ある量<LATEXINLINE>$x$</LATEXINLINE>の時間とともに変化する振る舞いは、時間の関数<LATEXINLINE>$x(t)$</LATEXINLINE>として記述できます。<LATEXINLINE>$x$</LATEXINLINE>を瞬間ごとに見ていると、それは変化する量であるように思えます。しかし、値の時間的な履歴全体に注目すれば、変化を強調する必要はありません<EMDASH/>関数そのものは変化しないのです。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>Physicists sometimes adopt this view by
     introducing the
     <INDEX>world line of a particle</INDEX>
     <QUOTE>world lines</QUOTE> of particles as a device for reasoning about
@@ -48,10 +71,14 @@
     (section<SPACE/><REF NAME="sec:sequences-conventional-interfaces"/>) that
     this is the natural way to think about signal-processing systems.  We will
     explore applications of streams to signal processing in
-    section<SPACE/><REF NAME="sec:exploiting-streams"/>.</FOOTNOTE>
+    section<SPACE/><REF NAME="sec:exploiting-streams"/>.</EN>
+    <JA>物理学者はこの見方を採ることがあり、運動について推論するための道具として粒子の<INDEX>world line of a particle</INDEX><QUOTE>世界線</QUOTE>を導入します。また、信号処理システムについて考える上でもこれが自然な見方であることは、すでにセクション<SPACE/><REF NAME="sec:sequences-conventional-interfaces"/>で触れました。ストリームを信号処理に応用する例は、セクション<SPACE/><REF NAME="sec:exploiting-streams"/>で扱います。</JA>
+    </BILINGUAL></FOOTNOTE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     If time is measured in discrete steps, then we can model a time function as
     a (possibly infinite) sequence.  In this section, we will see how to
     model change in terms of sequences that represent the time histories
@@ -61,13 +88,20 @@
     straightforward implementation of streams as lists (as in
     section<SPACE/><REF NAME="sec:sequences"/>) doesn<APOS/>t fully reveal
     the power of stream processing.  As an alternative, we introduce the
-    technique of 
+    technique of
     <INDEX>delayed evaluation</INDEX>
     <EM>delayed evaluation</EM>, which enables us to represent
     very large (even infinite) sequences as streams.
+    </EN>
+    <JA>
+    時間を離散的なステップで測るのであれば、時間関数を（場合によっては無限の）シーケンスとしてモデル化できます。このセクションでは、モデル化対象のシステムの時間的履歴を表すシーケンスという形で変化をモデル化する方法を見ていきます。これを実現するために、<EM>ストリーム</EM>と呼ばれる新しいデータ構造を導入します。抽象的な観点から見れば、ストリームは単なるシーケンスにすぎません。しかし、ストリームを（セクション<SPACE/><REF NAME="sec:sequences"/>でのように）リストとしてそのまま実装しただけでは、ストリーム処理の力を十分に発揮できないことがわかるでしょう。その代替として、<INDEX>delayed evaluation</INDEX><EM>遅延評価</EM>という技法を導入します。これにより、非常に大きな（無限でさえある）シーケンスをストリームとして表現できるようになります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Stream processing lets us model systems that have state without ever
     using assignment or mutable data.  This has important implications,
     both theoretical and practical, because we can build models that avoid
@@ -75,6 +109,11 @@
     the stream framework raises difficulties of its own, and the question
     of which modeling technique leads to more modular and more easily
     maintained systems remains open.
+    </EN>
+    <JA>
+    ストリーム処理を使えば、代入やミュータブルなデータを一切使わずに、状態をもつシステムをモデル化できます。これは理論的にも実用的にも重要な意味をもちます。というのも、代入を導入することに伴う欠点を避けたモデルを構築できるからです。その一方で、ストリームという枠組みにはそれ自身の難しさもあり、どちらのモデリング手法がよりモジュール的で保守しやすいシステムにつながるのかという問いには、まだ決着がついていません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <!-- Subsection 1 : Streams Are Delayed Lists -->
