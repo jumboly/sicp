@@ -424,6 +424,82 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | retract | 撤回 | |
 | syntax interface | 構文インターフェース | |
 
+### 並行性（Section 3.4）
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| concurrency | 並行性 | |
+| concurrent | 並行 | |
+| concurrent execution | 並行実行 | |
+| concurrent system | 並行システム | |
+| concurrent computation | 並行計算 | |
+| sequential | 逐次 | |
+| sequentially | 逐次的に | |
+| sequential computer | 逐次型コンピュータ | |
+| thread | スレッド | JS版。Scheme版は process（プロセス） |
+| computational process | 計算プロセス | |
+| pipelining | パイプライン | |
+| modular | モジュール的 | |
+| timing constraint | タイミング上の制約 | |
+| timing diagram | タイミング図 | |
+| shared state | 共有状態 | |
+| shared variable | 共有変数 | |
+| shared resource | 共有リソース | |
+| state variable | 状態変数 | |
+| order of events | イベントの順序 | |
+| ordering | 順序 | |
+| simultaneous | 同時 | |
+| indeterminacy | 不確定性 | |
+| nondeterministic | 非決定的 | |
+| nondeterminism | 非決定性 | |
+| interleave / interleaving | インターリーブする / インターリーブ | |
+| anomaly | 異常 | |
+| anomalous behavior | 異常な挙動 | |
+| catastrophic failure | 破滅的な故障 | |
+| interlock | インターロック | |
+| cache-coherence protocol | キャッシュ一貫性プロトコル | |
+| diffusion | 拡散 | |
+| serializer | シリアライザ | |
+| serialize / serialization | シリアル化する / シリアル化 | |
+| serialized procedure / function | シリアル化された手続き / 関数 | |
+| mutex | ミューテックス | |
+| acquire (mutex) | 取得する | |
+| release (mutex) | 解放する | |
+| mutual exclusion | 相互排他 | |
+| atomically / atomic | アトミックに / アトミック | |
+| atomic operation | アトミック操作 | |
+| semaphore | セマフォ | |
+| cell | セル | |
+| busy-waiting | ビジーウェイト | |
+| time-slicing | タイムスライス | |
+| interrupt | 割り込み | |
+| arbiter | アービター | |
+| test-and-set | テスト・アンド・セット | |
+| compare-and-exchange | コンペア・アンド・エクスチェンジ | |
+| load-reserve | ロード・リザーブ | |
+| store-conditional | ストア・コンディショナル | |
+| rest parameter | レストパラメータ | |
+| spread syntax | スプレッド構文 | |
+| vector (data structure) | ベクトル | rest パラメータが集める配列 |
+| primitive synchronization mechanism | プリミティブな同期機構 | |
+| blocked | ブロックされた | |
+| deadlock | デッドロック | |
+| deadlock avoidance | デッドロック回避 | |
+| deadlock recovery | デッドロックからの回復 | |
+| barrier synchronization | バリア同期 | |
+| synchronization point | 同期ポイント | |
+| synchronize | 同期する | |
+| communication | 通信 | |
+| distributed system | 分散システム | |
+| branch (bank) | 支店 | |
+| Theory of Relativity | 相対性理論 | |
+| global clock | グローバルクロック | |
+| consistent state | 一貫した状態 | |
+| machine instruction | マシン命令 | |
+| transfer | 振替 | 口座間 |
+| exchange (balances) | 交換（残高の） | |
+| transaction | 取引 | |
+
 ### その他
 
 | 英語 | 日本語 | 備考 |

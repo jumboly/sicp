@@ -137,7 +137,10 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 3.3.3 Representing Tables
 - [x] Section 3.3.4 A Simulator for Digital Circuits
 - [x] Section 3.3.5 Propagation of Constraints
-- [ ] Chapter 3 (残り: 3.4〜3.5)〜5
+- [x] Section 3.4 Concurrency: Time Is of the Essence (導入部)
+- [x] Section 3.4.1 The Nature of Time in Concurrent Systems
+- [x] Section 3.4.2 Mechanisms for Controlling Concurrency
+- [ ] Chapter 3 (残り: 3.5)〜5
 
 ## インライン実行
 
