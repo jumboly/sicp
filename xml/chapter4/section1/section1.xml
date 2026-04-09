@@ -1,5 +1,5 @@
 <SECTION>
-  <NAME>The Metacircular Evaluator</NAME>
+  <NAME><BILINGUAL><EN>The Metacircular Evaluator</EN><JA>メタ循環評価器</JA></BILINGUAL></NAME>
 
   <SECTIONCONTENT/>
 
@@ -8,23 +8,24 @@
   <INDEX>metacircular evaluator for JavaScript<OPEN/></INDEX>
 
   <TEXT>
-    Our evaluator for 
+    <BILINGUAL>
+    <EN>Our evaluator for
     <SPLITINLINE>
       <SCHEME>Lisp</SCHEME>
       <JAVASCRIPT>JavaScript</JAVASCRIPT>
-    </SPLITINLINE> 
-    will be implemented as a 
+    </SPLITINLINE>
+    will be implemented as a
     <SPLITINLINE>
       <SCHEME>Lisp</SCHEME>
       <JAVASCRIPT>JavaScript</JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     program.  It may
-    seem circular to think about evaluating 
+    seem circular to think about evaluating
     <SPLITINLINE>
       <SCHEME>Lisp</SCHEME>
       <JAVASCRIPT>JavaScript</JAVASCRIPT>
-    </SPLITINLINE> 
-    programs using an evaluator that is itself implemented in 
+    </SPLITINLINE>
+    programs using an evaluator that is itself implemented in
     <SPLITINLINE>
       <SCHEME>Lisp.</SCHEME>
       <JAVASCRIPT>JavaScript.</JAVASCRIPT>
@@ -35,7 +36,16 @@
       <SCHEME>Lisp,</SCHEME>
       <JAVASCRIPT>JavaScript,</JAVASCRIPT>
     </SPLITINLINE>
-    which, after all, is our tool for describing processes.<FOOTNOTE>Even so,
+    which, after all, is our tool for describing processes.
+    An evaluator that is written in the same language
+    that it evaluates is said to be
+    <INDEX>metacircular evaluator</INDEX>
+    <INDEX>evaluator<SUBINDEX>metacircular</SUBINDEX></INDEX>
+    <EM>metacircular</EM>.</EN>
+    <JA><SPLITINLINE><SCHEME>Lisp</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>の評価器は、<SPLITINLINE><SCHEME>Lisp</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>プログラムとして実装します。<SPLITINLINE><SCHEME>Lisp</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>で実装された評価器を使って<SPLITINLINE><SCHEME>Lisp</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>プログラムを評価するというのは、循環的に思えるかもしれません。しかし、評価とはひとつのプロセスであり、プロセスを記述するためのツールはまさに<SPLITINLINE><SCHEME>Lisp</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>なのですから、評価プロセスを<SPLITINLINE><SCHEME>Lisp</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>で記述するのは適切なことなのです。自分自身が評価する言語と同じ言語で書かれた評価器のことを、<INDEX>metacircular evaluator</INDEX><INDEX>evaluator<SUBINDEX>metacircular</SUBINDEX></INDEX><EM>メタ循環評価器（metacircular evaluator）</EM>と呼びます。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>Even so,
     there will remain important aspects of the evaluation process that are not
     elucidated by our evaluator.  The most important of these are the detailed
     mechanisms by which
@@ -50,16 +60,15 @@
     </SPLITINLINE>
     and return values to their callers. We will address these issues in
     chapter<SPACE/><REF NAME="chap:reg"></REF>, where we take a closer look at the evaluation process by
-    implementing the evaluator as a simple register machine.</FOOTNOTE>  
-    An evaluator that is written in the same language
-    that it evaluates is said to be
-    <INDEX>metacircular evaluator</INDEX>
-    <INDEX>evaluator<SUBINDEX>metacircular</SUBINDEX></INDEX>
-    <EM>metacircular</EM>.
+    implementing the evaluator as a simple register machine.</EN>
+    <JA>そうは言っても、評価プロセスには、私たちの評価器によっては明らかにされない重要な側面が依然として残ります。その中で最も重要なのは、<SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>が他の<SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を呼び出し、呼び出し元に値を返す際の詳細なメカニズムです。これらの問題については第<SPACE/><REF NAME="chap:reg"></REF>章で扱い、評価器を単純なレジスタマシンとして実装することで、評価プロセスをより詳しく見ていきます。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
   </TEXT>
 
   <TEXT>
-    The metacircular evaluator is essentially a 
+    <BILINGUAL>
+    <EN>The metacircular evaluator is essentially a
     <SPLITINLINE>
       <SCHEME>Scheme</SCHEME>
       <JAVASCRIPT>JavaScript</JAVASCRIPT>
@@ -75,21 +84,24 @@
 	Recall that the model specifies the
 	evaluation of function application in two basic steps:
       </JAVASCRIPT>
-    </SPLITINLINE>
+    </SPLITINLINE></EN>
+    <JA>メタ循環評価器とは、本質的には、<INDEX>environment model of evaluation<SUBINDEX>metacircular evaluator and</SUBINDEX></INDEX><INDEX>metacircular evaluator for JavaScript<SUBINDEX>environment model of evaluation in</SUBINDEX></INDEX><REF NAME="sec:environment-model"/>節で説明した評価の環境モデルを<SPLITINLINE><SCHEME>Scheme</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>で定式化したものです。<SPLITINLINE><SCHEME>このモデルには二つの基本的な部分があったことを思い出してください：</SCHEME><JAVASCRIPT>このモデルでは、関数適用の評価が次の二つの基本的なステップで規定されていたことを思い出してください。</JAVASCRIPT></SPLITINLINE></JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    <OL>
-      <LI> 
+    <BILINGUAL>
+    <EN><OL>
+      <LI>
 	<SPLIT>
 	  <SCHEME>
-            To evaluate a combination (a compound expression other than a 
+            To evaluate a combination (a compound expression other than a
             special form), evaluate the subexpressions and then apply the value
 	    of the operator subexpression to the values of the operand
             subexpressions.
 	  </SCHEME>
 	  <JAVASCRIPT>
-	    To evaluate a function application, evaluate the 
+	    To evaluate a function application, evaluate the
 	    subexpressions and then apply the
 	    value of the function subexpression to the values of the argument
             subexpressions.
@@ -132,11 +144,31 @@
 	</SPLITINLINE>
 	is applied.
       </LI>
-    </OL>
+    </OL></EN>
+    <JA><OL>
+      <LI>
+	<SPLIT>
+	  <SCHEME>
+            To evaluate a combination (a compound expression other than a
+            special form), evaluate the subexpressions and then apply the value
+	    of the operator subexpression to the values of the operand
+            subexpressions.
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    関数適用を評価するには、部分式を評価し、その後に関数式の値を引数式の値に適用する。
+	  </JAVASCRIPT>
+	</SPLIT>
+      </LI>
+      <LI>
+        複合<SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を引数の集合に適用するには、新しい環境のもとで<SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>の本体を評価する。この環境を構築するには、<SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>オブジェクトの環境部分を、<SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>の<SPLITINLINE><SCHEME>formal</SCHEME></SPLITINLINE>パラメータがその<SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>の適用先である引数に束縛されたフレームで拡張する。
+      </LI>
+    </OL></JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    These two rules describe the essence of the evaluation process, a basic
+    <BILINGUAL>
+    <EN>These two rules describe the essence of the evaluation process, a basic
     <SPLITINLINE>
       <SCHEME>
       <INDEX>metacircular evaluator for Scheme<SUBINDEX><ORDER>eval</ORDER><SCHEMEINLINE>eval</SCHEMEINLINE><ENDASH/><SCHEMEINLINE>apply</SCHEMEINLINE> cycle</SUBINDEX></INDEX>
@@ -145,14 +177,14 @@
       <INDEX>metacircular evaluator for JavaScript<SUBINDEX><ORDER>evaluate</ORDER><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE><ENDASH/><JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> cycle</SUBINDEX></INDEX>
       </JAVASCRIPT>
     </SPLITINLINE>
-    cycle in which 
+    cycle in which
     <SPLITINLINE><JAVASCRIPT>statements and</JAVASCRIPT></SPLITINLINE>
     expressions to be evaluated in environments are reduced to
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
-    to be applied to arguments, which in turn are reduced to new 
+    to be applied to arguments, which in turn are reduced to new
     <SPLITINLINE>
       <JAVASCRIPT>statements and</JAVASCRIPT>
     </SPLITINLINE>
@@ -166,13 +198,31 @@
 	names,
       </JAVASCRIPT>
     </SPLITINLINE>
-    whose values are looked up in the environment, and to 
+    whose values are looked up in the environment, and to
     <SPLITINLINE>
       <SCHEME>primitive procedures,</SCHEME>
       <JAVASCRIPT>operators and primitive functions,</JAVASCRIPT>
     </SPLITINLINE>
     which are applied directly (see
-    figure<SPACE/><REF NAME="fig:eval-apply"/>).<FOOTNOTE>If we grant ourselves
+    figure<SPACE/><REF NAME="fig:eval-apply"/>).
+    This evaluation cycle will be embodied by the interplay between the two
+    critical
+    <SPLITINLINE>
+      <SCHEME>procedures</SCHEME>
+      <JAVASCRIPT>functions</JAVASCRIPT>
+    </SPLITINLINE>
+    in the evaluator,
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><SCHEMEINLINE>evaluate</SCHEMEINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    and <SCHEMEINLINE>apply</SCHEMEINLINE>, which are described in
+    section<SPACE/><REF NAME="sec:core-of-evaluator"/>
+    (see figure<SPACE/><REF NAME="fig:eval-apply"/>).</EN>
+    <JA>これら二つのルールは、評価プロセスの本質を表しています。それは基本的な<SPLITINLINE><SCHEME><INDEX>metacircular evaluator for Scheme<SUBINDEX><ORDER>eval</ORDER><SCHEMEINLINE>eval</SCHEMEINLINE><ENDASH/><SCHEMEINLINE>apply</SCHEMEINLINE> cycle</SUBINDEX></INDEX></SCHEME><JAVASCRIPT><INDEX>metacircular evaluator for JavaScript<SUBINDEX><ORDER>evaluate</ORDER><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE><ENDASH/><JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> cycle</SUBINDEX></INDEX></JAVASCRIPT></SPLITINLINE>サイクルであり、環境のもとで評価される<SPLITINLINE><JAVASCRIPT>文や</JAVASCRIPT></SPLITINLINE>式が、引数に適用される<SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>へと還元され、その関数適用がさらに新しい環境のもとで評価される新しい<SPLITINLINE><JAVASCRIPT>文や</JAVASCRIPT></SPLITINLINE>式へと還元され、そしてまたそれが繰り返されていきます。最終的には、環境の中で値が参照される<SPLITINLINE><SCHEME>symbols</SCHEME><JAVASCRIPT>名前</JAVASCRIPT></SPLITINLINE>と、直接適用される<SPLITINLINE><SCHEME>primitive procedures</SCHEME><JAVASCRIPT>演算子やプリミティブ関数</JAVASCRIPT></SPLITINLINE>にまで還元されます（図<SPACE/><REF NAME="fig:eval-apply"/>を参照してください）。この評価サイクルは、評価器の中の重要な二つの<SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE><SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><SCHEMEINLINE>evaluate</SCHEMEINLINE></JAVASCRIPT></SPLITINLINE>と<SCHEMEINLINE>apply</SCHEMEINLINE>の相互作用によって体現されます。これらは<REF NAME="sec:core-of-evaluator"/>節（図<SPACE/><REF NAME="fig:eval-apply"/>も参照）で説明します。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>If we grant ourselves
     the ability to apply primitives,
     then what remains for us to implement in the evaluator?  The
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX>job of</SUBINDEX></INDEX>
@@ -190,13 +240,13 @@
 	  <SCHEME><SCHEMEINLINE>(+ 1 6)</SCHEMEINLINE>,</SCHEME>
 	  <JAVASCRIPT><JAVASCRIPTINLINE>2 * 6</JAVASCRIPTINLINE>,</JAVASCRIPT>
 	</SPLITINLINE>
-	it is not adequate for handling 
+	it is not adequate for handling
 	<SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>(+ 1 (* 2 3))</SCHEMEINLINE>.</SCHEME>
 	  <JAVASCRIPT><JAVASCRIPTINLINE>2 * (1 + 5)</JAVASCRIPTINLINE>.
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-	As far as the 
+	As far as the
 	<SPLITINLINE>
 	  <SCHEME>
 	    primitive procedure
@@ -223,7 +273,7 @@
 	  <SCHEME><SCHEMEINLINE>(* 2 3)</SCHEMEINLINE></SCHEME>
 	  <JAVASCRIPT><JAVASCRIPTINLINE>1 + 5</JAVASCRIPTINLINE></JAVASCRIPT>
 	</SPLITINLINE>
-	is reduced to 6 before being passed as an 
+	is reduced to 6 before being passed as an
 	<SPLITINLINE>
 	  <SCHEME>
 	    argument to<SPACE/><SCHEMEINLINE>+</SCHEMEINLINE>.
@@ -239,7 +289,7 @@
 	  <SCHEME>variables.</SCHEME>
 	  <JAVASCRIPT>names.</JAVASCRIPT>
 	</SPLITINLINE>
-	For example, the 
+	For example, the
 	<SPLITINLINE>
 	  <SCHEME>primitive procedure for addition</SCHEME>
 	  <JAVASCRIPT>addition operator</JAVASCRIPT>
@@ -254,7 +304,7 @@
 	  <SCHEME>variables</SCHEME>
 	  <JAVASCRIPT>names</JAVASCRIPT>
 	</SPLITINLINE>
-	and obtain their values before invoking the 
+	and obtain their values before invoking the
 	<SPLITINLINE>
 	  <SCHEME>primitive procedures.</SCHEME>
 	  <JAVASCRIPT>operators.</JAVASCRIPT>
@@ -274,7 +324,7 @@
 	    procedures to accept arguments.
 	  </SCHEME>
 	  <JAVASCRIPT>
-	    This involves knowing how to use these functions in evaluating 
+	    This involves knowing how to use these functions in evaluating
 	    expressions and providing a mechanism that enables functions
 	    to accept arguments.
 	  </JAVASCRIPT>
@@ -288,25 +338,29 @@
 	  the language such as conditionals and blocks.
 	</JAVASCRIPT></SPLITINLINE>
       </LI>
-    </UL></FOOTNOTE>
-    This evaluation cycle will be embodied by the interplay between the two
-    critical
-    <SPLITINLINE>
-      <SCHEME>procedures</SCHEME>
-      <JAVASCRIPT>functions</JAVASCRIPT>
-    </SPLITINLINE>
-    in the evaluator,
-    <SPLITINLINE>
-      <SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME>
-      <JAVASCRIPT><SCHEMEINLINE>evaluate</SCHEMEINLINE></JAVASCRIPT>
-    </SPLITINLINE>
-    and <SCHEMEINLINE>apply</SCHEMEINLINE>, which are described in
-    section<SPACE/><REF NAME="sec:core-of-evaluator"/>
-    (see figure<SPACE/><REF NAME="fig:eval-apply"/>).
+    </UL></EN>
+    <JA>プリミティブを適用する能力が自分たちにあると認めるなら、評価器の中で実装すべきことは何が残っているのでしょうか。<INDEX>metacircular evaluator for JavaScript<SUBINDEX>job of</SUBINDEX></INDEX>評価器の仕事は、言語のプリミティブを規定することではなく、プリミティブの集まりを結びつけて言語を形作る結合組織<EMDASH/>組み合わせの手段と抽象化の手段<EMDASH/>を提供することにあります。具体的には次のようになります。
+    <UL>
+      <LI>
+	評価器によって、入れ子になった式を扱えるようになります。たとえば、式<SPLITINLINE><SCHEME><SCHEMEINLINE>(+ 1 6)</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>2 * 6</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を評価するだけならプリミティブを適用するだけで十分ですが、<SPLITINLINE><SCHEME><SCHEMEINLINE>(+ 1 (* 2 3))</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>2 * (1 + 5)</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を扱うにはそれでは不十分です。<SPLITINLINE><SCHEME>プリミティブな手続き<SCHEMEINLINE>+</SCHEMEINLINE></SCHEME><JAVASCRIPT>演算子<SCHEMEINLINE>*</SCHEMEINLINE></JAVASCRIPT></SPLITINLINE>から見れば、その引数は数値でなければならず、もし引数として式<SPLITINLINE><SCHEME><SCHEMEINLINE>(* 2 3)</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>1 + 5</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を渡されたら詰まってしまうでしょう。評価器の重要な役割のひとつは、<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>（や演算子）の合成を取りまとめて、<SPLITINLINE><SCHEME><SCHEMEINLINE>(* 2 3)</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>1 + 5</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を 6 に還元してから<SPLITINLINE><SCHEME><SCHEMEINLINE>+</SCHEMEINLINE>の引数</SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>*</JAVASCRIPTINLINE>の引数</JAVASCRIPT></SPLITINLINE>として渡すことです。
+      </LI>
+      <LI>
+	評価器によって、<SPLITINLINE><SCHEME>変数</SCHEME><JAVASCRIPT>名前</JAVASCRIPT></SPLITINLINE>を使えるようになります。たとえば、<SPLITINLINE><SCHEME>加算のためのプリミティブな手続き</SCHEME><JAVASCRIPT>加算演算子</JAVASCRIPT></SPLITINLINE>には<SPLITINLINE><SCHEME><SCHEMEINLINE>(+ x 1)</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>x + 1</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>のような式を扱う術がありません。評価器が<SPLITINLINE><SCHEME>変数</SCHEME><JAVASCRIPT>名前</JAVASCRIPT></SPLITINLINE>を追跡し、<SPLITINLINE><SCHEME>プリミティブな手続き</SCHEME><JAVASCRIPT>演算子</JAVASCRIPT></SPLITINLINE>を呼び出す前にそれらの値を取得する必要があります。
+      </LI>
+      <LI>
+	評価器によって、複合<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を定義できるようになります。<SPLITINLINE><SCHEME>これには、手続き定義を追跡することや、これらの定義を式の評価でどう使うかを知っていること、そして手続きが引数を受け取れるようにする仕組みを提供することが含まれます。</SCHEME><JAVASCRIPT>これには、これらの関数を式の評価でどう使うかを知っていることや、関数が引数を受け取れるようにする仕組みを提供することが含まれます。</JAVASCRIPT></SPLITINLINE>
+      </LI>
+      <LI>
+	<SPLITINLINE><SCHEME>評価器は、手続き呼び出しとは異なる方法で評価されなければならない特殊形式を提供します。</SCHEME><JAVASCRIPT>評価器は、条件式やブロックといった、その言語のその他の構文形式も提供します。</JAVASCRIPT></SPLITINLINE>
+      </LI>
+    </UL></JA>
+    </BILINGUAL>
+    </FOOTNOTE>
   </TEXT>
 
   <TEXT>
-    <SPLITINLINE>
+    <BILINGUAL>
+    <EN><SPLITINLINE>
       <SCHEME>
 	The implementation of the evaluator will depend upon procedures
 	that define the <EM>syntax</EM> of the expressions to be evaluated.
@@ -314,15 +368,15 @@
 	<INDEX>metacircular evaluator for Scheme<SUBINDEX>data abstraction in</SUBINDEX></INDEX>
 	data abstraction to make the evaluator independent of the representation of
 	the language.  For example, rather than committing to a choice that an
-	assignment is to be represented by a list beginning with the 
+	assignment is to be represented by a list beginning with the
 	symbol <SCHEMEINLINE>set!</SCHEMEINLINE> we use an abstract predicate
 	<SCHEMEINLINE>assignment?</SCHEMEINLINE>
 	to test for an assignment, and we use abstract selectors
-	<SCHEMEINLINE>assignment-variable</SCHEMEINLINE> and 
+	<SCHEMEINLINE>assignment-variable</SCHEMEINLINE> and
 	<SCHEMEINLINE>assignment-value</SCHEMEINLINE>
 	to access the parts of an assignment.
 	Implementation of expressions will be described in detail in
-	section<SPACE/><REF NAME="sec:representing-expressions"/>. 	
+	section<SPACE/><REF NAME="sec:representing-expressions"/>.
       </SCHEME>
       <JAVASCRIPT>
 	The implementation of the evaluator will depend upon functions that
@@ -333,7 +387,7 @@
 	data abstraction to make the evaluator independent of the
 	representation of the language.
 	For example, rather than committing
-	to a choice that an assignment is to be represented by a 
+	to a choice that an assignment is to be represented by a
 	string beginning with a name followed by
 	<JAVASCRIPTINLINE>=</JAVASCRIPTINLINE>, we use an abstract predicate
 	<JAVASCRIPTINLINE>is_assignment</JAVASCRIPTINLINE> to test for an
@@ -387,7 +441,9 @@
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
     <JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>
-    to a given list of arguments.
+    to a given list of arguments.</EN>
+    <JA><SPLITINLINE><SCHEME>評価器の実装は、評価対象となる式の<EM>構文（syntax）</EM>を定義する手続き群に依存します。<INDEX>metacircular evaluator for Scheme<SUBINDEX>data abstraction in</SUBINDEX></INDEX>データ抽象を用いることで、評価器を言語の表現方法から独立させます。たとえば、代入がシンボル<SCHEMEINLINE>set!</SCHEMEINLINE>で始まるリストとして表現されるという選択にコミットしてしまうのではなく、代入かどうかを判定する抽象的な述語<SCHEMEINLINE>assignment?</SCHEMEINLINE>を用い、代入の各部分にアクセスするには抽象的なセレクタ<SCHEMEINLINE>assignment-variable</SCHEMEINLINE>と<SCHEMEINLINE>assignment-value</SCHEMEINLINE>を用います。式の実装については<REF NAME="sec:representing-expressions"/>節で詳しく説明します。</SCHEME><JAVASCRIPT>評価器の実装は、評価対象となる文や式の<EM>構文（syntax）</EM>を定義する関数群に依存します。<INDEX>metacircular evaluator for JavaScript<SUBINDEX>data abstraction in</SUBINDEX></INDEX>データ抽象を用いることで、評価器を言語の表現方法から独立させます。たとえば、代入が「名前のあとに<JAVASCRIPTINLINE>=</JAVASCRIPTINLINE>が続く文字列」として表現される、といった具体的な選択にコミットしてしまうのではなく、代入かどうかを判定する抽象的な述語<JAVASCRIPTINLINE>is_assignment</JAVASCRIPTINLINE>を用い、代入の各部分にアクセスするには抽象的なセレクタ<JAVASCRIPTINLINE>assignment_symbol</JAVASCRIPTINLINE>と<JAVASCRIPTINLINE>assignment_value_expression</JAVASCRIPTINLINE>を用います。<REF NAME="sec:representing-expressions"/>節で示すデータ抽象の層によって、評価器は、解釈対象の言語のキーワードといった具体的な構文の問題や、プログラムのコンポーネントを表現するデータ構造の選択から独立した状態を保つことができます。</JAVASCRIPT></SPLITINLINE>このほかにも、<REF NAME="sec:eval-data-structures"/>節で説明する操作群があり、それらは<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>や環境の表現を規定します。たとえば、<SPLITINLINE><SCHEME><SCHEMEINLINE>make-procedure</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>make_function</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>は複合<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を構築し、<SPLITINLINE><SCHEME><SCHEMEINLINE>lookup-variable-value</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>lookup_symbol_value</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>は<SPLITINLINE><SCHEME>変数</SCHEME><JAVASCRIPT>名前</JAVASCRIPT></SPLITINLINE>の値にアクセスし、<SPLITINLINE><SCHEME><SCHEMEINLINE>apply-primitive-procedure</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>apply_primitive_function</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>はプリミティブ<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を与えられた引数のリストに適用します。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <!-- Subsection 1 : The Core of the Evaluator -->
@@ -401,7 +457,7 @@
 
   <!-- Subsection 4 : Running the Evaluator as a Program -->
   &amp;subsection4.1.4;
-  
+
   <!-- Subsection 5 : Data as Programs -->
   &amp;subsection4.1.5;
 

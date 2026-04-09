@@ -146,7 +146,10 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 3.5.3 Exploiting the Stream Paradigm
 - [x] Section 3.5.4 Streams and Delayed Evaluation
 - [x] Section 3.5.5 Modularity of Functional Programs and Modularity of Objects
-- [ ] Chapter 4〜5
+- [x] Chapter 4 導入部
+- [x] Section 4.1 The Metacircular Evaluator (導入部)
+- [x] Section 4.1.1 The Core of the Evaluator
+- [ ] Section 4.1.2〜5 以降
 
 ## インライン実行
 

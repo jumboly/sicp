@@ -1,6 +1,6 @@
 <SUBSECTION>
   <NAME>
-    The Core of the Evaluator
+    <BILINGUAL><EN>The Core of the Evaluator</EN><JA>評価器の中核</JA></BILINGUAL>
   </NAME>
 
   <TEXT>
@@ -15,7 +15,7 @@
 	  <LABEL NAME="fig:eval-apply_scheme"/>
 	  <CAPTION>
 	    The
-	    <SCHEMEINLINE>eval</SCHEMEINLINE><ENDASH/><SCHEMEINLINE>apply</SCHEMEINLINE> 
+	    <SCHEMEINLINE>eval</SCHEMEINLINE><ENDASH/><SCHEMEINLINE>apply</SCHEMEINLINE>
 	    cycle exposes the essence of a computer language.
 	  </CAPTION>
 	</FIGURE>
@@ -25,15 +25,20 @@
 	  <FIGURE scale="0.65" src="img_javascript/ch4-Z-G-1.svg"></FIGURE>
 	  <LABEL NAME="fig:eval-apply"/>
 	  <CAPTION>
-	    The
+	    <BILINGUAL>
+	    <EN>The
 	    <INDEX>metacircular evaluator for JavaScript<SUBINDEX><ORDER>evaluate</ORDER><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE><ENDASH/><JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> cycle</SUBINDEX></INDEX>
-	    <SCHEMEINLINE>evaluate</SCHEMEINLINE><ENDASH/><SCHEMEINLINE>apply</SCHEMEINLINE> 
-	    cycle exposes the essence of a computer language.
+	    <SCHEMEINLINE>evaluate</SCHEMEINLINE><ENDASH/><SCHEMEINLINE>apply</SCHEMEINLINE>
+	    cycle exposes the essence of a computer language.</EN>
+	    <JA><INDEX>metacircular evaluator for JavaScript<SUBINDEX><ORDER>evaluate</ORDER><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE><ENDASH/><JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> cycle</SUBINDEX></INDEX>
+	    <SCHEMEINLINE>evaluate</SCHEMEINLINE>と<SCHEMEINLINE>apply</SCHEMEINLINE>のサイクルは、コンピュータ言語の本質を浮かび上がらせます。</JA>
+	    </BILINGUAL>
 	  </CAPTION>
 	</FIGURE>
       </JAVASCRIPT>
     </SPLIT>
-    The evaluation
+    <BILINGUAL>
+    <EN>The evaluation
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX><ORDER>evaluate</ORDER><SCHEMEINLINE>evaluate</SCHEMEINLINE> and <SCHEMEINLINE>apply</SCHEMEINLINE><OPEN/></SUBINDEX></INDEX>
     process can be described as the interplay between two
     <SPLITINLINE>
@@ -45,29 +50,35 @@
       <JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    and <SCHEMEINLINE>apply</SCHEMEINLINE>.
+    and <SCHEMEINLINE>apply</SCHEMEINLINE>.</EN>
+    <JA>評価のプロセスは、二つの<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE><INDEX>metacircular evaluator for JavaScript<SUBINDEX><ORDER>evaluate</ORDER><SCHEMEINLINE>evaluate</SCHEMEINLINE> and <SCHEMEINLINE>apply</SCHEMEINLINE><OPEN/></SUBINDEX></INDEX><SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>と<SCHEMEINLINE>apply</SCHEMEINLINE>のあいだのやりとりとして記述できます。</JA>
+    </BILINGUAL>
   </TEXT>
-  
+
   <SUBHEADING>
     <NAME><SPLITINLINE>
       <SCHEME>Eval</SCHEME>
-      <JAVASCRIPT>The function 
+      <JAVASCRIPT>The function
       <JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
     </NAME>
   </SUBHEADING>
 
   <TEXT>
     <COMMENT>
-      In JavaScript's strict mode<EMDASH/>our preferred way to run JavaScript
+      <BILINGUAL>
+      <EN>In JavaScript's strict mode<EMDASH/>our preferred way to run JavaScript
       programs<EMDASH/>the name <JAVASCRIPTINLINE>eval</JAVASCRIPTINLINE> cannot
       be declared in user programs. It is reserved for a related but quite
       different pre-declared function. We opt for the complete word
-      <JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE> as a replacement.
+      <JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE> as a replacement.</EN>
+      <JA>JavaScriptのstrictモード<EMDASH/>私たちがJavaScriptプログラムを実行するときに推奨するモード<EMDASH/>では、ユーザープログラム内で<JAVASCRIPTINLINE>eval</JAVASCRIPTINLINE>という名前を宣言することができません。この名前は、関連はあるもののまったく異なる、あらかじめ宣言された関数のために予約されています。そこで、その代わりとして<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>という単語をそのまま使うことにします。</JA>
+      </BILINGUAL>
     </COMMENT>
   </TEXT>
   <SHORT_PAGE lines="2"/>
   <TEXT>
-    <SPLITINLINE>
+    <BILINGUAL>
+    <EN><SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Eval</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The function <JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>
       </JAVASCRIPT>
@@ -76,27 +87,18 @@
     <SPLITINLINE>
       <JAVASCRIPT>
 	a program <EM>component</EM><EMDASH/>a statement or
-	expression<FOOTNOTE>There is no
-	need to distinguish between statements and expressions in our evaluator.
-	For example, we do not differentiate between expressions and
-	expression statements; we represent them identically and consequently
-	they are handled in the same way by the
-	<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>
-	function. Similarly, our evaluator does not enforce JavaScript's syntactic
-	restriction that statements
-	cannot appear inside expressions other than
-	lambda expressions.</FOOTNOTE><EMDASH/>and an environment.
+	expression<EMDASH/>and an environment.
       </JAVASCRIPT>
       <SCHEME>
 	and an environment.
       </SCHEME>
     </SPLITINLINE>
-    It  classifies the 
+    It  classifies the
     <SPLITINLINE>
       <SCHEME>expression</SCHEME>
       <JAVASCRIPT>component</JAVASCRIPT>
-    </SPLITINLINE> 
-    and directs its evaluation.  
+    </SPLITINLINE>
+    and directs its evaluation.
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Eval</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The function <JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>
@@ -106,21 +108,21 @@
     <SPLITINLINE>
       <SCHEME>expression</SCHEME>
       <JAVASCRIPT>component</JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     to be evaluated.  In order to keep the
     <SPLITINLINE><SCHEME>procedure</SCHEME>
     <JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>
     general, we express
-    the determination of the type of 
+    the determination of the type of
     <SPLITINLINE><SCHEME>an expression</SCHEME>
     <JAVASCRIPT>a component</JAVASCRIPT></SPLITINLINE>
     abstractly, making no
-    commitment to any particular 
+    commitment to any particular
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX>component representation</SUBINDEX></INDEX>
     representation for the various types of
     <SPLITINLINE><SCHEME>expressions.</SCHEME>
     <JAVASCRIPT>components.</JAVASCRIPT></SPLITINLINE>
-    Each type of 
+    Each type of
     <SPLITINLINE><SCHEME>expression</SCHEME>
     <JAVASCRIPT>component</JAVASCRIPT></SPLITINLINE>
     has a
@@ -128,7 +130,7 @@
       <SCHEME>predicate</SCHEME>
       <JAVASCRIPT><EM>syntax predicate</EM></JAVASCRIPT>
     </SPLITINLINE>
-    that tests for it and an abstract means for selecting its parts.  This 
+    that tests for it and an abstract means for selecting its parts.  This
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX>data abstraction in</SUBINDEX></INDEX>
     <INDEX>abstract syntax<SUBINDEX>in metacircular evaluator</SUBINDEX></INDEX>
     <EM>abstract syntax</EM>
@@ -141,7 +143,23 @@
       <JAVASCRIPT>
 	functions.
       </JAVASCRIPT>
-    </SPLITINLINE>
+    </SPLITINLINE></EN>
+    <JA>関数<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>は、引数としてプログラムの<EM>コンポーネント</EM>（文または式）と環境を受け取ります。<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>はそのコンポーネントを分類し、その評価を進めていきます。関数<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>は、評価対象のコンポーネントの構文的な型に対する場合分けとして構成されています。この関数を一般的なものに保つために、<INDEX>metacircular evaluator for JavaScript<SUBINDEX>component representation</SUBINDEX></INDEX>コンポーネントの型を判定する処理は抽象的に表現し、さまざまな型のコンポーネントの具体的な表現方法には踏み込まないようにします。それぞれの型のコンポーネントには、その型かどうかを判定する<EM>構文述語</EM>と、その構成要素を取り出す抽象的な手段が用意されています。この<INDEX>metacircular evaluator for JavaScript<SUBINDEX>data abstraction in</SUBINDEX></INDEX><INDEX>abstract syntax<SUBINDEX>in metacircular evaluator</SUBINDEX></INDEX><EM>抽象構文</EM>のおかげで、同じ評価器を使いつつ、異なる構文関数の集合に差し替えるだけで言語の構文を変更できることが、容易に見て取れます。</JA>
+    </BILINGUAL><SPLITINLINE><JAVASCRIPT><FOOTNOTE>
+    <BILINGUAL>
+    <EN>There is no
+    need to distinguish between statements and expressions in our evaluator.
+    For example, we do not differentiate between expressions and
+    expression statements; we represent them identically and consequently
+    they are handled in the same way by the
+    <JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>
+    function. Similarly, our evaluator does not enforce JavaScript's syntactic
+    restriction that statements
+    cannot appear inside expressions other than
+    lambda expressions.</EN>
+    <JA>私たちの評価器では、文と式を区別する必要はありません。たとえば、式と式文は区別されておらず、両者を同一に表現しているため、結果的に<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>関数によって同じ方法で扱われます。同様に、私たちの評価器は、文がラムダ式以外の式の内側に現れてはならないという JavaScript の構文上の制約を強制しません。</JA>
+    </BILINGUAL>
+    </FOOTNOTE></JAVASCRIPT></SPLITINLINE>
   </TEXT>
 
 	<SUBSUBHEADING>
@@ -151,7 +169,7 @@
   <TEXT>
     <SPLIT>
       <SCHEME>
-	
+
 	<UL>
 	  <LI>
 	    <SPLITINLINE>
@@ -187,21 +205,21 @@
 	    in the environment to find their values.
 	  </LI>
 	</UL>
-      
+
 	<SUBSUBHEADING>
 	  <NAME>Special forms</NAME>
 	</SUBSUBHEADING>
-	
+
           <UL>
 	    <LI>
-	      For quoted expressions, 
+	      For quoted expressions,
 	      <SCHEMEINLINE>eval</SCHEMEINLINE>
 	      returns the expression that was
 	      quoted.
 	    </LI>
 	    <LI>
 	      An assignment to (or a definition of) a variable
-	      must recursively call      
+	      must recursively call
 	      <SCHEMEINLINE>eval</SCHEMEINLINE>
 	      to compute the new value to be associated with the variable.
 	      The environment must be modified to change (or create) the
@@ -235,7 +253,7 @@
       <SUBSUBHEADING>
 	<NAME>Combinations</NAME>
       </SUBSUBHEADING>
-      
+
       <UL>
 	<LI>
 	  For a procedure application, <SCHEMEINLINE>eval</SCHEMEINLINE>
@@ -261,7 +279,7 @@
          (make-procedure (lambda-parameters exp)
                          (lambda-body exp)
                          env))
-        ((begin? exp) 
+        ((begin? exp)
          (eval-sequence (begin-actions exp) env))
         ((cond? exp) (eval (cond->if exp) env))
         ((application? exp)
@@ -271,11 +289,12 @@
          (error "Unknown expression type - - EVAL" exp))))
       </SCHEME>
     </SNIPPET>
-	  
+
       </SCHEME>
 
       <JAVASCRIPT>
-	
+	<BILINGUAL>
+	<EN>
 	<UL>
 	  <LI>
 	    For
@@ -291,12 +310,12 @@
 	    must look up names in the environment to find their values.
 	  </LI>
 	</UL>
-	
+
 
 	<SUBSUBHEADING>
 	  <NAME>Combinations</NAME>
 	</SUBSUBHEADING>
-      
+
         <UL>
 	  <LI>
 	    For a function application,
@@ -312,10 +331,10 @@
 	  </LI>
         </UL>
 
-	<SUBSUBHEADING>	
+	<SUBSUBHEADING>
 	  <NAME>Syntactic forms</NAME>
 	</SUBSUBHEADING>
-	
+
         <UL>
 	  <LI>
 	    A conditional expression or statement requires special processing of
@@ -358,6 +377,64 @@
   <DO_BREAK_PAGE/>
 	Here is the declaration of
 	<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>:
+	</EN>
+	<JA>
+	<UL>
+	  <LI>
+	    <INDEX>expression<SUBINDEX>literal</SUBINDEX></INDEX>
+	    <INDEX>literal expression</INDEX>
+	    数値などのリテラル式に対しては、<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>はその値を返します。
+	  </LI>
+	  <LI>
+	    関数<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>は、名前の値を見つけるために環境内を探索しなければなりません。
+	  </LI>
+	</UL>
+
+
+	<SUBSUBHEADING>
+	  <NAME>Combinations</NAME>
+	</SUBSUBHEADING>
+
+        <UL>
+	  <LI>
+	    関数適用に対しては、<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>は適用の関数式と引数式を再帰的に評価しなければなりません。得られた関数と引数は<SCHEMEINLINE>apply</SCHEMEINLINE>に渡され、<SCHEMEINLINE>apply</SCHEMEINLINE>が実際の関数適用を処理します。
+	  </LI>
+	  <LI>
+	    演算子の組み合わせは、関数適用に変換されたうえで評価されます。
+	  </LI>
+        </UL>
+
+	<SUBSUBHEADING>
+	  <NAME>Syntactic forms</NAME>
+	</SUBSUBHEADING>
+
+        <UL>
+	  <LI>
+	    条件式または条件文は、その構成要素を特別に処理する必要があります。述語が真であれば帰結式を評価し、そうでなければ代替式を評価します。
+	  </LI>
+	  <LI>
+	    ラムダ式は、ラムダ式で指定されたパラメータと本体を、評価時の環境とまとめて一つにパッケージ化することで、適用可能な関数に変換しなければなりません。
+	  </LI>
+	  <LI>
+	    文の列は、その構成要素を出現順に評価する必要があります。
+	  </LI>
+	  <LI>
+	    ブロックは、そのブロック内で宣言されたすべての名前を反映した新しい環境のもとで本体を評価する必要があります。
+	  </LI>
+	  <LI>
+	    return文は、そのreturn文の評価を引き起こした関数呼び出しの結果となる値を生成しなければなりません。
+	  </LI>
+	  <LI>
+	    関数宣言は、定数宣言に変換されたうえで評価されます。
+	  </LI>
+	  <LI>
+	    定数宣言、変数宣言、または代入は、宣言または代入の対象となる名前に結び付けるべき新しい値を計算するために、<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>を再帰的に呼び出さなければなりません。そのうえで、環境はその名前の新しい値を反映するように変更されなければなりません。
+	  </LI>
+        </UL>
+  <DO_BREAK_PAGE/>
+	以下が<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>の宣言です。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="365" HIDE="yes">
 	  <NAME>headline_4_1_1</NAME>
 	  <JAVASCRIPT>
@@ -413,13 +490,14 @@ const my_program = parse("1; { true; 3; }");
 evaluate(my_program, the_empty_environment);
 	  </JAVASCRIPT>
 	</SNIPPET>
-	
+
       </JAVASCRIPT>
     </SPLIT>
   </TEXT>
 
   <TEXT>
-    For clarity, 
+    <BILINGUAL>
+    <EN>For clarity,
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -435,14 +513,14 @@ evaluate(my_program, the_empty_environment);
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    handles only a few distinguishable types of 
+    handles only a few distinguishable types of
     <SPLITINLINE>
       <JAVASCRIPT>statements and</JAVASCRIPT>
     </SPLITINLINE>
     expressions, and no new ones can be defined without editing the
     <SPLITINLINE>
       <SCHEME>
-	definition of 
+	definition of
 	<SCHEMEINLINE>eval</SCHEMEINLINE>.
       </SCHEME>
       <JAVASCRIPT>
@@ -460,14 +538,14 @@ evaluate(my_program, the_empty_environment);
       <SCHEME>an expression</SCHEME>
       <JAVASCRIPT>a component</JAVASCRIPT>
     </SPLITINLINE>
-    is done in a data-directed style.  This allows a user to add new types of    
+    is done in a data-directed style.  This allows a user to add new types of
     <SPLITINLINE>
       <SCHEME>expressions that <SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>components that
       <JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    can distinguish, without modifying the 
+    can distinguish, without modifying the
     <SPLITINLINE>
       <SCHEME>
 	definition of <SCHEMEINLINE>eval</SCHEMEINLINE>
@@ -477,24 +555,30 @@ evaluate(my_program, the_empty_environment);
 	<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    itself. (See exercise<SPACE/><REF NAME="ex:data-directed-eval"/>.)
+    itself. (See exercise<SPACE/><REF NAME="ex:data-directed-eval"/>.)</EN>
+    <JA>分かりやすさのために、<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>は<INDEX>data-directed programming<SUBINDEX>case analysis vs.</SUBINDEX></INDEX><INDEX>case analysis<SUBINDEX>data-directed programming vs.</SUBINDEX></INDEX>条件式を使った場合分けとして実装してあります。この方式の欠点は、私たちの<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>が区別できる文や式の種類がごく限られたものになってしまい、<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE>の定義</SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>の宣言</JAVASCRIPT></SPLITINLINE>を編集しない限り新しい種類を追加できないことです。多くの<SPLITINLINE><SCHEME>Lisp</SCHEME><JAVASCRIPT>インタプリタ</JAVASCRIPT></SPLITINLINE>の実装では、<SPLITINLINE><SCHEME>式</SCHEME><JAVASCRIPT>コンポーネント</JAVASCRIPT></SPLITINLINE>の型によるディスパッチはデータ指向のスタイルで行われています。これにより、ユーザーは<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE>自身の定義</SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>自身の宣言</JAVASCRIPT></SPLITINLINE>を変更することなく、<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE>が区別できる新しい種類の式</SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>が区別できる新しい種類のコンポーネント</JAVASCRIPT></SPLITINLINE>を追加できるようになります（演習<SPACE/><REF NAME="ex:data-directed-eval"/>を参照してください）。</JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
-    The representation of names is handled by the syntax abstractions. Internally,
+    <BILINGUAL>
+    <EN>The representation of names is handled by the syntax abstractions. Internally,
     the evaluator uses strings to represent names, and we refer to such strings as
     <INDEX>symbol(s)<SUBINDEX><ORDER>in representing</ORDER>representing names in metacircular evaluator</SUBINDEX></INDEX>
     <EM>symbols</EM>. The function
     <JAVASCRIPTINLINE>symbol_of_name</JAVASCRIPTINLINE> used in
     <JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE> extracts from a
-    name the symbol by which it is represented.
-  </TEXT>
-  <DO_BREAK_PAGE/>
-  
+    name the symbol by which it is represented.</EN>
+    <JA>名前の表現は構文の抽象化によって扱われます。評価器は内部的には文字列を使って名前を表現しており、そのような文字列を<INDEX>symbol(s)<SUBINDEX><ORDER>in representing</ORDER>representing names in metacircular evaluator</SUBINDEX></INDEX><EM>シンボル</EM>と呼びます。<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>の中で使われている関数<JAVASCRIPTINLINE>symbol_of_name</JAVASCRIPTINLINE>は、名前から、それを表すシンボルを取り出します。</JA>
+    </BILINGUAL>
+  </TEXT>  <DO_BREAK_PAGE/>
+
   <SUBHEADING>
     <NAME>Apply</NAME>
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Apply</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The function <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE>
@@ -510,7 +594,7 @@ evaluate(my_program, the_empty_environment);
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    should be applied.  
+    should be applied.
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Apply</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The function <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE>
@@ -521,8 +605,8 @@ evaluate(my_program, the_empty_environment);
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
-    into two kinds: It calls 
-    <INDEX><USE>apply_primitive_function</USE></INDEX> 
+    into two kinds: It calls
+    <INDEX><USE>apply_primitive_function</USE></INDEX>
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>apply-primitive-procedure</SCHEMEINLINE>
@@ -538,7 +622,7 @@ evaluate(my_program, the_empty_environment);
     </SPLITINLINE>
     <SPLITINLINE>
       <SCHEME>
-	by sequentially evaluating the 	
+	by sequentially evaluating the
 	expressions that make up the body of the procedure.
       </SCHEME>
       <JAVASCRIPT>
@@ -566,7 +650,7 @@ evaluate(my_program, the_empty_environment);
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    is to be applied. 
+    is to be applied.
     Here is the
     <SPLITINLINE>
       <SCHEME>
@@ -577,6 +661,36 @@ evaluate(my_program, the_empty_environment);
       </JAVASCRIPT>
     </SPLITINLINE>
     of <SCHEMEINLINE>apply</SCHEMEINLINE>:
+    </EN>
+    <JA>
+    関数 <SPLITINLINE><SCHEME><SCHEMEINLINE>Apply</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> は 2 つの引数、つまり
+    <SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    と、その
+    <SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    に適用すべき引数のリストを受け取ります。
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>Apply</SCHEMEINLINE></SCHEME><JAVASCRIPT>関数 <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
+    は
+    <SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    を 2 種類に分類します。プリミティブを適用するには
+    <INDEX><USE>apply_primitive_function</USE></INDEX>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>apply-primitive-procedure</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>apply_primitive_function</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
+    を呼び出し、複合
+    <SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    については、
+    <SPLITINLINE><SCHEME>その手続き本体を構成する式を順に評価する</SCHEME><JAVASCRIPT>その関数本体を構成するブロックを評価する</JAVASCRIPT></SPLITINLINE>
+    ことで適用します。複合
+    <SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    の本体を評価するための環境は、その
+    <SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    が保持している基底環境を拡張し、
+    <SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    のパラメータを、その
+    <SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    が適用される引数に束縛するフレームを加えることで構築されます。<SCHEMEINLINE>apply</SCHEMEINLINE> の
+    <SPLITINLINE><SCHEME>定義</SCHEME><JAVASCRIPT>宣言</JAVASCRIPT></SPLITINLINE>
+    は次のとおりです。
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="366">
       <INDEX><DECLARATION>apply</DECLARATION> (metacircular)</INDEX>
       <NAME>apply</NAME>
@@ -632,14 +746,16 @@ const plus = list("primitive", (x, y) => x + y);
 apply(plus, list(1, 2));
       </JAVASCRIPT>
     </SNIPPET>
-    
+
     <SPLIT>
       <JAVASCRIPT>
+      <BILINGUAL>
+      <EN>
 	In order to return a value, a JavaScript function needs to evaluate a
 	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>return value</SUBINDEX></INDEX>
 	<INDEX>return value<SUBINDEX>representation in metacircular evaluator</SUBINDEX></INDEX>
 	return statement. If a function terminates without evaluating a return
-	statement, the value 
+	statement, the value
 	<INDEX>return value<SUBINDEX><USE>undefined</USE> as</SUBINDEX></INDEX>
 	<JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> is returned.
 	To distinguish the two cases, the evaluation of a return statement
@@ -647,8 +763,24 @@ apply(plus, list(1, 2));
 	<EM>return value</EM>. If
 	the evaluation of the function body yields such a return value, the content
 	of the return value is retrieved; otherwise the value
-	<JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> is returned.<FOOTNOTE>
+	<JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> is returned.
+      </EN>
+      <JA>
+	値を返すためには、JavaScript の関数は return 文を評価する必要があります。
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>return value</SUBINDEX></INDEX>
+	<INDEX>return value<SUBINDEX>representation in metacircular evaluator</SUBINDEX></INDEX>
+	関数が return 文を評価せずに終了した場合には、値
+	<INDEX>return value<SUBINDEX><USE>undefined</USE> as</SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> が返されます。
+	この 2 つのケースを区別するため、return 文の評価では、return 式を評価した結果を
+	<EM>戻り値（return value）</EM>としてラップします。関数本体の評価がそのような戻り値を生じた場合には、その戻り値の中身が取り出されます。そうでない場合には、値
+	<JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> が返されます。
+      </JA>
+      </BILINGUAL>
+      <FOOTNOTE>
 	<LABEL NAME="foot:apply"/>
+	<BILINGUAL>
+	<EN>
 	This test is a deferred operation, and thus our evaluator will give rise to a
 	recursive process even if the interpreted program should give rise to an
 	iterative process according to the description in
@@ -661,6 +793,15 @@ apply(plus, list(1, 2));
 	Sections<SPACE/><REF NAME="sec:tail-recursion-return"/>
 	and<SPACE/><REF NAME="sec:compiling-combinations"/>
 	show how to achieve tail recursion using a register machine.
+	</EN>
+	<JA>
+	このテストは遅延された演算であるため、解釈対象のプログラムがセクション<SPACE/><REF NAME="sec:recursion-and-iteration"/>の記述に従えば反復的プロセスを生じるはずの場合であっても、私たちの評価器は再帰的プロセスを生じさせます。言い換えると、私たちの JavaScript のメタ循環評価器の実装は
+	<INDEX><USE>apply</USE> (metacircular)<SUBINDEX>tail recursion and</SUBINDEX></INDEX>
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>tail recursion and</SUBINDEX></INDEX>
+	<INDEX>tail recursion<SUBINDEX>metacircular evaluator and</SUBINDEX></INDEX>
+	末尾再帰的ではありません。レジスタマシンを使って末尾再帰を実現する方法は、セクション<SPACE/><REF NAME="sec:tail-recursion-return"/>およびセクション<SPACE/><REF NAME="sec:compiling-combinations"/>で示します。
+	</JA>
+	</BILINGUAL>
       </FOOTNOTE>
       </JAVASCRIPT>
     </SPLIT>
@@ -678,6 +819,8 @@ apply(plus, list(1, 2));
 
   <SHORT_PAGE lines="3"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     When
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME>
@@ -717,8 +860,26 @@ apply(plus, list(1, 2));
       <JAVASCRIPT>argument expression</JAVASCRIPT>
     </SPLITINLINE>
     and returns a
-    list of the corresponding values:<SPLITINLINE><SCHEME><FOOTNOTE>We could
-    have simplified the 
+    list of the corresponding values:
+    </EN>
+    <JA>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><SCHEMEINLINE>evaluate</SCHEMEINLINE></JAVASCRIPT></SPLITINLINE>
+    が
+    <SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    適用を処理するとき、その
+    <SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    に適用すべき引数のリストを生成するために
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>list-of-values</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
+    を使います。
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>List-of-values</SCHEMEINLINE></SCHEME><JAVASCRIPT>関数 <JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
+    は、
+    <SPLITINLINE><SCHEME>結合のオペランド</SCHEME><JAVASCRIPT>適用の引数式</JAVASCRIPT></SPLITINLINE>
+    を引数として受け取ります。そして各
+    <SPLITINLINE><SCHEME>オペランド</SCHEME><JAVASCRIPT>引数式</JAVASCRIPT></SPLITINLINE>
+    を評価し、対応する値のリストを返します。
+    </JA>
+    </BILINGUAL><SPLITINLINE><SCHEME><FOOTNOTE>We could
+    have simplified the
     <SCHEMEINLINE>application?</SCHEMEINLINE>
     clause in
     <SCHEMEINLINE>eval</SCHEMEINLINE>
@@ -740,7 +901,9 @@ apply(plus, list(1, 2));
     even though the language that it supports
     will include higher-order
     procedures.
-    <LABEL NAME="foot:mceval-higher-order-scheme"/></FOOTNOTE></SCHEME><JAVASCRIPT><FOOTNOTE>We
+    <LABEL NAME="foot:mceval-higher-order-scheme"/></FOOTNOTE></SCHEME><JAVASCRIPT><FOOTNOTE>
+    <BILINGUAL>
+    <EN>We
     chose to implement <JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE>
     using the
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX>higher-order functions in</SUBINDEX></INDEX>
@@ -752,16 +915,22 @@ apply(plus, list(1, 2));
     higher-order functions), even though the language that it supports
     will include higher-order functions. For example,
     <JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE> can be
-    written without <JAVASCRIPTINLINE>map</JAVASCRIPTINLINE> as follows:
+    written without <JAVASCRIPTINLINE>map</JAVASCRIPTINLINE> as follows:</EN>
+    <JA>ここでは <JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE> を
+    <INDEX>metacircular evaluator for JavaScript<SUBINDEX>higher-order functions in</SUBINDEX></INDEX>
+    <INDEX>higher-order functions<SUBINDEX><ORDER>metacircular</ORDER>in metacircular evaluator</SUBINDEX></INDEX>
+    高階関数 <JAVASCRIPTINLINE>map</JAVASCRIPTINLINE> を使って実装することにしました。また
+    <JAVASCRIPTINLINE>map</JAVASCRIPTINLINE> は他の場所でも使用します。ただし、評価器は高階関数をまったく使わずに実装することもできます（したがって、高階関数を持たない言語でも書くことができます）。評価器がサポートする言語の側は高階関数を含んでいてもかまいません。たとえば、<JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE> は <JAVASCRIPTINLINE>map</JAVASCRIPTINLINE> を使わずに次のように書くこともできます。</JA>
+    </BILINGUAL>
     <SNIPPET PAGE="367">
       <INDEX><DECLARATION>list_of_values</DECLARATION><SUBINDEX><ORDER>higherorder</ORDER>without higher-order functions</SUBINDEX></INDEX>
       <NAME>list_of_values_without_map</NAME>
       <EXAMPLE>list_of_values_example</EXAMPLE>
       <JAVASCRIPT>
 function list_of_values(exps, env) {
-    return is_null(exps)	
+    return is_null(exps)
            ? null
-           : pair(evaluate(head(exps), env), 
+           : pair(evaluate(head(exps), env),
                   list_of_values(tail(exps), env));
 }
       </JAVASCRIPT>
@@ -809,18 +978,20 @@ list_of_values(list(parse("1;"), my_addition_expression, parse("7;")),
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Eval-if</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The function
       <JAVASCRIPTINLINE>eval_conditional</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    evaluates the predicate part of 
+    evaluates the predicate part of
     <SPLITINLINE>
       <SCHEME>an <SCHEMEINLINE>if</SCHEMEINLINE> expression</SCHEME>
       <JAVASCRIPT>a conditional component</JAVASCRIPT>
     </SPLITINLINE>
-    in the given environment.  If the result is true, 
+    in the given environment.  If the result is true,
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>eval-if</SCHEMEINLINE>
       evaluates the consequent, otherwise it evaluates the alternative:
@@ -829,6 +1000,15 @@ list_of_values(list(parse("1;"), my_addition_expression, parse("7;")),
 	the consequent is evaluated, otherwise the alternative is evaluated:
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>Eval-if</SCHEMEINLINE></SCHEME><JAVASCRIPT>関数 <JAVASCRIPTINLINE>eval_conditional</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
+    は、与えられた環境で
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>if</SCHEMEINLINE> 式</SCHEME><JAVASCRIPT>条件コンポーネント</JAVASCRIPT></SPLITINLINE>
+    の述語部分を評価します。結果が真であれば、
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>eval-if</SCHEMEINLINE> は帰結式を評価し、そうでなければ代替式を評価します。</SCHEME><JAVASCRIPT>帰結式が評価され、そうでなければ代替式が評価されます。</JAVASCRIPT></SPLITINLINE>
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="367">
       <INDEX><DECLARATION>eval_conditional</DECLARATION> (metacircular)</INDEX>
       <NAME>eval_if</NAME>
@@ -861,13 +1041,22 @@ eval_conditional(my_cond_expr, the_empty_environment);
     </SNIPPET>
     <SPLITINLINE>
       <JAVASCRIPT>
+      <BILINGUAL>
+      <EN>
 	Note that the evaluator does not need to distinguish between
 	conditional expressions and conditional statements.
+      </EN>
+      <JA>
+	なお、評価器は条件式と条件文を区別する必要がないことに注意してください。
+      </JA>
+      </BILINGUAL>
       </JAVASCRIPT>
     </SPLITINLINE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The use of
     <INDEX><USE>is_truthy</USE></INDEX>
     <INDEX>truthiness</INDEX>
@@ -875,7 +1064,7 @@ eval_conditional(my_cond_expr, the_empty_environment);
       <SCHEME><SCHEMEINLINE>true?</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>is_truthy</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    in 
+    in
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>eval-if</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>
@@ -884,23 +1073,45 @@ eval_conditional(my_cond_expr, the_empty_environment);
     </SPLITINLINE>
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX>implemented language vs.<SPACE/>implementation language</SUBINDEX></INDEX>
     highlights the issue of the connection between an implemented language and
-    an implementation language.  The 
+    an implementation language.  The
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>if-predicate</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>conditional_predicate</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     is evaluated in the language being implemented and thus yields a value in
-    that language.  The interpreter predicate 
+    that language.  The interpreter predicate
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>true?</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>is_truthy</JAVASCRIPTINLINE></JAVASCRIPT>
-    </SPLITINLINE> 
+    </SPLITINLINE>
     translates that value into a value that can be tested by the
     <SPLITINLINE><SCHEME><SCHEMEINLINE>if</SCHEMEINLINE></SCHEME>
     <JAVASCRIPT>conditional expression</JAVASCRIPT></SPLITINLINE>
     in the implementation language: The metacircular representation of truth
-    might not be the same as that of the underlying 
-    <SPLITINLINE><SCHEME>Scheme</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>.<FOOTNOTE>In this case, the language being implemented and the
+    might not be the same as that of the underlying
+    <SPLITINLINE><SCHEME>Scheme</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>.
+    </EN>
+    <JA>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>eval-if</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>eval_conditional</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
+    で
+    <INDEX><USE>is_truthy</USE></INDEX>
+    <INDEX>truthiness</INDEX>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>true?</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>is_truthy</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
+    を使っていることは、
+    <INDEX>metacircular evaluator for JavaScript<SUBINDEX>implemented language vs.<SPACE/>implementation language</SUBINDEX></INDEX>
+    実装対象の言語と実装言語のつながりという問題を浮き彫りにします。
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>if-predicate</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>conditional_predicate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
+    は実装対象の言語の中で評価されるので、その言語における値を生み出します。インタプリタの述語
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>true?</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>is_truthy</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
+    は、その値を、実装言語の
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>if</SCHEMEINLINE></SCHEME><JAVASCRIPT>条件式</JAVASCRIPT></SPLITINLINE>
+    でテストできる値へと変換します。メタ循環的な真理の表現は、基盤となる
+    <SPLITINLINE><SCHEME>Scheme</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>
+    における真理の表現と同じとは限りません。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>In this case, the language being implemented and the
     implementation language are the same. Contemplation of the meaning of
     <SPLITINLINE><SCHEME><SCHEMEINLINE>true?</SCHEMEINLINE></SCHEME>
     <JAVASCRIPT><JAVASCRIPTINLINE>is_truthy</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -908,11 +1119,18 @@ eval_conditional(my_cond_expr, the_empty_environment);
     here yields
     <INDEX>consciousness, expansion of</INDEX>
     expansion of consciousness without the abuse of
-    substance.</FOOTNOTE>
+    substance.</EN>
+    <JA>このケースでは、実装対象の言語と実装言語は同じです。ここで
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>true?</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>is_truthy</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
+    の意味をじっくりと熟考することは、
+    <INDEX>consciousness, expansion of</INDEX>
+    薬物に頼らずに意識を拡張する体験をもたらしてくれます。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>    
+    <NAME>
 	Sequences
     </NAME>
   </SUBHEADING>
@@ -942,6 +1160,8 @@ eval_conditional(my_cond_expr, the_empty_environment);
     </SCHEME>
     <JAVASCRIPT>
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	The function <JAVASCRIPTINLINE>eval_sequence</JAVASCRIPTINLINE>
 	is used by <JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>
 	to evaluate a sequence of statements at the top level or in a block.
@@ -950,7 +1170,16 @@ eval_conditional(my_cond_expr, the_empty_environment);
 	occur. The value returned is the value of the final statement, except
 	that if the evaluation of any statement in the sequence yields
 	a return value, that value is returned and the subsequent statements are
-	ignored.<FOOTNOTE>The treatment of return statements in
+	ignored.
+	</EN>
+	<JA>
+	関数 <JAVASCRIPTINLINE>eval_sequence</JAVASCRIPTINLINE> は、トップレベルまたはブロック内の文の列を評価するために <JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE> から使われます。<JAVASCRIPTINLINE>eval_sequence</JAVASCRIPTINLINE> は文の列と環境を引数として受け取り、文をそれらが出現する順序で評価します。返される値は最後の文の値です。ただし、列中のいずれかの文の評価が戻り値を生じた場合には、その値が返され、以降の文は無視されます。
+	</JA>
+	</BILINGUAL>
+	<FOOTNOTE>
+	<LABEL NAME="foot:value_producing"/>
+	<BILINGUAL>
+	<EN>The treatment of return statements in
 	<JAVASCRIPTINLINE>eval_sequence</JAVASCRIPTINLINE>
 	reflects the proper
 	result of evaluating function applications in JavaScript, but the
@@ -958,7 +1187,10 @@ eval_conditional(my_cond_expr, the_empty_environment);
 	specification for the value of a program that consists
 	of a sequence of statements <EM>outside of</EM> any function body.
 	Exercise<SPACE/><REF NAME="ex:value_producing"/> addresses this issue.
-	<LABEL NAME="foot:value_producing"/>
+	</EN>
+	<JA><JAVASCRIPTINLINE>eval_sequence</JAVASCRIPTINLINE> における return 文の扱いは、JavaScript における関数適用の評価の正しい結果を反映しています。しかし、ここで示す評価器は、関数本体の<EM>外側</EM>にある文の列から成るプログラムの値について、ECMAScript 仕様に準拠していません。この問題については演習<SPACE/><REF NAME="ex:value_producing"/>で取り扱います。
+	</JA>
+	</BILINGUAL>
       </FOOTNOTE>
 	<SNIPPET PAGE="367" POSTPADDING="no">
 	  <INDEX><DECLARATION>eval_sequence</DECLARATION></INDEX>
@@ -972,7 +1204,7 @@ function eval_sequence(stmts, env) {
     } else if (is_last_statement(stmts)) {
         return evaluate(first_statement(stmts), env);
     } else {
-        const first_stmt_value = 
+        const first_stmt_value =
             evaluate(first_statement(stmts), env);
         if (is_return_value(first_stmt_value)) {
             return first_stmt_value;
@@ -1007,6 +1239,8 @@ eval_sequence(my_sequence, the_empty_environment);
       </SUBHEADING>
       <LONG_PAGE lines="2"/>
       <TEXT>
+	<BILINGUAL>
+	  <EN>
 	The function <JAVASCRIPTINLINE>eval_block</JAVASCRIPTINLINE> handles
 	blocks. The variables and constants (including functions)
 	declared in the block have the whole block as their scope and thus
@@ -1018,11 +1252,25 @@ eval_sequence(my_sequence, the_empty_environment);
 	to a special value,
 	<JAVASCRIPTINLINE>"*unassigned*"</JAVASCRIPTINLINE>.
 	This string serves as a placeholder, before
-	the evaluation of the declaration assigns the name 
+	the evaluation of the declaration assigns the name
 	its proper value. An attempt to access the value of the name before its
 	declaration is evaluated leads to an error at run time (see
 	exercise<SPACE/><REF NAME="ex:access_unassigned"/>), as stated in
 	footnote<SPACE/><REF NAME="foot:tdz"/> in chapter<SPACE/><REF NAME="chap:fun"></REF>.
+	  </EN>
+	  <JA>
+	関数 <JAVASCRIPTINLINE>eval_block</JAVASCRIPTINLINE> はブロックを処理します。
+	ブロック内で宣言された変数や定数（関数を含む）は、ブロック全体をスコープとして持つため、
+	ブロックの本体が評価される前に<QUOTE>スキャンアウト</QUOTE>されます。
+	ブロックの本体は、現在の環境を拡張した環境のもとで評価されます。
+	この拡張では、各ローカル名を特別な値
+	<JAVASCRIPTINLINE>"*unassigned*"</JAVASCRIPTINLINE> に束縛するフレームが追加されます。
+	この文字列はプレースホルダの役割を果たし、その後に宣言が評価されることで名前に本来の値が代入されます。
+	宣言が評価される前にその名前の値にアクセスしようとすると、
+	第<SPACE/><REF NAME="chap:fun"></REF>章の脚注<SPACE/><REF NAME="foot:tdz"/>で述べたとおり、
+	実行時エラーとなります（演習<SPACE/><REF NAME="ex:access_unassigned"/>を参照）。
+	  </JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="367">
 	  <INDEX><DECLARATION>eval_block</DECLARATION></INDEX>
           <NAME>eval_block</NAME>
@@ -1035,7 +1283,7 @@ function eval_block(component, env) {
     const locals = scan_out_declarations(body);
     const unassigneds = list_of_unassigned(locals);
     return evaluate(body, extend_environment(locals,
-                                             unassigneds, 
+                                             unassigneds,
                                              env));
 }
 function list_of_unassigned(symbols) {
@@ -1052,13 +1300,24 @@ function list_of_unassigned(symbols) {
 }
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	  <EN>
 	The function <JAVASCRIPTINLINE>scan_out_declarations</JAVASCRIPTINLINE>
         <INDEX>scanning out declarations<SUBINDEX>in metacircular evaluator</SUBINDEX></INDEX>
 	collects a list of all symbols representing names declared in the body.
-	It uses 
+	It uses
 	<JAVASCRIPTINLINE>declaration_symbol</JAVASCRIPTINLINE>
 	to retrieve the symbol that represents the name
 	from the declaration statements it finds.
+	  </EN>
+	  <JA>
+	関数 <JAVASCRIPTINLINE>scan_out_declarations</JAVASCRIPTINLINE> は、
+        <INDEX>scanning out declarations<SUBINDEX>in metacircular evaluator</SUBINDEX></INDEX>
+	本体内で宣言された名前を表すシンボルのリストを集めます。
+	見つけた宣言文から名前を表すシンボルを取り出すために、
+	<JAVASCRIPTINLINE>declaration_symbol</JAVASCRIPTINLINE> を使用します。
+	  </JA>
+	</BILINGUAL>
 	<SNIPPET>
 	  <INDEX><DECLARATION>scan_out_declarations</DECLARATION></INDEX>
           <NAME>scan_out_declarations</NAME>
@@ -1098,12 +1357,21 @@ const my_block = parse("{ const x = 1; 3; 42; }");
 eval_block(my_block, the_empty_environment);
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	  <EN>
 	We ignore declarations that are nested in another block,
 	because the evaluation of that block will take care of them.
-	The function <JAVASCRIPTINLINE>scan_out_declarations</JAVASCRIPTINLINE>	
-	looks for declarations only in sequences because 
+	The function <JAVASCRIPTINLINE>scan_out_declarations</JAVASCRIPTINLINE>
+	looks for declarations only in sequences because
 	declarations in conditional statements, function declarations, and
 	lambda expressions are always in a nested block.
+	  </EN>
+	  <JA>
+	入れ子のブロック内にある宣言は、そのブロックの評価が処理してくれるため、ここでは無視します。
+	関数 <JAVASCRIPTINLINE>scan_out_declarations</JAVASCRIPTINLINE> はシーケンスの中だけを対象に宣言を探します。
+	これは、条件文、関数宣言、ラムダ式の中の宣言が常に入れ子のブロック内にあるためです。
+	  </JA>
+	</BILINGUAL>
       </TEXT>
 
       <SUBHEADING>
@@ -1111,6 +1379,8 @@ eval_block(my_block, the_empty_environment);
       </SUBHEADING>
 
       <TEXT>
+	<BILINGUAL>
+	  <EN>
 	The function <JAVASCRIPTINLINE>eval_return_statement</JAVASCRIPTINLINE>
 	is used to evaluate
 	<INDEX>return statement<SUBINDEX>handling in metacircular evaluator</SUBINDEX></INDEX>
@@ -1122,15 +1392,38 @@ eval_block(my_block, the_empty_environment);
 	body can return immediately, even if there are statements
 	after the return statement. For this purpose,
 	the evaluation of a return statement wraps the result of
-	evaluating the return expression in a return value object.<FOOTNOTE>
+	evaluating the return expression in a return value object.
+	  </EN>
+	  <JA>
+	関数 <JAVASCRIPTINLINE>eval_return_statement</JAVASCRIPTINLINE> は
+	<INDEX>return statement<SUBINDEX>handling in metacircular evaluator</SUBINDEX></INDEX>
+	return 文を評価するために使われます。
+	<JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> の実装やシーケンスの評価で見たとおり、
+	return 文の評価結果は識別可能である必要があります。
+	これは、return 文のあとに続く文があったとしても、
+	関数本体の評価が直ちに戻れるようにするためです。
+	そのために、return 文の評価では、return 式を評価した結果を戻り値オブジェクトで包みます。
+	  </JA>
+	</BILINGUAL><FOOTNOTE>
 	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>tail recursion and</SUBINDEX></INDEX>
 	<INDEX>tail recursion<SUBINDEX>metacircular evaluator and</SUBINDEX></INDEX>
+	<BILINGUAL>
+	  <EN>
 	The application of the function
 	<JAVASCRIPTINLINE>make_return_value</JAVASCRIPTINLINE> to the result
 	of evaluating the return expression creates a deferred operation, in
 	addition to the deferred operation created by
 	<JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE>. See
-	footnote<SPACE/><REF NAME="foot:apply"/> for details.</FOOTNOTE>
+	footnote<SPACE/><REF NAME="foot:apply"/> for details.
+	  </EN>
+	  <JA>
+	return 式を評価した結果に関数
+	<JAVASCRIPTINLINE>make_return_value</JAVASCRIPTINLINE> を適用することは、
+	<JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> が作り出す遅延された演算に加えて、
+	さらにもう一つの遅延された演算を生み出します。
+	詳しくは脚注<SPACE/><REF NAME="foot:apply"/>を参照してください。
+	  </JA>
+	</BILINGUAL></FOOTNOTE>
 	<SNIPPET PAGE="367" POSTPADDING="no">
 	  <INDEX><DECLARATION>eval_return_statement</DECLARATION></INDEX>
           <NAME>eval_return</NAME>
@@ -1167,7 +1460,9 @@ evaluate(my_program, the_global_environment);
   </SUBHEADING>
 
   <TEXT>
-    The 
+    <BILINGUAL>
+      <EN>
+    The
     <SPLITINLINE>
       <SCHEME>following procedure</SCHEME>
       <JAVASCRIPT>
@@ -1207,14 +1502,42 @@ evaluate(my_program, the_global_environment);
 	<JAVASCRIPTINLINE>assignment_symbol</JAVASCRIPTINLINE>
 	to retrieve the symbol that represents the name
 	from the assignment. The function
-	<JAVASCRIPTINLINE>eval_assignment</JAVASCRIPTINLINE>	
+	<JAVASCRIPTINLINE>eval_assignment</JAVASCRIPTINLINE>
 	transmits the symbol and the value to
 	<JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE>
 	to be installed in the designated environment.
-	The evaluation of an assignment returns the value 
+	The evaluation of an assignment returns the value
 	that was assigned.
       </JAVASCRIPT>
     </SPLITINLINE>
+      </EN>
+      <JA>
+    <SPLITINLINE>
+      <SCHEME>次の手続き</SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>eval_assignment</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は
+    <SPLITINLINE>
+      <SCHEME>変数への代入を処理します。</SCHEME>
+      <JAVASCRIPT>名前への代入を処理します。
+	（評価器の記述を簡潔にするため、変数だけでなく<EMDASH/>誤ってではありますが<EMDASH/>定数への代入も許しています。
+	定数と変数を区別して定数への代入を防ぐ方法については、
+	演習<SPACE/><REF NAME="ex:mutable"/>で説明します。）</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE> を呼び出して代入すべき値を求め、その変数と得られた値を <SCHEMEINLINE>set-variable-value!</SCHEMEINLINE> に渡して、指定された環境に設定します。</SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>eval_assignment</JAVASCRIPTINLINE> は、
+	値式に対して <SCHEMEINLINE>evaluate</SCHEMEINLINE> を呼び出して代入すべき値を求め、
+	<JAVASCRIPTINLINE>assignment_symbol</JAVASCRIPTINLINE> を呼び出して
+	代入文から名前を表すシンボルを取り出します。
+	そして関数 <JAVASCRIPTINLINE>eval_assignment</JAVASCRIPTINLINE> は、
+	そのシンボルと値を
+	<JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE> に渡し、
+	指定された環境に設定します。
+	代入の評価結果は、代入された値そのものを返します。</JAVASCRIPT>
+    </SPLITINLINE>
+      </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="368">
       <INDEX><DECLARATION>eval_assignment</DECLARATION></INDEX>
       <NAME>eval_assignment</NAME>
@@ -1276,7 +1599,7 @@ evaluate(my_program, the_global_environment);
       <TEXT>
 	We have chosen here to return the symbol <SCHEMEINLINE>ok</SCHEMEINLINE>
 	as the value of an assignment or a definition.<FOOTNOTE>As we said when
-	we introduced <SCHEMEINLINE>define</SCHEMEINLINE> and 
+	we introduced <SCHEMEINLINE>define</SCHEMEINLINE> and
         <SCHEMEINLINE>set!</SCHEMEINLINE>, these values
         are implementation-dependent in Scheme<EMDASH/>that is, the implementor
         can choose what value to return.</FOOTNOTE>
@@ -1285,14 +1608,27 @@ evaluate(my_program, the_global_environment);
     </SCHEME>
     <JAVASCRIPT>
       <TEXT>
+	<BILINGUAL>
+	  <EN>
 	Constant and variable declarations are both recognized by the
-	<JAVASCRIPTINLINE>is_declaration</JAVASCRIPTINLINE> syntax predicate. 
+	<JAVASCRIPTINLINE>is_declaration</JAVASCRIPTINLINE> syntax predicate.
 	They are treated in a manner similar to
 	assignments, because <JAVASCRIPTINLINE>eval_block</JAVASCRIPTINLINE>
 	has already bound their symbols to <JAVASCRIPTINLINE>"*unassigned*"</JAVASCRIPTINLINE>
 	in the current environment.
 	Their evaluation replaces <JAVASCRIPTINLINE>"*unassigned*"</JAVASCRIPTINLINE>
 	with the result of evaluating the value expression.
+	  </EN>
+	  <JA>
+	定数宣言と変数宣言は、どちらも構文述語
+	<JAVASCRIPTINLINE>is_declaration</JAVASCRIPTINLINE> によって認識されます。
+	これらは代入と似た方法で扱われます。
+	なぜなら、<JAVASCRIPTINLINE>eval_block</JAVASCRIPTINLINE> がすでに現在の環境で
+	それらのシンボルを <JAVASCRIPTINLINE>"*unassigned*"</JAVASCRIPTINLINE> に束縛しているからです。
+	宣言の評価は、この <JAVASCRIPTINLINE>"*unassigned*"</JAVASCRIPTINLINE> を
+	値式を評価した結果で置き換えます。
+	  </JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="368">
 	  <INDEX><DECLARATION>eval_declaration</DECLARATION></INDEX>
 	  <NAME>eval_definition</NAME>
@@ -1301,13 +1637,15 @@ evaluate(my_program, the_global_environment);
 	  <JAVASCRIPT>
 function eval_declaration(component, env) {
     assign_symbol_value(
-        declaration_symbol(component), 
+        declaration_symbol(component),
         evaluate(declaration_value_expression(component), env),
         env);
     return undefined;
 }
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	  <EN>
 	The result of evaluating the body of a function is determined by
 	return statements, and therefore the return value
 	<JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> in
@@ -1318,8 +1656,20 @@ function eval_declaration(component, env) {
 	the presentation; exercise<SPACE/><REF NAME="ex:value_producing"/>
 	describes the real result of evaluating top-level components
 	in JavaScript.
+	  </EN>
+	  <JA>
+	関数本体を評価した結果は return 文によって決定されるため、
+	<JAVASCRIPTINLINE>eval_declaration</JAVASCRIPTINLINE> における戻り値
+	<JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> は、
+	宣言がどの関数本体にも含まれないトップレベルで現れる場合にのみ意味を持ちます。
+	ここでは記述を簡潔にするために戻り値
+	<JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> を使っていますが、
+	JavaScript におけるトップレベル構文要素を評価した実際の結果については、
+	演習<SPACE/><REF NAME="ex:value_producing"/>で説明します。
+	  </JA>
+	</BILINGUAL>
 
-	<LABEL NAME="foot:value_producing_2"/>	
+	<LABEL NAME="foot:value_producing_2"/>
 
 	<SNIPPET PAGE="368" HIDE="yes">
 	  <NAME>eval_definition_example</NAME>
@@ -1379,6 +1729,8 @@ evaluate(my_program, the_global_environment);
     </SCHEME>
     <JAVASCRIPT>
       <EXERCISE>
+	<BILINGUAL>
+	  <EN>
 	Notice that we cannot tell whether the metacircular evaluator
 	<INDEX>order of evaluation<SUBINDEX><ORDER>metacircular</ORDER>in metacircular evaluator</SUBINDEX></INDEX>
 	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>order of argument evaluation</SUBINDEX></INDEX>
@@ -1398,13 +1750,33 @@ evaluate(my_program, the_global_environment);
 	order of evaluation in the underlying JavaScript. Also write a version of
 	<JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE> that evaluates
 	argument expressions from right to left.
+	  </EN>
+	  <JA>
+	このメタ循環評価器が
+	<INDEX>order of evaluation<SUBINDEX><ORDER>metacircular</ORDER>in metacircular evaluator</SUBINDEX></INDEX>
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>order of argument evaluation</SUBINDEX></INDEX>
+	引数式を左から右に評価するのか、それとも右から左に評価するのかは、
+	この評価器を見ただけでは分からないことに注意してください。
+	その評価順序は、土台となっている JavaScript から引き継がれます。
+	すなわち、<JAVASCRIPTINLINE>map</JAVASCRIPTINLINE> 内の
+	<JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE> への引数が左から右に評価されるのであれば、
+	<JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE> は引数式を左から右に評価します。
+	逆に <JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE> への引数が右から左に評価されるのであれば、
+	<JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE> は引数式を右から左に評価します。
+	<P/>
+	土台となっている JavaScript の評価順序にかかわらず、
+	引数式を左から右に評価する <JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE> を書いてください。
+	また、引数式を右から左に評価する
+	<JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE> も書いてください。
+	  </JA>
+	</BILINGUAL>
 	<LABEL NAME="ex:arg-eval-order"/>
       </EXERCISE>
     </JAVASCRIPT>
   </SPLIT>
 
   <!-- test cases -->
-  
+
   <SNIPPET HIDE="yes">
     <NAME>parse_and_evaluate</NAME>
     <REQUIRES>functions_4_1_1</REQUIRES>
@@ -1464,4 +1836,3 @@ tail(map(x => x + 1, list(1, 2, 3, 4)));          ");
     </JAVASCRIPT>
   </SNIPPET>
 </SUBSECTION>
-

@@ -247,6 +247,26 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | timing constraint | タイミング上の制約 | |
 | timing diagram | タイミング図 | |
 
+### メタ言語的抽象化・評価器（Chapter 4）
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| metalinguistic abstraction | メタ言語的抽象化 | Chapter 4 のキー概念 |
+| metacircular evaluator | メタ循環評価器 | 同じ言語で書かれた評価器 |
+| implemented language / implementation language | 実装対象の言語 / 実装言語 | 評価器で実装される言語とそれを実装する言語の区別 |
+| component | コンポーネント | プログラムの文または式をまとめて指す用語。Chapter 4 で頻出 |
+| syntax predicate | 構文述語 | `is_name`, `is_application` など |
+| abstract syntax | 抽象構文 | 具体的表現から独立した構文 |
+| literal expression | リテラル式 | 数値などそのままの値を返す式 |
+| operator combination | 演算子の組み合わせ | `1 + 2` のような演算子式 |
+| function expression | 関数式 | 関数適用の関数部分の式 |
+| argument expression | 引数式 | 関数適用の引数部分の式 |
+| syntactic form | 構文形式 | 条件式やブロックなど |
+| return value | 戻り値 | 「返り値」ではない |
+| return expression | return 式 | return 文の中の式 |
+| scan out declarations / scanning out | スキャンアウト | ブロック内の宣言を事前に収集する処理 |
+| is_truthy / truthiness | is_truthy / 真理性 | 条件式の値を真偽値化する |
+
 ### その他
 
 | 英語 | 日本語 | 備考 |
