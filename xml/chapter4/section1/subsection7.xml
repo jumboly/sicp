@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Separating Syntactic Analysis from Execution
+    <BILINGUAL>
+    <EN>Separating Syntactic Analysis from Execution</EN>
+    <JA>構文解析と実行の分離</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:separating-analysis"/>
@@ -10,6 +13,8 @@
   <INDEX>metacircular evaluator for JavaScript<SUBINDEX>analyzing version<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The evaluator implemented above is simple, but it is very
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX>efficiency of</SUBINDEX></INDEX>
     <INDEX>efficiency<SUBINDEX><ORDER>evaluation</ORDER>of evaluation</SUBINDEX></INDEX>
@@ -29,6 +34,27 @@
     <JAVASCRIPT><JAVASCRIPTINLINE>factorial(4)</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE> using the following definition of
     <SCHEMEINLINE>factorial</SCHEMEINLINE>:
+    </EN>
+    <JA>
+    上で実装した評価器はシンプルですが、非常に
+    <INDEX>metacircular evaluator for JavaScript<SUBINDEX>efficiency of</SUBINDEX></INDEX>
+    <INDEX>efficiency<SUBINDEX><ORDER>evaluation</ORDER>of evaluation</SUBINDEX></INDEX>
+    非効率的です。なぜなら、
+    <SPLITINLINE>
+      <SCHEME>
+	式
+      </SCHEME>
+      <JAVASCRIPT>
+	コンポーネント
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の構文解析がその実行と混在しているからです。そのため、プログラムが何度も実行されると、その構文も何度も解析されることになります。例えば、次の
+    <SCHEMEINLINE>factorial</SCHEMEINLINE> の定義を使って
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>(factorial 4)</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>factorial(4)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE> を評価する場合を考えてみましょう：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>factorial_4_1_7</NAME>
       <EXAMPLE>factorial_example</EXAMPLE>
@@ -50,6 +76,8 @@ function factorial(n) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Each time <SCHEMEINLINE>factorial</SCHEMEINLINE> is called, the evaluator
     must determine that the body is
     <SPLITINLINE>
@@ -73,7 +101,7 @@ function factorial(n) {
       <JAVASCRIPT><JAVASCRIPTINLINE>factorial(n - 1)</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    and 
+    and
     <SPLITINLINE><SCHEME><SCHEMEINLINE>(- n 1)</SCHEMEINLINE>,</SCHEME>
     <JAVASCRIPT><JAVASCRIPTINLINE>n - 1</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
@@ -89,25 +117,85 @@ function factorial(n) {
     </SPLITINLINE>
     This analysis is expensive.
     Performing it repeatedly is wasteful.
+    </EN>
+    <JA>
+    <SCHEMEINLINE>factorial</SCHEMEINLINE> が呼ばれるたびに、評価器は本体が
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>if</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>条件
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    式であることを判定し、述語を取り出さなければなりません。その後にようやく述語を評価し、その値に基づいて分岐できます。式
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(* (factorial (- n 1)) n)</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>factorial(n - 1) * n</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    や、部分式
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(factorial (- n 1))</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>factorial(n - 1)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    や
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>(- n 1)</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT><JAVASCRIPTINLINE>n - 1</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を評価するたびに、評価器は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    で場合分けを行い、式が関数適用であることを判定し、
+    <SPLITINLINE>
+      <SCHEME>その演算子とオペランドを取り出さなければなりません。</SCHEME>
+      <JAVASCRIPT>その関数式と引数式を取り出さなければなりません。</JAVASCRIPT>
+    </SPLITINLINE>
+    この解析はコストが高く、繰り返し行うのは無駄です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <DO_BREAK_PAGE/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can transform the evaluator to be significantly more efficient by
     arranging things so that syntactic analysis is performed only
-    once.<FOOTNOTE>This technique is an integral part of the compilation
+    once.</EN>
+    <JA>
+    構文解析が一度だけ行われるように仕組みを整えることで、評価器を大幅に効率化できます。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>This technique is an integral part of the compilation
     process, which we shall discuss in chapter<SPACE/><REF NAME="chap:reg"></REF>.  Jonathan Rees wrote
     a Scheme
-    interpreter like this in about 1982 for the T project 
+    interpreter like this in about 1982 for the T project
     <INDEX>Rees, Jonathan A.</INDEX>
     <INDEX>Adams, Norman I., IV</INDEX>
-    (<CITATION>Rees and Adams 1982</CITATION>).  
+    (<CITATION>Rees and Adams 1982</CITATION>).
     <INDEX>Feeley, Marc</INDEX>
     Marc <CITATION>Feeley 1986</CITATION>
     (see also
     <INDEX>Lapalme, Guy</INDEX>
     <CITATION>Feeley and Lapalme 1987</CITATION>)
     independently invented this technique
-    in his master<APOS/>s thesis.</FOOTNOTE> We split
+    in his master<APOS/>s thesis.</EN>
+    <JA>この技法はコンパイルのプロセスに不可欠な部分であり、第<SPACE/><REF NAME="chap:reg"></REF>章で議論します。Jonathan Rees は 1982 年頃に T プロジェクト
+    <INDEX>Rees, Jonathan A.</INDEX>
+    <INDEX>Adams, Norman I., IV</INDEX>
+    （<CITATION>Rees and Adams 1982</CITATION>）のためにこのような Scheme インタプリタを書きました。
+    <INDEX>Feeley, Marc</INDEX>
+    Marc <CITATION>Feeley 1986</CITATION>
+    （
+    <INDEX>Lapalme, Guy</INDEX>
+    <CITATION>Feeley and Lapalme 1987</CITATION> も参照）は、修士論文でこの技法を独立に発明しました。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN> We split
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>,</JAVASCRIPT>
@@ -128,7 +216,7 @@ function factorial(n) {
     It performs the syntactic
     analysis and returns a new
     <SPLITINLINE><SCHEME>procedure</SCHEME>
-    <JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>, the 
+    <JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>, the
     <INDEX>execution <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE><SUBINDEX>in analyzing evaluator</SUBINDEX></INDEX>
     <EM>execution
     <SPLITINLINE><SCHEME>procedure</SCHEME>
@@ -152,15 +240,60 @@ function factorial(n) {
     <SPLITINLINE><SCHEME>procedure</SCHEME>
     <JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>
     may be called many times.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を、
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>コンポーネント</JAVASCRIPT>
+    </SPLITINLINE>
+    と環境を受け取る関数から、二つの部分に分割します。関数
+    <SCHEMEINLINE>analyze</SCHEMEINLINE> は
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>コンポーネント</JAVASCRIPT>
+    </SPLITINLINE>
+    だけを受け取ります。これは構文解析を行い、解析された
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>コンポーネント</JAVASCRIPT>
+    </SPLITINLINE>
+    を実行するために必要な作業をカプセル化した新しい関数、
+    <INDEX>execution <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE><SUBINDEX>in analyzing evaluator</SUBINDEX></INDEX>
+    <EM>実行関数</EM>を返します。実行関数は環境を引数として受け取り、評価を完了します。これによって作業が節約されます。なぜなら、
+    <SCHEMEINLINE>analyze</SCHEMEINLINE> は
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>コンポーネント</JAVASCRIPT>
+    </SPLITINLINE>
+    に対して一度だけ呼び出されるのに対し、実行関数は何度も呼び出される可能性があるからです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     With the separation into analysis and execution,
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     now becomes
+    </EN>
+    <JA>
+    解析と実行を分離したことで、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は次のようになります。
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>analyze_headline</NAME>
       <JAVASCRIPT>
@@ -194,6 +327,8 @@ evaluate(parse("{ function f(x) { return x + 1; } f(4); }"),
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The result of calling <SCHEMEINLINE>analyze</SCHEMEINLINE> is the execution
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -215,6 +350,16 @@ evaluate(parse("{ function f(x) { return x + 1; } f(4); }"),
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     to which we dispatch perform only analysis, not full evaluation:
+    </EN>
+    <JA>
+    <SCHEMEINLINE>analyze</SCHEMEINLINE> を呼び出した結果は、環境に適用される実行関数です。<SCHEMEINLINE>analyze</SCHEMEINLINE> 関数は、<SPACE/><REF NAME="sec:core-of-evaluator"/> 節の元の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と同じ場合分けを行いますが、ディスパッチ先の関数は完全な評価ではなく解析のみを行う点が異なります：
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>analyze_example</NAME>
       <JAVASCRIPT>
@@ -292,6 +437,8 @@ function analyze(component) {
   </TEXT>
   <INDEX><USE>analyze_...</USE><SUBINDEX>metacircular</SUBINDEX><OPEN/></INDEX>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Here is the simplest syntactic analysis
     <SPLITINLINE>
       <SCHEME>
@@ -313,6 +460,24 @@ function analyze(component) {
       <SCHEME>expression:</SCHEME>
       <JAVASCRIPT>value of the literal:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    最も単純な構文解析関数は、
+    <SPLITINLINE>
+      <SCHEME>
+	自己評価式を処理するものです。
+      </SCHEME>
+      <JAVASCRIPT>
+	リテラル式を処理するものです。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    これは環境引数を無視し、
+    <SPLITINLINE>
+      <SCHEME>式そのものを返す実行関数を返します：</SCHEME>
+      <JAVASCRIPT>リテラルの値を返す実行関数を返します：</JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>analyze_literal_example</NAME>
       <JAVASCRIPT>
@@ -359,20 +524,35 @@ function analyze_literal(component) {
   </SPLIT>
   
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Looking up
     <SPLITINLINE>
       <SCHEME>
-	a variable value	    
+	a variable value
       </SCHEME>
       <JAVASCRIPT>
 	the value of a name
       </JAVASCRIPT>
     </SPLITINLINE>
     must still be done in the execution phase, since this depends upon knowing
-    the environment.<FOOTNOTE>There is, however, an important part of the
+    the environment.</EN>
+    <JA>
     <SPLITINLINE>
       <SCHEME>
-	variable search    
+	変数の値
+      </SCHEME>
+      <JAVASCRIPT>
+	名前の値
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の検索は、環境を知っている必要があるため、実行フェーズで行わなければなりません。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>There is, however, an important part of the
+    <SPLITINLINE>
+      <SCHEME>
+	variable search
       </SCHEME>
       <JAVASCRIPT>
 	search for a name
@@ -382,7 +562,18 @@ function analyze_literal(component) {
        As we will show in section<SPACE/><REF NAME="sec:lexical-addressing"/>,
 	one can determine the position in the environment structure where the
 	value of the variable will be found, thus obviating the need to scan the
-	environment for the entry that matches the variable.
+	environment for the entry that matches the variable.</EN>
+    <JA>しかし、
+    <SPLITINLINE>
+      <SCHEME>
+	変数の検索
+      </SCHEME>
+      <JAVASCRIPT>
+	名前の検索
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の重要な部分は構文解析の一部として行う<EM>ことができます</EM>。<SPACE/><REF NAME="sec:lexical-addressing"/> 節で示すように、変数の値が見つかる環境構造内の位置を決定でき、それによって変数に一致するエントリを環境から走査する必要がなくなります。</JA>
+    </BILINGUAL>
 </FOOTNOTE>
     <SNIPPET HIDE="yes">
       <NAME>analyze_variable_example</NAME>
@@ -414,6 +605,8 @@ function analyze_name(component) {
 
   <SPLIT>
     <JAVASCRIPT>
+    <BILINGUAL>
+    <EN>
     To analyze an application, we analyze the
     function expression and argument expressions
     and construct an execution function that calls the
@@ -430,6 +623,14 @@ function analyze_name(component) {
     has already been analyzed, so there is no need to do further analysis.
     Instead, we just call the execution function
     for the body on the extended environment.
+    </EN>
+    <JA>
+    関数適用を解析するには、関数式と引数式を解析し、関数式の実行関数（適用される実際の関数を得るため）と引数式の実行関数（実際の引数を得るため）を呼び出す実行関数を構築します。次に、これらを
+    	<JAVASCRIPTINLINE>execute_application</JAVASCRIPTINLINE>
+    に渡します。これは<SPACE/><REF NAME="sec:core-of-evaluator"/> 節の <SCHEMEINLINE>apply</SCHEMEINLINE> に相当するものです。関数 <JAVASCRIPTINLINE>execute_application</JAVASCRIPTINLINE>
+    が <SCHEMEINLINE>apply</SCHEMEINLINE> と異なるのは、複合関数の本体がすでに解析済みなので、さらなる解析の必要がない点です。代わりに、拡張された環境に対して本体の実行関数を呼び出すだけです。
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>analyze_application_example</NAME>
       <REQUIRES>analyze</REQUIRES>
@@ -473,9 +674,16 @@ function execute_application(fun, args) {
   <SPLIT>
     <JAVASCRIPT>
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	For conditionals,
 	we extract and analyze the predicate, consequent, and alternative at
 	analysis time.
+	</EN>
+	<JA>
+	条件式については、解析時に述語、帰結式、代替式を取り出して解析します。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET HIDE="yes">
 	  <NAME>analyze_if_example</NAME>
 	  <REQUIRES>analyze</REQUIRES>
@@ -500,6 +708,8 @@ function analyze_conditional(component) {
       </TEXT>
 
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	Analyzing a
 	lambda
 	expression also achieves a major gain in efficiency: We analyze the
@@ -507,6 +717,11 @@ function analyze_conditional(component) {
 	functions resulting from evaluation of the
 	lambda expression
 	may be applied many times.
+	</EN>
+	<JA>
+	ラムダ式の解析でも効率が大幅に向上します。ラムダ式の評価から生じる関数は何度も適用される可能性がありますが、ラムダ本体の解析は一度だけ行います。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET HIDE="yes">
 	  <NAME>analyze_lambda_example</NAME>
 	  <REQUIRES>analyze</REQUIRES>
@@ -534,10 +749,22 @@ function analyze_lambda_expression(component) {
 
 
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	Analysis of a sequence of
-	statements is more 
-	involved.<FOOTNOTE>See exercise<SPACE/><REF NAME="ex:analyze-sequence"/> for
-	some insight into the processing of sequences.</FOOTNOTE> Each
+	statements is more
+	involved.</EN>
+	<JA>
+	文のシーケンスの解析はもう少し複雑です。</JA>
+	</BILINGUAL><FOOTNOTE>
+	<BILINGUAL>
+	<EN>See exercise<SPACE/><REF NAME="ex:analyze-sequence"/> for
+	some insight into the processing of sequences.</EN>
+	<JA>シーケンスの処理に関する洞察については、練習問題<SPACE/><REF NAME="ex:analyze-sequence"/> を参照してください。</JA>
+	</BILINGUAL>
+	</FOOTNOTE>
+	<BILINGUAL>
+	<EN> Each
 	    statement
 	in the sequence is analyzed, yielding an execution
 	function. These execution functions
@@ -545,6 +772,11 @@ function analyze_lambda_expression(component) {
 	function that takes an environment as argument and sequentially
 	calls each individual execution
 	function with the environment as argument.
+	</EN>
+	<JA>
+	シーケンス内の各文が解析され、実行関数が生成されます。これらの実行関数は組み合わされて、環境を引数として受け取り、各実行関数を環境を引数として順番に呼び出す実行関数が作られます。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET HIDE="yes">
 	  <NAME>analyze_sequence_example</NAME>
 	  <REQUIRES>analyze</REQUIRES>
@@ -585,10 +817,17 @@ function analyze_sequence(stmts) {
 
   <DO_BREAK_PAGE/>
             <TEXT>
+	<BILINGUAL>
+	<EN>
 	The body of a
 	block is scanned only once for local declarations.
 	The bindings are installed in the environment when
 	the execution function for the block is called.
+	</EN>
+	<JA>
+	ブロックの本体は、ローカル宣言を一度だけスキャンアウトします。束縛は、ブロックの実行関数が呼び出されたときに環境にインストールされます。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET HIDE="yes">
 	  <NAME>analyze_block_example</NAME>
 	  <REQUIRES>analyze</REQUIRES>
@@ -616,10 +855,17 @@ function analyze_block(component) {
 
       
             <TEXT>
+	<BILINGUAL>
+	<EN>
 	For return statements, we analyze the return expression.
 	The execution function for the return statement simply calls
 	the execution function for the return expression and wraps
 	the result in a return value.
+	</EN>
+	<JA>
+	return 文については、return 式を解析します。return 文の実行関数は、return 式の実行関数を呼び出し、その結果を戻り値でラップするだけです。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET HIDE="yes">
 	  <NAME>analyze_return_statement_example</NAME>
 	  <REQUIRES>analyze</REQUIRES>
@@ -646,6 +892,8 @@ function analyze_return_statement(component) {
   </SPLIT>
   
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>Analyze-assignment</SCHEMEINLINE>
@@ -658,7 +906,7 @@ function analyze_return_statement(component) {
     environment has been supplied.  However, the fact that the
     <SPLITINLINE>
       <SCHEME>
-	<SCHEMEINLINE>assignment-value</SCHEMEINLINE> expression 
+	<SCHEMEINLINE>assignment-value</SCHEMEINLINE> expression
       </SCHEME>
       <JAVASCRIPT>
 	assignment-value expression
@@ -679,6 +927,23 @@ function analyze_return_statement(component) {
       <SCHEME>definitions.</SCHEME>
       <JAVASCRIPT>constant and variable declarations.</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>Analyze-assignment</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>関数
+      <JAVASCRIPTINLINE>analyze_assignment</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、環境が提供される実行時まで、変数の実際の設定を遅延させなければなりません。しかし、代入値式を解析時に（再帰的に）解析できるという事実は、効率の大きな向上です。なぜなら、代入値式は一度だけ解析されるようになるからです。同じことは
+    <SPLITINLINE>
+      <SCHEME>定義にも当てはまります。</SCHEME>
+      <JAVASCRIPT>定数宣言と変数宣言にも当てはまります。</JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>analyze_assignment_example</NAME>
       <REQUIRES>analyze</REQUIRES>
@@ -861,6 +1126,8 @@ function analyze_declaration(component) {
     </SCHEME>
   </SPLIT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Our new evaluator uses the same data structures, syntax
     <SPLITINLINE>
       <SCHEME>procedures,</SCHEME>
@@ -874,6 +1141,11 @@ function analyze_declaration(component) {
     as in sections<SPACE/><REF NAME="sec:representing-expressions"/>,
     <SPACE/><REF NAME="sec:eval-data-structures"/>,
     and<SPACE/><REF NAME="sec:running-eval"/>.
+    </EN>
+    <JA>
+    新しい評価器は、<SPACE/><REF NAME="sec:representing-expressions"/> 節、<SPACE/><REF NAME="sec:eval-data-structures"/> 節、<SPACE/><REF NAME="sec:running-eval"/> 節と同じデータ構造、構文関数、およびランタイムサポート関数を使用します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <INDEX><USE>analyze_...</USE><SUBINDEX>metacircular</SUBINDEX><CLOSE/></INDEX>
   <EXERCISE>
@@ -886,15 +1158,27 @@ function analyze_declaration(component) {
 	<LABEL NAME="ex:implement-analyze-let"/>
     </SCHEME>
     <JAVASCRIPT>
+      <BILINGUAL>
+      <EN>
       Extend the evaluator in this section to support
       <INDEX>while loop<SUBINDEX><ORDER>analyzing</ORDER>implementing in analyzing evaluator</SUBINDEX></INDEX>
       while loops.
 	(See exercise<SPACE/><REF NAME="ex:while_loop"/>.)
+      </EN>
+      <JA>
+      この節の評価器を拡張して、
+      <INDEX>while loop<SUBINDEX><ORDER>analyzing</ORDER>implementing in analyzing evaluator</SUBINDEX></INDEX>
+      while ループをサポートするようにしてください。
+	（練習問題<SPACE/><REF NAME="ex:while_loop"/> を参照。）
+      </JA>
+      </BILINGUAL>
     </JAVASCRIPT>
     </SPLIT>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Alyssa P. Hacker doesn<APOS/>t understand why
     <INDEX><USE>analyze_...</USE><SUBINDEX>metacircular</SUBINDEX></INDEX>
     <SPLITINLINE>
@@ -932,6 +1216,35 @@ function analyze_declaration(component) {
       </JAVASCRIPT>
     </SPLITINLINE>
     to look like this:
+    </EN>
+    <JA>
+    Alyssa P. Hacker は、なぜ
+    <INDEX><USE>analyze_...</USE><SUBINDEX>metacircular</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>analyze-sequence</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>analyze_sequence</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    がこんなに複雑でなければならないのか理解できません。他のすべての解析関数は、<SPACE/><REF NAME="sec:core-of-evaluator"/> 節の対応する評価関数（または
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の節）の素直な変換です。彼女は
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>analyze-sequence</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>analyze_sequence</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    が次のようになると予想していました：
+    </JA>
+    </BILINGUAL>
     <!-- 
 	 %***But note one drawback - - eval-sequence used first-exp/etc.
 	 %(the not-really-a-data-abstraction selectors), whereas this
@@ -970,8 +1283,10 @@ function analyze_sequence(stmts) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Eva Lu Ator explains to Alyssa that the version in the text does more of the
-    work of evaluating a sequence at analysis time. Alyssa<APOS/>s 
+    work of evaluating a sequence at analysis time. Alyssa<APOS/>s
     <SPLITINLINE>
       <SCHEME>sequence-execution procedure,
       </SCHEME>
@@ -1027,11 +1342,42 @@ function analyze_sequence(stmts) {
     </SPLITINLINE>
     produced by the program in the text above?  How do the two versions compare
     for a sequence with two expressions?
+    </EN>
+    <JA>
+    Eva Lu Ator は Alyssa に、本文のバージョンの方がシーケンスの評価作業をより多く解析時に行うと説明します。Alyssa の
+    <SPLITINLINE>
+      <SCHEME>シーケンス実行手続きは、
+      </SCHEME>
+      <JAVASCRIPT>
+	シーケンス実行関数は、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    個々の実行関数の呼び出しを組み込むのではなく、実行関数をループして呼び出します。つまり、個々の
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>文</JAVASCRIPT>
+    </SPLITINLINE>
+    は解析されていますが、シーケンス自体は解析されていないことになります。
+    <P/>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>analyze-sequence</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>analyze_sequence</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の二つのバージョンを比較してください。例えば、シーケンスが一つの
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>文</JAVASCRIPT>
+    </SPLITINLINE>
+    だけを含む（関数本体に典型的な）一般的なケースを考えてみましょう。Alyssa のプログラムが生成する実行関数はどのような作業を行うでしょうか？上の本文のプログラムが生成する実行関数はどうでしょうか？二つの式を含むシーケンスの場合、二つのバージョンはどのように比較されるでしょうか？
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:analyze-sequence"/>
   </EXERCISE>
   
   <EXERCISE>
     <LABEL NAME="ex:meta_speed"/>
+    <BILINGUAL>
+    <EN>
     Design and carry out some experiments to compare the speed of the original
     metacircular evaluator with the version in this section.  Use your results
     to estimate the fraction of time that is spent in analysis versus execution
@@ -1040,6 +1386,11 @@ function analyze_sequence(stmts) {
       <SCHEME>procedures.</SCHEME>
       <JAVASCRIPT>functions.</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    元のメタ循環評価器とこの節のバージョンの速度を比較するいくつかの実験を設計して実施してください。結果を使って、さまざまな関数について、解析と実行にそれぞれ費やされる時間の割合を推定してください。
+    </JA>
+    </BILINGUAL>
   </EXERCISE>
 
   <INDEX>syntactic analysis, separated from execution<SUBINDEX>in metacircular evaluator<CLOSE/></SUBINDEX></INDEX>

@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Running the Evaluator as a Program
+    <BILINGUAL>
+    <EN>Running the Evaluator as a Program</EN>
+    <JA>評価器をプログラムとして実行する</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:running-eval"/>
@@ -8,6 +11,8 @@
   <INDEX>metacircular evaluator for JavaScript<SUBINDEX>running<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Given the evaluator, we have in our hands a description
     <SPLITINLINE>
       <SCHEME>(expressed in Lisp)</SCHEME>
@@ -31,9 +36,36 @@
     </SPLITINLINE>
     itself evaluates expressions.  This can serve as a framework for
     experimenting with evaluation rules, as we shall do later in this chapter.
+    </EN>
+    <JA>
+    評価器があれば、
+    <SPLITINLINE>
+      <SCHEME>Lisp の式</SCHEME>
+      <JAVASCRIPT>JavaScript の文と式</JAVASCRIPT>
+    </SPLITINLINE>
+    がどのように評価されるかのプロセスの記述を
+    <SPLITINLINE>
+      <SCHEME>（Lisp で表現されたものとして）</SCHEME>
+      <JAVASCRIPT>（JavaScript で表現されたものとして）</JAVASCRIPT>
+    </SPLITINLINE>
+    手に入れたことになります。評価器をプログラムとして表現することの利点の一つは、そのプログラムを実行できることです。これにより、
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    の中で動作する、
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    自体が式を評価する仕組みの動くモデルが得られます。これは、この章の後半で行うように、評価規則を実験するためのフレームワークとして利用できます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Our evaluator program reduces expressions ultimately to the application of
     <SPLITINLINE>
       <SCHEME>
@@ -59,9 +91,40 @@
       <SCHEME>procedures.</SCHEME>
       <JAVASCRIPT>functions.</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    私たちの評価器プログラムは、式を最終的に
+    <SPLITINLINE>
+      <SCHEME>
+	<INDEX>metacircular evaluator for Scheme<SUBINDEX>primitive procedures<OPEN/></SUBINDEX></INDEX>
+      </SCHEME>
+      <JAVASCRIPT>
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>primitive functions<OPEN/></SUBINDEX></INDEX>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    プリミティブ
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の適用にまで還元します。したがって、評価器を実行するために必要なのは、基盤となる
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    システムを呼び出してプリミティブ
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の適用をモデル化する仕組みを作ることだけです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     There must be a binding for each primitive
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -78,7 +141,7 @@
       <JAVASCRIPT>function expression</JAVASCRIPT>
     </SPLITINLINE>
     of an application of a primitive, it will find an
-    object to pass to <SCHEMEINLINE>apply</SCHEMEINLINE>.  We thus set up a 
+    object to pass to <SCHEMEINLINE>apply</SCHEMEINLINE>.  We thus set up a
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX>global environment</SUBINDEX></INDEX>
     <INDEX>global environment<SUBINDEX><ORDER>metacircular</ORDER>in metacircular evaluator</SUBINDEX></INDEX>
     global environment that associates unique objects with the names of the
@@ -87,11 +150,11 @@
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions and operators</JAVASCRIPT>
     </SPLITINLINE>
-    that can appear in the expressions we will be evaluating.  
+    that can appear in the expressions we will be evaluating.
     <INDEX>symbol(s)<SUBINDEX>in global environment</SUBINDEX></INDEX>
     <SPLIT>
       <SCHEME>
-	The global environment also includes bindings for the symbols 
+	The global environment also includes bindings for the symbols
 	<INDEX>metacircular evaluator for Scheme<SUBINDEX><ORDER>true and false</ORDER><SCHEMEINLINE>true</SCHEMEINLINE> and <SCHEMEINLINE>false</SCHEMEINLINE></SUBINDEX></INDEX>
 	<SCHEMEINLINE>true</SCHEMEINLINE> and <SCHEMEINLINE>false</SCHEMEINLINE>,
       </SCHEME>
@@ -103,6 +166,49 @@
       </JAVASCRIPT>
     </SPLIT>
     so that they can be used as constants in expressions to be evaluated.
+    </EN>
+    <JA>
+    各プリミティブ
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の名前と演算子には束縛がなければなりません。そうすれば、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    がプリミティブの適用の
+    <SPLITINLINE>
+      <SCHEME>演算子</SCHEME>
+      <JAVASCRIPT>関数式</JAVASCRIPT>
+    </SPLITINLINE>
+    を評価するとき、<SCHEMEINLINE>apply</SCHEMEINLINE> に渡すオブジェクトを見つけることができます。そこで、評価する式に現れ得るプリミティブ
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数と演算子</JAVASCRIPT>
+    </SPLITINLINE>
+    の名前に一意のオブジェクトを対応づける
+    <INDEX>metacircular evaluator for JavaScript<SUBINDEX>global environment</SUBINDEX></INDEX>
+    <INDEX>global environment<SUBINDEX><ORDER>metacircular</ORDER>in metacircular evaluator</SUBINDEX></INDEX>
+    グローバル環境を設定します。
+    <INDEX>symbol(s)<SUBINDEX>in global environment</SUBINDEX></INDEX>
+    <SPLIT>
+      <SCHEME>
+	グローバル環境にはシンボル
+	<INDEX>metacircular evaluator for Scheme<SUBINDEX><ORDER>true and false</ORDER><SCHEMEINLINE>true</SCHEMEINLINE> and <SCHEMEINLINE>false</SCHEMEINLINE></SUBINDEX></INDEX>
+	<SCHEMEINLINE>true</SCHEMEINLINE> と <SCHEMEINLINE>false</SCHEMEINLINE> の束縛も含まれ、
+      </SCHEME>
+      <JAVASCRIPT>
+	グローバル環境には
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX><ORDER>undefined</ORDER><USE>undefined</USE></SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE>
+	やその他の名前の束縛も含まれ、
+      </JAVASCRIPT>
+    </SPLIT>
+    評価される式の中で定数として使用できるようになっています。
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="365" HIDE="yes" EVAL="no">
       <NAME>headline_4_1_4</NAME>
       <JAVASCRIPT>
@@ -197,6 +303,8 @@ the_global_environment;
     </SCHEME>
     <JAVASCRIPT>
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	It does not matter how we represent primitive function objects, so long
 	as <SCHEMEINLINE>apply</SCHEMEINLINE> can identify and apply them using
 	the functions <JAVASCRIPTINLINE>is_primitive_function</JAVASCRIPTINLINE>
@@ -205,6 +313,11 @@ the_global_environment;
 	the string <JAVASCRIPTINLINE>"primitive"</JAVASCRIPTINLINE> and
 	containing a function in the underlying JavaScript that implements that
 	primitive.
+	</EN>
+	<JA>
+	プリミティブ関数オブジェクトをどのように表現するかは重要ではありません。<SCHEMEINLINE>apply</SCHEMEINLINE> が関数 <JAVASCRIPTINLINE>is_primitive_function</JAVASCRIPTINLINE> と <JAVASCRIPTINLINE>apply_primitive_function</JAVASCRIPTINLINE> を使ってそれらを識別し適用できさえすればよいのです。ここでは、プリミティブ関数を文字列 <JAVASCRIPTINLINE>"primitive"</JAVASCRIPTINLINE> で始まり、そのプリミティブを実装する基盤の JavaScript の関数を含むリストとして表現することにしました。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="382">
 	  <INDEX><DECLARATION>is_primitive_function</DECLARATION></INDEX>
 	  <INDEX><DECLARATION>primitive_implementation</DECLARATION></INDEX>
@@ -240,18 +353,39 @@ is_primitive_function(my_primitive_plus);
   </SPLIT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Setup-environment</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The function
       <JAVASCRIPTINLINE>setup_environment</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    will get the primitive names and implementation 
+    will get the primitive names and implementation
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
-    from a list:<FOOTNOTE>Any
+    from a list:
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Setup-environment</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数
+      <JAVASCRIPTINLINE>setup_environment</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、プリミティブの名前と実装
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    をリストから取得します。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    Any
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
@@ -272,15 +406,15 @@ is_primitive_function(my_primitive_plus);
     <SPLITINLINE>
       <SCHEME>Scheme</SCHEME>
       <JAVASCRIPT>JavaScript</JAVASCRIPT>
-    </SPLITINLINE>    
+    </SPLITINLINE>
     itself.
-    Thus, for example, we could put 
+    Thus, for example, we could put
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>(list 'first car)</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>list("first", head)</JAVASCRIPTINLINE>
       </JAVASCRIPT>
-    </SPLITINLINE> 
-    or 
+    </SPLITINLINE>
+    or
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>(list 'square (lambda (x) (* x x)))</SCHEMEINLINE>
       </SCHEME>
@@ -288,12 +422,57 @@ is_primitive_function(my_primitive_plus);
 	<JAVASCRIPTINLINE>list("square", x => x * x)</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    in the list of 
+    in the list of
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>primitive-procedures</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>primitive_functions</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
-    </SPLITINLINE></FOOTNOTE>
+    </SPLITINLINE>
+    </EN>
+    <JA>
+    基盤となる
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    で定義されたどんな
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    も、メタ循環評価器のプリミティブとして使用できます。評価器にインストールされるプリミティブの名前は、基盤となる
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    における実装の名前と同じである必要はありません。ここで名前が同じなのは、メタ循環評価器が
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    自体を実装しているからです。したがって、たとえば
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(list 'first car)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>list("first", head)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    や
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(list 'square (lambda (x) (* x x)))</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>list("square", x => x * x)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>primitive-procedures</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>primitive_functions</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    のリストに入れることもできます。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET PAGE="382" EVAL="no" LATEX="yes">
       <INDEX><DECLARATION>primitive_function_symbols</DECLARATION></INDEX>
       <INDEX><DECLARATION>primitive_function_objects</DECLARATION></INDEX>
@@ -385,9 +564,16 @@ length(primitive_functions);
     </SCHEME>
     <JAVASCRIPT>
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	Similar to primitive functions, we define other primitive constants that are
 	installed in the global environment by the function
 	<JAVASCRIPTINLINE>setup_environment</JAVASCRIPTINLINE>.
+	</EN>
+	<JA>
+	プリミティブ関数と同様に、関数 <JAVASCRIPTINLINE>setup_environment</JAVASCRIPTINLINE> によってグローバル環境にインストールされるその他のプリミティブ定数も定義します。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="382" EVAL="no" LATEX="yes">
 	  <NAME>primitive_constants</NAME>
 	  <EXAMPLE>primitive_constants_example</EXAMPLE>
@@ -432,7 +618,9 @@ length(primitive_constants);
   </SPLIT>
   
   <TEXT>
-    To apply a 
+    <BILINGUAL>
+    <EN>
+    To apply a
     <SPLITINLINE>
       <SCHEME>primitive procedure,</SCHEME>
       <JAVASCRIPT>primitive function,</JAVASCRIPT>
@@ -447,7 +635,27 @@ length(primitive_constants);
       <SCHEME>Lisp</SCHEME>
       <JAVASCRIPT>JavaScript</JAVASCRIPT>
     </SPLITINLINE>
-    system:<FOOTNOTE>
+    system:
+    </EN>
+    <JA>
+    プリミティブ
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を適用するには、基盤となる
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    システムを使って、実装
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を引数に適用するだけです。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
     <SPLIT>
       <SCHEME>    
 	<SCHEMEINLINE>Apply-in-underlying-scheme</SCHEMEINLINE> is the
@@ -476,14 +684,23 @@ length(primitive_constants);
       </SCHEME>
       <JAVASCRIPT>
 	<LABEL NAME="foot:vector-array"/>
-        JavaScript<APOS/>s <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> method 
+	<BILINGUAL>
+	<EN>
+        JavaScript<APOS/>s <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> method
 	expects the function arguments in a <EM>vector</EM>. (Vectors
 	are called <QUOTE>arrays</QUOTE> in JavaScript.)
-	Thus, the <JAVASCRIPTINLINE>arglist</JAVASCRIPTINLINE> is transformed into 
+	Thus, the <JAVASCRIPTINLINE>arglist</JAVASCRIPTINLINE> is transformed into
         a
 	<INDEX>vector (data structure)<SUBINDEX><ORDER>arguments</ORDER>for arguments of <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE></SUBINDEX></INDEX>
 	vector<EMDASH/>here using a while
 	loop (see exercise<SPACE/><REF NAME="ex:while_loop"/>):
+	</EN>
+	<JA>
+        JavaScript の <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> メソッドは、関数の引数を<EM>ベクトル</EM>で受け取ることを期待します。（ベクトルは JavaScript では<QUOTE>配列</QUOTE>と呼ばれます。）そのため、<JAVASCRIPTINLINE>arglist</JAVASCRIPTINLINE> は
+	<INDEX>vector (data structure)<SUBINDEX><ORDER>arguments</ORDER>for arguments of <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE></SUBINDEX></INDEX>
+	ベクトルに変換されます。ここでは while ループを使用しています（演習問題 <REF NAME="ex:while_loop"/> を参照）。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="382"  EVAL="no" LATEX="yes">
 	  <INDEX><DECLARATION>apply_in_underlying_javascript</DECLARATION></INDEX>
 	  <INDEX><USE>apply</USE> (primitive method)</INDEX>
@@ -502,11 +719,18 @@ function apply_in_underlying_javascript(prim, arglist) {
 }
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	We also made use of
 	<JAVASCRIPTINLINE>apply_in_underlying_javascript</JAVASCRIPTINLINE>
 	to declare the function
 	<JAVASCRIPTINLINE>apply_@generic</JAVASCRIPTINLINE>
 	in section<SPACE/><REF NAME="sec:data-directed"/>.
+	</EN>
+	<JA>
+	<JAVASCRIPTINLINE>apply_in_underlying_javascript</JAVASCRIPTINLINE> は、セクション <REF NAME="sec:data-directed"/> で関数 <JAVASCRIPTINLINE>apply_@generic</JAVASCRIPTINLINE> を宣言する際にも使用しました。
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT></FOOTNOTE>
     <SNIPPET PAGE="382">
@@ -611,11 +835,13 @@ apply_primitive_function(my_primitive_plus, list(1, 2));
 	</SNIPPET>
     </SCHEME>
     <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	For convenience in running the metacircular evaluator, we provide a
 	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>driver loop</SUBINDEX></INDEX>
 	<INDEX>driver loop<SUBINDEX><ORDER>metacircular</ORDER>in metacircular evaluator</SUBINDEX></INDEX>
-	<EM>driver loop</EM> that models the read-evaluate-print loop of 
-	the underlying JavaScript system. It prints a 
+	<EM>driver loop</EM> that models the read-evaluate-print loop of
+	the underlying JavaScript system. It prints a
 	<INDEX>prompts</INDEX>
 	<INDEX>prompts<SUBINDEX>metacircular evaluator</SUBINDEX></INDEX>
 	<EM>prompt</EM> and reads an input program as a string.
@@ -635,6 +861,17 @@ apply_primitive_function(my_primitive_plus, list(1, 2));
 	<JAVASCRIPTINLINE>"*unassigned*"</JAVASCRIPTINLINE>, and evaluates
 	the program with respect to the extended environment, which
 	is then passed as argument to the next iteration of the driver loop.
+	</EN>
+	<JA>
+	メタ循環評価器を便利に実行するために、基盤となる JavaScript システムの read-evaluate-print ループをモデル化する
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>driver loop</SUBINDEX></INDEX>
+	<INDEX>driver loop<SUBINDEX><ORDER>metacircular</ORDER>in metacircular evaluator</SUBINDEX></INDEX>
+	<EM>ドライバループ</EM>を用意します。これは
+	<INDEX>prompts</INDEX>
+	<INDEX>prompts<SUBINDEX>metacircular evaluator</SUBINDEX></INDEX>
+	<EM>プロンプト</EM>を表示し、入力プログラムを文字列として読み込みます。プログラム文字列は、セクション <REF NAME="sec:representing-expressions"/> で説明したように、文のタグ付きリスト表現に変換されます。この処理は構文解析と呼ばれ、プリミティブ関数 <JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> によって行われます。各出力結果の前に<EM>出力プロンプト</EM>を付けて、プログラムの値を出力される可能性のある他の出力と区別します。ドライバループは、前のプログラムのプログラム環境を引数として受け取ります。セクション <REF NAME="sec:env-internal-def"/> の最後で説明したように、ドライバループはプログラムをブロックの中にあるかのように扱います。つまり、宣言をスキャンアウトし、各名前を <JAVASCRIPTINLINE>"*unassigned*"</JAVASCRIPTINLINE> に束縛するフレームで与えられた環境を拡張し、拡張された環境に対してプログラムを評価します。その環境は次のドライバループの反復に引数として渡されます。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="383">
 	  <INDEX><DECLARATION>driver_loop</DECLARATION><SUBINDEX>for metacircular evaluator</SUBINDEX></INDEX>
 	  <NAME>driver_loop</NAME>
@@ -697,8 +934,15 @@ function driver_loop(env, history) {
       <SCHEME>
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	We use JavaScript's <JAVASCRIPTINLINE>prompt</JAVASCRIPTINLINE> function
 	to request and read the input string from the user:
+	</EN>
+	<JA>
+	JavaScript の <JAVASCRIPTINLINE>prompt</JAVASCRIPTINLINE> 関数を使って、ユーザーに入力文字列を要求し読み込みます。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="383">
 	  <INDEX><DECLARATION>user_read</DECLARATION></INDEX>
 	  <NAME>user_read</NAME>
@@ -710,6 +954,8 @@ function user_read(prompt_string) {
 	</SNIPPET>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     The function
     <INDEX><USE>prompt</USE> (primitive function)</INDEX>
     <INDEX><PRIMITIVE/><SUBINDEX><USE>prompt</USE> (\textit{ns})</SUBINDEX></INDEX>
@@ -727,6 +973,24 @@ function user_read(prompt_string) {
       <JAVASCRIPT>function,</JAVASCRIPT>
     </SPLITINLINE>
     which may be a very long list (or may even contain cycles).
+    </EN>
+    <JA>
+    関数
+    <INDEX><USE>prompt</USE> (primitive function)</INDEX>
+    <INDEX><PRIMITIVE/><SUBINDEX><USE>prompt</USE> (\textit{ns})</SUBINDEX></INDEX>
+    <JAVASCRIPTINLINE>prompt</JAVASCRIPTINLINE> は、ユーザーが入力をキャンセルすると <JAVASCRIPTINLINE>null</JAVASCRIPTINLINE> を返します。複合
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の環境部分は非常に長いリストになる可能性があり（あるいは循環を含むことさえあり）、それを表示しないようにするため、特別な表示用の
+    <SPLITINLINE>
+      <SCHEME>手続き <SCHEMEINLINE>user-print</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>user_print</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使います。
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="383">
       <INDEX><DECLARATION>user_print</DECLARATION></INDEX>
       <NAME>user_print</NAME>
@@ -787,8 +1051,15 @@ user_print("output: ",
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Now all we need to do to run the evaluator is to initialize the global
     environment and start the driver loop.  Here is a sample interaction:
+    </EN>
+    <JA>
+    あとは、グローバル環境を初期化してドライバループを開始するだけで評価器を実行できます。以下にサンプルのやり取りを示します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="383-384">
       <NAME>driver_loop_example</NAME>
       <REQUIRES>driver_loop</REQUIRES>
@@ -890,6 +1161,8 @@ M-evaluate value:
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Eva Lu Ator and Louis Reasoner are each experimenting with the
     metacircular evaluator.  Eva types in the definition of
     <SCHEMEINLINE>map</SCHEMEINLINE>, and runs some test programs that use it.
@@ -898,6 +1171,11 @@ M-evaluate value:
     evaluator.  When he tries it, things go terribly wrong.  Explain why
     Louis<APOS/>s <SCHEMEINLINE>map</SCHEMEINLINE> fails even though
     Eva<APOS/>s works.
+    </EN>
+    <JA>
+    Eva Lu Ator と Louis Reasoner はそれぞれメタ循環評価器を使って実験しています。Eva は <SCHEMEINLINE>map</SCHEMEINLINE> の定義を入力し、それを使ういくつかのテストプログラムを実行します。問題なく動作します。一方 Louis は、システムバージョンの <SCHEMEINLINE>map</SCHEMEINLINE> をメタ循環評価器のプリミティブとしてインストールしました。それを試すと、うまく動作しません。Eva のものは動作するのに、Louis の <SCHEMEINLINE>map</SCHEMEINLINE> が失敗する理由を説明してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:mceval-map"/>
   </EXERCISE>
 
