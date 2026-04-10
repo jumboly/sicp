@@ -1,11 +1,16 @@
 <SUBSECTION>
   <NAME>
-    Evaluator Data Structures
+    <BILINGUAL>
+    <EN>Evaluator Data Structures</EN>
+    <JA>評価器のデータ構造</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:eval-data-structures"/>
   <TEXT>
-    In addition to defining the 
+    <BILINGUAL>
+    <EN>
+    In addition to defining the
     <SPLITINLINE>
       <SCHEME>external syntax of expressions,</SCHEME>
       <JAVASCRIPT>representation of components,</JAVASCRIPT>
@@ -18,6 +23,20 @@
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     and environments and the representation of true and false.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>式の外部構文</SCHEME>
+      <JAVASCRIPT>コンポーネントの表現</JAVASCRIPT>
+    </SPLITINLINE>
+    の定義に加えて、評価器の実装では、プログラムの実行の一部として評価器が内部的に操作するデータ構造も定義しなければなりません。たとえば、
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    と環境の表現、および真と偽の表現です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SUBHEADING>
@@ -34,25 +53,52 @@
 	<SCHEMEINLINE>false</SCHEMEINLINE> object.
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	In order to limit the predicate expressions of conditionals to proper
 	predicates (expressions that evaluate to a boolean value) as we do throughout
-	this book, we insist here that the function 
+	this book, we insist here that the function
 	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>representation of true and false</SUBINDEX></INDEX>
 	<JAVASCRIPTINLINE>is_truthy</JAVASCRIPTINLINE> gets applied only to
 	boolean values, and we accept only the boolean value
 	<JAVASCRIPTINLINE>true</JAVASCRIPTINLINE> to be truthy.
       The opposite of
       <JAVASCRIPTINLINE>is_truthy</JAVASCRIPTINLINE> is called
-      <JAVASCRIPTINLINE>is_falsy</JAVASCRIPTINLINE>.<FOOTNOTE>Conditionals
+      <JAVASCRIPTINLINE>is_falsy</JAVASCRIPTINLINE>.
+	</EN>
+	<JA>
+	本書を通じて行っているように、条件式の述語式を適切な述語（真偽値に評価される式）に限定するため、ここでは関数
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>representation of true and false</SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>is_truthy</JAVASCRIPTINLINE> が真偽値にのみ適用されることを要求し、真偽値
+	<JAVASCRIPTINLINE>true</JAVASCRIPTINLINE> だけを truthy として受け入れます。
+      <JAVASCRIPTINLINE>is_truthy</JAVASCRIPTINLINE> の反対は
+      <JAVASCRIPTINLINE>is_falsy</JAVASCRIPTINLINE> と呼びます。
+	</JA>
+	</BILINGUAL>
+	<FOOTNOTE>
+      <BILINGUAL>
+      <EN>
+      Conditionals
       <LABEL NAME="foot:truthy"/>
       in full JavaScript accept <EM>any</EM> value, not just a boolean,
       as the result of evaluating the
 	<QUOTE>predicate</QUOTE> expression. JavaScript's notion of
-	truthiness and falsiness is captured by the following variants of 
+	truthiness and falsiness is captured by the following variants of
 	<JAVASCRIPTINLINE>is_truthy</JAVASCRIPTINLINE> and
 	<JAVASCRIPTINLINE>is_falsy</JAVASCRIPTINLINE>:
 	<INDEX>truthiness</INDEX>
 	<INDEX>falsiness</INDEX>
+      </EN>
+      <JA>
+      フルの JavaScript では、条件式は
+      <LABEL NAME="foot:truthy"/>
+      <QUOTE>述語</QUOTE>式の評価結果として真偽値だけでなく<EM>任意の</EM>値を受け入れます。JavaScript の truthiness と falsiness の概念は、以下の
+	<JAVASCRIPTINLINE>is_truthy</JAVASCRIPTINLINE> と
+	<JAVASCRIPTINLINE>is_falsy</JAVASCRIPTINLINE> の変形版で捉えられます。
+	<INDEX>truthiness</INDEX>
+	<INDEX>falsiness</INDEX>
+      </JA>
+      </BILINGUAL>
 	<SNIPPET PAGE="377">
 	  <INDEX><USE>is_boolean</USE></INDEX>
 	  <INDEX><DECLARATION>is_truthy</DECLARATION><SUBINDEX>full JavaScript version</SUBINDEX></INDEX>
@@ -70,6 +116,8 @@ function is_falsy(x) {
 }
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	The test <JAVASCRIPTINLINE>x !== x</JAVASCRIPTINLINE> is not a typo;
 	the only JavaScript value for which
 	<JAVASCRIPTINLINE>x !== x</JAVASCRIPTINLINE> yields true is the value
@@ -80,7 +128,21 @@ function is_falsy(x) {
 	<JAVASCRIPTINLINE>NaN</JAVASCRIPTINLINE> is the result of certain
 	arithmetic border cases such as
 	<JAVASCRIPTINLINE>0 / 0</JAVASCRIPTINLINE>.
+	</EN>
+	<JA>
+	テスト <JAVASCRIPTINLINE>x !== x</JAVASCRIPTINLINE> は誤植ではありません。
+	<JAVASCRIPTINLINE>x !== x</JAVASCRIPTINLINE> が true を返す唯一の JavaScript の値は
+	<JAVASCRIPTINLINE>NaN</JAVASCRIPTINLINE>（<QUOTE>Not a Number</QUOTE>）であり、
+	<INDEX>NaN, not a typo</INDEX>
+	これは 0 と並んで falsy な数値とみなされます（これも誤植ではありません）。
+	数値
+	<JAVASCRIPTINLINE>NaN</JAVASCRIPTINLINE> は、
+	<JAVASCRIPTINLINE>0 / 0</JAVASCRIPTINLINE> のような算術の境界ケースの結果です。
+	</JA>
+	</BILINGUAL>
 	<TEXT>
+	  <BILINGUAL>
+	  <EN>
 	  The terms <QUOTE>truthy</QUOTE> and <QUOTE>falsy</QUOTE> were coined
 	  by
 	  <INDEX>good parts of JavaScript</INDEX>
@@ -88,6 +150,16 @@ function is_falsy(x) {
 	  <INDEX>Crockford, Douglas</INDEX>
 	  Douglas Crockford, one of whose books
 	  (<CITATION>Crockford 2008</CITATION>) inspired this JavaScript adaptation.
+	  </EN>
+	  <JA>
+	  <QUOTE>truthy</QUOTE> と <QUOTE>falsy</QUOTE> という用語は、
+	  <INDEX>good parts of JavaScript</INDEX>
+	  <INDEX>JavaScript<SUBINDEX>good parts</SUBINDEX></INDEX>
+	  <INDEX>Crockford, Douglas</INDEX>
+	  Douglas Crockford が作りました。彼の著書の一つ
+	  （<CITATION>Crockford 2008</CITATION>）がこの JavaScript 版の着想の元になっています。
+	  </JA>
+	  </BILINGUAL>
 	</TEXT>
       </FOOTNOTE>
       </JAVASCRIPT>
@@ -137,6 +209,8 @@ is_truthy(false); // should return false because only true is truthy
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To handle primitives, we assume that we have available the following
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX>representation of <SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
     <SPLITINLINE>
@@ -154,7 +228,7 @@ is_truthy(false); // should return false because only true is truthy
 	    <JAVASCRIPTINLINE>apply_primitive_function(</JAVASCRIPTINLINE><META>fun</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>args</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-	<INDEX><USE>apply_primitive_function</USE></INDEX> 
+	<INDEX><USE>apply_primitive_function</USE></INDEX>
 	<BREAK/>
 	applies the given primitive
 	<SPLITINLINE>
@@ -172,7 +246,7 @@ is_truthy(false); // should return false because only true is truthy
 	    <JAVASCRIPTINLINE>is_primitive_function(</JAVASCRIPTINLINE><META>fun</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-	<INDEX><USE>is_primitive_function</USE></INDEX> 
+	<INDEX><USE>is_primitive_function</USE></INDEX>
 	<BREAK/>
 	tests whether
 	<SPLITINLINE>
@@ -189,9 +263,66 @@ is_truthy(false); // should return false because only true is truthy
 
     These mechanisms for handling primitives are further described in
     section<SPACE/><REF NAME="sec:running-eval"/>.
+    </EN>
+    <JA>
+    プリミティブを扱うために、以下の
+    <INDEX>metacircular evaluator for JavaScript<SUBINDEX>representation of <SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    が利用できると仮定します。
+    <UL>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME>
+	    <SCHEMEINLINE>(apply-primitive-procedure</SCHEMEINLINE>
+	    <LATEXINLINE>proc args</LATEXINLINE><SCHEMEINLINE>)</SCHEMEINLINE>
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>apply_primitive_function(</JAVASCRIPTINLINE><META>fun</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>args</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	<INDEX><USE>apply_primitive_function</USE></INDEX>
+	<BREAK/>
+	与えられたプリミティブ
+	<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+	をリスト <META>args</META> 内の引数値に適用し、適用の結果を返します。
+      </LI>
+      <LI>
+        <SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(primitive-procedure?</SCHEMEINLINE>
+	  <LATEXINLINE>proc</LATEXINLINE><SCHEMEINLINE>)</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>is_primitive_function(</JAVASCRIPTINLINE><META>fun</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	<INDEX><USE>is_primitive_function</USE></INDEX>
+	<BREAK/>
+	<SPLITINLINE>
+	  <SCHEME><LATEXINLINE>proc</LATEXINLINE></SCHEME>
+          <JAVASCRIPT><META>fun</META></JAVASCRIPT>
+	</SPLITINLINE>
+        がプリミティブ
+        <SPLITINLINE>
+          <SCHEME>手続きかどうかを</SCHEME>
+          <JAVASCRIPT>関数かどうかを</JAVASCRIPT>
+        </SPLITINLINE>
+        テストします。
+      </LI>
+    </UL>
+
+    プリミティブを扱うこれらの仕組みは、セクション<SPACE/><REF NAME="sec:running-eval"/>でさらに説明します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Compound
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -202,12 +333,32 @@ is_truthy(false); // should return false because only true is truthy
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    bodies, and environments using the constructor 
+    bodies, and environments using the constructor
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-procedure</SCHEMEINLINE>:</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>make_function</JAVASCRIPTINLINE>:
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    複合
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、コンストラクタ
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-procedure</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_function</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を使って、パラメータ、
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の本体、および環境から構築されます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="377" POSTPADDING="no">
       <INDEX><DECLARATION>make_function</DECLARATION></INDEX>
       <INDEX><DECLARATION>is_compound_function</DECLARATION></INDEX>
@@ -282,6 +433,8 @@ function_parameters(my_function);
       </SUBHEADING>
 
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	We saw in section<SPACE/><REF NAME="sec:core-of-evaluator"/> that the
 	evaluation of a sequence terminates when a return statement
 	is encountered, and that the evaluation of a function application needs
@@ -291,6 +444,13 @@ function_parameters(my_function);
 	<INDEX>return value<SUBINDEX>representation in metacircular evaluator</SUBINDEX></INDEX>
 	return statement, we introduce <EM>return values</EM> as evaluator data
 	structures.
+	</EN>
+	<JA>
+	セクション<SPACE/><REF NAME="sec:core-of-evaluator"/>で見たように、シーケンスの評価は return 文に出会うと終了し、関数の本体の評価が return 文に出会わない場合、関数適用の評価は値 <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> を返す必要があります。値が
+	<INDEX>return value<SUBINDEX>representation in metacircular evaluator</SUBINDEX></INDEX>
+	return 文から生じたことを認識するために、評価器のデータ構造として<EM>戻り値</EM>を導入します。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="366" POSTPADDING="no">
 	  <INDEX><DECLARATION>make_return_value</DECLARATION></INDEX>
 	  <INDEX><DECLARATION>is_return_value</DECLARATION></INDEX>
@@ -336,6 +496,8 @@ return_value_content(my_return_value);
   <LABEL NAME="sec:operations-on-environments"/>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The evaluator needs operations for
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX>environment operations</SUBINDEX></INDEX>
     <INDEX>symbol(s)<SUBINDEX>in environment operations</SUBINDEX></INDEX>
@@ -348,6 +510,19 @@ return_value_content(my_return_value);
     </SPLITINLINE>
     with their corresponding values.  We use the following operations for
     manipulating environments:
+    </EN>
+    <JA>
+    評価器には環境を操作するための演算が
+    <INDEX>metacircular evaluator for JavaScript<SUBINDEX>environment operations</SUBINDEX></INDEX>
+    <INDEX>symbol(s)<SUBINDEX>in environment operations</SUBINDEX></INDEX>
+    必要です。セクション<SPACE/><REF NAME="sec:environment-model"/>で説明したように、環境はフレームの列であり、各フレームは
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>シンボル</JAVASCRIPT>
+    </SPLITINLINE>
+    を対応する値に関連付ける束縛のテーブルです。環境を操作するために、以下の演算を使います。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
 	<UL>
@@ -404,10 +579,12 @@ return_value_content(my_return_value);
 	</UL>
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	<UL>
 	  <LI>
 	    <JAVASCRIPTINLINE>lookup_symbol_value(</JAVASCRIPTINLINE><META>symbol</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>env</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
-	    <INDEX><USE>lookup_symbol_value</USE></INDEX> 
+	    <INDEX><USE>lookup_symbol_value</USE></INDEX>
 	  <BREAK/>
 	  returns the value that is bound to
 	  <META>symbol</META> in the environment
@@ -416,7 +593,7 @@ return_value_content(my_return_value);
 	  </LI>
 	  <LI>
 	    <JAVASCRIPTINLINE>extend_environment(</JAVASCRIPTINLINE><META>symbols</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>values</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>base-env</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
-	    <INDEX><USE>extend_environment</USE></INDEX> 
+	    <INDEX><USE>extend_environment</USE></INDEX>
 	    <BREAK/>
 	    returns a new environment, consisting of a new frame in which the
 	    symbols in the list <META>symbols</META>
@@ -427,7 +604,7 @@ return_value_content(my_return_value);
 	  </LI>
 	  <LI>
 	    <JAVASCRIPTINLINE>assign_symbol_value(</JAVASCRIPTINLINE><META>symbol</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>value</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>env</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
-	    <INDEX><USE>assign_symbol_value</USE></INDEX> 
+	    <INDEX><USE>assign_symbol_value</USE></INDEX>
 	    <BREAK/>
 	    finds the innermost frame of
 	    <META>env</META>
@@ -435,16 +612,42 @@ return_value_content(my_return_value);
 	    is bound, and changes that frame
 	    so that
 	    <META>symbol</META>
-	    is now bound to 
+	    is now bound to
 	    <META>value</META>, or signals an
 	    error if <META>symbol</META> is
 	    unbound.
 	  </LI>
 	</UL>
+	</EN>
+	<JA>
+	<UL>
+	  <LI>
+	    <JAVASCRIPTINLINE>lookup_symbol_value(</JAVASCRIPTINLINE><META>symbol</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>env</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	    <INDEX><USE>lookup_symbol_value</USE></INDEX>
+	  <BREAK/>
+	  環境 <META>env</META> で <META>symbol</META> に束縛されている値を返します。<META>symbol</META> が未束縛の場合はエラーを通知します。
+	  </LI>
+	  <LI>
+	    <JAVASCRIPTINLINE>extend_environment(</JAVASCRIPTINLINE><META>symbols</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>values</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>base-env</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	    <INDEX><USE>extend_environment</USE></INDEX>
+	    <BREAK/>
+	    新しい環境を返します。この環境は、リスト <META>symbols</META> 内のシンボルがリスト <META>values</META> 内の対応する要素に束縛される新しいフレームで構成され、外側の環境は環境 <META>base-env</META> です。
+	  </LI>
+	  <LI>
+	    <JAVASCRIPTINLINE>assign_symbol_value(</JAVASCRIPTINLINE><META>symbol</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>value</META><JAVASCRIPTINLINE>,</JAVASCRIPTINLINE> <META>env</META><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	    <INDEX><USE>assign_symbol_value</USE></INDEX>
+	    <BREAK/>
+	    <META>env</META> の中で <META>symbol</META> が束縛されている最も内側のフレームを見つけ、<META>symbol</META> が <META>value</META> に束縛されるようにそのフレームを変更します。<META>symbol</META> が未束縛の場合はエラーを通知します。
+	  </LI>
+	</UL>
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To implement these operations we
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX>representation of environments<OPEN/></SUBINDEX></INDEX>
     represent an environment as a list of
@@ -454,6 +657,18 @@ return_value_content(my_return_value);
       <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     of the list.  The empty environment is simply the empty list.
+    </EN>
+    <JA>
+    これらの演算を実装するために、環境をフレームの
+    <INDEX>metacircular evaluator for JavaScript<SUBINDEX>representation of environments<OPEN/></SUBINDEX></INDEX>
+    リストとして表現します。環境の外側の環境は、そのリストの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    です。空の環境は単に空リストです。
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="378">
       <INDEX><DECLARATION>enclosing_environment</DECLARATION></INDEX>
       <INDEX><DECLARATION>first_frame</DECLARATION></INDEX>
@@ -482,6 +697,8 @@ const the_empty_environment = null;
 the_empty_environment;	
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Each frame of an environment is represented as a pair of lists: a list
     of the
     <SPLITINLINE>
@@ -489,7 +706,21 @@ the_empty_environment;
       <JAVASCRIPT>names</JAVASCRIPT>
     </SPLITINLINE>
     bound in that frame and a list of the associated
-    values.<FOOTNOTE>Frames are not really a data
+    values.
+    </EN>
+    <JA>
+    環境の各フレームは、リストのペアとして表現されます。そのフレームで束縛されている
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>
+    のリストと、関連する値のリストです。
+    </JA>
+    </BILINGUAL>
+    <FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    Frames are not really a data
     <SPLITINLINE>
       <SCHEME>
 	abstraction in the following code:
@@ -501,7 +732,7 @@ the_empty_environment;
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>set-variable-value!</SCHEMEINLINE>
-	and 
+	and
 	<SCHEMEINLINE>define-variable!</SCHEMEINLINE>
 	use <SCHEMEINLINE>set-car!</SCHEMEINLINE>
 	to directly modify the values in a frame.
@@ -520,7 +751,44 @@ the_empty_environment;
     is to make the environment-manipulation
     <SPLITINLINE><SCHEME>procedures</SCHEME>
     <JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE>
-    easy to read.</FOOTNOTE>
+    easy to read.
+    </EN>
+    <JA>
+    フレームは実際にはデータ
+    <SPLITINLINE>
+      <SCHEME>
+	抽象ではありません（以下のコードでは、
+      </SCHEME>
+      <JAVASCRIPT>
+	抽象ではありません。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>set-variable-value!</SCHEMEINLINE>
+	と
+	<SCHEMEINLINE>define-variable!</SCHEMEINLINE>
+	が <SCHEMEINLINE>set-car!</SCHEMEINLINE>
+	を使ってフレーム内の値を直接変更します）。
+      </SCHEME>
+      <JAVASCRIPT>
+	以下の関数
+	<JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE>
+	は
+	<JAVASCRIPTINLINE>set_head</JAVASCRIPTINLINE>
+	を使ってフレーム内の値を直接変更します。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    フレーム
+    <SPLITINLINE><SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    の目的は、環境操作
+    <SPLITINLINE><SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    を読みやすくすることです。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET PAGE="378" HIDE="yes">
       <NAME>make_frame_example</NAME>
       <JAVASCRIPT>
@@ -557,6 +825,8 @@ function frame_values(frame) { return tail(frame); }
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To extend an environment by a new frame that associates
     <SPLITINLINE>
       <SCHEME>variables</SCHEME>
@@ -574,6 +844,25 @@ function frame_values(frame) { return tail(frame); }
       <JAVASCRIPT>symbols</JAVASCRIPT>
     </SPLITINLINE>
     does not match the number of values.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>シンボル</JAVASCRIPT>
+    </SPLITINLINE>
+    と値を関連付ける新しいフレームで環境を拡張するには、
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>シンボル</JAVASCRIPT>
+    </SPLITINLINE>
+    のリストと値のリストからなるフレームを作り、それを環境に付加します。
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>シンボル</JAVASCRIPT>
+    </SPLITINLINE>
+    の数が値の数と一致しない場合はエラーを通知します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="379">
       <INDEX><DECLARATION>extend_environment</DECLARATION></INDEX> 
       <NAME>extend_environment</NAME>
@@ -630,14 +919,23 @@ tail(head(extend_environment(list("x", "y", "z"),
     </SNIPPET>
     <SPLITINLINE>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	This is used by <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> in
 	section<SPACE/><REF NAME="sec:core-of-evaluator"/> to bind the
-	parameters of a function to its arguments. 
+	parameters of a function to its arguments.
+	</EN>
+	<JA>
+	これはセクション<SPACE/><REF NAME="sec:core-of-evaluator"/>の <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> で、関数のパラメータを引数に束縛するために使われます。
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLITINLINE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To look up a
     <SPLITINLINE>
       <SCHEME>variable</SCHEME>
@@ -669,8 +967,42 @@ tail(head(extend_environment(list("x", "y", "z"),
       <JAVASCRIPT>
 	<JAVASCRIPTINLINE>"unbound name"</JAVASCRIPTINLINE>
       </JAVASCRIPT>
-    </SPLITINLINE>  
+    </SPLITINLINE>
     error.
+    </EN>
+    <JA>
+    環境の中で
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>シンボル</JAVASCRIPT>
+    </SPLITINLINE>
+    を探すには、最初のフレーム内の
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>シンボル</JAVASCRIPT>
+    </SPLITINLINE>
+    のリストをスキャンします。目的の
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>シンボル</JAVASCRIPT>
+    </SPLITINLINE>
+    が見つかれば、値のリストの対応する要素を返します。現在のフレームで
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>シンボル</JAVASCRIPT>
+    </SPLITINLINE>
+    が見つからなければ、外側の環境を探索し、以下同様に続けます。空の環境に達した場合は、
+    <SPLITINLINE>
+      <SCHEME>
+	<QUOTE>未束縛の変数</QUOTE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>"unbound name"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    エラーを通知します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="379">
       <INDEX><DECLARATION>lookup_symbol_value</DECLARATION></INDEX>
       <NAME>lookup_variable_value</NAME>
@@ -739,11 +1071,19 @@ lookup_symbol_value("x", my_environment);
       <SCHEMEINLINE>lookup-variable-value</SCHEMEINLINE>,
       and change the corresponding value when we find it.
       </SCHEME>
-      <JAVASCRIPT>To assign 
+      <JAVASCRIPT>
+      <BILINGUAL>
+      <EN>To assign
       a new value to a symbol in a specified environment, we scan
-      for the symbol, just as in 
+      for the symbol, just as in
       <JAVASCRIPTINLINE>lookup_symbol_value</JAVASCRIPTINLINE>,
       and change the corresponding value when we find it.
+      </EN>
+      <JA>指定された環境でシンボルに新しい値を代入するには、
+      <JAVASCRIPTINLINE>lookup_symbol_value</JAVASCRIPTINLINE>
+      と同様にシンボルをスキャンし、見つかったら対応する値を変更します。
+      </JA>
+      </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
     <SNIPPET PAGE="379">
@@ -835,6 +1175,8 @@ evaluate(my_block, the_global_environment);
 
   <SHORT_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The method described here is only one of many plausible ways to represent
     environments.  Since we used
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX>data abstraction in</SUBINDEX></INDEX>
@@ -856,7 +1198,28 @@ evaluate(my_block, the_global_environment);
     lookup<EMDASH/>has a major
     impact on the performance of the system.  The representation described here,
     although conceptually simple, is not efficient and would not ordinarily be
-    used in a production system.<FOOTNOTE>The drawback of this representation (as
+    used in a production system.
+    </EN>
+    <JA>
+    ここで説明した方法は、環境を表現する多くのもっともらしい方法の一つに過ぎません。
+    <INDEX>metacircular evaluator for JavaScript<SUBINDEX>data abstraction in</SUBINDEX></INDEX>
+    データ抽象を使って評価器の残りの部分を表現の詳細な選択から隔離しているため、望めば環境の表現を変更することができます（練習問題<SPACE/><REF NAME="ex:alternate-frame-representation"/>を参照）。本番品質の
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    システムでは、評価器の環境操作の速度、特に
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>シンボル</JAVASCRIPT>
+    </SPLITINLINE>
+    の探索の速度は、システムの性能に大きな影響を与えます。ここで説明した表現は、概念的には単純ですが、効率的ではなく、通常は本番システムでは使われません。
+    </JA>
+    </BILINGUAL>
+    <FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    The drawback of this representation (as
     well as the variant in
     exercise<SPACE/><REF NAME="ex:alternate-frame-representation"/>) is that the
     evaluator may have to search through many frames in order to find the binding
@@ -868,6 +1231,14 @@ evaluate(my_block, the_global_environment);
     this inefficiency is to make use of a strategy called
 	<EM>lexical addressing</EM>, which will be discussed in
 	section<SPACE/><REF NAME="sec:lexical-addressing"/>.
+    </EN>
+    <JA>
+    この表現（および練習問題<SPACE/><REF NAME="ex:alternate-frame-representation"/>の変形）の欠点は、与えられた変数の束縛を見つけるために評価器が多くのフレームを探索しなければならない場合があることです（このようなアプローチは
+    <INDEX>deep binding</INDEX>
+    <INDEX>binding<SUBINDEX>deep</SUBINDEX></INDEX>
+    <EM>深い束縛（deep binding）</EM>と呼ばれます）。この非効率性を避ける一つの方法は、<EM>レキシカルアドレッシング</EM>と呼ばれる戦略を利用することであり、セクション<SPACE/><REF NAME="sec:lexical-addressing"/>で議論します。
+    </JA>
+    </BILINGUAL>
   </FOOTNOTE>
 
   <INDEX>metacircular evaluator for JavaScript<SUBINDEX>representation of environments<CLOSE/></SUBINDEX></INDEX>
@@ -890,12 +1261,21 @@ evaluate(my_block, the_global_environment);
 
   <EXERCISE>
     <LABEL NAME="ex:alternate-frame-representation"/>
+    <BILINGUAL>
+    <EN>
     Instead of representing a frame as a pair of lists, we can represent a frame
     as a list of bindings, where each binding is a symbol-value pair. Rewrite the
-    environment operations to use this alternative representation.            
+    environment operations to use this alternative representation.
+    </EN>
+    <JA>
+    フレームをリストのペアとして表現する代わりに、フレームを束縛のリストとして表現することもできます。各束縛はシンボルと値のペアです。この代替表現を使うように環境操作を書き直してください。
+    </JA>
+    </BILINGUAL>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     The
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -905,19 +1285,19 @@ evaluate(my_block, the_global_environment);
       <SCHEME>
 	<SCHEMEINLINE>set-variable-value!</SCHEMEINLINE>,
 	<SCHEMEINLINE>define-variable!</SCHEMEINLINE>, and
-	<SCHEMEINLINE>lookup-variable-value</SCHEMEINLINE> 
+	<SCHEMEINLINE>lookup-variable-value</SCHEMEINLINE>
       </SCHEME>
       <JAVASCRIPT>
 	<JAVASCRIPTINLINE>lookup_symbol_value</JAVASCRIPTINLINE> and
 	<JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    can be expressed in terms of 
+    can be expressed in terms of
     <SPLITINLINE>
       <SCHEME>more abstract procedures</SCHEME>
       <JAVASCRIPT>a more abstract function</JAVASCRIPT>
     </SPLITINLINE>
-    for traversing the environment structure. 
+    for traversing the environment structure.
     <SPLITINLINE>
       <SCHEME>
 	Define abstractions that capture the common patterns and redefine the
@@ -928,6 +1308,39 @@ evaluate(my_block, the_global_environment);
 	two functions in terms of this abstraction.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>set-variable-value!</SCHEMEINLINE>、
+	<SCHEMEINLINE>define-variable!</SCHEMEINLINE>、および
+	<SCHEMEINLINE>lookup-variable-value</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>lookup_symbol_value</JAVASCRIPTINLINE> と
+	<JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、環境構造を走査するための
+    <SPLITINLINE>
+      <SCHEME>より抽象的な手続き</SCHEME>
+      <JAVASCRIPT>より抽象的な関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を使って表現できます。
+    <SPLITINLINE>
+      <SCHEME>
+	共通パターンを捉える抽象を定義し、3つの手続きをその抽象を使って再定義してください。
+      </SCHEME>
+      <JAVASCRIPT>
+	共通パターンを捉える抽象を定義し、2つの関数をその抽象を使って再定義してください。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:4_10"/>
   </EXERCISE>
   
@@ -947,7 +1360,9 @@ evaluate(my_block, the_global_environment);
 	<LABEL NAME="ex:make-unbound_scheme"/>
       </SCHEME>
       <JAVASCRIPT>
-	Our language distinguishes constants from variables by using 
+	<BILINGUAL>
+	<EN>
+	Our language distinguishes constants from variables by using
 	different keywords<EMDASH/><JAVASCRIPTINLINE>const</JAVASCRIPTINLINE>
 	and <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE><EMDASH/>and prevents
 	assignment to constants. However, our interpreter
@@ -968,14 +1383,14 @@ evaluate(my_block, the_global_environment);
 	    <JAVASCRIPTINLINE>is_variable_declaration</JAVASCRIPTINLINE>
 	    that allow you to distinguish the two kinds. As shown in
 	    section<SPACE/><REF NAME="sec:representing-expressions"/>,
-	    <JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> 
+	    <JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE>
 	    distinguishes them by using the tags
 	    <JAVASCRIPTINLINE>"constant_declaration"</JAVASCRIPTINLINE>
 	    and
 	    <JAVASCRIPTINLINE>"variable_declaration"</JAVASCRIPTINLINE>.
 	  </LI>
 	  <LI>
-	    Change 
+	    Change
 	    <JAVASCRIPTINLINE>scan_out_declarations</JAVASCRIPTINLINE>
 	    and (if necessary)
 	    <JAVASCRIPTINLINE>extend_environment</JAVASCRIPTINLINE>
@@ -983,7 +1398,7 @@ evaluate(my_block, the_global_environment);
 	    the frames in which they are bound.
 	  </LI>
 	  <LI>
-	    Change 
+	    Change
 	    <JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE> such
 	    that it checks whether the given symbol has been declared as
 	    a variable or as a constant, and in the latter case signals
@@ -993,7 +1408,7 @@ evaluate(my_block, the_global_environment);
 	    Change
 	    <JAVASCRIPTINLINE>eval_declaration</JAVASCRIPTINLINE>
 	    such that when it encounters a constant declaration,
-	    it calls a new function, 
+	    it calls a new function,
 	    <JAVASCRIPTINLINE>assign_constant_value</JAVASCRIPTINLINE>, which
 	    does not perform the check that you introduced in
 	    <JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE>.
@@ -1004,12 +1419,60 @@ evaluate(my_block, the_global_environment);
 	    assignment to function parameters remains possible.
 	  </LI>
 	</UL>
+	</EN>
+	<JA>
+	私たちの言語は、異なるキーワード<EMDASH/><JAVASCRIPTINLINE>const</JAVASCRIPTINLINE>
+	と <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE><EMDASH/>を使って定数と変数を区別し、定数への代入を禁止しています。しかし、私たちのインタプリタはこの区別を利用していません。関数
+	<JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE> は、シンボルが定数として宣言されたか変数として宣言されたかに関係なく、与えられたシンボルに新しい値を喜んで代入してしまいます。
+	<INDEX>constant (in JavaScript)<SUBINDEX>detecting assignment to</SUBINDEX></INDEX>
+	代入の左辺に定数を使おうとするたびに関数
+	<JAVASCRIPTINLINE>error</JAVASCRIPTINLINE> を呼び出すことで、この欠陥を修正してください。
+	以下の手順で進めることができます。
+	<UL>
+	  <LI>
+	    2種類を区別できる述語
+	    <JAVASCRIPTINLINE>is_constant_declaration</JAVASCRIPTINLINE>
+	    と
+	    <JAVASCRIPTINLINE>is_variable_declaration</JAVASCRIPTINLINE>
+	    を導入します。セクション<SPACE/><REF NAME="sec:representing-expressions"/>で示したように、
+	    <JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE>
+	    はタグ
+	    <JAVASCRIPTINLINE>"constant_declaration"</JAVASCRIPTINLINE>
+	    と
+	    <JAVASCRIPTINLINE>"variable_declaration"</JAVASCRIPTINLINE>
+	    を使ってこれらを区別します。
+	  </LI>
+	  <LI>
+	    <JAVASCRIPTINLINE>scan_out_declarations</JAVASCRIPTINLINE>
+	    と（必要なら）
+	    <JAVASCRIPTINLINE>extend_environment</JAVASCRIPTINLINE>
+	    を変更して、束縛されているフレーム内で定数と変数が区別できるようにしてください。
+	  </LI>
+	  <LI>
+	    <JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE> を変更して、与えられたシンボルが変数として宣言されたか定数として宣言されたかをチェックし、後者の場合は定数への代入操作は許可されていないというエラーを通知するようにしてください。
+	  </LI>
+	  <LI>
+	    <JAVASCRIPTINLINE>eval_declaration</JAVASCRIPTINLINE>
+	    を変更して、定数宣言に出会ったときに、
+	    <JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE>
+	    に導入したチェックを行わない新しい関数
+	    <JAVASCRIPTINLINE>assign_constant_value</JAVASCRIPTINLINE> を呼び出すようにしてください。
+	  </LI>
+	  <LI>
+	    必要なら、
+	    <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> を変更して、関数パラメータへの代入が引き続き可能であることを保証してください。
+	  </LI>
+	</UL>
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
   </EXERCISE>
 
   <EXERCISE>
-    <LABEL NAME="ex:access_unassigned"/>    
+    <LABEL NAME="ex:access_unassigned"/>
+    <BILINGUAL>
+    <EN>
     <OL>
 	  <LI>
 	    JavaScript's specification requires an implementation to
@@ -1030,6 +1493,27 @@ evaluate(my_block, the_global_environment);
 	    <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE> signals an error
 	    in this case.
 	  </LI>
+    </OL>
+    </EN>
+    <JA>
+    <OL>
+	  <LI>
+	    JavaScript の仕様では、名前の宣言が評価される前にその名前の値にアクセスしようとした場合、実行時エラーを通知することが求められています（セクション<SPACE/><REF NAME="sec:env-internal-def"/>の末尾を参照）。
+	    評価器でこの動作を実現するために、
+	    <INDEX><USE>lookup_symbol_value</USE><SUBINDEX>for scanned-out declarations</SUBINDEX><FRAGILE/></INDEX>
+	    <JAVASCRIPTINLINE>lookup_symbol_value</JAVASCRIPTINLINE>
+	    を変更して、見つかった値が
+	    <JAVASCRIPTINLINE>"*unassigned*"</JAVASCRIPTINLINE>
+	    の場合にエラーを通知するようにしてください。
+	  </LI>
+	  <LI>
+	    同様に、<JAVASCRIPTINLINE>let</JAVASCRIPTINLINE>
+	    宣言がまだ評価されていない変数に新しい値を代入してはいけません。
+	    <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE> で宣言された変数への代入が、この場合にエラーを通知するように代入の評価を変更してください。
+	  </LI>
+    </OL>
+    </JA>
+    </BILINGUAL>
 	  <!-- Julie and Martin agree that this part of the question is impenetrable -->
 	  <!--
 	  <LI>
@@ -1067,6 +1551,8 @@ const unassigned_string = "*unassigned*";
     <JAVASCRIPT>
 	<EXERCISE>
 	  <LABEL NAME="ex:var_js"/>
+	  <BILINGUAL>
+	  <EN>
 	  Prior to ECMAScript 2015's strict mode that we are using in this book,
 	  JavaScript variables
 	  worked quite differently from Scheme variables, which would have made
@@ -1081,7 +1567,7 @@ const unassigned_string = "*unassigned*";
 	    <JAVASCRIPTINLINE>var</JAVASCRIPTINLINE> is the entire body of the
 	    immediately surrounding function declaration or lambda expression,
 	    rather than just the immediately enclosing block. Modify
-	    <JAVASCRIPTINLINE>scan_out_declarations</JAVASCRIPTINLINE> and 
+	    <JAVASCRIPTINLINE>scan_out_declarations</JAVASCRIPTINLINE> and
 	    <JAVASCRIPTINLINE>eval_block</JAVASCRIPTINLINE> such that
 	    names declared with <JAVASCRIPTINLINE>const</JAVASCRIPTINLINE> and
 	    <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE> follow the scoping rules
@@ -1090,9 +1576,9 @@ const unassigned_string = "*unassigned*";
 	  <LI>
 	    When not in strict mode, JavaScript permits undeclared
 	    names to appear to the left of the
-	    <JAVASCRIPTINLINE>=</JAVASCRIPTINLINE> in assignments. 
+	    <JAVASCRIPTINLINE>=</JAVASCRIPTINLINE> in assignments.
 	    Such an assignment adds the new binding to the global
-	    environment. Modify the function 
+	    environment. Modify the function
 	    <JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE>
 	    to make assignment behave this way. The strict mode, which forbids
 	    such assignments, was introduced
@@ -1101,6 +1587,31 @@ const unassigned_string = "*unassigned*";
 	    adding bindings to the global environment?
 	  </LI>
 	</OL>
+	  </EN>
+	  <JA>
+	  本書で使用している ECMAScript 2015 の strict モード以前は、JavaScript の変数は Scheme の変数とかなり異なる動作をしており、この JavaScript への適応の説得力はかなり低くなっていたでしょう。
+	<OL>
+	  <LI>
+	    ECMAScript 2015 より前は、JavaScript でローカル変数を宣言する唯一の方法は、キーワード <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE> の代わりにキーワード
+	    <JAVASCRIPTINLINE>var</JAVASCRIPTINLINE>
+	    を使うことでした。
+	    <JAVASCRIPTINLINE>var</JAVASCRIPTINLINE> で宣言された変数のスコープは、直近の囲むブロックだけでなく、直近の囲む関数宣言またはラムダ式の本体全体です。
+	    <JAVASCRIPTINLINE>scan_out_declarations</JAVASCRIPTINLINE> と
+	    <JAVASCRIPTINLINE>eval_block</JAVASCRIPTINLINE> を変更して、
+	    <JAVASCRIPTINLINE>const</JAVASCRIPTINLINE> と
+	    <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE> で宣言された名前が
+	    <JAVASCRIPTINLINE>var</JAVASCRIPTINLINE> のスコープルールに従うようにしてください。
+	  </LI>
+	  <LI>
+	    strict モードでない場合、JavaScript は宣言されていない名前が代入の
+	    <JAVASCRIPTINLINE>=</JAVASCRIPTINLINE> の左辺に現れることを許可します。
+	    そのような代入は、新しい束縛をグローバル環境に追加します。関数
+	    <JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE>
+	    を変更して、代入がこのように動作するようにしてください。このような代入を禁止する strict モードは、プログラムをより安全にするために JavaScript に導入されました。代入がグローバル環境に束縛を追加することを防ぐことで、どのようなセキュリティ上の問題に対処しているのでしょうか。
+	  </LI>
+	</OL>
+	  </JA>
+	  </BILINGUAL>
 	</EXERCISE>
     </JAVASCRIPT>
   </SPLIT>

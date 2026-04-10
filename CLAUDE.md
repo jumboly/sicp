@@ -149,7 +149,9 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Chapter 4 導入部
 - [x] Section 4.1 The Metacircular Evaluator (導入部)
 - [x] Section 4.1.1 The Core of the Evaluator
-- [ ] Section 4.1.2〜5 以降
+- [x] Section 4.1.2 Representing Components
+- [x] Section 4.1.3 Evaluator Data Structures
+- [ ] Section 4.1.4〜5 以降
 
 ## インライン実行
 

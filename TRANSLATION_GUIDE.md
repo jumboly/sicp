@@ -266,6 +266,9 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | return expression | return 式 | return 文の中の式 |
 | scan out declarations / scanning out | スキャンアウト | ブロック内の宣言を事前に収集する処理 |
 | is_truthy / truthiness | is_truthy / 真理性 | 条件式の値を真偽値化する |
+| deep binding | 深い束縛（deep binding） | 環境表現の実装方式。原語を併記 |
+| lexical addressing | レキシカルアドレッシング | Section 4.1.6 で詳述。変数参照の最適化手法 |
+| derived component | 派生コンポーネント | 他のコンポーネントに変換して処理される構文形式 |
 
 ### その他
 

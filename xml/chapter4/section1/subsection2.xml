@@ -1,10 +1,20 @@
 <SUBSECTION>
   <NAME>
+    <BILINGUAL>
+    <EN>
     Representing
     <SPLITINLINE>
       <SCHEME>Expressions</SCHEME>
       <JAVASCRIPT>Components</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>コンポーネント</JAVASCRIPT>
+    </SPLITINLINE>の表現
+    </JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:representing-expressions"/>
@@ -17,6 +27,8 @@
   <SPLIT>
     <JAVASCRIPT>
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	Programmers write programs as text, i.e. sequences of characters, entered
 	in a programming environment or a text editor. To run our evaluator, we need
 	to start with a representation of this program text as a JavaScript value.
@@ -33,18 +45,32 @@
 	difficult
 	and error-prone to implement by examining the program text.
 	In this section, we therefore
-	introduce a function 
+	introduce a function
 	<INDEX><USE>parse</USE></INDEX>
 	<JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> that translates program text
 	to a <EM>tagged-list representation</EM>, reminiscent of
 	the tagged data of section<SPACE/><REF NAME="sec:manifest-types"/>.
-	For example, the application of 
+	For example, the application of
 	<JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> to the program string
 	above produces a data structure that
-	reflects the structure of the program: a sequence consisting 
+	reflects the structure of the program: a sequence consisting
 	of a constant declaration associating the name
 	<JAVASCRIPTINLINE>size</JAVASCRIPTINLINE>  with the value 2
 	and a multiplication.
+	</EN>
+	<JA>
+	プログラマはプログラムをテキスト、すなわち文字の列として書き、プログラミング環境やテキストエディタに入力します。評価器を実行するには、このプログラムテキストを JavaScript の値として表現するところから始める必要があります。セクション<SPACE/><REF NAME="sec:strings"/>では、テキストを表現するために文字列を導入しました。セクション<SPACE/><REF NAME="sec:naming"/>の
+	<JAVASCRIPTINLINE>"const size = 2; 5 * size;"</JAVASCRIPTINLINE>
+	のようなプログラムを評価したいと考えています。しかし残念ながら、このようなプログラムテキストは評価器にとって十分な構造を提供しません。この例では、プログラムの部分
+	<JAVASCRIPTINLINE>"size = 2"</JAVASCRIPTINLINE> と
+	<JAVASCRIPTINLINE>"5 * size"</JAVASCRIPTINLINE> は見た目が似ていますが、まったく異なる意味を持っています。
+	<JAVASCRIPTINLINE>declaration_@value_@expression</JAVASCRIPTINLINE> のような抽象構文関数を、プログラムテキストを調べて実装するのは困難でエラーが起きやすいでしょう。そこでこのセクションでは、プログラムテキストを<EM>タグ付きリスト表現</EM>に変換する関数
+	<INDEX><USE>parse</USE></INDEX>
+	<JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> を導入します。これはセクション<SPACE/><REF NAME="sec:manifest-types"/>のタグ付きデータを彷彿とさせるものです。たとえば、上のプログラム文字列に
+	<JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> を適用すると、プログラムの構造を反映したデータ構造が生成されます。すなわち、名前
+	<JAVASCRIPTINLINE>size</JAVASCRIPTINLINE> を値 2 に関連付ける定数宣言と、乗算からなるシーケンスです。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="372">
 	  <NAME>parse_declaration</NAME>
 	  <JAVASCRIPT>
@@ -58,13 +84,23 @@ list("sequence",
                list("literal", 5), list("name", "size"))))
 	  </JAVASCRIPT_OUTPUT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	The syntax functions used by the evaluator access the tagged-list
-	representation produced by 
+	representation produced by
 	<JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE>.
+	</EN>
+	<JA>
+	評価器が使用する構文関数は、
+	<JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> が生成するタグ付きリスト表現にアクセスします。
+	</JA>
+	</BILINGUAL>
       </TEXT>
     </JAVASCRIPT>
   </SPLIT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The evaluator is reminiscent of the
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX>symbolic differentiation and</SUBINDEX></INDEX>
     symbolic differentiation program
@@ -75,7 +111,7 @@ list("sequence",
       <JAVASCRIPT>data.</JAVASCRIPT>
     </SPLITINLINE>
     In both programs, the
-    result of operating on 
+    result of operating on
     <SPLITINLINE>
       <SCHEME>a compound expression</SCHEME>
       <JAVASCRIPT>an object</JAVASCRIPT>
@@ -92,7 +128,7 @@ list("sequence",
       <SCHEME>expression.</SCHEME>
       <JAVASCRIPT>object.</JAVASCRIPT>
     </SPLITINLINE>
-    In both programs we used 
+    In both programs we used
     <INDEX>data abstraction</INDEX>
     data abstraction to decouple the general rules
     of operation from the details of how
@@ -115,9 +151,41 @@ list("sequence",
 	the syntax of the language being evaluated is determined
 	solely by <JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> and
 	the functions that classify and extract pieces of the
-	tagged lists produced by <JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE>.	
+	tagged lists produced by <JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    この評価器は、セクション<SPACE/><REF NAME="sec:symbolic-differentiation"/>で議論した
+    <INDEX>metacircular evaluator for JavaScript<SUBINDEX>symbolic differentiation and</SUBINDEX></INDEX>
+    シンボリック微分プログラムを彷彿とさせます。どちらのプログラムもシンボリックな<SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>データ</JAVASCRIPT>
+    </SPLITINLINE>を操作します。どちらのプログラムでも、<SPLITINLINE>
+      <SCHEME>複合式</SCHEME>
+      <JAVASCRIPT>オブジェクト</JAVASCRIPT>
+    </SPLITINLINE>に対する操作の結果は、その<SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>オブジェクト</JAVASCRIPT>
+    </SPLITINLINE>の構成要素に対して再帰的に操作を行い、<SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>オブジェクト</JAVASCRIPT>
+    </SPLITINLINE>の型に応じた方法で結果を組み合わせることによって決まります。どちらのプログラムでも、操作の一般的な規則と、<SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>オブジェクト</JAVASCRIPT>
+    </SPLITINLINE>がどのように表現されるかの詳細を切り離すために
+    <INDEX>data abstraction</INDEX>
+    データ抽象を使いました。微分プログラムでは、同じ微分<SPLITINLINE><SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>が前置記法、中置記法、その他の形式の代数式を扱えることを意味しました。評価器においては、<SPLITINLINE>
+      <SCHEME>
+	評価される言語の構文は、式を分類し構成要素を取り出す手続きによってのみ決定される
+      </SCHEME>
+      <JAVASCRIPT>
+	評価される言語の構文は、<JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> と、<JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> が生成するタグ付きリストを分類し構成要素を取り出す関数によってのみ決定される
+      </JAVASCRIPT>
+    </SPLITINLINE>ことを意味します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SPLIT>
@@ -125,19 +193,34 @@ list("sequence",
       <TEXT>
         <FIGURE>
           <FIGURE split_scale="1"  web_scale="0.8" scale="0.65" src="img_javascript/ch4-parse-abstraction.svg"></FIGURE>
-          <CAPTION>Syntax abstraction in the evaluator.</CAPTION>
+          <CAPTION>
+	    <BILINGUAL>
+	    <EN>Syntax abstraction in the evaluator.</EN>
+	    <JA>評価器における構文抽象。</JA>
+	    </BILINGUAL>
+	  </CAPTION>
           <LABEL NAME="fig:parse-abstraction"/>
         </FIGURE>
+	<BILINGUAL>
+	<EN>
 	Figure<SPACE/><REF NAME="fig:parse-abstraction"/> depicts the
 	<INDEX>abstraction barriers<SUBINDEX>in representing JavaScript syntax</SUBINDEX></INDEX>
 	abstraction barrier
 	formed by the syntax predicates and selectors,
 	which interface the evaluator to the tagged-list representation of programs,
-	which in turn is separated from the string representation by 
+	which in turn is separated from the string representation by
 	<JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE>. Below we
 	describe the parsing of program components and list the
 	corresponding syntax predicates and selectors, as well as
 	constructors if they are needed.
+	</EN>
+	<JA>
+	図<SPACE/><REF NAME="fig:parse-abstraction"/>は、構文述語とセレクタによって形成される
+	<INDEX>abstraction barriers<SUBINDEX>in representing JavaScript syntax</SUBINDEX></INDEX>
+	抽象バリアを示しています。これらは評価器とプログラムのタグ付きリスト表現の間のインターフェースとなり、タグ付きリスト表現はさらに
+	<JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> によって文字列表現から分離されています。以下では、プログラムコンポーネントの解析について説明し、対応する構文述語とセレクタ、そして必要な場合はコンストラクタを列挙します。
+	</JA>
+	</BILINGUAL>
       </TEXT>
     </JAVASCRIPT>
   </SPLIT>
@@ -425,12 +508,22 @@ list("sequence",
 // functions from SICP JS 4.1.2
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	Literal expressions
 	<INDEX><PARSING/><SUBINDEX><ORDER>literal expression</ORDER>literal expression</SUBINDEX></INDEX>
 	<INDEX>literal expression<SUBINDEX>parsing of</SUBINDEX></INDEX>
 	are parsed into tagged lists with
 	tag <JAVASCRIPTINLINE>"literal"</JAVASCRIPTINLINE> and
 	the actual value.
+	</EN>
+	<JA>
+	リテラル式は、タグ
+	<INDEX><PARSING/><SUBINDEX><ORDER>literal expression</ORDER>literal expression</SUBINDEX></INDEX>
+	<INDEX>literal expression<SUBINDEX>parsing of</SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>"literal"</JAVASCRIPTINLINE> と実際の値を持つタグ付きリストに解析されます。
+	</JA>
+	</BILINGUAL>
 	<WEB_ONLY>
 	  <LATEX>
 	    \[
@@ -486,8 +579,16 @@ parse("null;");
 list("literal", null)
 	  </JAVASCRIPT_OUTPUT>
 	</SNIPPET>
-	The syntax predicate for literal expressions is 
+	<BILINGUAL>
+	<EN>
+	The syntax predicate for literal expressions is
 	<JAVASCRIPTINLINE>is_literal</JAVASCRIPTINLINE>.
+	</EN>
+	<JA>
+	リテラル式の構文述語は
+	<JAVASCRIPTINLINE>is_literal</JAVASCRIPTINLINE> です。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="369">
 	  <INDEX><DECLARATION>is_literal</DECLARATION></INDEX>
 	  <NAME>is_literal</NAME>
@@ -516,10 +617,19 @@ const my_true_statement = list_ref(list_ref(my_program, 1), 0);
 is_literal(my_true_statement);
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	It is defined in terms of the function
 	<JAVASCRIPTINLINE>is_tagged_list</JAVASCRIPTINLINE>,
 	which identifies lists that begin with a designated
 	string:
+	</EN>
+	<JA>
+	これは関数
+	<JAVASCRIPTINLINE>is_tagged_list</JAVASCRIPTINLINE>
+	を使って定義されており、指定された文字列で始まるリストを識別します。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="369">
 	  <INDEX><DECLARATION>is_tagged_list</DECLARATION></INDEX>
 	  <NAME>tagged_list</NAME>
@@ -537,10 +647,18 @@ function is_tagged_list(component, the_tag) {
 is_tagged_list(list("name", "x"), "name");
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	The second element of the list that results from parsing a literal expression
 	is its actual JavaScript value.
 	The selector for retrieving the value is
 	<JAVASCRIPTINLINE>literal_value</JAVASCRIPTINLINE>.
+	</EN>
+	<JA>
+	リテラル式を解析して得られるリストの2番目の要素は、実際の JavaScript の値です。値を取り出すセレクタは
+	<JAVASCRIPTINLINE>literal_value</JAVASCRIPTINLINE> です。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="369">
 	  <INDEX><DECLARATION>literal_value</DECLARATION></INDEX>
 	  <NAME>literal_value</NAME>
@@ -561,11 +679,25 @@ literal_value(parse("null;"));
 null
 	  </JAVASCRIPT_OUTPUT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	In the rest of this section, we just list the syntax predicates and selectors,
 	and omit their declarations if they just access the obvious list elements.
+	</EN>
+	<JA>
+	このセクションの残りでは、構文述語とセレクタを列挙するだけにとどめ、単に明白なリスト要素にアクセスするだけの宣言は省略します。
+	</JA>
+	</BILINGUAL>
       </TEXT>
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	We provide a constructor for literals, which will come in handy:
+	</EN>
+	<JA>
+	リテラルのコンストラクタも用意しておきます。後で役に立ちます。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="369" POSTPADDING="no">
 	  <INDEX><DECLARATION>make_literal</DECLARATION></INDEX>
 	  <NAME>make_literal</NAME>
@@ -582,12 +714,22 @@ function make_literal(value) {
   </SUBHEADING>
   <LONG_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The tagged-list representation for
     <INDEX><PARSING/><SUBINDEX><ORDER>name</ORDER>name</SUBINDEX></INDEX>
     <INDEX>name<SUBINDEX>parsing of</SUBINDEX></INDEX>
     <INDEX>symbol(s)<SUBINDEX>in parsing of names</SUBINDEX></INDEX>
     names includes the tag <JAVASCRIPTINLINE>"name"</JAVASCRIPTINLINE> as first
     element and the string representing the name as second element.
+    </EN>
+    <JA>
+    <INDEX><PARSING/><SUBINDEX><ORDER>name</ORDER>name</SUBINDEX></INDEX>
+    <INDEX>name<SUBINDEX>parsing of</SUBINDEX></INDEX>
+    <INDEX>symbol(s)<SUBINDEX>in parsing of names</SUBINDEX></INDEX>
+    名前のタグ付きリスト表現は、最初の要素としてタグ <JAVASCRIPTINLINE>"name"</JAVASCRIPTINLINE> を、2番目の要素として名前を表す文字列を含みます。
+    </JA>
+    </BILINGUAL>
     <WEB_ONLY>
 	<LATEX>
     \[
@@ -612,9 +754,18 @@ function make_literal(value) {
 	that contains the characters that make up the
 	<META>name</META> as written in the program.
     </PDF_ONLY>
-	The syntax predicate for names is 
+	<BILINGUAL>
+	<EN>
+	The syntax predicate for names is
 	<INDEX><USE>is_name</USE></INDEX>
 	<JAVASCRIPTINLINE>is_name</JAVASCRIPTINLINE>.
+	</EN>
+	<JA>
+	名前の構文述語は
+	<INDEX><USE>is_name</USE></INDEX>
+	<JAVASCRIPTINLINE>is_name</JAVASCRIPTINLINE> です。
+	</JA>
+	</BILINGUAL>
 	    <SNIPPET PAGE="369" HIDE="yes">
 	      <NAME>variable</NAME>
 	      <EXAMPLE>variable_example</EXAMPLE>
@@ -625,9 +776,18 @@ function is_name(component) {
 }
 	      </JAVASCRIPT>
 	    </SNIPPET>
-	The symbol is accessed using the selector 
+	<BILINGUAL>
+	<EN>
+	The symbol is accessed using the selector
 	<INDEX><USE>symbol_of_name</USE></INDEX>
-	<JAVASCRIPTINLINE>symbol_of_name</JAVASCRIPTINLINE>.	
+	<JAVASCRIPTINLINE>symbol_of_name</JAVASCRIPTINLINE>.
+	</EN>
+	<JA>
+	シンボルにアクセスするためのセレクタは
+	<INDEX><USE>symbol_of_name</USE></INDEX>
+	<JAVASCRIPTINLINE>symbol_of_name</JAVASCRIPTINLINE> です。
+	</JA>
+	</BILINGUAL>
 	    <SNIPPET PAGE="369" HIDE="yes">
 	      <NAME>symbol_of_name</NAME>
 	      <EXAMPLE>variable_example</EXAMPLE>
@@ -647,8 +807,16 @@ display(is_name(my_name_statement));
 display(symbol_of_name(my_name_statement));
 	      </JAVASCRIPT>
 	    </SNIPPET>
+	    <BILINGUAL>
+	    <EN>
 	    We provide a constructor for names, to be used by
 	    <JAVASCRIPTINLINE>operator_combination_to_application</JAVASCRIPTINLINE>:
+	    </EN>
+	    <JA>
+	    名前のコンストラクタも用意しておきます。
+	    <JAVASCRIPTINLINE>operator_combination_to_application</JAVASCRIPTINLINE> で使用します。
+	    </JA>
+	    </BILINGUAL>
 	    <SNIPPET PAGE="369" POSTPADDING="no">
 	      <INDEX><DECLARATION>make_name</DECLARATION></INDEX>
 	      <NAME>make_name</NAME>
@@ -667,13 +835,22 @@ function make_name(symbol) {
     <NAME>Expression statements</NAME>
   </SUBHEADING>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We do not need to distinguish between expressions and
     <INDEX><PARSING/><SUBINDEX><ORDER>expression statement</ORDER>expression statement</SUBINDEX></INDEX>
     <INDEX>expression statement<SUBINDEX>parsing of</SUBINDEX></INDEX>
     expression statements.
-    Consequently, 
+    Consequently,
     <JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> can ignore the difference
     between the two kinds of components:
+    </EN>
+    <JA>
+    <INDEX><PARSING/><SUBINDEX><ORDER>expression statement</ORDER>expression statement</SUBINDEX></INDEX>
+    <INDEX>expression statement<SUBINDEX>parsing of</SUBINDEX></INDEX>
+    式と式文を区別する必要はありません。したがって、<JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> はこの2種類のコンポーネントの違いを無視できます。
+    </JA>
+    </BILINGUAL>
     <WEB_ONLY>
 	<LATEX>
 	  \[
@@ -697,10 +874,19 @@ function make_name(symbol) {
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Function applications
     <INDEX><PARSING/><SUBINDEX><ORDER>function application</ORDER>function application</SUBINDEX></INDEX>
     <INDEX>function application<SUBINDEX>parsing of</SUBINDEX></INDEX>
     are parsed as follows:
+    </EN>
+    <JA>
+    <INDEX><PARSING/><SUBINDEX><ORDER>function application</ORDER>function application</SUBINDEX></INDEX>
+    <INDEX>function application<SUBINDEX>parsing of</SUBINDEX></INDEX>
+    関数適用は次のように解析されます。
+    </JA>
+    </BILINGUAL>
     <WEB_ONLY>
 	<LATEX>
     \[
@@ -727,6 +913,8 @@ $\ll\ $<META>fun-expr</META>(<META>arg-expr</META>$_1$, $\ldots$, <META>arg-expr
 <!-- 	  \end{Parsing}% -->
 <!-- 	</LATEX> -->
     </PDF_ONLY>
+    <BILINGUAL>
+    <EN>
     We declare
     <INDEX><USE>is_application</USE></INDEX>
     <JAVASCRIPTINLINE>is_application</JAVASCRIPTINLINE>
@@ -735,6 +923,18 @@ $\ll\ $<META>fun-expr</META>(<META>arg-expr</META>$_1$, $\ldots$, <META>arg-expr
     <INDEX><USE>arg_expressions</USE></INDEX>
     <JAVASCRIPTINLINE>function_expression</JAVASCRIPTINLINE> and
     <JAVASCRIPTINLINE>arg_expressions</JAVASCRIPTINLINE> as the selectors.
+    </EN>
+    <JA>
+    構文述語として
+    <INDEX><USE>is_application</USE></INDEX>
+    <JAVASCRIPTINLINE>is_application</JAVASCRIPTINLINE>
+    を、セレクタとして
+    <INDEX><USE>function_expression</USE></INDEX>
+    <INDEX><USE>arg_expressions</USE></INDEX>
+    <JAVASCRIPTINLINE>function_expression</JAVASCRIPTINLINE> と
+    <JAVASCRIPTINLINE>arg_expressions</JAVASCRIPTINLINE> を宣言します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="372" HIDE="yes" POSTPADDING="no">
       <NAME>application</NAME>
       <REQUIRES>tagged_list</REQUIRES>
@@ -763,8 +963,16 @@ display(first_arg_expression(my_expressions));
 display(rest_arg_expressions(my_expressions));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     We add a constructor for function applications, to be used by
     <JAVASCRIPTINLINE>operator_combination_to_application</JAVASCRIPTINLINE>:
+    </EN>
+    <JA>
+    関数適用のコンストラクタも追加します。
+    <JAVASCRIPTINLINE>operator_combination_to_application</JAVASCRIPTINLINE> で使用します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="369" POSTPADDING="no">
       <INDEX><DECLARATION>make_application</DECLARATION></INDEX>
       <NAME>make_application</NAME>
@@ -785,12 +993,23 @@ function make_application(function_expression, argument_expressions) {
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Conditional expressions
     <INDEX><PARSING/><SUBINDEX><ORDER>conditional expression</ORDER>conditional expression</SUBINDEX></INDEX>
     <INDEX>conditional expression<SUBINDEX>parsing of</SUBINDEX></INDEX>
     <INDEX><PARSING/><SUBINDEX><ORDER>conditional statement</ORDER>conditional statement</SUBINDEX></INDEX>
     <INDEX>conditional statement<SUBINDEX>parsing of</SUBINDEX></INDEX>
     are parsed as follows:
+    </EN>
+    <JA>
+    <INDEX><PARSING/><SUBINDEX><ORDER>conditional expression</ORDER>conditional expression</SUBINDEX></INDEX>
+    <INDEX>conditional expression<SUBINDEX>parsing of</SUBINDEX></INDEX>
+    <INDEX><PARSING/><SUBINDEX><ORDER>conditional statement</ORDER>conditional statement</SUBINDEX></INDEX>
+    <INDEX>conditional statement<SUBINDEX>parsing of</SUBINDEX></INDEX>
+    条件式は次のように解析されます。
+    </JA>
+    </BILINGUAL>
       <WEB_ONLY>
     <BLOCKQUOTE>
 	<LATEX>
@@ -817,7 +1036,14 @@ list("conditional_expression",
 	  </JAVASCRIPT>
 	</SNIPPET>
 	</PDF_ONLY>
+    <BILINGUAL>
+    <EN>
     Similarly, conditional statements are parsed as follows:
+    </EN>
+    <JA>
+    同様に、条件文は次のように解析されます。
+    </JA>
+    </BILINGUAL>
       <WEB_ONLY>
     <BLOCKQUOTE>
 	<LATEX>
@@ -844,6 +1070,8 @@ list("conditional_statement",
 	  </JAVASCRIPT>
 	</SNIPPET>
       </PDF_ONLY>
+      <BILINGUAL>
+      <EN>
       The syntax predicate
       <INDEX><USE>is_conditional</USE></INDEX>
       <JAVASCRIPTINLINE>is_conditional</JAVASCRIPTINLINE>
@@ -855,6 +1083,21 @@ list("conditional_statement",
       <INDEX><USE>conditional_alternative</USE></INDEX>
       <JAVASCRIPTINLINE>conditional_alternative</JAVASCRIPTINLINE>
       can be applied to both kinds.
+      </EN>
+      <JA>
+      構文述語
+      <INDEX><USE>is_conditional</USE></INDEX>
+      <JAVASCRIPTINLINE>is_conditional</JAVASCRIPTINLINE>
+      はどちらの種類の条件にも true を返し、セレクタ
+      <INDEX><USE>conditional_predicate</USE></INDEX>
+      <JAVASCRIPTINLINE>conditional_predicate</JAVASCRIPTINLINE>、
+      <INDEX><USE>conditional_consequent</USE></INDEX>
+      <JAVASCRIPTINLINE>conditional_consequent</JAVASCRIPTINLINE>、
+      <INDEX><USE>conditional_alternative</USE></INDEX>
+      <JAVASCRIPTINLINE>conditional_alternative</JAVASCRIPTINLINE>
+      はどちらの種類にも適用できます。
+      </JA>
+      </BILINGUAL>
 	    <SNIPPET PAGE="371" HIDE="yes">
 	      <NAME>if</NAME>
 	      <REQUIRES>tagged_list</REQUIRES>
@@ -902,12 +1145,21 @@ conditional_alternative(my_cond_expr);
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     A lambda expression
     <INDEX><PARSING/><SUBINDEX><ORDER>lambda expression</ORDER>lambda expression</SUBINDEX></INDEX>
     <INDEX>lambda expression<SUBINDEX>parsing of</SUBINDEX></INDEX>
     whose body is an expression is parsed as if the
     body consisted of a block containing a single return statement whose
     return expression is the body of the lambda expression.
+    </EN>
+    <JA>
+    <INDEX><PARSING/><SUBINDEX><ORDER>lambda expression</ORDER>lambda expression</SUBINDEX></INDEX>
+    <INDEX>lambda expression<SUBINDEX>parsing of</SUBINDEX></INDEX>
+    本体が式であるラムダ式は、その本体が、ラムダ式の本体を return 式とする単一の return 文を含むブロックであるかのように解析されます。
+    </JA>
+    </BILINGUAL>
     <WEB_ONLY>
     <LATEX>
 \[
@@ -931,7 +1183,11 @@ $\ll\ $(<META>name</META>$_1$, $\ldots$, <META>name</META>$_n$) => <META>express
 <!-- &amp; \ll\ \texttt{(}\mathit{name}_1\texttt{, }\ldots\texttt{, } \mathit{name}_n \texttt{) =&gt; \{}\ \textbf{\texttt{return}} \ \mathit{expression}\texttt{;}\ \texttt{\}}\ \gg -->
 <!-- \end{Parsing}% -->
 <!-- 	</LATEX> -->
-    </PDF_ONLY>A lambda expression whose body is a block is parsed as follows:
+    </PDF_ONLY>
+<BILINGUAL>
+<EN>A lambda expression whose body is a block is parsed as follows:</EN>
+<JA>本体がブロックであるラムダ式は次のように解析されます。</JA>
+</BILINGUAL>
 		<WEB_ONLY>
 	      <BLOCKQUOTE>
 	      <LATEX>
@@ -963,6 +1219,8 @@ $\ll\ $(<META>name</META>$_1$, $\ldots$, <META>name</META>$_n$) => <META>block</
 <!-- \end{Parsing}% -->
 <!-- </LATEX> -->
 </PDF_ONLY>
+<BILINGUAL>
+<EN>
 The syntax predicate is
 <INDEX><USE>is_lambda_expression</USE></INDEX>
 	<JAVASCRIPTINLINE>is_lambda_expression</JAVASCRIPTINLINE>
@@ -972,6 +1230,19 @@ The syntax predicate is
 	The selector for the parameters, called
 	<JAVASCRIPTINLINE>lambda_parameter_symbols</JAVASCRIPTINLINE>,
 	additionally extracts the symbols from the names.
+</EN>
+<JA>
+構文述語は
+<INDEX><USE>is_lambda_expression</USE></INDEX>
+	<JAVASCRIPTINLINE>is_lambda_expression</JAVASCRIPTINLINE>
+	で、ラムダ式の本体のセレクタは
+	<INDEX><USE>lambda_body</USE></INDEX>
+	<JAVASCRIPTINLINE>lambda_body</JAVASCRIPTINLINE> です。
+	パラメータのセレクタ
+	<JAVASCRIPTINLINE>lambda_parameter_symbols</JAVASCRIPTINLINE>
+	は、名前からシンボルを取り出す処理も行います。
+</JA>
+</BILINGUAL>
 	    <SNIPPET PAGE="370">
 	      <INDEX><DECLARATION>lambda_parameter_symbols</DECLARATION></INDEX>
 	      <NAME>lambda</NAME>
@@ -1005,9 +1276,18 @@ display(lambda_parameter_symbols(my_lambda));
 display(lambda_body(my_lambda));
 	      </JAVASCRIPT>
 	    </SNIPPET>
+	    <BILINGUAL>
+	    <EN>
 	    The function
 	    <JAVASCRIPTINLINE>function_decl_to_constant_decl</JAVASCRIPTINLINE>
 	    needs a constructor for lambda expressions:
+	    </EN>
+	    <JA>
+	    関数
+	    <JAVASCRIPTINLINE>function_decl_to_constant_decl</JAVASCRIPTINLINE>
+	    にはラムダ式のコンストラクタが必要です。
+	    </JA>
+	    </BILINGUAL>
 	    <SNIPPET PAGE="369" POSTPADDING="no">
 	      <INDEX><DECLARATION>make_lambda_expression</DECLARATION></INDEX>
 	      <NAME>make_lambda_expression</NAME>
@@ -1028,11 +1308,20 @@ function make_lambda_expression(parameters, body) {
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     A sequence statement
     <INDEX><PARSING/><SUBINDEX><ORDER>sequence of statements</ORDER>sequence of statements</SUBINDEX></INDEX>
     <INDEX>sequence of statements<SUBINDEX>parsing of</SUBINDEX></INDEX>
     packages a sequence of statements into a
     single statement. A<SPACE/>sequence of statements is parsed as follows:
+    </EN>
+    <JA>
+    <INDEX><PARSING/><SUBINDEX><ORDER>sequence of statements</ORDER>sequence of statements</SUBINDEX></INDEX>
+    <INDEX>sequence of statements<SUBINDEX>parsing of</SUBINDEX></INDEX>
+    シーケンス文は、文のシーケンスを単一の文にまとめます。文のシーケンスは次のように解析されます。
+    </JA>
+    </BILINGUAL>
     <WEB_ONLY>
     <LATEX>
 \[
@@ -1061,6 +1350,8 @@ $\ll\ $<META>statement</META>$_1$ $\cdots$ <META>statement</META>$_n\;\gg$ =
 <!-- 	  \end{Parsing}% -->
 <!--     </LATEX> -->
     </PDF_ONLY>
+    <BILINGUAL>
+    <EN>
     The syntax predicate is
     <INDEX><USE>is_sequence</USE></INDEX>
     <JAVASCRIPTINLINE>is_sequence</JAVASCRIPTINLINE> and
@@ -1073,13 +1364,30 @@ $\ll\ $<META>statement</META>$_1$ $\cdots$ <META>statement</META>$_n\;\gg$ =
     <JAVASCRIPTINLINE>is_empty_sequence</JAVASCRIPTINLINE> and
     whether it contains only one element
     using the predicate
-    <JAVASCRIPTINLINE>is_last_statement</JAVASCRIPTINLINE>.<FOOTNOTE>These
+    <JAVASCRIPTINLINE>is_last_statement</JAVASCRIPTINLINE>.
+    </EN>
+    <JA>
+    構文述語は
+    <INDEX><USE>is_sequence</USE></INDEX>
+    <JAVASCRIPTINLINE>is_sequence</JAVASCRIPTINLINE> で、セレクタは <JAVASCRIPTINLINE>sequence_statements</JAVASCRIPTINLINE> です。
+    文のリストの最初の要素を取得するには
+    <JAVASCRIPTINLINE>first_statement</JAVASCRIPTINLINE> を、残りの文を取得するには
+    <JAVASCRIPTINLINE>rest_statements</JAVASCRIPTINLINE> を使います。リストが空かどうかは述語
+    <JAVASCRIPTINLINE>is_empty_sequence</JAVASCRIPTINLINE> で、要素が1つだけかどうかは述語
+    <JAVASCRIPTINLINE>is_last_statement</JAVASCRIPTINLINE> でテストします。
+    </JA>
+    </BILINGUAL>
+    <FOOTNOTE>
+    <BILINGUAL>
+    <EN>These
     selectors for a list of statements are not intended
     as a data abstraction.
     They are introduced as mnemonic names for the
     basic list operations in order to make it easier to understand the
     explicit-control evaluator in
-    section<SPACE/><REF NAME="sec:eceval"/>.
+    section<SPACE/><REF NAME="sec:eceval"/>.</EN>
+    <JA>文のリストに対するこれらのセレクタは、データ抽象として意図されたものではありません。基本的なリスト操作に覚えやすい名前を付けることで、セクション<SPACE/><REF NAME="sec:eceval"/>の明示的制御評価器を理解しやすくするために導入されています。</JA>
+    </BILINGUAL>
     <LABEL NAME="foot:mceval-abstraction"/>
   </FOOTNOTE>
   <SNIPPET PAGE="371" POSTPADDING="no">
@@ -1150,15 +1458,30 @@ list_ref(rest_statements(my_actions), 1);
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Blocks
     <INDEX><PARSING/><SUBINDEX><ORDER>block</ORDER>block</SUBINDEX></INDEX>
     <INDEX>block<SUBINDEX>parsing of</SUBINDEX></INDEX>
-    are parsed as follows:<FOOTNOTE>A parser implementation may
+    are parsed as follows:
+    </EN>
+    <JA>
+    <INDEX><PARSING/><SUBINDEX><ORDER>block</ORDER>block</SUBINDEX></INDEX>
+    <INDEX>block<SUBINDEX>parsing of</SUBINDEX></INDEX>
+    ブロックは次のように解析されます。
+    </JA>
+    </BILINGUAL>
+    <FOOTNOTE>
+    <BILINGUAL>
+    <EN>A parser implementation may
     decide to represent a block by just its statement sequence if none
     of the statements of the sequence are declarations, or to represent
     a sequence with only one statement by just that statement. The language
     processors in this chapter and in chapter 5 do not depend on
-    these decisions.</FOOTNOTE>
+    these decisions.</EN>
+    <JA>パーサーの実装では、シーケンスの文に宣言が含まれない場合はブロックを文のシーケンスだけで表現したり、文が1つだけのシーケンスをその文だけで表現したりすることもあります。本章と第5章の言語処理系は、こうした決定に依存しません。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <WEB_ONLY>
     <LATEX>
     \[
@@ -1179,6 +1502,8 @@ list_ref(rest_statements(my_actions), 1);
 	  \end{Parsing}%
 	  </LATEX>
     </PDF_ONLY>
+	<BILINGUAL>
+	<EN>
 	Here <META>statements</META> refers to a sequence of
 	statements, as shown above.
 	The syntax predicate is
@@ -1187,6 +1512,17 @@ list_ref(rest_statements(my_actions), 1);
 	and the selector is
 	<INDEX><USE>block_body</USE></INDEX>
 	<JAVASCRIPTINLINE>block_body</JAVASCRIPTINLINE>.
+	</EN>
+	<JA>
+	ここで <META>statements</META> は、上で示した文のシーケンスを指します。
+	構文述語は
+	<INDEX><USE>is_block</USE></INDEX>
+	<JAVASCRIPTINLINE>is_block</JAVASCRIPTINLINE>
+	で、セレクタは
+	<INDEX><USE>block_body</USE></INDEX>
+	<JAVASCRIPTINLINE>block_body</JAVASCRIPTINLINE> です。
+	</JA>
+	</BILINGUAL>
 	    <SNIPPET PAGE="371" HIDE="yes">
 	      <NAME>block</NAME>
 	      <REQUIRES>tagged_list</REQUIRES>
@@ -1226,10 +1562,19 @@ display(block_body(my_block));
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Return statements
     <INDEX><PARSING/><SUBINDEX><ORDER>return</ORDER>return statement</SUBINDEX></INDEX>
     <INDEX>return statement<SUBINDEX>parsing of</SUBINDEX></INDEX>
     are parsed as follows:
+    </EN>
+    <JA>
+    <INDEX><PARSING/><SUBINDEX><ORDER>return</ORDER>return statement</SUBINDEX></INDEX>
+    <INDEX>return statement<SUBINDEX>parsing of</SUBINDEX></INDEX>
+    return 文は次のように解析されます。
+    </JA>
+    </BILINGUAL>
     <WEB_ONLY>
 	<LATEX>
     \[
@@ -1250,12 +1595,24 @@ display(block_body(my_block));
 	  \end{Parsing}%
 	</LATEX>
     </PDF_ONLY>
+    <BILINGUAL>
+    <EN>
     The syntax predicate and selector are, respectively,
     <INDEX><USE>is_return_statement</USE></INDEX>
     <JAVASCRIPTINLINE>is_return_statement</JAVASCRIPTINLINE>
     and
     <INDEX><USE>return_expression</USE></INDEX>
     <JAVASCRIPTINLINE>return_expression</JAVASCRIPTINLINE>.
+    </EN>
+    <JA>
+    構文述語とセレクタはそれぞれ
+    <INDEX><USE>is_return_statement</USE></INDEX>
+    <JAVASCRIPTINLINE>is_return_statement</JAVASCRIPTINLINE>
+    と
+    <INDEX><USE>return_expression</USE></INDEX>
+    <JAVASCRIPTINLINE>return_expression</JAVASCRIPTINLINE> です。
+    </JA>
+    </BILINGUAL>
 	    <SNIPPET PAGE="366" HIDE="yes">
 	      <NAME>return</NAME>
 	      <REQUIRES>tagged_list</REQUIRES>
@@ -1285,10 +1642,19 @@ list_ref(my_return, 1);
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Assignments
     <INDEX><PARSING/><SUBINDEX><ORDER>assignment</ORDER>assignment</SUBINDEX></INDEX>
     <INDEX>assignment<SUBINDEX>parsing of</SUBINDEX></INDEX>
     are parsed as follows:
+    </EN>
+    <JA>
+    <INDEX><PARSING/><SUBINDEX><ORDER>assignment</ORDER>assignment</SUBINDEX></INDEX>
+    <INDEX>assignment<SUBINDEX>parsing of</SUBINDEX></INDEX>
+    代入は次のように解析されます。
+    </JA>
+    </BILINGUAL>
     <WEB_ONLY>
 	<LATEX>
     \[
@@ -1307,6 +1673,8 @@ list_ref(my_return, 1);
 	  \end{Parsing}%
 	</LATEX>
     </PDF_ONLY>
+    <BILINGUAL>
+    <EN>
     The syntax predicate is
     <INDEX><USE>is_assignment</USE></INDEX>
     <JAVASCRIPTINLINE>is_assignment</JAVASCRIPTINLINE>
@@ -1318,6 +1686,20 @@ list_ref(my_return, 1);
     The symbol is wrapped in a tagged list representing the name, and thus
     <JAVASCRIPTINLINE>assignment_symbol</JAVASCRIPTINLINE> needs to
     unwrap it.
+    </EN>
+    <JA>
+    構文述語は
+    <INDEX><USE>is_assignment</USE></INDEX>
+    <JAVASCRIPTINLINE>is_assignment</JAVASCRIPTINLINE>
+    で、セレクタは
+    <JAVASCRIPTINLINE>assignment_symbol</JAVASCRIPTINLINE>
+    と
+    <INDEX><USE>assignment_value_expression</USE></INDEX>
+    <JAVASCRIPTINLINE>assignment_value_expression</JAVASCRIPTINLINE> です。
+    シンボルは名前を表すタグ付きリストに包まれているため、
+    <JAVASCRIPTINLINE>assignment_symbol</JAVASCRIPTINLINE> はそれをアンラップする必要があります。
+    </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="369"  POSTPADDING="no">
       <INDEX><DECLARATION>assignment_symbol</DECLARATION></INDEX>
       <NAME>assignment</NAME>
@@ -1361,12 +1743,23 @@ assignment_value_expression(my_assignment_statement);
   </SUBHEADING>
 
     <TEXT>
+      <BILINGUAL>
+      <EN>
       Constant and variable declarations
       <INDEX><PARSING/><SUBINDEX><ORDER>constant</ORDER>constant declaration</SUBINDEX></INDEX>
       <INDEX>constant declaration<SUBINDEX>parsing of</SUBINDEX></INDEX>
       <INDEX><PARSING/><SUBINDEX><ORDER>variable</ORDER>variable declaration</SUBINDEX></INDEX>
       <INDEX>variable<SUBINDEX>declaration, parsing of</SUBINDEX></INDEX>
       are parsed as follows:
+      </EN>
+      <JA>
+      <INDEX><PARSING/><SUBINDEX><ORDER>constant</ORDER>constant declaration</SUBINDEX></INDEX>
+      <INDEX>constant declaration<SUBINDEX>parsing of</SUBINDEX></INDEX>
+      <INDEX><PARSING/><SUBINDEX><ORDER>variable</ORDER>variable declaration</SUBINDEX></INDEX>
+      <INDEX>variable<SUBINDEX>declaration, parsing of</SUBINDEX></INDEX>
+      定数宣言と変数宣言は次のように解析されます。
+      </JA>
+      </BILINGUAL>
       <WEB_ONLY>
 	<LATEX>
 \[
@@ -1400,10 +1793,19 @@ $\ll\ $let <META>name</META> = <META>expression</META>;$\ \gg$ =
 <!-- 	  \end{Parsing}% -->
 <!-- 	</LATEX> -->
       </PDF_ONLY>
-	The selectors 
+	<BILINGUAL>
+	<EN>
+	The selectors
 	<JAVASCRIPTINLINE>declaration_symbol</JAVASCRIPTINLINE> and
 	<JAVASCRIPTINLINE>declaration_value_expression</JAVASCRIPTINLINE> apply to both
 	kinds.
+	</EN>
+	<JA>
+	セレクタ
+	<JAVASCRIPTINLINE>declaration_symbol</JAVASCRIPTINLINE> と
+	<JAVASCRIPTINLINE>declaration_value_expression</JAVASCRIPTINLINE> はどちらの種類にも適用できます。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="370">
 	  <INDEX><DECLARATION>declaration_symbol</DECLARATION></INDEX>
 	  <INDEX><DECLARATION>declaration_value_expression</DECLARATION></INDEX>
@@ -1419,9 +1821,18 @@ function declaration_value_expression(component) {
 }
 	      </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	The function
 	<JAVASCRIPTINLINE>function_decl_to_constant_decl</JAVASCRIPTINLINE>
 	needs a constructor for constant declarations:
+	</EN>
+	<JA>
+	関数
+	<JAVASCRIPTINLINE>function_decl_to_constant_decl</JAVASCRIPTINLINE>
+	には定数宣言のコンストラクタが必要です。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="370">
 	  <INDEX><DECLARATION>make_constant_declaration</DECLARATION></INDEX>
 	      <NAME>make_constant_declaration</NAME>
@@ -1436,10 +1847,19 @@ function make_constant_declaration(name, value_expression) {
 	</SNIPPET>
     </TEXT>
     <TEXT>
+      <BILINGUAL>
+      <EN>
       Function declarations
       <INDEX><PARSING/><SUBINDEX><ORDER>function declaration</ORDER>function declaration</SUBINDEX></INDEX>
       <INDEX>function declaration<SUBINDEX>parsing of</SUBINDEX></INDEX>
       are parsed as follows:
+      </EN>
+      <JA>
+      <INDEX><PARSING/><SUBINDEX><ORDER>function declaration</ORDER>function declaration</SUBINDEX></INDEX>
+      <INDEX>function declaration<SUBINDEX>parsing of</SUBINDEX></INDEX>
+      関数宣言は次のように解析されます。
+      </JA>
+      </BILINGUAL>
 	  <WEB_ONLY>
 	<BLOCKQUOTE>
 	      <LATEX>
@@ -1466,6 +1886,8 @@ $\ll\ $function <META>name</META>(<META>name</META>$_1$, $\ldots$ <META>name</ME
 	  </JAVASCRIPT>
 	</SNIPPET>
 	  </PDF_ONLY>
+     <BILINGUAL>
+     <EN>
      The syntax predicate
       <INDEX><USE>is_function_declaration</USE></INDEX>
       <JAVASCRIPTINLINE>is_function_declaration</JAVASCRIPTINLINE>
@@ -1477,6 +1899,21 @@ $\ll\ $function <META>name</META>(<META>name</META>$_1$, $\ldots$ <META>name</ME
      <JAVASCRIPTINLINE>function_declaration_parameters</JAVASCRIPTINLINE>, and
       <INDEX><USE>function_declaration_body</USE></INDEX>
      <JAVASCRIPTINLINE>function_declaration_body</JAVASCRIPTINLINE>.
+     </EN>
+     <JA>
+     構文述語
+      <INDEX><USE>is_function_declaration</USE></INDEX>
+      <JAVASCRIPTINLINE>is_function_declaration</JAVASCRIPTINLINE>
+      がこれらを認識します。
+      セレクタは
+      <INDEX><USE>function_declaration_name</USE></INDEX>
+     <JAVASCRIPTINLINE>function_declaration_name</JAVASCRIPTINLINE>、
+      <INDEX><USE>function_declaration_parameters</USE></INDEX>
+     <JAVASCRIPTINLINE>function_declaration_parameters</JAVASCRIPTINLINE>、
+      <INDEX><USE>function_declaration_body</USE></INDEX>
+     <JAVASCRIPTINLINE>function_declaration_body</JAVASCRIPTINLINE> です。
+     </JA>
+     </BILINGUAL>
      <SNIPPET PAGE="373" EVAL="no" HIDE="yes">
        <NAME>function_declaration_syntax</NAME>
        <REQUIRES>tagged_list</REQUIRES>
@@ -1497,9 +1934,18 @@ function function_declaration_body(component) {
      </SNIPPET>
     </TEXT>
     <TEXT>
+	<BILINGUAL>
+	<EN>
 	The syntax predicate
 	<JAVASCRIPTINLINE>is_declaration</JAVASCRIPTINLINE>
 	returns true for all three kinds of declarations.
+	</EN>
+	<JA>
+	構文述語
+	<JAVASCRIPTINLINE>is_declaration</JAVASCRIPTINLINE>
+	は3種類すべての宣言に対して true を返します。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="370" POSTPADDING="no">
 	  <INDEX><DECLARATION>is_declaration</DECLARATION></INDEX>
 	      <NAME>definition</NAME>
@@ -1659,6 +2105,8 @@ display(declaration_value_expression(my_declaration_statement));
       <INDEX>metacircular evaluator for JavaScript<SUBINDEX>syntactic forms as derived components<OPEN/></SUBINDEX></INDEX>
       
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	Some
 	<INDEX>syntactic form<SUBINDEX><ORDER>derived</ORDER>as derived component</SUBINDEX></INDEX>
 	syntactic forms in our language can be defined in terms of
@@ -1667,14 +2115,30 @@ display(declaration_value_expression(my_declaration_statement));
 	One example is
 	<INDEX>function declaration<SUBINDEX><ORDER>derived</ORDER>as derived component</SUBINDEX></INDEX>
 	<INDEX>derived components in evaluator<SUBINDEX>function declaration</SUBINDEX></INDEX>
-	function declaration, which 
+	function declaration, which
 	<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>
 	transforms into a constant declaration whose
-	value expression is a lambda expression.<FOOTNOTE>In 
+	value expression is a lambda expression.
+	</EN>
+	<JA>
+	<INDEX>syntactic form<SUBINDEX><ORDER>derived</ORDER>as derived component</SUBINDEX></INDEX>
+	この言語の一部の構文形式は、直接実装するのではなく、他の構文形式を含むコンポーネントを使って定義できます。
+	その一例が
+	<INDEX>function declaration<SUBINDEX><ORDER>derived</ORDER>as derived component</SUBINDEX></INDEX>
+	<INDEX>derived components in evaluator<SUBINDEX>function declaration</SUBINDEX></INDEX>
+	関数宣言で、<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>
+	はこれを、値の式がラムダ式である定数宣言に変換します。
+	</JA>
+	</BILINGUAL>
+	<FOOTNOTE>
+	<BILINGUAL>
+	<EN>In
 	    actual JavaScript, there are subtle differences between the two
 	    forms; see footnote<SPACE/><REF NAME="foot:function-decl-vs-lambda"/>
 	    in chapter 1.
-	    Exercise<SPACE/><REF NAME="ex:hoisting"/> addresses these differences.
+	    Exercise<SPACE/><REF NAME="ex:hoisting"/> addresses these differences.</EN>
+	<JA>実際の JavaScript では、この2つの形式には微妙な違いがあります。第1章の脚注<SPACE/><REF NAME="foot:function-decl-vs-lambda"/>を参照してください。練習問題<SPACE/><REF NAME="ex:hoisting"/>でこれらの違いを扱います。</JA>
+	</BILINGUAL>
           </FOOTNOTE>
 	<SNIPPET PAGE="373">
 	  <INDEX><DECLARATION>function_decl_to_constant_decl</DECLARATION></INDEX>
@@ -1711,19 +2175,37 @@ function function_decl_to_constant_decl(component) {
 }
 	  </JAVASCRIPT_RUN>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	Implementing the evaluation of function declarations
-	in this	way simplifies the evaluator because it reduces the number of
+	in this way simplifies the evaluator because it reduces the number of
 	syntactic forms for which the evaluation process must be explicitly specified.
+	</EN>
+	<JA>
+	関数宣言の評価をこのように実装すると、評価プロセスを明示的に指定しなければならない構文形式の数が減るため、評価器が簡素化されます。
+	</JA>
+	</BILINGUAL>
       </TEXT>
       
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	Similarly, we define
 	<INDEX><PARSING/><SUBINDEX><ORDER>operator combination</ORDER>operator combination</SUBINDEX></INDEX>
 	<INDEX>operator combination<SUBINDEX>parsing of</SUBINDEX></INDEX>
 	operator combinations in terms of
-	function applications. 
+	function applications.
 	Operator combinations are unary or binary and carry their operator symbol as second element
 	in the tagged-list representation:
+	</EN>
+	<JA>
+	同様に、
+	<INDEX><PARSING/><SUBINDEX><ORDER>operator combination</ORDER>operator combination</SUBINDEX></INDEX>
+	<INDEX>operator combination<SUBINDEX>parsing of</SUBINDEX></INDEX>
+	演算子の組み合わせを関数適用を使って定義します。
+	演算子の組み合わせは単項または二項で、タグ付きリスト表現の2番目の要素として演算子シンボルを持ちます。
+	</JA>
+	</BILINGUAL>
 	<WEB_ONLY>
 	    <LATEX>
 	      \[
@@ -1752,9 +2234,18 @@ $\ll\ $<META>unary-operator</META> <META>expression</META>$\ \gg$ =
 	    <!--   \end{Parsing}% -->
 	    <!-- </LATEX> -->
 	</PDF_ONLY>
-	where <META>unary-operator</META> is 
+	<BILINGUAL>
+	<EN>
+	where <META>unary-operator</META> is
     <JAVASCRIPTINLINE>!</JAVASCRIPTINLINE> (for logical negation) or
     <JAVASCRIPTINLINE>-unary</JAVASCRIPTINLINE> (for numeric negation), and
+	</EN>
+	<JA>
+	ここで <META>unary-operator</META> は
+    <JAVASCRIPTINLINE>!</JAVASCRIPTINLINE>（論理否定）または
+    <JAVASCRIPTINLINE>-unary</JAVASCRIPTINLINE>（数値否定）であり、
+	</JA>
+	</BILINGUAL>
     <WEB_ONLY>
 	    <LATEX>
 	      \[
@@ -1783,7 +2274,9 @@ $\ll\ $<META>expression</META>$_1$ <META>binary-operator</META> <META>expression
 	    <!--   \end{Parsing}% -->
 	    <!-- </LATEX> -->
     </PDF_ONLY>
-    where <META>binary-operator</META> is 
+    <BILINGUAL>
+    <EN>
+    where <META>binary-operator</META> is
     <JAVASCRIPTINLINE>+</JAVASCRIPTINLINE>,
     <JAVASCRIPTINLINE>-</JAVASCRIPTINLINE>,
     <JAVASCRIPTINLINE>*</JAVASCRIPTINLINE>,
@@ -1803,6 +2296,30 @@ $\ll\ $<META>expression</META>$_1$ <META>binary-operator</META> <META>expression
      <JAVASCRIPTINLINE>operator_symbol</JAVASCRIPTINLINE>,
      <JAVASCRIPTINLINE>first_operand</JAVASCRIPTINLINE>, and
      <JAVASCRIPTINLINE>second_operand</JAVASCRIPTINLINE>.
+    </EN>
+    <JA>
+    <META>binary-operator</META> は
+    <JAVASCRIPTINLINE>+</JAVASCRIPTINLINE>、
+    <JAVASCRIPTINLINE>-</JAVASCRIPTINLINE>、
+    <JAVASCRIPTINLINE>*</JAVASCRIPTINLINE>、
+    <JAVASCRIPTINLINE>/</JAVASCRIPTINLINE>、
+    <JAVASCRIPTINLINE>%</JAVASCRIPTINLINE>、
+    <JAVASCRIPTINLINE>===</JAVASCRIPTINLINE>、
+    <JAVASCRIPTINLINE>!==</JAVASCRIPTINLINE>、
+    <JAVASCRIPTINLINE>&gt;</JAVASCRIPTINLINE>、
+    <JAVASCRIPTINLINE>&lt;</JAVASCRIPTINLINE>、
+    <JAVASCRIPTINLINE>&gt;=</JAVASCRIPTINLINE>、または
+    <JAVASCRIPTINLINE>&lt;=</JAVASCRIPTINLINE> です。
+     構文述語は
+     <JAVASCRIPTINLINE>is_operator_combination</JAVASCRIPTINLINE>、
+     <JAVASCRIPTINLINE>is_unary_operator_combination</JAVASCRIPTINLINE>、
+     <JAVASCRIPTINLINE>is_binary_operator_combination</JAVASCRIPTINLINE>
+     で、セレクタは
+     <JAVASCRIPTINLINE>operator_symbol</JAVASCRIPTINLINE>、
+     <JAVASCRIPTINLINE>first_operand</JAVASCRIPTINLINE>、
+     <JAVASCRIPTINLINE>second_operand</JAVASCRIPTINLINE> です。
+    </JA>
+    </BILINGUAL>
 	<SNIPPET PAGE="373" HIDE="yes">
 	  <NAME>operator_combination</NAME>
 	  <JAVASCRIPT>
@@ -1829,6 +2346,8 @@ function second_operand(component) {
 	</SNIPPET>
       </TEXT>
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	The evaluator uses
 	<JAVASCRIPTINLINE>operator_combination_to_application</JAVASCRIPTINLINE>
 	to transform an
@@ -1837,6 +2356,17 @@ function second_operand(component) {
 	<INDEX>derived components in evaluator<SUBINDEX>operator combination</SUBINDEX></INDEX>
 	operator combination into a function application whose
 	function expression is the name of the operator:
+	</EN>
+	<JA>
+	評価器は
+	<JAVASCRIPTINLINE>operator_combination_to_application</JAVASCRIPTINLINE>
+	を使って、
+	<INDEX>operator combination<SUBINDEX>as function application</SUBINDEX></INDEX>
+	<INDEX>operator combination<SUBINDEX><ORDER>derived</ORDER>as derived component</SUBINDEX></INDEX>
+	<INDEX>derived components in evaluator<SUBINDEX>operator combination</SUBINDEX></INDEX>
+	演算子の組み合わせを、関数式が演算子の名前である関数適用に変換します。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET PAGE="373">
 	  <INDEX><DECLARATION>operator_combination_to_</DECLARATION> <JAVASCRIPTINLINE>application</JAVASCRIPTINLINE></INDEX>
 	  <NAME>operator_combination_to_application</NAME>
@@ -1856,12 +2386,21 @@ function operator_combination_to_application(component) {
 	</SNIPPET>
       </TEXT>
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	Components (such as function declarations and operator combinations) that we
 	choose
 	to implement as syntactic transformations are called
 	<INDEX>derived component</INDEX>
 	<EM>derived components</EM>. Logical composition operations are also
 	derived components (see exercise<SPACE/><REF NAME="ex:eval-and-or"/>).
+	</EN>
+	<JA>
+	関数宣言や演算子の組み合わせのように、構文変換として実装することを選んだコンポーネントを
+	<INDEX>derived component</INDEX>
+	<EM>派生コンポーネント</EM>と呼びます。論理合成演算も派生コンポーネントです（練習問題<SPACE/><REF NAME="ex:eval-and-or"/>を参照）。
+	</JA>
+	</BILINGUAL>
 
 	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>component representation<CLOSE/></SUBINDEX></INDEX>
 	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>syntax of evaluated language<CLOSE/></SUBINDEX></INDEX>
@@ -1940,6 +2479,8 @@ function operator_combination_to_application(component) {
     </SCHEME>
     <JAVASCRIPT>
       <EXERCISE>
+	<BILINGUAL>
+	<EN>
 	The inverse of <JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE>
 	is called
 	<INDEX><USE>unparse</USE><SUBINDEX>as inverse of <JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE></SUBINDEX></INDEX>
@@ -1949,11 +2490,11 @@ function operator_combination_to_application(component) {
 	and returns a string that adheres to JavaScript notation.
 	<OL>
 	  <LI>
-	  Write a function <JAVASCRIPTINLINE>unparse</JAVASCRIPTINLINE> by 
+	  Write a function <JAVASCRIPTINLINE>unparse</JAVASCRIPTINLINE> by
 	  following the structure of <JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>
 	  (without the environment parameter), but producing a string that represents
 	  the given component, rather than evaluating it. Recall
-	  from section<SPACE/><REF NAME="sec:circuit-simulator"/> that 
+	  from section<SPACE/><REF NAME="sec:circuit-simulator"/> that
 	  the operator <JAVASCRIPTINLINE>+</JAVASCRIPTINLINE> can be applied
 	  to two strings to concatenate them and that the primitive function
 	  <JAVASCRIPTINLINE>stringify</JAVASCRIPTINLINE> turns values such
@@ -1982,6 +2523,21 @@ function operator_combination_to_application(component) {
 	  <EM>pretty-printing</EM>.
 	</LI>
        </OL>
+	</EN>
+	<JA>
+	<JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> の逆は
+	<INDEX><USE>unparse</USE><SUBINDEX>as inverse of <JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE></SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>unparse</JAVASCRIPTINLINE> と呼ばれます。<JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> が生成するタグ付きリストを引数に取り、JavaScript の記法に従った文字列を返します。
+	<OL>
+	  <LI>
+	  <JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE> の構造に従い（環境パラメータなしで）、与えられたコンポーネントを評価するのではなく、それを表す文字列を生成する関数 <JAVASCRIPTINLINE>unparse</JAVASCRIPTINLINE> を書いてください。セクション<SPACE/><REF NAME="sec:circuit-simulator"/>で説明したように、演算子 <JAVASCRIPTINLINE>+</JAVASCRIPTINLINE> を2つの文字列に適用すると連結でき、プリミティブ関数 <JAVASCRIPTINLINE>stringify</JAVASCRIPTINLINE> は 1.5、true、<JAVASCRIPTINLINE>null</JAVASCRIPTINLINE>、<JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> などの値を文字列に変換できることを思い出してください。演算子の組み合わせをアンパースして得られる文字列を（常に、または必要に応じて）括弧で囲み、演算子の優先順位を尊重するよう注意してください。
+	</LI>
+	<LI>
+	  <JAVASCRIPTINLINE>unparse</JAVASCRIPTINLINE> 関数は、このセクションの後の練習問題を解くときに役立ちます。<JAVASCRIPTINLINE>unparse</JAVASCRIPTINLINE> を改良して、結果の文字列に <JAVASCRIPTINLINE>"</JAVASCRIPTINLINE><FIXED_SPACE/><JAVASCRIPTINLINE>"</JAVASCRIPTINLINE>（スペース）や <JAVASCRIPTINLINE>"\n"</JAVASCRIPTINLINE>（改行）文字を追加し、本書の JavaScript プログラムで使われている<INDEX>indentation</INDEX>インデントスタイルに従うようにしてください。プログラムテキストを読みやすくするためにこのような<INDEX>whitespace characters</INDEX>空白文字を追加（または削除）することを、<INDEX>pretty-printing</INDEX><EM>プリティプリンティング</EM>と呼びます。
+	</LI>
+       </OL>
+	</JA>
+	</BILINGUAL>
       <LABEL NAME="ex:parse"/>
       </EXERCISE>
     </JAVASCRIPT>
@@ -2006,6 +2562,8 @@ function operator_combination_to_application(component) {
     </SCHEME>
     <JAVASCRIPT>
       <EXERCISE>
+	<BILINGUAL>
+	<EN>
 	Rewrite
 	<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE> so that the
 	dispatch is done in
@@ -2016,6 +2574,14 @@ function operator_combination_to_application(component) {
 	data-directed differentiation function of
 	exercise<SPACE/><REF NAME="ex:data-directed-differentiation"/>. (You may
 	use the tag of the tagged-list representation as the type of the components.)
+	</EN>
+	<JA>
+	<INDEX>data-directed programming<SUBINDEX>in metacircular evaluator</SUBINDEX></INDEX>
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>data-directed <SCHEMEINLINE>evaluate</SCHEMEINLINE></SUBINDEX></INDEX>
+	<INDEX><USE>evaluate</USE> (metacircular)<SUBINDEX>data-directed</SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE> を書き直して、ディスパッチをデータ指向スタイルで行うようにしてください。練習問題<SPACE/><REF NAME="ex:data-directed-differentiation"/>のデータ指向の微分関数と比較してください。（タグ付きリスト表現のタグをコンポーネントの型として使って構いません。）
+	</JA>
+	</BILINGUAL>
 	<LABEL NAME="ex:data-directed-eval"/>
       </EXERCISE>
     </JAVASCRIPT>
@@ -2036,6 +2602,8 @@ function operator_combination_to_application(component) {
 	from section<SPACE/><REF NAME="sec:conditionals"/>:
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	Recall from section<SPACE/><REF NAME="sec:conditionals"/> that the
 	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>syntactic forms (additional)</SUBINDEX></INDEX>
 	<INDEX>metacircular evaluator for JavaScript<SUBINDEX><USE>&amp;&amp;</USE> (logical conjunction)</SUBINDEX></INDEX>
@@ -2057,13 +2625,42 @@ function operator_combination_to_application(component) {
 	    <LATEXINLINE>$\mathit{expression}_2$</LATEXINLINE> <JAVASCRIPTINLINE>:</JAVASCRIPTINLINE>
 	    <JAVASCRIPTINLINE>false</JAVASCRIPTINLINE>, and
 	    the logical disjunction
-            <LATEXINLINE>$\mathit{expression}_1$</LATEXINLINE> 
-            <JAVASCRIPTINLINE>||</JAVASCRIPTINLINE> 
+            <LATEXINLINE>$\mathit{expression}_1$</LATEXINLINE>
+            <JAVASCRIPTINLINE>||</JAVASCRIPTINLINE>
             <LATEXINLINE>$\mathit{expression}_2$</LATEXINLINE>
 	    is syntactic sugar for
 	    <LATEXINLINE>$ \mathit{expression}_1$</LATEXINLINE> <JAVASCRIPTINLINE>?</JAVASCRIPTINLINE>
 	    <JAVASCRIPTINLINE>true</JAVASCRIPTINLINE> <JAVASCRIPTINLINE>:</JAVASCRIPTINLINE>
 	    <LATEXINLINE>$\mathit{expression}_2$</LATEXINLINE>.
+	</EN>
+	<JA>
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>syntactic forms (additional)</SUBINDEX></INDEX>
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX><USE>&amp;&amp;</USE> (logical conjunction)</SUBINDEX></INDEX>
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>{\tt "|"|} (logical disjunction)</SUBINDEX></INDEX>
+	<INDEX><USE>&amp;&amp;</USE> (logical conjunction)<ORDER>;1</ORDER><SUBINDEX>implementing in metacircular evaluator</SUBINDEX></INDEX>
+	<INDEX><USE>&amp;&amp;</USE> (logical conjunction)<ORDER>;1</ORDER><SUBINDEX><ORDER>derived</ORDER>as derived component</SUBINDEX></INDEX>
+	<INDEX>{\tt "|"|} (logical disjunction)<ORDER>;2</ORDER><SUBINDEX>implementing in metacircular evaluator</SUBINDEX></INDEX>
+	<INDEX>{\tt "|"|} (logical disjunction)<ORDER>;2</ORDER><SUBINDEX><ORDER>derived</ORDER>as derived component</SUBINDEX></INDEX>
+	セクション<SPACE/><REF NAME="sec:conditionals"/>で説明したように、論理合成演算
+	<JAVASCRIPTINLINE>&amp;&amp;</JAVASCRIPTINLINE>
+	と
+	<JAVASCRIPTINLINE>||</JAVASCRIPTINLINE>
+	は条件式の糖衣構文です。論理積
+	    <LATEXINLINE>$\mathit{expression}_1$</LATEXINLINE> <JAVASCRIPTINLINE>&amp;&amp;</JAVASCRIPTINLINE>
+	    <LATEXINLINE>$\mathit{expression}_2$</LATEXINLINE>
+	    は
+	    <LATEXINLINE>$ \mathit{expression}_1$</LATEXINLINE> <JAVASCRIPTINLINE>?</JAVASCRIPTINLINE>
+	    <LATEXINLINE>$\mathit{expression}_2$</LATEXINLINE> <JAVASCRIPTINLINE>:</JAVASCRIPTINLINE>
+	    <JAVASCRIPTINLINE>false</JAVASCRIPTINLINE> の糖衣構文であり、論理和
+            <LATEXINLINE>$\mathit{expression}_1$</LATEXINLINE>
+            <JAVASCRIPTINLINE>||</JAVASCRIPTINLINE>
+            <LATEXINLINE>$\mathit{expression}_2$</LATEXINLINE>
+	    は
+	    <LATEXINLINE>$ \mathit{expression}_1$</LATEXINLINE> <JAVASCRIPTINLINE>?</JAVASCRIPTINLINE>
+	    <JAVASCRIPTINLINE>true</JAVASCRIPTINLINE> <JAVASCRIPTINLINE>:</JAVASCRIPTINLINE>
+	    <LATEXINLINE>$\mathit{expression}_2$</LATEXINLINE> の糖衣構文です。
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
     <SPLIT>
@@ -2094,12 +2691,23 @@ function operator_combination_to_application(component) {
 	<SCHEMEINLINE>or</SCHEMEINLINE>	as derived expressions.
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	They are
 	<INDEX><USE>&amp;&amp;</USE> (logical conjunction)<ORDER>;1</ORDER><SUBINDEX>parsing of</SUBINDEX></INDEX>
 	<INDEX><PARSING/><SUBINDEX><ORDER>;2</ORDER>{\tt "|"|} (logical disjunction)</SUBINDEX></INDEX>
 	<INDEX><PARSING/><SUBINDEX><ORDER>;1</ORDER><USE>&amp;&amp;</USE> (logical conjunction)</SUBINDEX></INDEX>
 	<INDEX>{\tt "|"|} (logical disjunction)<ORDER>;2</ORDER><SUBINDEX>parsing of</SUBINDEX></INDEX>
 	parsed as follows:
+	</EN>
+	<JA>
+	<INDEX><USE>&amp;&amp;</USE> (logical conjunction)<ORDER>;1</ORDER><SUBINDEX>parsing of</SUBINDEX></INDEX>
+	<INDEX><PARSING/><SUBINDEX><ORDER>;2</ORDER>{\tt "|"|} (logical disjunction)</SUBINDEX></INDEX>
+	<INDEX><PARSING/><SUBINDEX><ORDER>;1</ORDER><USE>&amp;&amp;</USE> (logical conjunction)</SUBINDEX></INDEX>
+	<INDEX>{\tt "|"|} (logical disjunction)<ORDER>;2</ORDER><SUBINDEX>parsing of</SUBINDEX></INDEX>
+	これらは次のように解析されます。
+	</JA>
+	</BILINGUAL>
 	  <PDF_ONLY>
 	<SNIPPET LATEX="yes" EVAL="no">
 	  <JAVASCRIPT>
@@ -2124,7 +2732,9 @@ list("logical_composition",
 	</SNIPPET>
     </BLOCKQUOTE>
 	  </WEB_ONLY>
-    where <META>logical-operation</META> is 
+    <BILINGUAL>
+    <EN>
+    where <META>logical-operation</META> is
     <JAVASCRIPTINLINE>&amp;&amp;</JAVASCRIPTINLINE> or
     <JAVASCRIPTINLINE>||</JAVASCRIPTINLINE>.
     Install
@@ -2132,12 +2742,28 @@ list("logical_composition",
     <JAVASCRIPTINLINE>||</JAVASCRIPTINLINE>
 	as new syntactic forms for the evaluator
 	by declaring appropriate syntax functions and evaluation functions
-	<SCHEMEINLINE>eval_and</SCHEMEINLINE> and 
+	<SCHEMEINLINE>eval_and</SCHEMEINLINE> and
 	<SCHEMEINLINE>eval_or</SCHEMEINLINE>. Alternatively, show how to
 	implement
     <JAVASCRIPTINLINE>&amp;&amp;</JAVASCRIPTINLINE> and
     <JAVASCRIPTINLINE>||</JAVASCRIPTINLINE>
     as derived components.
+    </EN>
+    <JA>
+    ここで <META>logical-operation</META> は
+    <JAVASCRIPTINLINE>&amp;&amp;</JAVASCRIPTINLINE> または
+    <JAVASCRIPTINLINE>||</JAVASCRIPTINLINE> です。
+    適切な構文関数と評価関数
+    <SCHEMEINLINE>eval_and</SCHEMEINLINE> と
+    <SCHEMEINLINE>eval_or</SCHEMEINLINE> を宣言して、
+    <JAVASCRIPTINLINE>&amp;&amp;</JAVASCRIPTINLINE> と
+    <JAVASCRIPTINLINE>||</JAVASCRIPTINLINE>
+    を評価器の新しい構文形式として組み込んでください。あるいは、
+    <JAVASCRIPTINLINE>&amp;&amp;</JAVASCRIPTINLINE> と
+    <JAVASCRIPTINLINE>||</JAVASCRIPTINLINE>
+    を派生コンポーネントとして実装する方法を示してください。
+    </JA>
+    </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
     <SOLUTION>
@@ -2221,6 +2847,8 @@ display(logical_comp_decl_to_conditional_expr_decl(parse("(a &amp;&amp; !b) || (
 	<LABEL NAME="ex:extended-cond"/>
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	<OL>
 	  <LI>
 	    In JavaScript, lambda expressions must not have
@@ -2256,6 +2884,35 @@ display(logical_comp_decl_to_conditional_expr_decl(parse("(a &amp;&amp; !b) || (
 	    Use your preferred approach above to check for this as well.
           </LI>
         </OL>
+	</EN>
+	<JA>
+	<OL>
+	  <LI>
+	    JavaScript では、ラムダ式に
+	    <INDEX>parameters<SUBINDEX>duplicate</SUBINDEX><FRAGILE/></INDEX>
+	    <INDEX>duplicate parameters<FRAGILE/></INDEX>
+	    <INDEX>metacircular evaluator for JavaScript<SUBINDEX>preventing duplicate parameters</SUBINDEX><FRAGILE/></INDEX>
+	    重複するパラメータがあってはなりません。セクション<SPACE/><REF NAME="sec:core-of-evaluator"/>の評価器はこのチェックを行っていません。
+	    <UL>
+	      <LI>
+		重複するパラメータを持つ関数を適用しようとしたときにエラーを通知するよう、評価器を修正してください。
+	      </LI>
+	      <LI>
+		与えられたプログラム内のラムダ式に重複するパラメータが含まれていないかチェックする <JAVASCRIPTINLINE>verify</JAVASCRIPTINLINE> 関数を実装してください。このような関数があれば、<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE> に渡す前にプログラム全体をチェックできます。
+	      </LI>
+	    </UL>
+	    JavaScript の評価器にこのチェックを実装する場合、どちらのアプローチが好ましいですか？ その理由は？
+	  </LI>
+	  <LI>
+	    JavaScript では、ラムダ式のパラメータは、ラムダ式の本体ブロックで（内側のブロックではなく）<EM>直接</EM>宣言された名前とは
+	    <INDEX>metacircular evaluator for JavaScript<SUBINDEX>parameters distinct from local names</SUBINDEX><FRAGILE/></INDEX>
+	    <INDEX>parameters<SUBINDEX>distinct from local names</SUBINDEX><FRAGILE/></INDEX>
+	    <INDEX>internal declaration<SUBINDEX>names distinct from parameters</SUBINDEX><FRAGILE/></INDEX>
+	    異なっていなければなりません。上記の好ましいアプローチを使って、この点もチェックしてください。
+          </LI>
+        </OL>
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
   </EXERCISE>
@@ -2333,6 +2990,8 @@ display(logical_comp_decl_to_conditional_expr_decl(parse("(a &amp;&amp; !b) || (
 	<LABEL NAME="ex:let*"/>
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	The language Scheme includes a variant of
 	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>syntactic forms (additional)</SUBINDEX></INDEX>
 	<INDEX>metacircular evaluator for JavaScript<SUBINDEX><ORDER>let</ORDER><JAVASCRIPTINLINE>let</JAVASCRIPTINLINE><JAVASCRIPTINLINE>*</JAVASCRIPTINLINE> (Scheme variant of <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE>)</SUBINDEX><FRAGILE/></INDEX>
@@ -2342,11 +3001,24 @@ display(logical_comp_decl_to_conditional_expr_decl(parse("(a &amp;&amp; !b) || (
 	<JAVASCRIPTINLINE>let*</JAVASCRIPTINLINE>. We could approximate
 	the behavior of
 	<JAVASCRIPTINLINE>let*</JAVASCRIPTINLINE> in JavaScript by stipulating
-	that a 
+	that a
 	<JAVASCRIPTINLINE>let*</JAVASCRIPTINLINE> declaration implicitly
 	introduces a new block whose body includes the declaration and all
 	subsequent statements of the statement sequence in which the
 	declaration occurs. For example, the program
+	</EN>
+	<JA>
+	Scheme には
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>syntactic forms (additional)</SUBINDEX></INDEX>
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX><ORDER>let</ORDER><JAVASCRIPTINLINE>let</JAVASCRIPTINLINE><JAVASCRIPTINLINE>*</JAVASCRIPTINLINE> (Scheme variant of <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE>)</SUBINDEX><FRAGILE/></INDEX>
+	<INDEX><USE>let</USE><JAVASCRIPTINLINE>*</JAVASCRIPTINLINE> (Scheme variant of <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE>)</INDEX>
+	<INDEX>Scheme<SUBINDEX><USE>let</USE><JAVASCRIPTINLINE>*</JAVASCRIPTINLINE> in</SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>let</JAVASCRIPTINLINE> の変種である
+	<JAVASCRIPTINLINE>let*</JAVASCRIPTINLINE> があります。JavaScript で
+	<JAVASCRIPTINLINE>let*</JAVASCRIPTINLINE> の動作を近似するには、
+	<JAVASCRIPTINLINE>let*</JAVASCRIPTINLINE> 宣言がその宣言と、宣言が含まれる文のシーケンス内のそれ以降のすべての文を本体とする新しいブロックを暗黙的に導入すると規定します。たとえば、次のプログラム
+	</JA>
+	</BILINGUAL>
 	<SNIPPET EVAL="no">
 	  <JAVASCRIPT>
 let* x = 3;
@@ -2355,7 +3027,10 @@ let* z = x + y + 5;
 display(x * z);
 	  </JAVASCRIPT>
 	</SNIPPET>
-	displays 39 and could be seen as a shorthand for
+	<BILINGUAL>
+	<EN>displays 39 and could be seen as a shorthand for</EN>
+	<JA>は 39 を表示し、次の省略形と見なせます。</JA>
+	</BILINGUAL>
 	<SNIPPET EVAL="no">
 	  <JAVASCRIPT>
 {
@@ -2370,6 +3045,8 @@ display(x * z);
 }
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	<OL>
 	  <LI>
 	    Write a program in such an extended JavaScript language
@@ -2407,6 +3084,24 @@ display(x * z);
 	    Why does this approach not work?
 	  </LI>
 	</OL>
+	</EN>
+	<JA>
+	<OL>
+	  <LI>
+	    このような拡張 JavaScript 言語でプログラムを書き、キーワード <JAVASCRIPTINLINE>let</JAVASCRIPTINLINE> の一部を <JAVASCRIPTINLINE>let*</JAVASCRIPTINLINE> に置き換えると動作が変わる例を示してください。
+	  </LI>
+	  <LI>
+	    適切なタグ付きリスト表現を設計し、解析ルールを書いて、<JAVASCRIPTINLINE>let*</JAVASCRIPTINLINE> を新しい構文形式として導入してください。タグ付きリスト表現の構文述語とセレクタを宣言してください。
+	  </LI>
+	  <LI>
+	    <JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE> が新しいルールを実装していると仮定して、上で説明したように与えられたプログラム内の <JAVASCRIPTINLINE>let*</JAVASCRIPTINLINE> の出現をすべて変換する関数 <JAVASCRIPTINLINE>let_star_to_nested_let</JAVASCRIPTINLINE> を書いてください。これにより、拡張言語のプログラム <JAVASCRIPTINLINE>p</JAVASCRIPTINLINE> を <JAVASCRIPTINLINE>evaluate(let_star_to_nested_let(p))</JAVASCRIPTINLINE> として評価できます。
+	  </LI>
+	  <LI>
+	    別の方法として、<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE> に新しい構文形式を認識して関数 <JAVASCRIPTINLINE>eval_let_star_declaration</JAVASCRIPTINLINE> を呼び出す節を追加することで <JAVASCRIPTINLINE>let*</JAVASCRIPTINLINE> を実装することを検討してください。このアプローチがうまくいかないのはなぜですか？
+	  </LI>
+	</OL>
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
   </EXERCISE>
@@ -2456,6 +3151,8 @@ display(x * z);
 	<LABEL NAME="ex:named-let"/>
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	JavaScript supports
 	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>syntactic forms (additional)</SUBINDEX></INDEX>
 	<INDEX>while loop<SUBINDEX>implementing in metacircular evaluator</SUBINDEX></INDEX>
@@ -2465,11 +3162,25 @@ display(x * z);
 	<INDEX>keywords<SUBINDEX><ORDER>while</ORDER><USE>while</USE></SUBINDEX></INDEX>
 	<EM>while loops</EM> that execute a given
 	statement repeatedly. Specifically,
+	</EN>
+	<JA>
+	JavaScript は、与えられた文を繰り返し実行する
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>syntactic forms (additional)</SUBINDEX></INDEX>
+	<INDEX>while loop<SUBINDEX>implementing in metacircular evaluator</SUBINDEX></INDEX>
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>while loop</SUBINDEX></INDEX>
+	<INDEX>syntactic forms<SUBINDEX>while loop</SUBINDEX></INDEX>
+	<INDEX><USE>while</USE> (keyword)</INDEX>
+	<INDEX>keywords<SUBINDEX><ORDER>while</ORDER><USE>while</USE></SUBINDEX></INDEX>
+	<EM>while ループ</EM>をサポートしています。具体的には、
+	</JA>
+	</BILINGUAL>
 	<SNIPPET LATEX="yes" EVAL="no">
 	  <JAVASCRIPT>
 while (<META>predicate</META>) { <META>body</META> }
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	evaluates the <META>predicate</META>, and
 	if the result is true, evaluates the
 	<META>body</META>
@@ -2478,9 +3189,21 @@ while (<META>predicate</META>) { <META>body</META> }
 	Once the <META>predicate</META> evaluates
 	to false, the
 	while loop terminates.
+	</EN>
+	<JA>
+	は <META>predicate</META> を評価し、結果が true なら <META>body</META> を評価してから while ループ全体をもう一度評価します。<META>predicate</META> が false に評価されると、while ループは終了します。
+	</JA>
+	</BILINGUAL>
 	<TEXT>
+	  <BILINGUAL>
+	  <EN>
 	  For example, recall the imperative-style version of the iterative
 	  factorial function from section<SPACE/><REF NAME="sec:costs-of-assignment"/>:
+	  </EN>
+	  <JA>
+	  たとえば、セクション<SPACE/><REF NAME="sec:costs-of-assignment"/>の命令型スタイルの反復的階乗関数を思い出してください。
+	  </JA>
+	  </BILINGUAL>
 	  <SNIPPET EVAL="yes">
 	    <NAME>factorial_imperative_2</NAME>
 	    <EXAMPLE>factorial_example</EXAMPLE>
@@ -2503,7 +3226,10 @@ function factorial(n) {
       </JAVASCRIPT>
     </SNIPPET>
     <PDF_ONLY>\newpage\noindent </PDF_ONLY>
-    We can formulate the same algorithm using a while loop as follows:
+    <BILINGUAL>
+    <EN>We can formulate the same algorithm using a while loop as follows:</EN>
+    <JA>同じアルゴリズムを while ループを使って次のように表現できます。</JA>
+    </BILINGUAL>
 	<SNIPPET>
 	  <INDEX><DECLARATION>factorial</DECLARATION><SUBINDEX>with while loop</SUBINDEX></INDEX>
 	  <NAME>factorial_with_loop</NAME>
@@ -2519,7 +3245,10 @@ function factorial(n) {
 }
 	  </JAVASCRIPT>
 	</SNIPPET>
-	While loops are parsed as follows:
+	<BILINGUAL>
+	<EN>While loops are parsed as follows:</EN>
+	<JA>while ループは次のように解析されます。</JA>
+	</BILINGUAL>
 	  <WEB_ONLY>
 	<BLOCKQUOTE>
 	<LATEX>
@@ -2542,6 +3271,8 @@ function factorial(n) {
 	    </SNIPPET>
     </PDF_ONLY>
 	</TEXT>
+	<BILINGUAL>
+	<EN>
 	<OL>
 	  <LI>
 	    Declare a syntax predicate and selectors to handle
@@ -2578,7 +3309,7 @@ function factorial(n) {
 	  <LI>
 	    Install while loops as
 	    a derived component by defining a transformation function
-	    <JAVASCRIPTINLINE>while_@to_@application</JAVASCRIPTINLINE> 
+	    <JAVASCRIPTINLINE>while_@to_@application</JAVASCRIPTINLINE>
 	    that makes use of your function
 	    <JAVASCRIPTINLINE>while_loop</JAVASCRIPTINLINE>.
 	  </LI>
@@ -2603,7 +3334,7 @@ function factorial(n) {
 	    terminates the loop in which it is evaluated.
 	  </LI>
 	  <LI>
-	    Implement a 
+	    Implement a
 	    <INDEX>syntactic forms<SUBINDEX>continue statement</SUBINDEX></INDEX>
 	    <INDEX><ORDER>continue</ORDER>\textbf{\texttt{continue}} (keyword)</INDEX>
 	    <INDEX>keywords<SUBINDEX><ORDER>continue</ORDER>\textbf{\texttt{continue}}</SUBINDEX></INDEX>
@@ -2613,6 +3344,57 @@ function factorial(n) {
 	    while loop predicate.
 	  </LI>
 	</OL>
+	</EN>
+	<JA>
+	<OL>
+	  <LI>
+	    while ループを扱うための構文述語とセレクタを宣言してください。
+	  </LI>
+	  <LI>
+	    述語と本体（それぞれ引数なしの関数で表される）を引数に取り、while ループの動作をシミュレートする関数 <JAVASCRIPTINLINE>while_loop</JAVASCRIPTINLINE> を宣言してください。<JAVASCRIPTINLINE>factorial</JAVASCRIPTINLINE> 関数は次のようになります。
+	    <SNIPPET>
+	      <NAME>factorial_with_while_loop_function_ja</NAME>
+	      <JAVASCRIPT>
+function factorial(n) {
+    let product = 1;
+    let counter = 1;
+    while_loop(() =&gt; counter &lt;= n,
+               () =&gt; {
+                   product = counter * product;
+                   counter = counter + 1;
+               });
+    return product;
+}
+	      </JAVASCRIPT>
+	    </SNIPPET>
+	    関数 <JAVASCRIPTINLINE>while_loop</JAVASCRIPTINLINE> は反復的プロセスを生成するようにしてください（セクション<SPACE/><REF NAME="sec:recursion-and-iteration"/>を参照）。
+	  </LI>
+	  <LI>
+	    関数 <JAVASCRIPTINLINE>while_loop</JAVASCRIPTINLINE> を利用する変換関数 <JAVASCRIPTINLINE>while_@to_@application</JAVASCRIPTINLINE> を定義して、while ループを派生コンポーネントとして組み込んでください。
+	  </LI>
+	  <LI>
+	    while ループをこのアプローチで実装した場合、プログラマがループ本体内からループを含む関数から return しようとすると、どのような問題が生じますか？
+	  </LI>
+	  <LI>
+	    その問題に対処するようにアプローチを変更してください。関数 <JAVASCRIPTINLINE>eval_while</JAVASCRIPTINLINE> を使って while ループを評価器に直接組み込むのはどうでしょうか？
+	  </LI>
+	  <LI>
+	    この直接的なアプローチに従って、評価された時点でそのループを直ちに終了する
+	    <INDEX>syntactic forms<SUBINDEX>break statement</SUBINDEX></INDEX>
+	    <INDEX><USE>break</USE> (keyword)</INDEX>
+	    <INDEX>keywords<SUBINDEX><ORDER>break</ORDER><USE>break</USE></SUBINDEX></INDEX>
+	    <JAVASCRIPTINLINE>break;</JAVASCRIPTINLINE> 文を実装してください。
+	  </LI>
+	  <LI>
+	    評価されたループの反復のみを終了し、while ループの述語の評価に戻る
+	    <INDEX>syntactic forms<SUBINDEX>continue statement</SUBINDEX></INDEX>
+	    <INDEX><ORDER>continue</ORDER>\textbf{\texttt{continue}} (keyword)</INDEX>
+	    <INDEX>keywords<SUBINDEX><ORDER>continue</ORDER>\textbf{\texttt{continue}}</SUBINDEX></INDEX>
+	    <WEB_ONLY><JAVASCRIPTINLINE>continue;</JAVASCRIPTINLINE></WEB_ONLY><PDF_ONLY><LATEXINLINE>\textbf{\texttt{continue}}</LATEXINLINE><JAVASCRIPTINLINE>;</JAVASCRIPTINLINE></PDF_ONLY> 文を実装してください。
+	  </LI>
+	</OL>
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
   </EXERCISE>
@@ -2651,8 +3433,10 @@ function factorial(n) {
 	<SCHEMEINLINE>apply</SCHEMEINLINE>.
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	The result of evaluating the body of a function is determined by
-	its return statements. 
+	its return statements.
 	Following up on footnote<SPACE/><REF NAME="foot:value_producing"/>
 	and the evaluation of declarations in
 	section<SPACE/><REF NAME="sec:core-of-evaluator"/>,
@@ -2664,16 +3448,27 @@ function factorial(n) {
 	evaluating a JavaScript program that consists of a sequence of
 	statements (declarations, blocks, expression statements, and conditional
 	statements) <EM>outside of</EM> any function body.
+	</EN>
+	<JA>
+	関数の本体を評価した結果は、その return 文によって決まります。脚注<SPACE/><REF NAME="foot:value_producing"/>およびセクション<SPACE/><REF NAME="sec:core-of-evaluator"/>の宣言の評価に続き、この練習問題では、文のシーケンス（宣言、ブロック、式文、条件文）からなる JavaScript プログラムを、関数の本体の<EM>外で</EM>評価した場合、その結果はどうあるべきかという問題を扱います。
+	<INDEX>value<SUBINDEX>of a program</SUBINDEX></INDEX>
+	<INDEX>program<SUBINDEX>value of</SUBINDEX></INDEX>
+	<INDEX>statement<SUBINDEX>value-producing and non-value-producing</SUBINDEX></INDEX>
+	<INDEX>metacircular evaluator for JavaScript<SUBINDEX>value of program at top level</SUBINDEX></INDEX>
+	</JA>
+	</BILINGUAL>
 	<TEXT>
+	<BILINGUAL>
+	<EN>
 	For such a program, JavaScript
 	statically
         distinguishes between <EM>value-producing</EM> and
-	<EM>non-value-producing statements</EM>. (Here 
+	<EM>non-value-producing statements</EM>. (Here
 	<QUOTE>statically</QUOTE> means that
 	we can make the distinction by <EM>inspecting</EM> the program
 	rather than by running it.)
 	All declarations are
-	non-value-producing, and all 
+	non-value-producing, and all
 	expression statements and conditional statements are
 	value-producing.
 	The value of an expression statement is the value of the expression.
@@ -2710,6 +3505,30 @@ function factorial(n) {
 	    specification.
 	  </LI>
 	</OL>
+	</EN>
+	<JA>
+	このようなプログラムに対して、JavaScript は<EM>値を生成する文</EM>と<EM>値を生成しない文</EM>を静的に区別します（ここで「静的に」とは、プログラムを実行するのではなく<EM>検査する</EM>ことで区別できるという意味です）。すべての宣言は値を生成せず、すべての式文と条件文は値を生成します。式文の値はその式の値です。条件文の値は実行された分岐の値、またはその分岐が値を生成しない場合は <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> です。ブロックは、その本体（文のシーケンス）が値を生成する場合に値を生成し、その値は本体の値です。シーケンスは、構成する文のいずれかが値を生成する場合に値を生成し、その値は<EM>最後の</EM>値を生成する構成文の値です。最後に、プログラム全体が値を生成しない場合、その値は <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> です。
+	<OL>
+	  <LI>
+	    この仕様に従うと、次の4つのプログラムの値は何ですか？
+	    <SNIPPET EVAL="no">
+	      <JAVASCRIPT>
+1; 2; 3;
+
+1; { if (true) {} else { 2; } }
+
+1; const x = 2;
+
+1; { let x = 2; { x = x + 3; } }
+	      </JAVASCRIPT>
+	    </SNIPPET>
+	  </LI>
+	  <LI>
+	    この仕様に準拠するよう評価器を修正してください。
+	  </LI>
+	</OL>
+	</JA>
+	</BILINGUAL>
 	</TEXT>
       </JAVASCRIPT>
     </SPLIT>
