@@ -159,7 +159,11 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 4.2.1 Normal Order and Applicative Order
 - [x] Section 4.2.2 An Interpreter with Lazy Evaluation
 - [x] Section 4.2.3 Streams as Lazy Lists
-- [ ] Section 4.3 以降
+- [x] Section 4.3 Nondeterministic Computing (導入部)
+- [x] Section 4.3.1 Search and amb
+- [x] Section 4.3.2 Examples of Nondeterministic Programs
+- [x] Section 4.3.3 Implementing the Amb Evaluator
+- [ ] Section 4.4 以降
 
 ## インライン実行
 

@@ -2,13 +2,15 @@
   <NAME>
     <SPLITINLINE>
       <SCHEME>Amb and Search</SCHEME>
-      <JAVASCRIPT>Search and <JAVASCRIPTINLINE>amb</JAVASCRIPTINLINE></JAVASCRIPT>
+      <JAVASCRIPT><BILINGUAL><EN>Search and <JAVASCRIPTINLINE>amb</JAVASCRIPTINLINE></EN><JA>探索と<JAVASCRIPTINLINE>amb</JAVASCRIPTINLINE></JA></BILINGUAL></JAVASCRIPT>
     </SPLITINLINE>
   </NAME>
 
   <LABEL NAME="sec:amb"/>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To extend
     <SPLITINLINE>
       <SCHEME>Scheme</SCHEME>
@@ -19,13 +21,34 @@
       <SCHEME>special form</SCHEME>
       <JAVASCRIPT>syntactic form</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX><DECLARATION>amb</DECLARATION></INDEX> 
-    called<SPACE/><SCHEMEINLINE>amb</SCHEMEINLINE>.<FOOTNOTE>The idea of
+    <INDEX><DECLARATION>amb</DECLARATION></INDEX>
+    called<SPACE/><SCHEMEINLINE>amb</SCHEMEINLINE>.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    を拡張して非決定性をサポートするために、
+    <INDEX><DECLARATION>amb</DECLARATION></INDEX>
+    <SCHEMEINLINE>amb</SCHEMEINLINE> と呼ばれる新しい<SPLITINLINE>
+      <SCHEME>特殊形式</SCHEME>
+      <JAVASCRIPT>構文形式</JAVASCRIPT>
+    </SPLITINLINE>を導入します。
+    </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>The idea of
     <SCHEMEINLINE>amb</SCHEMEINLINE> for nondeterministic programming was
     first described in 1961 by
     <INDEX>McCarthy, John</INDEX>
     John McCarthy (see
-    <CITATION>McCarthy 1967</CITATION>).</FOOTNOTE>
+    <CITATION>McCarthy 1967</CITATION>).</EN>
+    <JA>非決定的プログラミングのための <SCHEMEINLINE>amb</SCHEMEINLINE> のアイデアは、1961年に
+    <INDEX>McCarthy, John</INDEX>
+    John McCarthy によって初めて記述されました（<CITATION>McCarthy 1967</CITATION> を参照）。</JA>
+    </BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     The expression
     <SPLITINLINE>
       <SCHEME>
@@ -38,6 +61,20 @@
     returns the value of one of the <LATEXINLINE>$n$</LATEXINLINE> expressions
     <LATEXINLINE>$e_i$</LATEXINLINE> <QUOTE>ambiguously.</QUOTE> For example,
     the expression
+    </EN>
+    <JA>
+    式
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>(amb </SCHEMEINLINE><LATEXINLINE>$e_1\ e_2\ldots e_n$</LATEXINLINE><SCHEMEINLINE>)</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>amb(</JAVASCRIPTINLINE><LATEXINLINE>$e_1,\ e_2,\ldots, e_n$</LATEXINLINE><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、<LATEXINLINE>$n$</LATEXINLINE> 個の式 <LATEXINLINE>$e_i$</LATEXINLINE> のいずれか一つの値を<QUOTE>曖昧に</QUOTE>返します。例えば、式
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="3" VARIANT="non-det">
       <NAME>list_non_det</NAME>
       <SCHEME>
@@ -53,16 +90,25 @@ list(amb(1, 2, 3), amb("a", "b"));
 // in the REPL on the right, for more solutions
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     can have six possible values:
+    </EN>
+    <JA>
+    は6つの可能な値を持ちます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (1 a) (1 b) (2 a) (2 b) (3 a) (3 b)
       </SCHEME>
       <JAVASCRIPT>
-list(1, "a") list(1, "b") list(2, "a") 
+list(1, "a") list(1, "b") list(2, "a")
 list(2, "b") list(3, "a") list(3, "b")
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>Amb</SCHEMEINLINE>
@@ -72,9 +118,25 @@ list(2, "b") list(3, "a") list(3, "b")
       </JAVASCRIPT>
     </SPLITINLINE>
     with a single choice produces an ordinary (single) value.
+    </EN>
+    <JA>
+    選択肢が一つだけの
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>amb</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>amb</JAVASCRIPTINLINE> 式
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、通常の（単一の）値を生成します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <LONG_PAGE lines="1"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>Amb</SCHEMEINLINE>
@@ -99,6 +161,32 @@ list(2, "b") list(3, "a") list(3, "b")
     <QUOTE>fail</QUOTE>: The computation aborts and no value is produced.
     Using this idea, we can express the requirement that a particular predicate
     expression <SCHEMEINLINE>p</SCHEMEINLINE> must be true as follows:
+    </EN>
+    <JA>
+    選択肢のない
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>amb</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>amb</JAVASCRIPTINLINE> 式
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <EMDASH/>つまり式
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(amb)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>amb()</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <EMDASH/>は、
+    <INDEX>failure, in nondeterministic computation</INDEX>
+    受け入れ可能な値を持たない式です。操作的には、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(amb)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>amb()</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は評価されると計算を<QUOTE>失敗</QUOTE>させる式と考えることができます。計算は中断され、値は生成されません。このアイデアを使って、特定の述語式 <SCHEMEINLINE>p</SCHEMEINLINE> が真でなければならないという要求を次のように表現できます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>require_non_det_example</NAME>
       <JAVASCRIPT>
@@ -111,10 +199,10 @@ x;
       </JAVASCRIPT>
     </SNIPPET>
     <SNIPPET CHAP="3" VARIANT="non-det">
-      <INDEX><DECLARATION>require</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>require</DECLARATION></INDEX>
       <NAME>require_non_det</NAME>
       <EXAMPLE>require_non_det_example</EXAMPLE>
-      <EXPECTED>5</EXPECTED> 
+      <EXPECTED>5</EXPECTED>
       <SCHEME>
 (define (require p)
   (if (not p) (amb)))
@@ -130,6 +218,8 @@ function require(p) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     With <SCHEMEINLINE>amb</SCHEMEINLINE> and
     <SCHEMEINLINE>require</SCHEMEINLINE>, we can implement the
     <SPLITINLINE>
@@ -138,21 +228,33 @@ function require(p) {
       </JAVASCRIPT>
     </SPLITINLINE>
     used above:
+    </EN>
+    <JA>
+    <SCHEMEINLINE>amb</SCHEMEINLINE> と
+    <SCHEMEINLINE>require</SCHEMEINLINE> を使って、上で使用した
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>an-element-of</SCHEMEINLINE> 手続き</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>an_element_of</JAVASCRIPTINLINE> 関数
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を実装できます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>an_element_of_example</NAME>
       <JAVASCRIPT>
 const xs = list("apple", "banana", "cranberry");
-an_element_of(xs);	
+an_element_of(xs);
 // Press "Run" for the first solution. Type
 // retry
 // in the REPL on the right, for more solutions
       </JAVASCRIPT>
     </SNIPPET>
     <SNIPPET CHAP="3" VARIANT="non-det">
-      <INDEX><DECLARATION>an_element_of</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>an_element_of</DECLARATION></INDEX>
       <NAME>an_element_of</NAME>
       <EXAMPLE>an_element_of_example</EXAMPLE>
-      <EXPECTED>'apple'</EXPECTED> 
+      <EXPECTED>'apple'</EXPECTED>
       <SCHEME>
 (define (an-element-of items)
   (require (not (null? items)))
@@ -165,6 +267,8 @@ function an_element_of(items) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>An-element-of</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>
@@ -173,9 +277,22 @@ function an_element_of(items) {
     </SPLITINLINE>
     fails if the list is empty.  Otherwise it ambiguously returns either the
     first element of the list or an element chosen from the rest of the list.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>An-element-of</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>an_element_of</JAVASCRIPTINLINE> の適用
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、リストが空の場合に失敗します。それ以外の場合は、リストの最初の要素か、リストの残りから選ばれた要素のいずれかを曖昧に返します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can also express infinite ranges of choices.  The following
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -183,6 +300,14 @@ function an_element_of(items) {
     </SPLITINLINE>
     potentially returns any integer greater than or equal to some
     given<SPACE/><LATEXINLINE>$n$</LATEXINLINE>:
+    </EN>
+    <JA>
+    無限の範囲の選択肢を表現することもできます。次の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、与えられた <LATEXINLINE>$n$</LATEXINLINE> 以上の任意の整数を返す可能性があります：
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>an_integer_starting_from_example</NAME>
       <JAVASCRIPT>
@@ -195,10 +320,10 @@ x;
       </JAVASCRIPT>
     </SNIPPET>
     <SNIPPET CHAP="3" VARIANT="non-det">
-      <INDEX><DECLARATION>an_integer_starting_from</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>an_integer_starting_from</DECLARATION></INDEX>
       <NAME>an_integer_starting_from</NAME>
       <EXAMPLE>an_integer_starting_from_example</EXAMPLE>
-      <EXPECTED>5</EXPECTED> 
+      <EXPECTED>5</EXPECTED>
       <SCHEME>
 (define (an-integer-starting-from n)
   (amb n (an-integer-starting-from (+ n 1))))
@@ -209,6 +334,8 @@ function an_integer_starting_from(n) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     This is like the stream
     <SPLITINLINE>
       <SCHEME>procedure
@@ -217,7 +344,7 @@ function an_integer_starting_from(n) {
       <JAVASCRIPT>function
       <JAVASCRIPTINLINE>integers_starting_from</JAVASCRIPTINLINE>
       </JAVASCRIPT>
-    </SPLITINLINE>  
+    </SPLITINLINE>
     described in section <REF NAME="sec:infinite-streams"/>, but with an
     important difference: The stream
     <SPLITINLINE>
@@ -231,25 +358,48 @@ function an_integer_starting_from(n) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    returns a single integer.<FOOTNOTE>In actuality, the distinction between
+    returns a single integer.
+    </EN>
+    <JA>
+    これは <REF NAME="sec:infinite-streams"/> 節で説明したストリーム<SPLITINLINE>
+      <SCHEME>手続き
+      <SCHEMEINLINE>integers-starting-from</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>関数
+      <JAVASCRIPTINLINE>integers_starting_from</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>に似ていますが、重要な違いがあります。ストリーム<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は <LATEXINLINE>$n$</LATEXINLINE> から始まるすべての整数の列を表すオブジェクトを返しますが、<SCHEMEINLINE>amb</SCHEMEINLINE> <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は単一の整数を返します。
+    </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>In actuality, the distinction between
     nondeterministically returning a single choice and returning all choices
     depends somewhat on our point of view.  From the perspective of the code
     that uses the value, the nondeterministic choice returns a single value.
     From the perspective of the programmer designing the code, the
     nondeterministic choice potentially returns all possible values, and the
     computation branches so that each value is investigated
-    separately.</FOOTNOTE>
+    separately.</EN>
+    <JA>実際には、非決定的に単一の選択肢を返すことと、すべての選択肢を返すことの区別は、見方によってある程度異なります。値を使うコードの観点からは、非決定的選択は単一の値を返します。コードを設計するプログラマの観点からは、非決定的選択はすべての可能な値を返す可能性があり、計算が分岐してそれぞれの値が個別に調査されます。</JA>
+    </BILINGUAL></FOOTNOTE>
   </TEXT>
 
   <LONG_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Abstractly, we can imagine that evaluating an
     <SCHEMEINLINE>amb</SCHEMEINLINE> expression causes
     <INDEX>time<SUBINDEX>in nondeterministic computing</SUBINDEX></INDEX>
     time to split into
     branches, where the computation continues on each branch with one of the
     possible values of the expression.  We say that
-    <SCHEMEINLINE>amb</SCHEMEINLINE> represents a 
+    <SCHEMEINLINE>amb</SCHEMEINLINE> represents a
     <INDEX>nondeterministic choice point</INDEX>
     <EM>nondeterministic choice point</EM>. If we had a machine with a
     sufficient number of processors that could be dynamically allocated, we
@@ -259,20 +409,36 @@ function an_integer_starting_from(n) {
     and initialized to continue all of the parallel executions implied by the
     choice.  Each processor would proceed sequentially as if it were the only
     choice, until it either terminates by encountering a failure, or it further
-    subdivides, or it finishes.<FOOTNOTE>One might object that this is a
+    subdivides, or it finishes.
+    </EN>
+    <JA>
+    抽象的には、<SCHEMEINLINE>amb</SCHEMEINLINE> 式の評価によって
+    <INDEX>time<SUBINDEX>in nondeterministic computing</SUBINDEX></INDEX>
+    時間が分岐に分かれ、各分岐でその式の可能な値の一つを使って計算が続行されると想像できます。<SCHEMEINLINE>amb</SCHEMEINLINE> は
+    <INDEX>nondeterministic choice point</INDEX>
+    <EM>非決定的選択ポイント</EM>を表すと言います。動的に割り当て可能な十分な数のプロセッサを持つマシンがあれば、探索を素直に実装できるでしょう。実行は逐次マシンと同様に進み、<SCHEMEINLINE>amb</SCHEMEINLINE> 式に遭遇するまで続きます。その時点で、さらにプロセッサが割り当てられ、選択が意味するすべての並列実行を継続するよう初期化されます。各プロセッサは、あたかもそれが唯一の選択肢であるかのように逐次的に処理を進め、失敗に遭遇して停止するか、さらに分岐するか、完了するかのいずれかになります。
+    </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>One might object that this is a
     hopelessly inefficient mechanism.  It might require millions of processors
     to solve some easily stated problem this way, and most of the time most
     of those processors would be idle.  This objection should be taken in
     the context of history.  Memory used to be considered just such an
-    expensive commodity.  
+    expensive commodity.
     <INDEX>memory<SUBINDEX>in 1965</SUBINDEX></INDEX>
     In 1965 a megabyte of RAM cost about <DOLLAR/>400,000. Now every personal
     computer has many gigabytes of RAM, and most of the time most of that RAM is
     unused.  It is hard to underestimate the cost of mass-produced
-    electronics.</FOOTNOTE>
+    electronics.</EN>
+    <JA>これは絶望的に非効率なメカニズムだと反論する人もいるかもしれません。簡単に述べられる問題を解くのに何百万ものプロセッサが必要になり、しかもほとんどの時間、そのプロセッサの大部分はアイドル状態になるでしょう。この反論は歴史の文脈で捉えるべきです。メモリもかつてはまさにそのような高価な資源と考えられていました。
+    <INDEX>memory<SUBINDEX>in 1965</SUBINDEX></INDEX>
+    1965年には1メガバイトの RAM は約40万ドルかかりました。今ではすべてのパーソナルコンピュータが何ギガバイトもの RAM を持ち、ほとんどの時間、その RAM の大部分は使われていません。大量生産された電子部品のコストを過小評価するのは難しいことです。</JA>
+    </BILINGUAL></FOOTNOTE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     On the other hand, if we have a machine that can execute only one process
     (or a few concurrent processes), we must consider the alternatives
     <INDEX>failure, in nondeterministic computation<SUBINDEX>searching and</SUBINDEX></INDEX>
@@ -280,7 +446,7 @@ function an_integer_starting_from(n) {
     branch to follow whenever it encounters a choice point.  Random choice,
     however, can easily lead to failing values. We might try running the
     evaluator over and over, making random choices and hoping to find a
-    non-failing value, but it is better to 
+    non-failing value, but it is better to
     <INDEX>systematic search</INDEX>
     <INDEX>search<SUBINDEX>systematic</SUBINDEX></INDEX>
     <EM>systematically search</EM> all possible execution paths. The
@@ -292,67 +458,100 @@ function an_integer_starting_from(n) {
     alternative at each choice point.  If a choice results in a failure, then
     the evaluator
     <INDEX>automagically</INDEX>
-    automagically<FOOTNOTE>Automagically: <QUOTE>Automatically, but in a way
+    automagically
+    </EN>
+    <JA>
+    一方、一つのプロセス（あるいは少数の並行プロセス）しか実行できないマシンがある場合、代替案を
+    <INDEX>failure, in nondeterministic computation<SUBINDEX>searching and</SUBINDEX></INDEX>
+    順番に検討しなければなりません。選択ポイントに遭遇するたびにランダムに分岐先を選ぶように評価器を変更することも考えられます。しかし、ランダムな選択では失敗する値に簡単に行き当たります。ランダムな選択を繰り返して失敗しない値が見つかることを期待して評価器を何度も実行してみることもできますが、すべての可能な実行パスを
+    <INDEX>systematic search</INDEX>
+    <INDEX>search<SUBINDEX>systematic</SUBINDEX></INDEX>
+    <EM>体系的に探索する</EM>方がよいでしょう。この節で開発して使う <SCHEMEINLINE>amb</SCHEMEINLINE> 評価器は、次のように体系的探索を実装します。評価器が <SCHEMEINLINE>amb</SCHEMEINLINE> の適用に遭遇すると、最初に第一の代替案を選択します。この選択自体がさらなる選択につながることもあります。評価器は各選択ポイントで常に最初の代替案を選びます。選択が失敗に至った場合、評価器は
+    <INDEX>automagically</INDEX>
+    自動魔法的に（automagically）
+    </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>Automagically: <QUOTE>Automatically, but in a way
     which, for some reason (typically because it is too complicated, or too ugly,
     or perhaps even too trivial), the speaker doesn<APOS/>t feel like
-    explaining.</QUOTE>  
+    explaining.</QUOTE>
     <INDEX>Steele, Guy Lewis Jr.</INDEX>
     (<CITATION>Steele 1983</CITATION>,
     <INDEX>Raymond, Eric</INDEX>
-    <CITATION>Raymond 1996</CITATION>)</FOOTNOTE> 
+    <CITATION>Raymond 1996</CITATION>)</EN>
+    <JA>Automagically：<QUOTE>自動的に、しかし何らかの理由（典型的には複雑すぎる、醜すぎる、あるいはおそらく些細すぎるという理由で）話し手が説明する気にならない方法で。</QUOTE>
+    <INDEX>Steele, Guy Lewis Jr.</INDEX>
+    （<CITATION>Steele 1983</CITATION>、
+    <INDEX>Raymond, Eric</INDEX>
+    <CITATION>Raymond 1996</CITATION>）</JA>
+    </BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     <INDEX>backtracking</INDEX>
     <EM>backtracks</EM> to the most recent choice point and tries the next
     alternative.  If it runs out of alternatives at any choice point, the
     evaluator will back up to the previous choice point and resume from there.
-    This process leads to a search strategy known as 
+    This process leads to a search strategy known as
     <INDEX>depth-first search</INDEX>
     <INDEX>search<SUBINDEX>depth-first</SUBINDEX></INDEX>
     <EM>depth-first search</EM> or
     <INDEX>chronological backtracking</INDEX>
     <EM>chronological
-    backtracking</EM>.<FOOTNOTE>The integration of
+    backtracking</EM>.
+    </EN>
+    <JA>
+    <INDEX>backtracking</INDEX>
+    直近の選択ポイントまで<EM>バックトラック</EM>して、次の代替案を試みます。ある選択ポイントで代替案が尽きると、評価器は前の選択ポイントまで戻り、そこから再開します。このプロセスは、
+    <INDEX>depth-first search</INDEX>
+    <INDEX>search<SUBINDEX>depth-first</SUBINDEX></INDEX>
+    <EM>深さ優先探索</EM>あるいは
+    <INDEX>chronological backtracking</INDEX>
+    <EM>時系列バックトラッキング</EM>として知られる探索戦略につながります。
+    </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>The integration of
     <INDEX>automatic search<SUBINDEX>history of</SUBINDEX></INDEX>
     automatic search strategies
     into programming languages has had a long and checkered history.  The first
     suggestions that nondeterministic algorithms might be elegantly encoded in a
     programming language with search and automatic backtracking came from
     <INDEX>Floyd, Robert</INDEX>
-    Robert Floyd (1967).  
+    Robert Floyd (1967).
     <INDEX>Hewitt, Carl Eddie</INDEX>
-    Carl Hewitt (1969) invented a programming language called 
+    Carl Hewitt (1969) invented a programming language called
     <INDEX>Planner</INDEX>
     Planner that explicitly supported automatic chronological backtracking,
-    providing for a built-in depth-first search strategy.  
+    providing for a built-in depth-first search strategy.
     <INDEX>Sussman, Gerald Jay</INDEX>
     <INDEX>Winograd, Terry</INDEX>
     <INDEX>Charniak, Eugene</INDEX>
     Sussman, Winograd, and Charniak (1971) implemented a subset of this language,
-    called 
+    called
     <INDEX>MicroPlanner</INDEX>
     MicroPlanner, which was used to support work in problem solving and robot
     planning. Similar ideas, arising from logic and theorem proving, led to the
-    genesis in Edinburgh and Marseille of the elegant language 
+    genesis in Edinburgh and Marseille of the elegant language
     <INDEX>Prolog</INDEX>
     Prolog (which we will discuss in
     section<SPACE/><REF NAME="sec:logic-programming"/>).  After sufficient
-    frustration with automatic search, 
+    frustration with automatic search,
     <INDEX>McDermott, Drew</INDEX>
     <INDEX>Sussman, Gerald Jay</INDEX>
-    McDermott and Sussman (1972) developed a language called 
+    McDermott and Sussman (1972) developed a language called
     <INDEX>Conniver</INDEX>
     Conniver, which included mechanisms for placing the search strategy under
-    programmer control.  This proved unwieldy, however, and 
+    programmer control.  This proved unwieldy, however, and
     <INDEX>Sussman, Gerald Jay</INDEX>
     <INDEX>Stallman, Richard M.</INDEX>
     Sussman and Stallman (1975) found a more tractable approach while
     investigating methods of symbolic analysis for electrical circuits.  They
     developed a nonchronological backtracking scheme that was based on tracing
     out the logical dependencies connecting facts, a technique that has come to
-    be known as 
+    be known as
     <INDEX>dependency-directed backtracking</INDEX>
     <EM>dependency-directed backtracking</EM>.  Although their method was
     complex, it produced reasonably efficient programs because it did little
-    redundant search.  
+    redundant search.
     <INDEX>Doyle, Jon</INDEX>
     <CITATION>Doyle (1979)</CITATION> and
     <INDEX>McAllester, David Allen</INDEX>
@@ -369,7 +568,7 @@ function an_integer_starting_from(n) {
 	Many problem-solving systems
       </JAVASCRIPT>
     </SPLITINLINE>
-    use some form of truth-maintenance system as a substrate.  See 
+    use some form of truth-maintenance system as a substrate.  See
     <INDEX>Forbus, Kenneth D.</INDEX>
     <INDEX>de Kleer, Johan</INDEX>
     <CITATION>Forbus and de Kleer 1993</CITATION> for a discussion of elegant
@@ -387,15 +586,72 @@ function an_integer_starting_from(n) {
     backtracking.
     <INDEX>Winston, Patrick Henry</INDEX>
     <CITATION>Winston 1992</CITATION> gives an introduction to
-    both kinds of backtracking.<LABEL NAME="foot:backtrack"/></FOOTNOTE>
+    both kinds of backtracking.</EN>
+    <JA>
+    <INDEX>automatic search<SUBINDEX>history of</SUBINDEX></INDEX>
+    自動探索戦略をプログラミング言語に統合する歴史は、長く波乱に満ちたものでした。非決定的アルゴリズムを探索と自動バックトラッキングを持つプログラミング言語で優雅に符号化できるという最初の提案は、
+    <INDEX>Floyd, Robert</INDEX>
+    Robert Floyd（1967）によるものでした。
+    <INDEX>Hewitt, Carl Eddie</INDEX>
+    Carl Hewitt（1969）は、自動的な時系列バックトラッキングを明示的にサポートし、組み込みの深さ優先探索戦略を提供する
+    <INDEX>Planner</INDEX>
+    Planner というプログラミング言語を発明しました。
+    <INDEX>Sussman, Gerald Jay</INDEX>
+    <INDEX>Winograd, Terry</INDEX>
+    <INDEX>Charniak, Eugene</INDEX>
+    Sussman、Winograd、Charniak（1971）はこの言語のサブセットである
+    <INDEX>MicroPlanner</INDEX>
+    MicroPlanner を実装し、問題解決やロボット計画の研究をサポートするために使用しました。論理学と定理証明から生じた同様のアイデアが、エジンバラとマルセイユで優雅な言語
+    <INDEX>Prolog</INDEX>
+    Prolog の誕生につながりました（<REF NAME="sec:logic-programming"/> 節で議論します）。自動探索に十分なフラストレーションを感じた後、
+    <INDEX>McDermott, Drew</INDEX>
+    <INDEX>Sussman, Gerald Jay</INDEX>
+    McDermott と Sussman（1972）は、探索戦略をプログラマの制御下に置くメカニズムを含む
+    <INDEX>Conniver</INDEX>
+    Conniver という言語を開発しました。しかしこれは扱いにくいことが判明し、
+    <INDEX>Sussman, Gerald Jay</INDEX>
+    <INDEX>Stallman, Richard M.</INDEX>
+    Sussman と Stallman（1975）は電気回路のシンボリック解析手法を研究する中で、より扱いやすいアプローチを発見しました。彼らは事実を結びつける論理的依存関係を追跡することに基づく非時系列バックトラッキング方式を開発し、これは
+    <INDEX>dependency-directed backtracking</INDEX>
+    <EM>依存性指向バックトラッキング</EM>として知られるようになった技法です。彼らの方法は複雑でしたが、冗長な探索がほとんどないため、合理的に効率的なプログラムを生成しました。
+    <INDEX>Doyle, Jon</INDEX>
+    <CITATION>Doyle (1979)</CITATION> と
+    <INDEX>McAllester, David Allen</INDEX>
+    <CITATION>McAllester (1978, 1980)</CITATION>
+    は Stallman と Sussman の方法を一般化・明確化し、現在
+    <INDEX>truth maintenance</INDEX>
+    <EM>真理維持</EM>と呼ばれる探索の定式化のための新しいパラダイムを開発しました。
+    <SPLITINLINE>
+      <SCHEME>
+	現代の問題解決システムはすべて
+      </SCHEME>
+      <JAVASCRIPT>
+	多くの問題解決システムは
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    何らかの形の真理維持システムを基盤として使用しています。真理維持システムを構築する優雅な方法と真理維持を使ったアプリケーションの議論については、
+    <INDEX>Forbus, Kenneth D.</INDEX>
+    <INDEX>de Kleer, Johan</INDEX>
+    <CITATION>Forbus and de Kleer 1993</CITATION> を参照してください。
+    <INDEX>Zabih, Ramin</INDEX>
+    <INDEX>McAllester, David Allen</INDEX>
+    <INDEX>Chapman, David</INDEX>
+    <CITATION>Zabih, McAllester, and Chapman 1987</CITATION> は、<SCHEMEINLINE>amb</SCHEMEINLINE> に基づく
+    <INDEX>Scheme<SUBINDEX>nondeterministic extension of</SUBINDEX></INDEX>
+    Scheme の非決定的拡張を記述しています。これはこの節で説明するインタプリタに似ていますが、時系列バックトラッキングではなく依存性指向バックトラッキングを使用するため、より洗練されています。
+    <INDEX>Winston, Patrick Henry</INDEX>
+    <CITATION>Winston 1992</CITATION> は両方の種類のバックトラッキングの入門を提供しています。</JA>
+    </BILINGUAL><LABEL NAME="foot:backtrack"/></FOOTNOTE>
   </TEXT>
 
   <DO_BREAK_PAGE/>
   <SUBHEADING>
-    <NAME>Driver loop</NAME>
+    <NAME><BILINGUAL><EN>Driver loop</EN><JA>ドライバループ</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The
     <INDEX>driver loop<SUBINDEX><ORDER>nondeterministic</ORDER>in nondeterministic evaluator</SUBINDEX></INDEX>
     driver loop for the <SCHEMEINLINE>amb</SCHEMEINLINE> evaluator has some
@@ -403,7 +659,7 @@ function an_integer_starting_from(n) {
     <SPLITINLINE>
       <SCHEME>an expression</SCHEME>
       <JAVASCRIPT>a program</JAVASCRIPT>
-    </SPLITINLINE>    
+    </SPLITINLINE>
     and prints the value of the
     first non-failing execution, as in the
     <SPLITINLINE>
@@ -417,15 +673,15 @@ function an_integer_starting_from(n) {
     <SPLIT>
       <SCHEME>
 	This is signaled by typing the symbol
-	<INDEX><DECLARATION>try-again</DECLARATION></INDEX> 
+	<INDEX><DECLARATION>try-again</DECLARATION></INDEX>
 	<SCHEMEINLINE>try-again</SCHEMEINLINE>. If any expression except
 	<SCHEMEINLINE>try-again</SCHEMEINLINE>
 	is given, the interpreter will start a new problem, discarding the
 	unexplored alternatives in the previous problem.
       </SCHEME>
       <JAVASCRIPT>
-	This is signaled by typing 
-	<INDEX><DECLARATION>retry</DECLARATION></INDEX> 
+	This is signaled by typing
+	<INDEX><DECLARATION>retry</DECLARATION></INDEX>
 	<JAVASCRIPTINLINE>retry</JAVASCRIPTINLINE>.
 	If any other input except <JAVASCRIPTINLINE>retry</JAVASCRIPTINLINE>
 	is given, the interpreter will start a new problem, discarding the
@@ -433,6 +689,37 @@ function an_integer_starting_from(n) {
       </JAVASCRIPT>
     </SPLIT>
     Here is a sample interaction:
+    </EN>
+    <JA>
+    <SCHEMEINLINE>amb</SCHEMEINLINE> 評価器の
+    <INDEX>driver loop<SUBINDEX><ORDER>nondeterministic</ORDER>in nondeterministic evaluator</SUBINDEX></INDEX>
+    ドライバループにはいくつかの独特な性質があります。<SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>を読み込み、上で示した
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>prime-sum-pair</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>prime_sum_pair</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の例のように、最初に失敗しなかった実行の値を表示します。次の成功した実行の値を見たい場合は、インタプリタにバックトラックして2番目の失敗しない実行を生成するよう求めることができます。
+    <SPLIT>
+      <SCHEME>
+	これはシンボル
+	<INDEX><DECLARATION>try-again</DECLARATION></INDEX>
+	<SCHEMEINLINE>try-again</SCHEMEINLINE> を入力することで合図します。<SCHEMEINLINE>try-again</SCHEMEINLINE>
+	以外の式が入力されると、インタプリタは前の問題の未探索の代替案を破棄して、新しい問題を開始します。
+      </SCHEME>
+      <JAVASCRIPT>
+	これは
+	<INDEX><DECLARATION>retry</DECLARATION></INDEX>
+	<JAVASCRIPTINLINE>retry</JAVASCRIPTINLINE> と入力することで合図します。<JAVASCRIPTINLINE>retry</JAVASCRIPTINLINE>
+	以外の入力が与えられると、インタプリタは前の問題の未探索の代替案を破棄して、新しい問題を開始します。
+      </JAVASCRIPT>
+    </SPLIT>
+    以下はやりとりの例です：
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="3" VARIANT="non-det">
       <NAME>interaction_non_det</NAME>
       <REQUIRES>is_prime2</REQUIRES>
@@ -595,10 +882,12 @@ prime_sum_pair(list(19, 27, 30), list(11, 36, 58));
 
   <EXERCISE>
     <LABEL NAME="ex:amb-pythag-triples"/>
+    <BILINGUAL>
+    <EN>
     Write a
     <SPLITINLINE>
       <SCHEME>procedure
-      <SCHEMEINLINE>an-integer-between</SCHEMEINLINE> 
+      <SCHEMEINLINE>an-integer-between</SCHEMEINLINE>
       </SCHEME>
       <JAVASCRIPT>function
       <JAVASCRIPTINLINE>an_integer_between</JAVASCRIPTINLINE>
@@ -617,6 +906,26 @@ prime_sum_pair(list(19, 27, 30), list(11, 36, 58));
     <LATEXINLINE>$(i,j,k)$</LATEXINLINE> between the given bounds such
     that <LATEXINLINE>$i \leq j$</LATEXINLINE> and
     <LATEXINLINE>$i^2 + j^2 =k^2$</LATEXINLINE>, as follows:
+    </EN>
+    <JA>
+    与えられた2つの境界値の間の整数を返す<SPLITINLINE>
+      <SCHEME>手続き
+      <SCHEMEINLINE>an-integer-between</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>関数
+      <JAVASCRIPTINLINE>an_integer_between</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を書いてください。これを使って、与えられた境界値の間の整数の三つ組 <LATEXINLINE>$(i,j,k)$</LATEXINLINE> で、<LATEXINLINE>$i \leq j$</LATEXINLINE> かつ
+    <LATEXINLINE>$i^2 + j^2 =k^2$</LATEXINLINE> を満たす
+    <INDEX>Pythagorean triples<SUBINDEX>with nondeterministic programs</SUBINDEX></INDEX>
+    <INDEX>nondeterministic programs<SUBINDEX>Pythagorean triples</SUBINDEX></INDEX>
+    ピタゴラスの三つ組を見つける<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を次のように実装できます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>pythagorean_triple_amb_example</NAME>
       <JAVASCRIPT>
@@ -664,6 +973,8 @@ function an_integer_between(low, high) {
 
   <EXERCISE>
     <LABEL NAME="ex:amb-pythag-triples_2"/>
+    <BILINGUAL>
+    <EN>
     Exercise<SPACE/><REF NAME="ex:stream-pythagorean-triples"/> discussed how to
     generate the stream of <EM>all</EM>
     <INDEX>Pythagorean triples<SUBINDEX>with nondeterministic programs</SUBINDEX></INDEX>
@@ -714,10 +1025,56 @@ function an_integer_between(low, high) {
       </JAVASCRIPT>
     </SPLITINLINE>
     would in principle eventually generate all Pythagorean triples.)
+    </EN>
+    <JA>
+    練習問題<SPACE/><REF NAME="ex:stream-pythagorean-triples"/> では、探索する整数のサイズに上限を設けずに、<EM>すべての</EM>
+    <INDEX>Pythagorean triples<SUBINDEX>with nondeterministic programs</SUBINDEX></INDEX>
+    <INDEX>nondeterministic programs<SUBINDEX>Pythagorean triples</SUBINDEX></INDEX>
+    ピタゴラスの三つ組のストリームを生成する方法を議論しました。練習問題<SPACE/><REF NAME="ex:amb-pythag-triples"/> の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>で
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>an-integer-between</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>an_integer_between</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を単に
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>an-integer-starting-from</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>an_integer_starting_from</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に置き換えるだけでは、任意のピタゴラスの三つ組を生成する適切な方法にならない理由を説明してください。実際にこれを達成する<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を書いてください（つまり、
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>try-again</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>retry</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を繰り返し入力すれば、原理的にはすべてのピタゴラスの三つ組を最終的に生成する<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を書いてください）。
+    </JA>
+    </BILINGUAL>
   </EXERCISE>
 
   <EXERCISE>
     <LABEL NAME="ex:amb-pythag-triples_3"/>
+    <BILINGUAL>
+    <EN>
     Ben Bitdiddle claims that the following method for generating
     <INDEX>Pythagorean triples<SUBINDEX>with nondeterministic programs</SUBINDEX></INDEX>
     <INDEX>nondeterministic programs<SUBINDEX>Pythagorean triples</SUBINDEX></INDEX>
@@ -725,6 +1082,15 @@ function an_integer_between(low, high) {
     triples is more efficient than the one in
     exercise<SPACE/><REF NAME="ex:amb-pythag-triples"/>.  Is he correct?
     (Hint: Consider the number of possibilities that must be explored.)
+    </EN>
+    <JA>
+    Ben Bitdiddle は、
+    <INDEX>Pythagorean triples<SUBINDEX>with nondeterministic programs</SUBINDEX></INDEX>
+    <INDEX>nondeterministic programs<SUBINDEX>Pythagorean triples</SUBINDEX></INDEX>
+    ピタゴラスの三つ組を生成する次の方法は、練習問題<SPACE/><REF NAME="ex:amb-pythag-triples"/> のものよりも効率的だと主張しています。彼は正しいでしょうか？
+    （ヒント：探索しなければならない可能性の数を考えてください。）
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>a_pythagorean_triple_between_2_example</NAME>
       <JAVASCRIPT>

@@ -286,6 +286,30 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | call-by-need | call-by-need | メモ化付き遅延評価。英語のまま |
 | call-by-name | call-by-name | メモ化なし遅延評価。英語のまま |
 
+### 非決定的計算（Section 4.3）
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| nondeterministic computing | 非決定的計算 | |
+| nondeterministic evaluation | 非決定的評価 | |
+| nondeterministic program | 非決定的プログラム | |
+| nondeterministic choice point | 非決定的選択ポイント | |
+| amb evaluator | amb 評価器 | |
+| backtrack / backtracking | バックトラック / バックトラッキング | |
+| depth-first search | 深さ優先探索 | |
+| chronological backtracking | 時系列バックトラッキング | |
+| dependency-directed backtracking | 依存性指向バックトラッキング | |
+| truth maintenance | 真理維持 | |
+| choice point | 選択ポイント | |
+| continuation | 継続 | |
+| success continuation | 成功継続 | amb 評価器の実装で使用 |
+| failure continuation | 失敗継続 | amb 評価器の実装で使用 |
+| execution function | 実行関数 | analyze が返す関数 |
+| permanent assignment | 永続代入 | バックトラック時に取り消されない代入 |
+| Pythagorean triples | ピタゴラスの三つ組 | |
+| automagically | 自動魔法的に（automagically） | ジャーゴン。原語を併記 |
+| natural language parsing | 自然言語の構文解析 | |
+
 ### その他
 
 | 英語 | 日本語 | 備考 |

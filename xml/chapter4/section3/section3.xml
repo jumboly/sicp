@@ -3,7 +3,10 @@
     <SPLITINLINE>
       <SCHEME>Variations on a Scheme:</SCHEME>
     </SPLITINLINE>
-    Nondeterministic Computing
+    <BILINGUAL>
+      <EN>Nondeterministic Computing</EN>
+      <JA>非決定的計算</JA>
+    </BILINGUAL>
   </NAME>
 
   <SECTIONCONTENT/>
@@ -13,6 +16,8 @@
   <INDEX>nondeterministic computing<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In this section, we extend the
     <SPLITINLINE>
       <SCHEME>Scheme</SCHEME>
@@ -26,9 +31,23 @@
     This is a much more profound change to the language than the
     introduction of lazy evaluation in
     section<SPACE/><REF NAME="sec:lazy-evaluation"/>.
+    </EN>
+    <JA>
+    この節では、<SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    の評価器を拡張して、<EM>非決定的計算</EM>と呼ばれるプログラミングパラダイムをサポートします。これは、
+    <INDEX>automatic search</INDEX>
+    自動探索の仕組みを評価器に組み込むことで実現します。
+    これは、section<SPACE/><REF NAME="sec:lazy-evaluation"/>で導入した遅延評価よりも、はるかに深い言語の変更です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Nondeterministic computing, like stream processing, is useful for
     <INDEX>nondeterministic programming vs.<SPACE/>JavaScript programming</INDEX>
     <QUOTE>generate and test</QUOTE> applications.  Consider the task of
@@ -42,9 +61,19 @@
     the entire sequence of pairs first as in chapter<SPACE/><REF NAME="chap:data"></REF>, or interleave the
     generating and filtering as in chapter<SPACE/><REF NAME="chap:state"></REF>, is immaterial to the
     essential image of how the computation is organized.
+    </EN>
+    <JA>
+    非決定的計算は、ストリーム処理と同様に、
+    <INDEX>nondeterministic programming vs.<SPACE/>JavaScript programming</INDEX>
+    <QUOTE>生成してテストする</QUOTE>タイプのアプリケーションに有用です。正の整数の2つのリストから出発して、それぞれのリストから1つずつ整数を選び、その和が素数になるペアを見つけるという課題を考えてみましょう。この課題を、section<SPACE/><REF NAME="sec:nested-mappings"/>では有限シーケンスの操作で、section<SPACE/><REF NAME="sec:exploiting-streams"/>では無限ストリームで扱う方法を見ました。
+    そのアプローチは、すべての可能なペアのシーケンスを生成し、その中から和が素数になるペアをフィルタリングして選ぶというものでした。chapter<SPACE/><REF NAME="chap:data"></REF>のようにペアのシーケンス全体を最初に生成するか、chapter<SPACE/><REF NAME="chap:state"></REF>のように生成とフィルタリングをインターリーブするかは、計算がどのように構成されるかという本質的なイメージとは無関係です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The nondeterministic approach evokes a different image.  Imagine simply
     that we choose (in some way) a number from the first list and a number
     from the second list and require (using some mechanism) that their
@@ -54,11 +83,21 @@
       <SCHEME>procedure:</SCHEME>
       <JAVASCRIPT>function:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    非決定的アプローチは、異なるイメージを呼び起こします。単純に、最初のリストから（何らかの方法で）数を1つ選び、2番目のリストからも数を1つ選んで、（何らかのメカニズムを使って）その
+    <INDEX>nondeterministic programs<SUBINDEX>pairs with prime sums</SUBINDEX></INDEX>
+    和が素数であることを要求する、と想像してみてください。これは次の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>で表現されます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="3" VARIANT="non-det">
-      <INDEX><DECLARATION>prime_sum_pair</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>prime_sum_pair</DECLARATION></INDEX>
       <NAME>prime_sum_pair_non_det</NAME>
       <EXAMPLE>prime_sum_pair_non_det_example</EXAMPLE>
-      <EXPECTED>[ 3, [ 20, null ] ]</EXPECTED> 
+      <EXPECTED>[ 3, [ 20, null ] ]</EXPECTED>
       <SCHEME>
 (define (prime-sum-pair list1 list2)
   (let ((a (an-element-of list1))
@@ -67,7 +106,7 @@
     (list a b)))
       </SCHEME>
       <JAVASCRIPT>
-function prime_sum_pair(list1, list2) {    
+function prime_sum_pair(list1, list2) {
     const a = an_element_of(list1);
     const b = an_element_of(list2);
     require(is_prime(a + b));
@@ -75,6 +114,8 @@ function prime_sum_pair(list1, list2) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     It might seem as if this
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -82,7 +123,15 @@ function prime_sum_pair(list1, list2) {
     </SPLITINLINE>
     merely restates the problem,
     rather than specifying a way to solve it.  Nevertheless, this is a
-    legitimate nondeterministic program.<FOOTNOTE>We assume that we have
+    legitimate nondeterministic program.</EN>
+    <JA>
+    この<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、解き方を指定するというより、単に問題を言い直しているだけのように見えるかもしれません。しかし、これは正当な非決定的プログラムなのです。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>We assume that we have
     previously defined a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -97,7 +146,7 @@ function prime_sum_pair(list1, list2) {
       <SCHEME><SCHEMEINLINE>prime?</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>is_prime</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    defined, the 
+    defined, the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>prime-sum-pair</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>prime_sum_pair</JAVASCRIPTINLINE>
@@ -119,16 +168,53 @@ function prime_sum_pair(list1, list2) {
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     along those lines can actually be formulated as a nondeterministic program.
-    By incorporating a search mechanism into the evaluator, we are eroding the 
+    By incorporating a search mechanism into the evaluator, we are eroding the
     <INDEX>declarative vs.<SPACE/>imperative knowledge<SUBINDEX>nondeterministic computing and</SUBINDEX></INDEX>
     <INDEX>imperative vs.<SPACE/>declarative knowledge<SUBINDEX>nondeterministic computing and</SUBINDEX></INDEX>
     distinction between purely declarative descriptions and imperative
     specifications of how to compute answers.  We<APOS/>ll go even farther in
     this direction in
-    section<SPACE/><REF NAME="sec:logic-programming"/>.</FOOTNOTE>
+    section<SPACE/><REF NAME="sec:logic-programming"/>.</EN>
+    <JA>数が素数かどうかをテストする<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>prime?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_prime</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が事前に定義されていると仮定しています。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>prime?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_prime</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が定義されていても、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>prime-sum-pair</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>prime_sum_pair</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、section<SPACE/><REF NAME="sec:sqrt"/>の冒頭で述べた、平方根関数を定義しようとする役に立たない<SPLITINLINE>
+      <SCHEME><QUOTE>擬似 Lisp</QUOTE></SCHEME>
+      <JAVASCRIPT><QUOTE>擬似 JavaScript</QUOTE></JAVASCRIPT>
+    </SPLITINLINE>の試みと怪しいほど似ているように見えるかもしれません。実際、同様の方針で平方根<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を非決定的プログラムとして定式化することもできます。
+    探索メカニズムを評価器に組み込むことで、私たちは
+    <INDEX>declarative vs.<SPACE/>imperative knowledge<SUBINDEX>nondeterministic computing and</SUBINDEX></INDEX>
+    <INDEX>imperative vs.<SPACE/>declarative knowledge<SUBINDEX>nondeterministic computing and</SUBINDEX></INDEX>
+    純粋な宣言的記述と、答えの計算方法を指定する命令的仕様との間の区別を曖昧にしているのです。section<SPACE/><REF NAME="sec:logic-programming"/>では、この方向にさらに踏み込みます。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The key idea here is that
     <SPLITINLINE>
       <SCHEME>expressions</SCHEME>
@@ -148,9 +234,24 @@ function prime_sum_pair(list1, list2) {
     evaluator freed the programmer from the details of how values are delayed
     and forced, the nondeterministic program evaluator will free the programmer
     from the details of how choices are made.
+    </EN>
+    <JA>
+    ここでの重要なアイデアは、非決定的言語における<SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>コンポーネント</JAVASCRIPT>
+    </SPLITINLINE>は、複数の取り得る値を持てるということです。例えば、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>an-element-of</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>an_element_of</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は与えられたリストのどの要素でも返す可能性があります。非決定的プログラム評価器は、取り得る値を自動的に選択し、その選択を追跡することで動作します。後続の要求が満たされなければ、評価器は別の選択を試み、評価が成功するか、選択肢がなくなるまで新しい選択を試し続けます。遅延評価器がプログラマを値の遅延とフォースの詳細から解放したのと同様に、非決定的プログラム評価器はプログラマを選択がどのように行われるかの詳細から解放します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <DO_BREAK_PAGE/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     It is instructive to contrast the different images of
     <INDEX>time<SUBINDEX>in nondeterministic computing</SUBINDEX></INDEX>
     time evoked by
@@ -171,11 +272,23 @@ function prime_sum_pair(list1, list2) {
     illusion that time branches, and that our programs have different
     possible execution histories.  When we reach a dead end, we can
     revisit a previous choice point and proceed along a different branch.
+    </EN>
+    <JA>
+    非決定的評価とストリーム処理が呼び起こす
+    <INDEX>time<SUBINDEX>in nondeterministic computing</SUBINDEX></INDEX>
+    時間の異なるイメージを対比してみることは有益です。ストリーム処理は、遅延評価を使って、可能な答えのストリームが組み立てられる時間と、実際のストリーム要素が生成される時間を切り離します。評価器は、すべての可能な答えが時間を超えたシーケンスとして私たちの前に並べられているという幻想を支えます。非決定的評価では、<SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>コンポーネント</JAVASCRIPT>
+    </SPLITINLINE>は、一連の選択によってそれぞれ決まる可能な世界の集合の探索を表します。可能な世界の中には行き止まりに至るものもあれば、有用な値を持つものもあります。非決定的プログラム評価器は、時間が分岐し、プログラムには異なる実行履歴が存在し得るという幻想を支えます。行き止まりに達したとき、以前の選択ポイントに戻って別の分岐を進むことができます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The nondeterministic program evaluator implemented below is called the
-    <SCHEMEINLINE>amb</SCHEMEINLINE> evaluator because it is based on 
+    <SCHEMEINLINE>amb</SCHEMEINLINE> evaluator because it is based on
     <SPLITINLINE>
       <SCHEME>a new special form</SCHEME>
       <JAVASCRIPT>a new syntactic form</JAVASCRIPT>
@@ -212,6 +325,39 @@ function prime_sum_pair(list1, list2) {
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     as follows:
+    </EN>
+    <JA>
+    以下で実装する非決定的プログラム評価器は、<SCHEMEINLINE>amb</SCHEMEINLINE> と呼ばれる新しい<SPLITINLINE>
+      <SCHEME>特殊形式</SCHEME>
+      <JAVASCRIPT>構文形式</JAVASCRIPT>
+    </SPLITINLINE>に基づいているため、<SCHEMEINLINE>amb</SCHEMEINLINE> 評価器と呼ばれます。上記の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>prime-sum-pair</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>prime_sum_pair</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の<SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>を（
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>prime?</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_prime</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>an-element-of</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>an_element_of</JAVASCRIPTINLINE>、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>require</SCHEMEINLINE> の<SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>とともに）<SCHEMEINLINE>amb</SCHEMEINLINE> 評価器のドライバループに入力し、次のように<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を実行できます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="3" VARIANT="non-det">
       <NAME>prime_sum_pair_non_det_example</NAME>
       <REQUIRES>is_prime2</REQUIRES>
@@ -245,10 +391,19 @@ prime_sum_pair(list(1, 3, 5, 8), list(20, 35, 110));
 // in the REPL on the right, for more solutions
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The value returned was obtained after the evaluator repeatedly chose
     elements from each of the lists, until a successful choice was made.
+    </EN>
+    <JA>
+    返された値は、評価器がそれぞれのリストから要素を繰り返し選択し、成功する選択が見つかった後に得られたものです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Section<SPACE/><REF NAME="sec:amb"/> introduces
     <SCHEMEINLINE>amb</SCHEMEINLINE> and explains how it supports nondeterminism
     through the evaluator<APOS/>s automatic search mechanism.
@@ -262,6 +417,19 @@ prime_sum_pair(list(1, 3, 5, 8), list(20, 35, 110));
       <JAVASCRIPT>JavaScript</JAVASCRIPT>
     </SPLITINLINE>
     evaluator.
+    </EN>
+    <JA>
+    Section<SPACE/><REF NAME="sec:amb"/>では
+    <SCHEMEINLINE>amb</SCHEMEINLINE> を導入し、評価器の自動探索メカニズムを通じてどのように非決定性をサポートするかを説明します。
+    Section<SPACE/><REF NAME="sec:amb-examples"/>では非決定的プログラムの例を示し、
+    section<SPACE/><REF NAME="sec:amb-implementation"/>では通常の
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    評価器を修正して <SCHEMEINLINE>amb</SCHEMEINLINE> 評価器を実装する方法の詳細を説明します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <!-- Subsection 1 : Amb and Search -->
