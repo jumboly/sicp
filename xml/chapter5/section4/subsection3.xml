@@ -5,7 +5,10 @@
         Conditionals, Assignments and Definitions
       </SCHEME>
       <JAVASCRIPT>
-        Blocks, Assignments, and Declarations
+        <BILINGUAL>
+        <EN>Blocks, Assignments, and Declarations</EN>
+        <JA>ブロック、代入、宣言</JA>
+        </BILINGUAL>
       </JAVASCRIPT>
     </SPLITINLINE>
   </NAME>
@@ -71,31 +74,48 @@ ev-if-consequent
   </TEXT>
     </SCHEME>
     <JAVASCRIPT>
-      <SUBHEADING> 
-        <NAME>Blocks</NAME>
+      <SUBHEADING>
+        <NAME><BILINGUAL>
+        <EN>Blocks</EN>
+        <JA>ブロック</JA>
+        </BILINGUAL></NAME>
       </SUBHEADING>
 
       <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>blocks</SUBINDEX></INDEX>
       <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>declarations</SUBINDEX></INDEX>
 
       <TEXT>
-        The body of a block is evaluated with respect to the current environment
+        <BILINGUAL>
+        <EN>The body of a block is evaluated with respect to the current environment
 	extended by a frame that binds all local names to the value
 	<JAVASCRIPTINLINE>"*unassigned*"</JAVASCRIPTINLINE>. We temporarily
         make use of the <JAVASCRIPTINLINE>val</JAVASCRIPTINLINE> register to
 	hold the list of all variables declared in the block, which is obtained
-	by 
+	by
 	<INDEX>scanning out declarations<SUBINDEX>in explicit-control evaluator</SUBINDEX></INDEX>
 	<JAVASCRIPTINLINE>scan_out_declarations</JAVASCRIPTINLINE>
 	from section<SPACE/><REF NAME="sec:core-of-evaluator"/>. The functions
   <JAVASCRIPTINLINE>scan_@out_@declarations</JAVASCRIPTINLINE> and
   <JAVASCRIPTINLINE>list_of_unassigned</JAVASCRIPTINLINE> are assumed
-  to be available as machine operations.<FOOTNOTE>
-	Footnote<SPACE/><REF NAME="foot:syntax-transformer"/>
+  to be available as machine operations.</EN>
+        <JA>ブロックの本体は、すべてのローカル名を値
+	<JAVASCRIPTINLINE>"*unassigned*"</JAVASCRIPTINLINE> に束縛するフレームで現在の環境を拡張した環境で評価されます。ここでは一時的に
+	<JAVASCRIPTINLINE>val</JAVASCRIPTINLINE> レジスタを使って、ブロック内で宣言されたすべての変数のリストを保持します。このリストは、
+	<INDEX>scanning out declarations<SUBINDEX>in explicit-control evaluator</SUBINDEX></INDEX>
+	節<SPACE/><REF NAME="sec:core-of-evaluator"/>の
+	<JAVASCRIPTINLINE>scan_out_declarations</JAVASCRIPTINLINE>
+	によって取得します。関数
+  <JAVASCRIPTINLINE>scan_@out_@declarations</JAVASCRIPTINLINE> と
+  <JAVASCRIPTINLINE>list_of_unassigned</JAVASCRIPTINLINE> はマシン操作として利用可能であると仮定します。</JA>
+        </BILINGUAL><FOOTNOTE>
+	<BILINGUAL>
+	<EN>Footnote<SPACE/><REF NAME="foot:syntax-transformer"/>
 	suggests that an actual implementation would perform
 	syntax transformations before program execution.
   In the same vein, names declared in blocks should be scanned out
-  in a preprocessing step rather than each time a block is evaluated.
+  in a preprocessing step rather than each time a block is evaluated.</EN>
+	<JA>脚注<SPACE/><REF NAME="foot:syntax-transformer"/>では、実際の実装ではプログラムの実行前に構文変換を行うことが示唆されています。同様に、ブロック内で宣言された名前は、ブロックが評価されるたびにではなく、前処理のステップでスキャンアウトすべきです。</JA>
+	</BILINGUAL>
 	</FOOTNOTE>
 	<SNIPPET EVAL="no" LATEX="yes" POSTPADDING="no">
 	  <INDEX><DECLARATION>ev_block</DECLARATION></INDEX>
@@ -133,18 +153,25 @@ ev-if-consequent
     </JAVASCRIPT>
   </SPLIT>
   
-  <SUBHEADING> 
+  <SUBHEADING>
     <NAME>
-      Assignments and
+      <BILINGUAL>
+      <EN>Assignments and
       <SPLITINLINE>
 	<SCHEME>definitions</SCHEME>
 	<JAVASCRIPT>declarations</JAVASCRIPT>
-      </SPLITINLINE>
+      </SPLITINLINE></EN>
+      <JA>代入と<SPLITINLINE>
+	<SCHEME>定義</SCHEME>
+	<JAVASCRIPT>宣言</JAVASCRIPT>
+      </SPLITINLINE></JA>
+      </BILINGUAL>
     </NAME>
   </SUBHEADING>
 
   <TEXT>
-    Assignments
+    <BILINGUAL>
+    <EN>Assignments
     <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>assignments</SUBINDEX></INDEX>
     are handled by
     <SPLITINLINE>
@@ -178,7 +205,42 @@ ev-if-consequent
 	<JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    is assumed to be available as a machine operation.
+    is assumed to be available as a machine operation.</EN>
+    <JA>代入は、
+    <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>assignments</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>ev-assignment</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>ev_assignment</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    で処理されます。これは、代入式が
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>exp</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>comp</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    に入った状態で
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>eval-dispatch</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>eval_@dispatch</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    から到達します。
+    <SPLITINLINE>
+      <SCHEME>
+      <SCHEMEINLINE>ev-assignment</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>ev_assignment</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    のコードは、まず式の値部分を評価し、次にその新しい値を環境にインストールします。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Set-variable-value!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	関数
+	<JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    はマシン操作として利用可能であると仮定します。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>ev_assignment</DECLARATION></INDEX> 
       <SCHEME>
@@ -225,19 +287,31 @@ ev-assignment-1
         Definitions are handled in a similar way:
       </SCHEME>
       <JAVASCRIPT>
-        Declarations
+        <BILINGUAL>
+        <EN>Declarations
 	<INDEX>explicit-control evaluator for JavaScript<SUBINDEX>declarations</SUBINDEX></INDEX>
 	of variables and constants are handled in a similar way.
         Note that whereas the value of an assignment is the value that was assigned,
         the value of a declaration is
         <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE>. This is handled by
         setting <JAVASCRIPTINLINE>val</JAVASCRIPTINLINE> to
-        <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> before continuing. 
+        <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> before continuing.
         As in the metacircular evaluator, we transform a function declaration
         into a constant declaration whose value expression is a lambda expression. This happens at
         <JAVASCRIPTINLINE>ev_function_declaration</JAVASCRIPTINLINE>, which makes the
         transformation in place in <JAVASCRIPTINLINE>comp</JAVASCRIPTINLINE> and
-        falls through to <JAVASCRIPTINLINE>ev_declaration</JAVASCRIPTINLINE>.
+        falls through to <JAVASCRIPTINLINE>ev_declaration</JAVASCRIPTINLINE>.</EN>
+        <JA>変数と定数の宣言も同様の方法で処理されます。
+	<INDEX>explicit-control evaluator for JavaScript<SUBINDEX>declarations</SUBINDEX></INDEX>
+        代入の値が代入された値であるのに対し、宣言の値は
+        <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> であることに注意してください。これは、継続する前に
+	<JAVASCRIPTINLINE>val</JAVASCRIPTINLINE> を
+        <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> に設定することで処理されます。
+        メタ循環評価器と同様に、関数宣言は値式がラムダ式である定数宣言に変換されます。これは
+        <JAVASCRIPTINLINE>ev_function_declaration</JAVASCRIPTINLINE> で行われ、
+	<JAVASCRIPTINLINE>comp</JAVASCRIPTINLINE> 内でその場で変換を行い、そのまま
+        <JAVASCRIPTINLINE>ev_declaration</JAVASCRIPTINLINE> にフォールスルーします。</JA>
+        </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
     <SNIPPET EVAL="no" POSTPADDING="no">
@@ -309,7 +383,8 @@ ev-definition-1
 	  </SPLITINLINE> in a syntax phase that runs before execution.</FOOTNOTE>
       </SCHEME>
       <JAVASCRIPT>
-	Extend the evaluator to handle
+	<BILINGUAL>
+	<EN>Extend the evaluator to handle
 	<INDEX>derived component<SUBINDEX>adding to explicit-control evaluator</SUBINDEX></INDEX>
 	<INDEX>explicit-control evaluator for JavaScript<SUBINDEX>derived components</SUBINDEX></INDEX>
 	<INDEX>explicit-control evaluator for JavaScript<SUBINDEX>syntactic forms (additional)</SUBINDEX></INDEX>
@@ -329,8 +404,22 @@ ev-definition-1
 	exercise<SPACE/><REF NAME="ex:while_loop"/> to discuss whether
 	this approach works if return, break, and continue statements are allowed
 	inside the while loop. If not,
-	how can you modify the explicit-control evaluator to run programs 
-	with while loops that include these statements?
+	how can you modify the explicit-control evaluator to run programs
+	with while loops that include these statements?</EN>
+	<JA>練習問題<SPACE/><REF NAME="ex:while_loop"/>で示されているように、while ループを関数
+	<INDEX>derived component<SUBINDEX>adding to explicit-control evaluator</SUBINDEX></INDEX>
+	<INDEX>explicit-control evaluator for JavaScript<SUBINDEX>derived components</SUBINDEX></INDEX>
+	<INDEX>explicit-control evaluator for JavaScript<SUBINDEX>syntactic forms (additional)</SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>while_loop</JAVASCRIPTINLINE> の適用に変換することで、while ループを処理できるように評価器を拡張してください。関数
+	<JAVASCRIPTINLINE>while_loop</JAVASCRIPTINLINE> の宣言はユーザープログラムの先頭に貼り付けることができます。構文変換器
+	<JAVASCRIPTINLINE>while_to_application</JAVASCRIPTINLINE> がマシン操作として利用可能であると仮定して<QUOTE>ズル</QUOTE>しても構いません。<!--<FOOTNOTE>This isn<APOS/>t really cheating.  In an
+	actual implementation built from scratch, we would use our explicit-control
+	evaluator to interpret a JavaScript program that performs source-level
+	transformations like
+	<JAVASCRIPTINLINE>while_to_application</JAVASCRIPTINLINE>
+	in a syntax phase that runs before execution.</FOOTNOTE>-->
+	練習問題<SPACE/><REF NAME="ex:while_loop"/>を参照して、while ループ内で return 文、break 文、continue 文が許される場合にこのアプローチが機能するかどうかを議論してください。機能しない場合、これらの文を含む while ループを持つプログラムを実行できるように、明示的制御評価器をどのように修正すればよいでしょうか？</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
   </EXERCISE>
@@ -352,12 +441,18 @@ ev-definition-1
   </SPLIT>
 
   <EXERCISE>
-    Modify the evaluator so that it uses
+    <BILINGUAL>
+    <EN>Modify the evaluator so that it uses
     <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>normal-order evaluation</SUBINDEX></INDEX>
     <INDEX>normal-order evaluation<SUBINDEX><ORDER>explicit</ORDER>in explicit-control evaluator</SUBINDEX></INDEX>
     normal-order evaluation,
     based on the lazy evaluator of
-    section<SPACE/><REF NAME="sec:lazy-evaluation"/>.
+    section<SPACE/><REF NAME="sec:lazy-evaluation"/>.</EN>
+    <JA>節<SPACE/><REF NAME="sec:lazy-evaluation"/>の遅延評価器に基づいて、
+    <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>normal-order evaluation</SUBINDEX></INDEX>
+    <INDEX>normal-order evaluation<SUBINDEX><ORDER>explicit</ORDER>in explicit-control evaluator</SUBINDEX></INDEX>
+    正規順序の評価を使うように評価器を修正してください。</JA>
+    </BILINGUAL>
     <LABEL NAME="ex:5_26"/>
   </EXERCISE>
 </SUBSECTION>

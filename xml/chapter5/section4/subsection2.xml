@@ -5,9 +5,12 @@
         Sequence Evaluation and Tail Recursion
       </SCHEME>
       <JAVASCRIPT>
-        Evaluating Function Applications
+        <BILINGUAL>
+        <EN>Evaluating Function Applications</EN>
+        <JA>関数適用の評価</JA>
+        </BILINGUAL>
       </JAVASCRIPT>
-    </SPLITINLINE>    
+    </SPLITINLINE>
   </NAME>
 
   <SPLIT>
@@ -105,6 +108,8 @@ ev-sequence-last-exp
       <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>combinations<OPEN/></SUBINDEX></INDEX>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         A function application is specified by a combination containing a function
         expression and argument expressions. The function expression is a subexpression
         whose value is a function, and the argument expressions are subexpressions whose
@@ -119,7 +124,18 @@ ev-sequence-last-exp
         Before each call we will be
 	<INDEX>explicit-control evaluator for JavaScript<SUBINDEX>stack usage</SUBINDEX></INDEX>
 	careful to identify which registers must be saved
-        (because their values will be needed later).<FOOTNOTE>This is an important but
+        (because their values will be needed later).
+        </EN>
+        <JA>
+        関数適用は、関数式と引数式を含む組み合わせによって指定されます。関数式は値が関数であるような部分式であり、引数式は関数が適用されるべき引数の値を持つ部分式です。メタ循環評価器の
+        <JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE> は、組み合わせの各要素を評価するために自身を再帰的に呼び出し、その結果を実際の関数適用を行う <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> に渡すことで適用を処理します。明示的制御評価器も同じことを行いますが、これらの再帰呼び出しは
+        <JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE> 命令と、再帰呼び出しから戻った後に復元されるレジスタを保存するためのスタックの使用によって実装されます。各呼び出しの前に、
+	<INDEX>explicit-control evaluator for JavaScript<SUBINDEX>stack usage</SUBINDEX></INDEX>
+	どのレジスタを保存する必要があるか（その値が後で必要になるため）を慎重に特定します。
+        </JA>
+        </BILINGUAL><FOOTNOTE>
+        <BILINGUAL>
+        <EN>This is an important but
         subtle point in translating algorithms from a procedural language, such as
         JavaScript, to a register-machine language. As an alternative to saving only what
         is needed, we could save all the registers (except
@@ -131,17 +147,33 @@ ev-sequence-last-exp
         This would work but might save more registers than necessary; this could be an
         important consideration in a system where stack operations are expensive. Saving
         registers whose contents will not be needed later may also hold on to useless data
-        that could otherwise be garbage-collected, freeing space to be reused.</FOOTNOTE>
+        that could otherwise be garbage-collected, freeing space to be reused.</EN>
+        <JA>これは、JavaScript のような手続き型言語からレジスタマシン言語へアルゴリズムを変換する際の重要だが微妙なポイントです。必要なものだけを保存する代わりに、各再帰呼び出しの前にすべてのレジスタ（<JAVASCRIPTINLINE>val</JAVASCRIPTINLINE> を除く）を保存することもできます。これは
+	<INDEX>framed-stack discipline</INDEX>
+        <INDEX>stack<SUBINDEX>framed</SUBINDEX></INDEX>
+	<EM>framed-stack</EM> 規律と呼ばれます。これでも動作しますが、必要以上に多くのレジスタを保存してしまう可能性があります。スタック操作のコストが高いシステムではこれが重要な考慮事項になり得ます。後で内容が不要になるレジスタを保存すると、ガベージコレクションされて領域が再利用できるはずの無用なデータを保持し続けてしまうこともあります。</JA>
+        </BILINGUAL>
+        </FOOTNOTE>
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         As in the metacircular evaluator, operator combinations are transformed into
         applications of primitive functions corresponding to the operators. This takes
         place at <JAVASCRIPTINLINE>ev_operator_combination</JAVASCRIPTINLINE>, which
         performs this transformation in place in <JAVASCRIPTINLINE>comp</JAVASCRIPTINLINE>
         and falls through to
-        <JAVASCRIPTINLINE>ev_application</JAVASCRIPTINLINE>.<!-- 
+        <JAVASCRIPTINLINE>ev_application</JAVASCRIPTINLINE>.
+        </EN>
+        <JA>
+        メタ循環評価器と同様に、演算子の組み合わせは演算子に対応するプリミティブ関数の適用に変換されます。これは <JAVASCRIPTINLINE>ev_operator_combination</JAVASCRIPTINLINE> で行われ、<JAVASCRIPTINLINE>comp</JAVASCRIPTINLINE> 内でこの変換をその場で実行し、そのまま
+        <JAVASCRIPTINLINE>ev_application</JAVASCRIPTINLINE> に流れ込みます。
+        </JA>
+        </BILINGUAL><!--
         --><FOOTNOTE>
+        <BILINGUAL>
+        <EN>
         We assume that the syntax transformer
         <JAVASCRIPTINLINE>operator_combination_to_application</JAVASCRIPTINLINE> is
         available as a machine operation. In an actual implementation built from
@@ -149,11 +181,21 @@ ev-sequence-last-exp
         program that performs source-level transformations like this one and
         <JAVASCRIPTINLINE>function_decl_to_constant_decl</JAVASCRIPTINLINE>
 	in a syntax phase that runs before execution.
+        </EN>
+        <JA>
+        構文変換器
+        <JAVASCRIPTINLINE>operator_combination_to_application</JAVASCRIPTINLINE> がマシン操作として利用可能であると仮定しています。ゼロから構築する実際の実装では、明示的制御評価器を使って、この変換や
+        <JAVASCRIPTINLINE>function_decl_to_constant_decl</JAVASCRIPTINLINE>
+	のようなソースレベルの変換を実行するJavaScriptプログラムを、実行前の構文フェーズで解釈することになるでしょう。
+        </JA>
+        </BILINGUAL>
         <LABEL NAME="foot:syntax-transformer"/>
       </FOOTNOTE>
       </TEXT>
     
       <TEXT>
+        <BILINGUAL>
+        <EN>
         We begin the evaluation of an application by evaluating the function expression to
         produce a function, which will later be applied to the evaluated argument
         expressions. To evaluate the function expression, we move it to the
@@ -170,6 +212,12 @@ ev-sequence-last-exp
         function expression has been evaluated. First, however, we save the old value of
         <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE>, which tells the controller where to
         continue after the application.
+        </EN>
+        <JA>
+        適用の評価は、関数式を評価して関数を生成することから始まります。この関数は後で評価済みの引数式に適用されます。関数式を評価するために、それを
+        <JAVASCRIPTINLINE>comp</JAVASCRIPTINLINE> レジスタに移動し、<JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE> に移行します。<JAVASCRIPTINLINE>env</JAVASCRIPTINLINE> レジスタ内の環境は、関数式を評価するための正しい環境です。しかし、後で引数式を評価するときに必要になるため、<JAVASCRIPTINLINE>env</JAVASCRIPTINLINE> を保存します。また、引数式を <JAVASCRIPTINLINE>unev</JAVASCRIPTINLINE> に取り出してスタックに保存します。関数式の評価後に <JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE> が <JAVASCRIPTINLINE>ev_appl_did_function_expression</JAVASCRIPTINLINE> で再開するように <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> を設定します。ただしその前に、適用の後でどこに継続するかをコントローラに伝える <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> の古い値を保存します。
+        </JA>
+        </BILINGUAL>
 
         <SNIPPET EVAL="no">
 	  <INDEX><DECLARATION>ev_operator_combination</DECLARATION></INDEX>
@@ -193,6 +241,8 @@ ev-sequence-last-exp
       <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>argument evaluation<OPEN/></SUBINDEX></INDEX>
       
       <TEXT>
+        <BILINGUAL>
+        <EN>
         Upon returning from evaluating the function expression, we proceed to evaluate the
         argument expressions of the application and to accumulate the resulting arguments
         in a list, held in <JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE>. (This is like the
@@ -203,10 +253,18 @@ ev-sequence-last-exp
         by evaluating the function expression. If there are no argument expressions, we go
         directly to <JAVASCRIPTINLINE>apply_dispatch</JAVASCRIPTINLINE>. Otherwise we save
         <JAVASCRIPTINLINE>fun</JAVASCRIPTINLINE> on the stack and start the
-        argument-evaluation loop:<!-- 
-        --><FOOTNOTE>We add to the evaluator data-structure
+        argument-evaluation loop:
+        </EN>
+        <JA>
+        関数式の評価から戻ったら、適用の引数式を評価し、結果の引数を <JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE> に保持されるリストに蓄積していきます。（これは文の列の評価に似ていますが、値を収集する点が異なります。）まず、未評価の引数式と環境を復元します。<JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE> を空リストに初期化します。次に、関数式の評価によって生成された関数を <JAVASCRIPTINLINE>fun</JAVASCRIPTINLINE> レジスタに代入します。引数式がなければ、直接 <JAVASCRIPTINLINE>apply_dispatch</JAVASCRIPTINLINE> に移行します。そうでなければ、<JAVASCRIPTINLINE>fun</JAVASCRIPTINLINE> をスタックに保存し、引数評価ループを開始します。
+        </JA>
+        </BILINGUAL><!--
+        --><FOOTNOTE><BILINGUAL>
+        <EN>We add to the evaluator data-structure
         functions in section<SPACE/><REF NAME="sec:eval-data-structures"/> the following
-        two functions for manipulating argument lists:
+        two functions for manipulating argument lists:</EN>
+        <JA><REF NAME="sec:eval-data-structures"/>節の評価器のデータ構造関数に、引数リストを操作するための以下の2つの関数を追加します。</JA>
+        </BILINGUAL>
         <SNIPPET EVAL="no">
           <INDEX><DECLARATION>empty_arglist</DECLARATION></INDEX> 
           <INDEX><DECLARATION>adjoin_arg</DECLARATION></INDEX>
@@ -219,8 +277,11 @@ function adjoin_arg(arg, arglist) {
 }
           </JAVASCRIPT>
         </SNIPPET>
-        We also make use of an additional syntax function to test for the last argument expression
-        in an application:
+        <BILINGUAL>
+        <EN>We also make use of an additional syntax function to test for the last argument expression
+        in an application:</EN>
+        <JA>また、適用の最後の引数式かどうかをテストするための追加の構文関数も使用します。</JA>
+        </BILINGUAL>
         <SNIPPET EVAL="no">
           <INDEX><DECLARATION>is_last_argument_expression</DECLARATION></INDEX> 
           <NAME>is_last_argument_expression</NAME>
@@ -245,6 +306,8 @@ function is_last_argument_expression(arg_expression) {
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         Each cycle of the argument-evaluation loop evaluates an argument expression from
         the list in <JAVASCRIPTINLINE>unev</JAVASCRIPTINLINE> and accumulates the result
         into <JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE>. To evaluate an argument
@@ -257,6 +320,11 @@ function is_last_argument_expression(arg_expression) {
         to be evaluated (held in <JAVASCRIPTINLINE>unev</JAVASCRIPTINLINE>). A special
         case is made for the evaluation of the last argument expression, which is handled
         at <JAVASCRIPTINLINE>ev_appl_last_arg</JAVASCRIPTINLINE>.
+        </EN>
+        <JA>
+        引数評価ループの各サイクルでは、<JAVASCRIPTINLINE>unev</JAVASCRIPTINLINE> 内のリストから引数式を1つ評価し、結果を <JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE> に蓄積します。引数式を評価するために、それを <JAVASCRIPTINLINE>comp</JAVASCRIPTINLINE> レジスタに配置し、引数蓄積フェーズで実行が再開されるように <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> を設定してから <JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE> に移行します。ただしその前に、これまでに蓄積された引数（<JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE> に保持）、環境（<JAVASCRIPTINLINE>env</JAVASCRIPTINLINE> に保持）、評価すべき残りの引数式（<JAVASCRIPTINLINE>unev</JAVASCRIPTINLINE> に保持）を保存します。最後の引数式の評価は特別扱いされ、<JAVASCRIPTINLINE>ev_appl_last_arg</JAVASCRIPTINLINE> で処理されます。
+        </JA>
+        </BILINGUAL>
 
         <SNIPPET EVAL="no">
           <JAVASCRIPT>
@@ -274,11 +342,18 @@ function is_last_argument_expression(arg_expression) {
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         When an argument expression has been evaluated, the value is accumulated into the
         list held in <JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE>. The argument expression is
         then removed from the list of unevaluated argument expressions in
         <JAVASCRIPTINLINE>unev</JAVASCRIPTINLINE>, and the argument-evaluation loop
         continues.
+        </EN>
+        <JA>
+        引数式が評価されると、その値は <JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE> に保持されるリストに蓄積されます。その引数式は <JAVASCRIPTINLINE>unev</JAVASCRIPTINLINE> 内の未評価の引数式のリストから取り除かれ、引数評価ループが続行されます。
+        </JA>
+        </BILINGUAL>
 
         <SNIPPET EVAL="no">
           <JAVASCRIPT>
@@ -294,6 +369,8 @@ function is_last_argument_expression(arg_expression) {
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         Evaluation of the last argument expression is handled differently, as is the last
         statement in a sequence. There is no need to save the environment or the list of
         unevaluated argument expressions before going to
@@ -302,7 +379,14 @@ function is_last_argument_expression(arg_expression) {
         evaluation to a special entry point
         <JAVASCRIPTINLINE>ev_appl_accum_last_arg</JAVASCRIPTINLINE>, which restores the
         argument list, accumulates the new argument, restores the saved function, and goes
-        off to perform the application.<FOOTNOTE>The optimization of treating the last
+        off to perform the application.
+        </EN>
+        <JA>
+        最後の引数式の評価は、列の最後の文と同様に、異なる方法で処理されます。最後の引数式が評価された後は環境や未評価の引数式のリストは不要なので、<JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE> に移行する前にそれらを保存する必要はありません。したがって、評価からは特別なエントリポイント <JAVASCRIPTINLINE>ev_appl_accum_last_arg</JAVASCRIPTINLINE> に戻ります。このエントリポイントは引数リストを復元し、新しい引数を蓄積し、保存された関数を復元して、適用の実行に移ります。
+        </JA>
+        </BILINGUAL><FOOTNOTE>
+        <BILINGUAL>
+        <EN>The optimization of treating the last
         argument expression specially is known as
 	<INDEX>evlis tail recursion</INDEX>
 	<EM>evlis tail recursion</EM> (see
@@ -315,7 +399,14 @@ function is_last_argument_expression(arg_expression) {
         <JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE> in this case. The compiler in
         section<SPACE/><REF NAME="sec:compilation"/> performs this optimization. (Compare
         the <JAVASCRIPTINLINE>construct_arglist</JAVASCRIPTINLINE> function of
-        section<SPACE/><REF NAME="sec:compiling-combinations"/>.)</FOOTNOTE>
+        section<SPACE/><REF NAME="sec:compiling-combinations"/>.)</EN>
+        <JA>最後の引数式を特別扱いする最適化は、
+	<INDEX>evlis tail recursion</INDEX>
+	<EM>evlis 末尾再帰</EM>として知られています（
+	<INDEX>Wand, Mitchell</INDEX>
+	<CITATION>Wand 1980</CITATION> を参照）。最初の引数式の評価も特別扱いすれば、引数評価ループをもう少し効率的にできます。そうすれば、最初の引数式を評価するまで <JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE> の初期化を遅らせることができ、この場合に <JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE> を保存する必要がなくなります。<REF NAME="sec:compilation"/>節のコンパイラはこの最適化を行います。（<REF NAME="sec:compiling-combinations"/>節の <JAVASCRIPTINLINE>construct_arglist</JAVASCRIPTINLINE> 関数と比較してください。）</JA>
+        </BILINGUAL>
+        </FOOTNOTE>
 
         <SNIPPET EVAL="no">
           <JAVASCRIPT>
@@ -332,14 +423,25 @@ function is_last_argument_expression(arg_expression) {
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         The details of the argument-evaluation loop determine the
         <INDEX>order of evaluation<SUBINDEX>in explicit-control evaluator</SUBINDEX></INDEX>
 	order in which the
         interpreter evaluates the argument expressions of a combination (e.g., left to
         right or right to left—see exercise<SPACE/><REF NAME="ex:order-of-evaluation"/>).
         This order is not determined by the metacircular evaluator, which inherits its
-        control structure from the underlying JavaScript in which it is implemented.<!-- 
+        control structure from the underlying JavaScript in which it is implemented.
+        </EN>
+        <JA>
+        引数評価ループの詳細が、
+        <INDEX>order of evaluation<SUBINDEX>in explicit-control evaluator</SUBINDEX></INDEX>
+	インタプリタが組み合わせの引数式をどの順序で評価するか（例えば、左から右か右から左か—練習問題<SPACE/><REF NAME="ex:order-of-evaluation"/>を参照）を決定します。この順序はメタ循環評価器では決定されず、そのメタ循環評価器が実装されている基盤のJavaScriptから制御構造を受け継ぎます。
+        </JA>
+        </BILINGUAL><!--
         --><FOOTNOTE>
+        <BILINGUAL>
+        <EN>
         The order of argument-expression evaluation by the function
         <JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE> in the metacircular
         evaluator is determined by the order of evaluation of the arguments to
@@ -352,8 +454,18 @@ function is_last_argument_expression(arg_expression) {
         calls <JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE> directly; the version in the
         text uses <JAVASCRIPTINLINE>map</JAVASCRIPTINLINE>, which calls
         <JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE>. (See exercise<SPACE/><REF
-        NAME="ex:arg-eval-order"/>.)</FOOTNOTE>
+        NAME="ex:arg-eval-order"/>.)
+        </EN>
+        <JA>
+        メタ循環評価器における関数 <JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE> による引数式の評価順序は、引数リストの構築に使用される <JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE> への引数の評価順序によって決まります。
+	<INDEX>order of evaluation<SUBINDEX>in metacircular evaluator</SUBINDEX></INDEX>
+	脚注<SPACE/><REF NAME="foot:mceval-higher-order"/>（<REF NAME="sec:mc-eval"/>節）の <JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE> のバージョンは <JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE> を直接呼び出します。本文のバージョンは <JAVASCRIPTINLINE>map</JAVASCRIPTINLINE> を使用し、それが <JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE> を呼び出します。（練習問題<SPACE/><REF NAME="ex:arg-eval-order"/>を参照。）
+        </JA>
+        </BILINGUAL>
+        </FOOTNOTE>
 
+        <BILINGUAL>
+        <EN>
         Because we use <JAVASCRIPTINLINE>head</JAVASCRIPTINLINE> in <JAVASCRIPTINLINE>ev_appl_argument_expression_loop</JAVASCRIPTINLINE>
         to extract successive argument expressions from <JAVASCRIPTINLINE>unev</JAVASCRIPTINLINE>
         and <JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE> at
@@ -361,19 +473,29 @@ function is_last_argument_expression(arg_expression) {
         the explicit-control evaluator will
 	      evaluate the argument expressions of a combination in left-to-right order,
         as required by the ECMAScript specification.
+        </EN>
+        <JA>
+        <JAVASCRIPTINLINE>ev_appl_argument_expression_loop</JAVASCRIPTINLINE> で <JAVASCRIPTINLINE>head</JAVASCRIPTINLINE> を使って <JAVASCRIPTINLINE>unev</JAVASCRIPTINLINE> から引数式を順次取り出し、<JAVASCRIPTINLINE>ev_appl_@accumulate_arg</JAVASCRIPTINLINE> で <JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE> を使って残りの引数式を取り出すため、明示的制御評価器はECMAScript仕様で要求されるとおり、組み合わせの引数式を左から右の順序で評価します。
+        </JA>
+        </BILINGUAL>
       </TEXT>
 
       <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>argument evaluation<CLOSE/></SUBINDEX></INDEX>
 
-      <SUBHEADING> 
+      <SUBHEADING>
         <NAME>
-          Function Application
+          <BILINGUAL>
+          <EN>Function Application</EN>
+          <JA>関数適用</JA>
+          </BILINGUAL>
         </NAME>
       </SUBHEADING>
 
       <LABEL NAME="sec:procedure-application"/>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         The entry point <JAVASCRIPTINLINE>apply_dispatch</JAVASCRIPTINLINE> corresponds to
         the <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> function of the metacircular
         evaluator. By the time we get to
@@ -390,6 +512,11 @@ function is_last_argument_expression(arg_expression) {
         in <JAVASCRIPTINLINE>val</JAVASCRIPTINLINE>. As with the metacircular
         <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE>, there are two cases to consider.
         Either the function to be applied is a primitive or it is a compound function.
+        </EN>
+        <JA>
+        エントリポイント <JAVASCRIPTINLINE>apply_dispatch</JAVASCRIPTINLINE> は、メタ循環評価器の <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> 関数に対応します。<JAVASCRIPTINLINE>apply_dispatch</JAVASCRIPTINLINE> に到達する時点で、<JAVASCRIPTINLINE>fun</JAVASCRIPTINLINE> レジスタには適用する関数が、<JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE> には適用先の評価済み引数のリストが格納されています。関数適用の結果をどこに返すかを示す <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> の保存された値（もともと <JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE> に渡され、<JAVASCRIPTINLINE>ev_application</JAVASCRIPTINLINE> で保存されたもの）はスタック上にあります。適用が完了すると、コントローラは適用の結果を <JAVASCRIPTINLINE>val</JAVASCRIPTINLINE> に入れて、保存された <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> で指定されるエントリポイントに転送します。メタ循環評価器の <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> と同様に、考慮すべき場合が2つあります。適用する関数がプリミティブ関数であるか、複合関数であるかです。
+        </JA>
+        </BILINGUAL>
 
         <SNIPPET EVAL="no">
           <INDEX><DECLARATION>apply_dispatch</DECLARATION></INDEX>
@@ -405,6 +532,8 @@ function is_last_argument_expression(arg_expression) {
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         We assume that each
         <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>primitive functions</SUBINDEX></INDEX>
 	primitive is implemented so as to obtain its arguments from
@@ -426,6 +555,13 @@ function is_last_argument_expression(arg_expression) {
         NAME="sec:core-of-evaluator"/>. After computing the value of the primitive
         application, we restore <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> and go to
         the designated entry point.
+        </EN>
+        <JA>
+        各
+        <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>primitive functions</SUBINDEX></INDEX>
+	プリミティブ関数は、<JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE> から引数を取得し、結果を <JAVASCRIPTINLINE>val</JAVASCRIPTINLINE> に格納するように実装されていると仮定します。マシンがプリミティブ関数をどのように処理するかを指定するには、各プリミティブ関数を実装するコントローラ命令の列を提供し、<JAVASCRIPTINLINE>fun</JAVASCRIPTINLINE> の内容で識別されるプリミティブ関数の命令に <JAVASCRIPTINLINE>primitive_apply</JAVASCRIPTINLINE> がディスパッチするようにする必要があります。プリミティブ関数の詳細よりも評価プロセスの構造に関心があるので、代わりに、fun 内の関数を <JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE> 内の引数に適用する <JAVASCRIPTINLINE>apply_primitive_function</JAVASCRIPTINLINE> 操作を使用します。<REF NAME="sec:simulator"/>節のシミュレータで評価器をシミュレートする目的で、<REF NAME="sec:core-of-evaluator"/>節のメタ循環評価器で行ったのと同様に、基盤のJavaScriptシステムを呼び出して適用を実行する関数 <JAVASCRIPTINLINE>apply_primitive_function</JAVASCRIPTINLINE> を使用します。プリミティブ関数の適用の値を計算した後、<JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> を復元し、指定されたエントリポイントに移行します。
+        </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="no">
           <INDEX><DECLARATION>primitive_apply</DECLARATION></INDEX>
           <JAVASCRIPT>
@@ -439,6 +575,8 @@ function is_last_argument_expression(arg_expression) {
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         The sequence of instructions labeled
         <JAVASCRIPTINLINE>compound_apply</JAVASCRIPTINLINE> specifies the application of
         <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>compound functions</SUBINDEX></INDEX>
@@ -447,9 +585,18 @@ function is_last_argument_expression(arg_expression) {
         function's parameters to the arguments, use this frame to extend the environment
         carried by the function, and evaluate in this extended environment the body of the
         function.
+        </EN>
+        <JA>
+        <JAVASCRIPTINLINE>compound_apply</JAVASCRIPTINLINE> というラベルの付いた命令列は、
+        <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>compound functions</SUBINDEX></INDEX>
+        複合関数の適用を指定します。複合関数を適用するには、メタ循環評価器で行ったのと同様の方法で進めます。関数のパラメータを引数に束縛するフレームを構築し、このフレームを使って関数が持つ環境を拡張し、この拡張された環境で関数の本体を評価します。
+        </JA>
+        </BILINGUAL>
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         At this point the compound function is in register
         <JAVASCRIPTINLINE>fun</JAVASCRIPTINLINE> and its arguments are in
         <JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE>. We extract the function's parameters
@@ -464,9 +611,16 @@ function is_last_argument_expression(arg_expression) {
         the restored continuation with the result in
         <JAVASCRIPTINLINE>val</JAVASCRIPTINLINE>, as is done for the last statement of a
         sequence. But there is a complication!
+        </EN>
+        <JA>
+        この時点で、複合関数はレジスタ <JAVASCRIPTINLINE>fun</JAVASCRIPTINLINE> に、その引数は <JAVASCRIPTINLINE>argl</JAVASCRIPTINLINE> にあります。関数のパラメータを <JAVASCRIPTINLINE>unev</JAVASCRIPTINLINE> に、その環境を <JAVASCRIPTINLINE>env</JAVASCRIPTINLINE> に取り出します。次に、<JAVASCRIPTINLINE>env</JAVASCRIPTINLINE> 内の環境を、パラメータと与えられた引数の束縛で拡張して構築された環境に置き換えます。その後、関数の本体を <JAVASCRIPTINLINE>comp</JAVASCRIPTINLINE> に取り出します。自然な次のステップは、保存された <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> を復元し、列の最後の文の場合と同様に、本体を評価するために <JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE> に進み、結果を <JAVASCRIPTINLINE>val</JAVASCRIPTINLINE> に入れて復元された継続に移行することでしょう。しかし、複雑な問題があります！
+        </JA>
+        </BILINGUAL>
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
 	The complication has two aspects. One is that
         at any point in the evaluation of the body, a
         <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>return statements</SUBINDEX><OPEN/></INDEX>
@@ -485,17 +639,38 @@ function is_last_argument_expression(arg_expression) {
 	<INDEX><USE>revert_stack_to_marker</USE> (in register machine)</INDEX>
 	<JAVASCRIPTINLINE>revert_stack_to_marker</JAVASCRIPTINLINE>
         instruction to restore the stack to the place indicated by the marker before
-        evaluating the return expression.<FOOTNOTE>The special instructions
+        evaluating the return expression.
+        </EN>
+        <JA>
+	この複雑さには2つの側面があります。1つは、本体の評価中のどの時点でも、
+        <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>return statements</SUBINDEX><OPEN/></INDEX>
+	return 文が、return 式の値を本体の値として関数に返すよう要求する可能性があることです。しかし return 文は本体内に任意の深さで入れ子になり得るため、return 文に遭遇した時点のスタックは、関数からの復帰に必要なスタックとは限りません。復帰のためにスタックを調整可能にする1つの方法は、リターンコードが見つけられる<EM>マーカー</EM>をスタックに置くことです。これは
+	<INDEX>register-machine language<SUBINDEX><USE>push_marker_to_stack</USE></SUBINDEX></INDEX>
+	<INDEX><USE>push_marker_to_stack</USE> (in register machine)</INDEX>
+        <JAVASCRIPTINLINE>push_marker_to_stack</JAVASCRIPTINLINE> 命令で実装されます。リターンコードは
+	<INDEX>register-machine language<SUBINDEX><USE>revert_stack_to_marker</USE></SUBINDEX></INDEX>
+	<INDEX><USE>revert_stack_to_marker</USE> (in register machine)</INDEX>
+	<JAVASCRIPTINLINE>revert_stack_to_marker</JAVASCRIPTINLINE>
+        命令を使って、return 式を評価する前にスタックをマーカーが示す場所に復元できます。
+        </JA>
+        </BILINGUAL><FOOTNOTE>
+        <BILINGUAL>
+        <EN>The special instructions
         <JAVASCRIPTINLINE>push_marker_to_stack</JAVASCRIPTINLINE> and
         <JAVASCRIPTINLINE>revert_stack_to_marker</JAVASCRIPTINLINE> are not strictly
         necessary and could be implemented by explicitly pushing and popping a marker
         value onto and off the stack. Anything that could not be confused with a value in
         the program can be used as a marker. See exercise<SPACE/><REF
-        NAME="ex:push_marker_to_stack1"/>.</FOOTNOTE>
+        NAME="ex:push_marker_to_stack1"/>.</EN>
+        <JA>特別な命令 <JAVASCRIPTINLINE>push_marker_to_stack</JAVASCRIPTINLINE> と <JAVASCRIPTINLINE>revert_stack_to_marker</JAVASCRIPTINLINE> は厳密には必要ではなく、マーカー値を明示的にスタックにプッシュしたりポップしたりすることで実装できます。プログラムの値と混同されないものなら何でもマーカーとして使用できます。練習問題<SPACE/><REF NAME="ex:push_marker_to_stack1"/>を参照してください。</JA>
+        </BILINGUAL>
+        </FOOTNOTE>
       </TEXT>
 
       <LONG_PAGE lines="2"/>
       <TEXT>
+        <BILINGUAL>
+        <EN>
         The other aspect of the complication is that if the evaluation of the body
         terminates without executing a return statement, the value of the body must be
         <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE>. To handle this, we set up the
@@ -504,6 +679,11 @@ function is_last_argument_expression(arg_expression) {
         <JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE> to evaluate the body. If a
         return statement is not encountered during evaluation of the body, evaluation of
         the body will continue at <JAVASCRIPTINLINE>return_undefined</JAVASCRIPTINLINE>.
+        </EN>
+        <JA>
+        複雑さのもう1つの側面は、本体の評価が return 文を実行せずに終了した場合、本体の値は <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> でなければならないということです。これに対処するため、本体を評価するために <JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE> に移行する前に、<JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> レジスタがエントリポイント <JAVASCRIPTINLINE>return_undefined</JAVASCRIPTINLINE> を指すように設定します。本体の評価中に return 文に遭遇しなければ、本体の評価は <JAVASCRIPTINLINE>return_undefined</JAVASCRIPTINLINE> で継続されます。
+        </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="no">
           <INDEX><DECLARATION>compound_apply</DECLARATION></INDEX>
           <JAVASCRIPT>
@@ -521,6 +701,8 @@ function is_last_argument_expression(arg_expression) {
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         The only places in the interpreter where the
         <JAVASCRIPTINLINE>env</JAVASCRIPTINLINE> register is assigned a new value are
         <JAVASCRIPTINLINE>compound_apply</JAVASCRIPTINLINE> and
@@ -529,12 +711,19 @@ function is_last_argument_expression(arg_expression) {
         the new environment for evaluation of a function body is constructed from the
         environment carried by the function, together with the argument list and the
         corresponding list of names to be bound.
+        </EN>
+        <JA>
+        インタプリタ内で <JAVASCRIPTINLINE>env</JAVASCRIPTINLINE> レジスタに新しい値が代入される場所は、<JAVASCRIPTINLINE>compound_apply</JAVASCRIPTINLINE> と <JAVASCRIPTINLINE>ev_block</JAVASCRIPTINLINE>（<REF NAME="sec:block-assign-def-evaluation"/>節）だけです。メタ循環評価器と同様に、関数本体の評価のための新しい環境は、関数が持つ環境と、引数リストおよび束縛される名前の対応リストから構築されます。
+        </JA>
+        </BILINGUAL>
       </TEXT>
 
       <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>function application<CLOSE/></SUBINDEX></INDEX>
       <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>combinations<CLOSE/></SUBINDEX></INDEX>
       
       <TEXT>
+        <BILINGUAL>
+        <EN>
         When a return statement is evaluated at
         <JAVASCRIPTINLINE>ev_return</JAVASCRIPTINLINE>, we use the
         <JAVASCRIPTINLINE>revert_stack_@to_marker</JAVASCRIPTINLINE> instruction to restore
@@ -546,6 +735,11 @@ function is_last_argument_expression(arg_expression) {
         the return expression, whose result will be placed in
         <JAVASCRIPTINLINE>val</JAVASCRIPTINLINE> and thus be the value returned from the
         function when we continue after the evaluation of the return expression.
+        </EN>
+        <JA>
+        <JAVASCRIPTINLINE>ev_return</JAVASCRIPTINLINE> で return 文が評価されるとき、<JAVASCRIPTINLINE>revert_stack_@to_marker</JAVASCRIPTINLINE> 命令を使って、マーカーを含むそれ以降のすべての値をスタックから取り除くことで、スタックを関数呼び出しの開始時の状態に復元します。その結果、<JAVASCRIPTINLINE>restore("continue")</JAVASCRIPTINLINE> は <JAVASCRIPTINLINE>ev_application</JAVASCRIPTINLINE> で保存された関数呼び出しの継続を復元します。次に return 式の評価に進みます。その結果は <JAVASCRIPTINLINE>val</JAVASCRIPTINLINE> に格納され、return 式の評価後に継続するときに関数から返される値となります。
+        </JA>
+        </BILINGUAL>
 
         <SNIPPET EVAL="no">
 	  <INDEX><DECLARATION>ev_return</DECLARATION></INDEX>
@@ -560,6 +754,8 @@ function is_last_argument_expression(arg_expression) {
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         If no return statement is encountered during evaluation of the function body,
  	<INDEX>return value<SUBINDEX><USE>undefined</USE> as</SUBINDEX></INDEX>
 	evaluation continues at <JAVASCRIPTINLINE>return_undefined</JAVASCRIPTINLINE>, the
@@ -571,6 +767,13 @@ function is_last_argument_expression(arg_expression) {
         onto the stack at <JAVASCRIPTINLINE>ev_application</JAVASCRIPTINLINE>. Before we
         can restore that continuation from the stack, however, we must remove the marker
         that was saved at <JAVASCRIPTINLINE>compound_apply</JAVASCRIPTINLINE>.
+        </EN>
+        <JA>
+        関数本体の評価中に return 文に遭遇しなかった場合、
+ 	<INDEX>return value<SUBINDEX><USE>undefined</USE> as</SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>compound_apply</JAVASCRIPTINLINE> で設定された継続である <JAVASCRIPTINLINE>return_undefined</JAVASCRIPTINLINE> で評価が続行されます。関数から <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> を返すために、<JAVASCRIPTINLINE>val</JAVASCRIPTINLINE> に <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> を入れ、<JAVASCRIPTINLINE>ev_application</JAVASCRIPTINLINE> でスタックに積まれたエントリポイントに移行します。ただし、スタックからその継続を復元する前に、<JAVASCRIPTINLINE>compound_apply</JAVASCRIPTINLINE> で保存されたマーカーを取り除く必要があります。
+        </JA>
+        </BILINGUAL>
 
       <SNIPPET EVAL="no" POSTPADDING="no">
 	  <INDEX><DECLARATION>return_undefined</DECLARATION></INDEX>
@@ -586,14 +789,20 @@ function is_last_argument_expression(arg_expression) {
     </JAVASCRIPT>
   </SPLIT>
 
-  <SUBHEADING> 
+  <SUBHEADING>
     <NAME>
       <SPLITINLINE>
         <JAVASCRIPT>
-          Return Statements and 
+          <BILINGUAL>
+          <EN>Return Statements and </EN>
+          <JA>return 文と</JA>
+          </BILINGUAL>
         </JAVASCRIPT>
       </SPLITINLINE>
-      Tail Recursion
+      <BILINGUAL>
+      <EN>Tail Recursion</EN>
+      <JA>末尾再帰</JA>
+      </BILINGUAL>
     </NAME>
   </SUBHEADING>
 
@@ -608,13 +817,25 @@ function is_last_argument_expression(arg_expression) {
   <INDEX>return statement<SUBINDEX>handling in explicit-control evaluator</SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In chapter<SPACE/><REF NAME="chap:fun"></REF> we said that the process described by a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     such as
-        
+    </EN>
+    <JA>
+    第<SPACE/><REF NAME="chap:fun"></REF>章で、次のような
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    が記述するプロセスは
+    </JA>
+    </BILINGUAL>
+
     <SNIPPET EVAL="no">
       <SCHEME>
 (define (sqrt-iter guess x)
@@ -632,6 +853,8 @@ function sqrt_iter(guess, x) {
       </JAVASCRIPT>
     </SNIPPET>
 
+    <BILINGUAL>
+    <EN>
     is an iterative process.  Even though the
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -643,10 +866,33 @@ function sqrt_iter(guess, x) {
       <SCHEME><SCHEMEINLINE>sqrt-iter</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>sqrt_iter</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    to the next.<FOOTNOTE>We saw in
+    to the next.
+    </EN>
+    <JA>
+    反復的プロセスであると述べました。この
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は構文的には再帰的（自分自身を使って定義されている）ですが、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sqrt-iter</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sqrt_iter</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の1回の呼び出しから次の呼び出しに移る際に、評価器が情報を保存する必要は論理的にはありません。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>We saw in
     section<SPACE/><REF NAME="sec:designing-register-machines"/> how to
     implement such a process with a register machine that had no stack; the
-    state of the process was stored in a fixed set of registers.</FOOTNOTE> An
+    state of the process was stored in a fixed set of registers.</EN>
+    <JA><REF NAME="sec:designing-register-machines"/>節で、スタックを持たないレジスタマシンでこのようなプロセスを実装する方法を見ました。プロセスの状態は固定されたレジスタの集合に格納されていました。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    An
     evaluator that can execute a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -662,12 +908,36 @@ function sqrt_iter(guess, x) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    continues to call itself is called a 
+    continues to call itself is called a
     <INDEX>tail-recursive evaluator</INDEX>
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX>tail recursion and</SUBINDEX></INDEX>
     <INDEX>tail recursion<SUBINDEX>metacircular evaluator and</SUBINDEX></INDEX>
     <INDEX>return statement<SUBINDEX>tail recursion and</SUBINDEX></INDEX>
-    <EM>tail-recursive</EM> evaluator.  
+    <EM>tail-recursive</EM> evaluator.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>sqrt-iter</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>sqrt_iter</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    のような
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を、その
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    が自身を呼び出し続けても記憶領域の増加を必要とせずに実行できる評価器を、
+    <INDEX>tail-recursive evaluator</INDEX>
+    <INDEX>metacircular evaluator for JavaScript<SUBINDEX>tail recursion and</SUBINDEX></INDEX>
+    <INDEX>tail recursion<SUBINDEX>metacircular evaluator and</SUBINDEX></INDEX>
+    <INDEX>return statement<SUBINDEX>tail recursion and</SUBINDEX></INDEX>
+    <EM>末尾再帰的</EM>評価器と呼びます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
             
   <SPLIT>
@@ -681,6 +951,8 @@ function sqrt_iter(guess, x) {
       </SCHEME>
     <JAVASCRIPT>
       <TEXT>
+        <BILINGUAL>
+        <EN>
         The metacircular implementation of the evaluator in chapter<SPACE/><REF NAME="chap:meta"></REF> isn't
         tail-recursive. It implements a return statement as a
         constructor of a return value object containing the value to be
@@ -692,6 +964,11 @@ function sqrt_iter(guess, x) {
         return value object and the eventual inspection of the result of the
         function call are deferred operations, which lead to an accumulation of
         information on the stack.
+        </EN>
+        <JA>
+        第<SPACE/><REF NAME="chap:meta"></REF>章の評価器のメタ循環実装は末尾再帰的ではありません。return 文を、返されるべき値を含む戻り値オブジェクトのコンストラクタとして実装し、関数呼び出しの結果がそのようなオブジェクトかどうかを検査します。関数本体の評価が戻り値オブジェクトを生成した場合、関数の戻り値はそのオブジェクトの内容であり、そうでなければ戻り値は <JAVASCRIPTINLINE>undefined</JAVASCRIPTINLINE> です。戻り値オブジェクトの構築と、関数呼び出しの結果の最終的な検査の両方が遅延された演算であり、スタック上の情報の蓄積につながります。
+        </JA>
+        </BILINGUAL>
       </TEXT>
     </JAVASCRIPT>
   </SPLIT>
@@ -747,6 +1024,8 @@ ev-sequence-end
     </SCHEME>
     <JAVASCRIPT>
       <TEXT>
+        <BILINGUAL>
+        <EN>
         Our explicit-control evaluator <EM>is</EM> tail-recursive, because it does not need to wrap up
         return values for inspection and thus avoids the buildup of stack from deferred operations.
         At <JAVASCRIPTINLINE>ev_return</JAVASCRIPTINLINE>, in order to evaluate the expression that
@@ -769,21 +1048,38 @@ ev-sequence-end
         (as in <JAVASCRIPTINLINE>sqrt_iter</JAVASCRIPTINLINE>, where the conditional
         expression reduces to a call to
         <JAVASCRIPTINLINE>sqrt_iter</JAVASCRIPTINLINE>)—will not cause any information to
-        accumulate on the stack.<FOOTNOTE>This implementation of tail recursion is one
+        accumulate on the stack.
+        </EN>
+        <JA>
+        私たちの明示的制御評価器は末尾再帰的<EM>です</EM>。検査のために戻り値をラップする必要がなく、そのため遅延された演算によるスタックの蓄積を回避します。<JAVASCRIPTINLINE>ev_return</JAVASCRIPTINLINE> では、関数の戻り値を計算する式を評価するために、関数呼び出しの直前と同じ状態のスタックで <JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE> に直接転送します。これは、関数によるスタックへの保存（返ろうとしているので不要）を <JAVASCRIPTINLINE>revert_stack_to_marker</JAVASCRIPTINLINE> を使って取り消すことで実現します。そして、<JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE> がここに戻って来て<EM>から</EM> <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> をスタックから復元してそのエントリポイントで継続するのではなく、<JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE> に移行する<EM>前に</EM> <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> をスタックから復元し、<JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE> が式を評価した後にそのエントリポイントで継続するようにします。最後に、スタックに何も情報を保存せずに <JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE> に転送します。したがって、return 式の評価に進むとき、スタックは戻り値を計算しようとしている関数の呼び出しの直前と同じです。よって、return 式の評価は—たとえそれが関数呼び出しであっても（<JAVASCRIPTINLINE>sqrt_iter</JAVASCRIPTINLINE> のように、条件式が <JAVASCRIPTINLINE>sqrt_iter</JAVASCRIPTINLINE> の呼び出しに帰着する場合）—スタック上に情報が蓄積されることはありません。
+        </JA>
+        </BILINGUAL><FOOTNOTE>
+        <BILINGUAL>
+        <EN>This implementation of tail recursion is one
         variety of a well-known optimization technique used by many compilers. In
         compiling a function that ends with a function call, one can replace the call by a
         jump to the called function's entry point. Building this strategy into the
         interpreter, as we have done in this section, provides the optimization uniformly
-        throughout the language.</FOOTNOTE>
+        throughout the language.</EN>
+        <JA>この末尾再帰の実装は、多くのコンパイラで使用されるよく知られた最適化技法の一種です。関数呼び出しで終わる関数をコンパイルする際に、その呼び出しを呼び出される関数のエントリポイントへのジャンプに置き換えることができます。この節で行ったように、この戦略をインタプリタに組み込むことで、言語全体にわたって一様にこの最適化が提供されます。</JA>
+        </BILINGUAL>
+        </FOOTNOTE>
       </TEXT>
 
       <TEXT>
+        <BILINGUAL>
+        <EN>
         If we did not think to take advantage of the fact that it is unnecessary to
         hold on to the useless information on the stack while evaluating a return
         expression, we might have taken the straightforward approach of evaluating
 	the return expression, coming back to restore the stack, and finally
 	continuing at
         the entry point that is waiting for the result of the function call:
+        </EN>
+        <JA>
+        return 式の評価中にスタック上の不要な情報を保持し続ける必要がないという事実を活用することを思いつかなければ、return 式を評価し、戻って来てスタックを復元し、最後に関数呼び出しの結果を待っているエントリポイントで継続するという素直なアプローチを取っていたかもしれません。
+        </JA>
+        </BILINGUAL>
 
         <SNIPPET EVAL="no" LATEX="yes">
           <JAVASCRIPT>
@@ -804,9 +1100,11 @@ ev-sequence-end
 
   <SHORT_PAGE lines="2"/>
   <TEXT>
-    This may seem like a minor change to our previous code for evaluation of 
+    <BILINGUAL>
+    <EN>
+    This may seem like a minor change to our previous code for evaluation of
     <SPLITINLINE><SCHEME>a sequence</SCHEME><JAVASCRIPT>return statements</JAVASCRIPT></SPLITINLINE>:
-    
+
     The only difference is that we <SPLITINLINE><SCHEME>go through the save-restore
     cycle for the last expression in a sequence as well as for the
     others</SCHEME><JAVASCRIPT>delay undoing any register saves to the stack until
@@ -834,6 +1132,31 @@ ev-sequence-end
       <SCHEME>procedure-call mechanism:</SCHEME>
       <JAVASCRIPT>function-call and return mechanisms:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    これは、<SPLITINLINE><SCHEME>列</SCHEME><JAVASCRIPT>return 文</JAVASCRIPT></SPLITINLINE>の評価に関する以前のコードからのわずかな変更に見えるかもしれません。
+
+    唯一の違いは、<SPLITINLINE><SCHEME>列の最後の式についても他の式と同様に保存と復元のサイクルを行う</SCHEME><JAVASCRIPT>return 式の評価の後までスタックへのレジスタ保存の取り消しを遅らせる</JAVASCRIPT></SPLITINLINE>ことです。
+
+    インタプリタはどの式に対しても同じ値を返します。しかしこの変更は末尾再帰的な実装にとって致命的です。なぜなら、<SPLITINLINE><SCHEME>列の最後の式</SCHEME><JAVASCRIPT>return 式</JAVASCRIPT></SPLITINLINE>を評価した後に（不要な）レジスタの保存を取り消すために戻って来なければならないからです。
+
+    これらの余分な保存は、
+    <SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>呼び出しのネストの間に蓄積されます。
+
+    したがって、
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>sqrt-iter</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>sqrt_iter</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
+    のようなプロセスは、一定の空間で済む代わりに、反復回数に比例する空間を必要とするようになります。
+
+    この違いは重大になり得ます。例えば、
+    <INDEX>iterative process<SUBINDEX>implemented by <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE> call</SUBINDEX></INDEX>
+    末尾再帰があれば、無限ループは
+    <SPLITINLINE>
+      <SCHEME>手続き呼び出し機構</SCHEME>
+      <JAVASCRIPT>関数呼び出しと return の機構</JAVASCRIPT>
+    </SPLITINLINE>だけで表現できます。
+    </JA>
+    </BILINGUAL>
+
     <SNIPPET EVAL="no">
       <SCHEME>
 (define (count n)
@@ -849,6 +1172,8 @@ function count(n) {
       </JAVASCRIPT>
     </SNIPPET>
 
+    <BILINGUAL>
+    <EN>
     Without tail recursion, such a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -861,11 +1186,28 @@ function count(n) {
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     call.
+    </EN>
+    <JA>
+    末尾再帰がなければ、このような
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は最終的にスタック空間を使い果たし、真の反復を表現するには
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    呼び出し以外の何らかの制御機構が必要になるでしょう。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SPLIT>
     <JAVASCRIPT>
       <TEXT>
+        <BILINGUAL>
+        <EN>
         Note that our JavaScript implementation requires the use of
 	<INDEX>tail recursion<SUBINDEX>return statement necessary for</SUBINDEX></INDEX>
         <JAVASCRIPTINLINE>return</JAVASCRIPTINLINE> in order to be tail-recursive.
@@ -876,6 +1218,13 @@ function count(n) {
         eventually run out of stack space. This explains the use of
         <JAVASCRIPTINLINE>return</JAVASCRIPTINLINE> in the infinite driver loops in
         chapter<SPACE/><REF NAME="chap:meta"></REF>.
+        </EN>
+        <JA>
+        私たちのJavaScript実装では、末尾再帰的であるために
+	<INDEX>tail recursion<SUBINDEX>return statement necessary for</SUBINDEX></INDEX>
+        <JAVASCRIPTINLINE>return</JAVASCRIPTINLINE> の使用が必要であることに注意してください。レジスタ保存の取り消しは <JAVASCRIPTINLINE>ev_return</JAVASCRIPTINLINE> で行われるため、上の <JAVASCRIPTINLINE>count</JAVASCRIPTINLINE> 関数から <JAVASCRIPTINLINE>return</JAVASCRIPTINLINE> を除去すると、最終的にスタック空間を使い果たします。これが、第<SPACE/><REF NAME="chap:meta"></REF>章の無限ドライバループで <JAVASCRIPTINLINE>return</JAVASCRIPTINLINE> を使用している理由です。
+        </JA>
+        </BILINGUAL>
       </TEXT>
 
       <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>return statements</SUBINDEX><CLOSE/></INDEX>
@@ -886,11 +1235,21 @@ function count(n) {
   <SPLIT>
     <JAVASCRIPT>
       <EXERCISE>
+        <BILINGUAL>
+        <EN>
         Explain how the
         <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>tail recursion</SUBINDEX></INDEX>
         <INDEX>tail recursion<SUBINDEX>explicit-control evaluator and</SUBINDEX></INDEX>
 	stack builds up if <JAVASCRIPTINLINE>return</JAVASCRIPTINLINE> is
         removed from <JAVASCRIPTINLINE>count</JAVASCRIPTINLINE>:
+        </EN>
+        <JA>
+        <JAVASCRIPTINLINE>count</JAVASCRIPTINLINE> から <JAVASCRIPTINLINE>return</JAVASCRIPTINLINE> を除去した場合に、
+        <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>tail recursion</SUBINDEX></INDEX>
+        <INDEX>tail recursion<SUBINDEX>explicit-control evaluator and</SUBINDEX></INDEX>
+	スタックがどのように蓄積されるか説明してください。
+        </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="no" POSTPADDING="no">
           <JAVASCRIPT>
 function count(n) {
@@ -904,6 +1263,8 @@ function count(n) {
 
       <EXERCISE>
         <LABEL NAME="ex:push_marker_to_stack1"/>
+        <BILINGUAL>
+        <EN>
         Implement the equivalent of <JAVASCRIPTINLINE>push_marker_to_stack</JAVASCRIPTINLINE> by
         using <JAVASCRIPTINLINE>save</JAVASCRIPTINLINE> at
         <JAVASCRIPTINLINE>compound_apply</JAVASCRIPTINLINE> to store a special marker
@@ -922,12 +1283,21 @@ function count(n) {
         example with <JAVASCRIPTINLINE>const marker = list("marker")</JAVASCRIPTINLINE>.
         Because <JAVASCRIPTINLINE>list</JAVASCRIPTINLINE> creates a new pair, it cannot be
         <JAVASCRIPTINLINE>===</JAVASCRIPTINLINE> to anything else on the stack.
+        </EN>
+        <JA>
+        <JAVASCRIPTINLINE>compound_apply</JAVASCRIPTINLINE> で <JAVASCRIPTINLINE>save</JAVASCRIPTINLINE> を使って特別なマーカー値をスタックに格納することにより、<JAVASCRIPTINLINE>push_marker_to_stack</JAVASCRIPTINLINE> と同等のものを実装してください。<JAVASCRIPTINLINE>ev_return</JAVASCRIPTINLINE> と <JAVASCRIPTINLINE>return_undefined</JAVASCRIPTINLINE> で <JAVASCRIPTINLINE>revert_@stack_@to_@marker</JAVASCRIPTINLINE> と同等のものを、マーカーに到達するまで <JAVASCRIPTINLINE>restore</JAVASCRIPTINLINE> を繰り返し実行するループとして実装してください。これには、保存元とは異なるレジスタに値を復元する必要があることに注意してください。（私たちの評価器ではそれを避けるように注意していますが、スタックの実装は実際にはそれを許可しています。練習問題 <REF NAME="ex:stack-behavior"/> を参照。）これが必要なのは、スタックからポップする唯一の方法がレジスタへの復元だからです。
+
+        ヒント：マーカーとして機能する一意の定数を作成する必要があります。例えば <JAVASCRIPTINLINE>const marker = list("marker")</JAVASCRIPTINLINE> のようにします。<JAVASCRIPTINLINE>list</JAVASCRIPTINLINE> は新しいペアを作成するため、スタック上の他のどのものとも <JAVASCRIPTINLINE>===</JAVASCRIPTINLINE> にはなり得ません。
+        </JA>
+        </BILINGUAL>
       </EXERCISE>
 
 
       <EXERCISE>
         <!-- FIXME:     \index{explicit-control evaluator for JavaScript!syntactic forms (additional)|xx{\theExercise}}% -->
         <LABEL NAME="ex:push_marker_to_stack2"/>
+        <BILINGUAL>
+        <EN>
         Implement
 	<INDEX>register-machine language<SUBINDEX><USE>push_marker_to_stack</USE></SUBINDEX></INDEX>
 	<INDEX><USE>push_marker_to_stack</USE> (in register machine)</INDEX>
@@ -947,6 +1317,17 @@ function count(n) {
         before each <JAVASCRIPTINLINE>push_marker_to_stack</JAVASCRIPTINLINE>.
         If you choose to put a marker on the stack, see the hint in
         exercise<SPACE/><REF NAME="ex:push_marker_to_stack1"/>.
+        </EN>
+        <JA>
+        <REF NAME="sec:ex-proc"/>節の <JAVASCRIPTINLINE>save</JAVASCRIPTINLINE> と <JAVASCRIPTINLINE>restore</JAVASCRIPTINLINE> の実装に倣って、
+	<INDEX>register-machine language<SUBINDEX><USE>push_marker_to_stack</USE></SUBINDEX></INDEX>
+	<INDEX><USE>push_marker_to_stack</USE> (in register machine)</INDEX>
+	<JAVASCRIPTINLINE>push_marker_to_stack</JAVASCRIPTINLINE> と
+	<INDEX>register-machine language<SUBINDEX><USE>revert_stack_to_marker</USE></SUBINDEX></INDEX>
+	<INDEX><USE>revert_stack_to_marker</USE> (in register machine)</INDEX>
+        <JAVASCRIPTINLINE>revert_stack_to_marker</JAVASCRIPTINLINE> をレジスタマシン命令として実装してください。<REF NAME="sec:machine-model"/>節の <JAVASCRIPTINLINE>push</JAVASCRIPTINLINE> と <JAVASCRIPTINLINE>pop</JAVASCRIPTINLINE> の実装に倣って、スタックにアクセスするための関数 <JAVASCRIPTINLINE>push_marker</JAVASCRIPTINLINE> と <JAVASCRIPTINLINE>pop_marker</JAVASCRIPTINLINE> を追加してください。実際にマーカーをスタックに挿入する必要はないことに注意してください。代わりに、スタックモデルにローカルな状態変数を追加して、各 <JAVASCRIPTINLINE>push_marker_to_stack</JAVASCRIPTINLINE> の前の最後の <JAVASCRIPTINLINE>save</JAVASCRIPTINLINE> の位置を追跡できます。マーカーをスタックに置くことを選択する場合は、練習問題<SPACE/><REF NAME="ex:push_marker_to_stack1"/>のヒントを参照してください。
+        </JA>
+        </BILINGUAL>
       </EXERCISE>
 
       <INDEX>tail recursion<SUBINDEX>explicit-control evaluator and<CLOSE/></SUBINDEX></INDEX>

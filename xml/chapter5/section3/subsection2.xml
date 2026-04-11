@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Maintaining the Illusion of Infinite Memory
+    <BILINGUAL>
+      <EN>Maintaining the Illusion of Infinite Memory</EN>
+      <JA>無限メモリの幻想を維持する</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:gc"/>
@@ -8,11 +11,17 @@
   <INDEX>garbage collection<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The representation method outlined in
     section<SPACE/><REF NAME="sec:memory-as-vectors"/> solves the problem of
     implementing list structure, provided that we have an infinite amount of
     memory. With a real computer we will eventually run out of free space in
-    which to construct new pairs.<FOOTNOTE>This may not be true eventually,
+    which to construct new pairs.</EN>
+      <JA>
+    <REF NAME="sec:memory-as-vectors"/>節で概説した表現方法は、無限のメモリがあるという前提のもとでリスト構造の実装問題を解決します。しかし実際のコンピュータでは、新しいペアを構築するためのフリーな領域がいずれ尽きてしまいます。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>This may not be true eventually,
     because memories may get large enough so that it would be impossible
     to run out of free memory in the lifetime of the computer.  For
     example, there are about
@@ -51,10 +60,10 @@
     cells of memory to build a machine
     that could operate for 30 years without running out of memory.  That much
     memory seems absurdly large by today<APOS/>s standards, but it is not
-    physically impossible.  On the other hand, processors are getting faster and 
+    physically impossible.  On the other hand, processors are getting faster and
     <SPLITINLINE>
       <SCHEME>
-        a future computer may have 
+        a future computer may have
       </SCHEME>
       <JAVASCRIPT>
         modern computers have increasingly
@@ -62,11 +71,58 @@
     </SPLITINLINE>
     large numbers of processors operating in
     parallel on a single memory, so it may be possible to use up memory much
-    faster than we have postulated.</FOOTNOTE> However, most of the pairs
+    faster than we have postulated.</EN>
+    <JA>これは最終的には当てはまらないかもしれません。メモリが十分に大きくなり、コンピュータの寿命の間にフリーメモリを使い果たすことが不可能になるかもしれないからです。例えば、1年間にはおよそ
+    <SPLITINLINE>
+      <SCHEME>
+        <LATEXINLINE>$3\times 10^{13}$マイクロ秒</LATEXINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+        <LATEXINLINE>$3\times 10^{16}$ナノ秒</LATEXINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    ありますから、
+    <SPLITINLINE>
+      <SCHEME>
+      <SCHEMEINLINE>cons</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を
+    <SPLITINLINE>
+      <SCHEME>
+        <LATEXINLINE>1マイクロ秒</LATEXINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+        <LATEXINLINE>1ナノ秒</LATEXINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に1回実行するとすると、メモリ不足にならずに30年間動作するマシンを構築するには約
+    <SPLITINLINE>
+      <SCHEME>
+        <LATEXINLINE>$10^{15}$</LATEXINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+        <LATEXINLINE>$10^{18}$</LATEXINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    セルのメモリが必要になります。今日の基準ではそれほどのメモリは途方もなく大きく見えますが、物理的に不可能ではありません。一方、プロセッサはますます高速化しており、
+    <SPLITINLINE>
+      <SCHEME>
+        将来のコンピュータは
+      </SCHEME>
+      <JAVASCRIPT>
+        現代のコンピュータはますます多くの
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    プロセッサが単一のメモリ上で並列に動作するようになっているため、ここで想定したよりもはるかに速くメモリを消費する可能性もあります。</JA>
+    </BILINGUAL></FOOTNOTE><BILINGUAL>
+      <EN> However, most of the pairs
     generated in a typical computation are used only to hold intermediate
     results.  After these
     results are accessed, the pairs are no longer needed<EMDASH/>they are <EM>
-    garbage</EM>.  For instance, the computation
+    garbage</EM>.  For instance, the computation</EN>
+      <JA> しかし、一般的な計算で生成されるペアの大部分は、中間結果を保持するためだけに使われます。これらの結果にアクセスした後はペアはもう不要になります。つまり、それらは<EM>ゴミ（ガベージ）</EM>です。例えば、次の計算</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (accumulate + 0 (filter odd? (enumerate-interval 0 n)))
@@ -77,22 +133,27 @@ accumulate((x, y) => x + y,
            filter(is_odd, enumerate_interval(0, n)))
       </JAVASCRIPT>
     </SNIPPET>
-    constructs two lists: the enumeration and the result of filtering
+    <BILINGUAL>
+      <EN>constructs two lists: the enumeration and the result of filtering
     the enumeration.  When the accumulation is complete, these lists are
     no longer needed, and the allocated memory can be reclaimed.  If we
     can arrange to collect all the garbage periodically, and if this turns
     out to recycle memory at about the same rate at which we construct new
     pairs, we will have preserved the illusion that there is an infinite
-    amount of memory.
+    amount of memory.</EN>
+      <JA>は、列挙のリストとフィルタリング結果のリストの2つを構築します。累積が完了すると、これらのリストはもう不要になり、割り当てたメモリを回収できます。すべてのゴミ（ガベージ）を定期的に回収するようにし、新しいペアを構築するのとほぼ同じ速度でメモリを再利用できれば、無限のメモリがあるという幻想を維持できます。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     In order to recycle pairs, we must have a way to determine which
     allocated pairs are not needed (in the sense that their contents can
     no longer influence the future of the computation).  The method we
     shall examine for accomplishing this is known as <EM>garbage
     collection</EM>.  Garbage collection is based on the observation that, at
-    any moment in 
+    any moment in
     <SPLITINLINE>
       <SCHEME>a Lisp interpretation,</SCHEME>
       <JAVASCRIPT>an interpretation based on list-structured memory,</JAVASCRIPT>
@@ -110,19 +171,45 @@ accumulate((x, y) => x + y,
       <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     operations starting from the pointers that are currently in the machine
-    registers.<FOOTNOTE>We assume here that the stack is represented as a list
+    registers.</EN>
+      <JA>
+    ペアを再利用するためには、割り当てられたペアのうちどれが不要であるか（その内容が計算の将来にもはや影響を与えられないという意味で）を判定する方法が必要です。これを達成するために検討する方法は、<EM>ガベージコレクション</EM>として知られています。ガベージコレクションは、
+    <SPLITINLINE>
+      <SCHEME>Lispのインタプリタ</SCHEME>
+      <JAVASCRIPT>リスト構造ベースのメモリを使ったインタプリタ</JAVASCRIPT>
+    </SPLITINLINE>
+    において、どの時点でも計算の将来に影響を与えうるオブジェクトは、現在マシンレジスタにあるポインタから
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    操作を連続的に適用して到達できるものだけである、という観察に基づいています。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>We assume here that the stack is represented as a list
     as described in section<SPACE/><REF NAME="sec:memory-as-vectors"/>, so that
     items on the stack are accessible via the pointer in the stack
-    register.</FOOTNOTE>  Any memory cell that is not so accessible may be
-    recycled.
+    register.</EN>
+    <JA>ここでは、<REF NAME="sec:memory-as-vectors"/>節で説明したように、スタックがリストとして表現されていると仮定しています。そのため、スタック上の要素はスタックレジスタ内のポインタを通じてアクセスできます。</JA>
+    </BILINGUAL></FOOTNOTE><BILINGUAL>
+      <EN>  Any memory cell that is not so accessible may be
+    recycled.</EN>
+      <JA>  このようにアクセスできないメモリセルは、再利用できます。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <SHORT_PAGE lines="1"/>
   <TEXT>
-    There are many ways to perform garbage collection.  The method we
-    shall examine here is called 
     <INDEX>stop-and-copy garbage collector<OPEN/></INDEX>
     <INDEX>garbage collector<SUBINDEX>stop-and-copy<OPEN/></SUBINDEX></INDEX>
+    <BILINGUAL>
+      <EN>
+    There are many ways to perform garbage collection.  The method we
+    shall examine here is called
     <EM>stop-and-copy</EM>.  The basic idea is to divide memory into two
     halves: <QUOTE>working memory</QUOTE> and <QUOTE>free memory.</QUOTE>  When
     <SPLITINLINE>
@@ -150,10 +237,29 @@ accumulate((x, y) => x + y,
     continue processing; new pairs will be allocated in the new working
     memory (which was the old free memory).  When this is full, we can
     copy the useful pairs into the new free memory (which was the old
-    working memory).<FOOTNOTE>This idea was invented and first implemented
+    working memory).</EN>
+      <JA>
+    ガベージコレクションを実行する方法は多数あります。ここで検討する方法は<EM>ストップアンドコピー</EM>と呼ばれます。基本的な考え方は、メモリを2つの半分に分けることです。<QUOTE>ワーキングメモリ</QUOTE>と<QUOTE>フリーメモリ</QUOTE>です。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    がペアを構築するとき、ワーキングメモリに割り当てます。ワーキングメモリがいっぱいになると、ワーキングメモリ内の有用なペアをすべて見つけ出し、フリーメモリの連続した位置にコピーすることでガベージコレクションを実行します。（有用なペアは、マシンレジスタから始めてすべての
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    ポインタをたどって見つけます。）ゴミ（ガベージ）はコピーしないので、新しいペアの割り当てに使えるフリーメモリが追加で確保されるはずです。さらに、ワーキングメモリ内の有用なペアはすべてコピー済みなので、ワーキングメモリ内には必要なものが何もありません。したがって、ワーキングメモリとフリーメモリの役割を入れ替えれば、処理を続行できます。新しいペアは新しいワーキングメモリ（旧フリーメモリ）に割り当てられます。これがいっぱいになったら、有用なペアを新しいフリーメモリ（旧ワーキングメモリ）にコピーできます。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>This idea was invented and first implemented
     by
     <INDEX>Minsky, Marvin Lee</INDEX>
-    Minsky, as part of the implementation of 
+    Minsky, as part of the implementation of
     <INDEX>Lisp<SUBINDEX><ORDER>DEC</ORDER>on DEC PDP-1</SUBINDEX></INDEX>
     Lisp for the PDP-1 at the
     <INDEX>MIT<SUBINDEX>Research Laboratory of Electronics</SUBINDEX></INDEX>
@@ -162,11 +268,11 @@ accumulate((x, y) => x + y,
     <INDEX>Yochelson, Jerome C.</INDEX>
     Fenichel and Yochelson (1969) for use in the Lisp implementation for the
     <INDEX>Multics time-sharing system</INDEX>
-    Multics time-sharing system.  Later, 
+    Multics time-sharing system.  Later,
     <INDEX>Baker, Henry G., Jr.</INDEX>
     Baker (1978) developed a <QUOTE>real-time</QUOTE> version of the method,
     which does not require the computation to stop during garbage collection.
-    Baker<APOS/>s idea was extended by 
+    Baker<APOS/>s idea was extended by
     <INDEX>Hewitt, Carl Eddie</INDEX>
     Hewitt,
     <INDEX>Lieberman, Henry</INDEX>
@@ -174,16 +280,16 @@ accumulate((x, y) => x + y,
     <INDEX>Moon, David A.</INDEX>
     Moon (see Lieberman and Hewitt 1983) to take
     advantage of the fact that some structure is more volatile
-    and other structure is more permanent.  
+    and other structure is more permanent.
     <P/>
-    An alternative commonly used garbage-collection technique is the 
+    An alternative commonly used garbage-collection technique is the
     <INDEX>mark-sweep garbage collector</INDEX>
     <INDEX>garbage collector<SUBINDEX>mark-sweep</SUBINDEX></INDEX>
     <EM>mark-sweep</EM> method. This consists of tracing all the structure
     accessible from the machine registers and marking each pair we reach.
     We then scan all of memory, and any location that is unmarked is
     <QUOTE>swept up</QUOTE> as garbage and made available for reuse.  A full
-    discussion of the mark-sweep method can be found in 
+    discussion of the mark-sweep method can be found in
     <INDEX>Allen, John</INDEX>
     <CITATION>Allen 1978</CITATION>.
     <P/>
@@ -191,7 +297,7 @@ accumulate((x, y) => x + y,
     use for large-memory systems because it examines only the useful part
     of memory.  This is in contrast to mark-sweep, in which the sweep
     phase must check all of memory.  A second advantage of stop-and-copy
-    is that it is a 
+    is that it is a
     <INDEX>compacting garbage collector</INDEX>
     <INDEX>garbage collector<SUBINDEX>compacting</SUBINDEX></INDEX>
     <EM>compacting</EM> garbage collector.  That is, at the
@@ -200,23 +306,69 @@ accumulate((x, y) => x + y,
     compressed out.  This can be an extremely important performance
     consideration in machines with virtual memory, in which accesses to
     widely separated memory addresses may require extra paging
-    operations.</FOOTNOTE>
+    operations.</EN>
+    <JA>このアイデアは
+    <INDEX>Minsky, Marvin Lee</INDEX>
+    Minskyが発明し最初に実装しました。
+    <INDEX>MIT<SUBINDEX>Research Laboratory of Electronics</SUBINDEX></INDEX>
+    MIT Research Laboratory of Electronicsにおける
+    <INDEX>Lisp<SUBINDEX><ORDER>DEC</ORDER>on DEC PDP-1</SUBINDEX></INDEX>
+    PDP-1用Lisp実装の一部としてです。その後、
+    <INDEX>Fenichel, Robert</INDEX>
+    <INDEX>Yochelson, Jerome C.</INDEX>
+    FenichelとYochelson（1969）が
+    <INDEX>Multics time-sharing system</INDEX>
+    Multicsタイムシェアリングシステム用のLisp実装のために発展させました。後に、
+    <INDEX>Baker, Henry G., Jr.</INDEX>
+    Baker（1978）がガベージコレクション中に計算を停止する必要のない<QUOTE>リアルタイム</QUOTE>版を開発しました。Bakerのアイデアは
+    <INDEX>Hewitt, Carl Eddie</INDEX>
+    Hewitt、
+    <INDEX>Lieberman, Henry</INDEX>
+    Lieberman、
+    <INDEX>Moon, David A.</INDEX>
+    Moon（Lieberman and Hewitt 1983を参照）によって拡張され、一部の構造はより揮発的で他の構造はより永続的であるという事実を利用するようになりました。
+    <P/>
+    代替としてよく使われるガベージコレクション技法に、
+    <INDEX>mark-sweep garbage collector</INDEX>
+    <INDEX>garbage collector<SUBINDEX>mark-sweep</SUBINDEX></INDEX>
+    <EM>マークアンドスイープ</EM>法があります。これは、マシンレジスタからアクセス可能なすべての構造をたどり、到達した各ペアにマークを付けるものです。次にメモリ全体をスキャンし、マークされていない位置はゴミ（ガベージ）として<QUOTE>掃き集め</QUOTE>、再利用可能にします。マークアンドスイープ法の詳細な議論は
+    <INDEX>Allen, John</INDEX>
+    <CITATION>Allen 1978</CITATION>に見られます。
+    <P/>
+    Minsky-Fenichel-Yochelsonアルゴリズムが大容量メモリシステムで主流のアルゴリズムなのは、メモリの有用な部分だけを調べるからです。これはマークアンドスイープとは対照的で、マークアンドスイープではスイープフェーズがメモリ全体をチェックしなければなりません。ストップアンドコピーの第二の利点は、
+    <INDEX>compacting garbage collector</INDEX>
+    <INDEX>garbage collector<SUBINDEX>compacting</SUBINDEX></INDEX>
+    <EM>コンパクティング</EM>ガベージコレクタであることです。つまり、ガベージコレクションフェーズの終了時に、有用なデータは連続したメモリ位置に移動され、すべてのゴミ（ガベージ）のペアは圧縮除去されます。これは仮想メモリを持つマシンにおいて非常に重要なパフォーマンス上の考慮事項になりえます。大きく離れたメモリアドレスへのアクセスには追加のページング操作が必要になる可能性があるためです。</JA>
+    </BILINGUAL></FOOTNOTE>
   </TEXT>
 
-  <SUBHEADING> 
-    <NAME>Implementation of a stop-and-copy garbage collector</NAME>
+  <SUBHEADING>
+    <NAME>
+      <BILINGUAL>
+        <EN>Implementation of a stop-and-copy garbage collector</EN>
+        <JA>ストップアンドコピーガベージコレクタの実装</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     We now use our register-machine language to describe the stop-and-copy
     algorithm in more detail.  We will assume that there is a register
-    called 
+    called
     <INDEX><USE>root</USE> register</INDEX>
     <SCHEMEINLINE>root</SCHEMEINLINE> that contains a pointer to a structure
     that eventually points at all accessible data.  This can be arranged by
     storing the contents of all the machine registers in a preallocated list
     pointed at by <SCHEMEINLINE>root</SCHEMEINLINE> just before starting
-    garbage collection.<FOOTNOTE>This list of
+    garbage collection.</EN>
+      <JA>
+    ここからレジスタマシン言語を使って、ストップアンドコピーアルゴリズムをより詳細に記述します。
+    <INDEX><USE>root</USE> register</INDEX>
+    <SCHEMEINLINE>root</SCHEMEINLINE>というレジスタがあり、最終的にアクセス可能なすべてのデータを指す構造へのポインタを保持していると仮定します。これは、ガベージコレクション開始直前にすべてのマシンレジスタの内容を<SCHEMEINLINE>root</SCHEMEINLINE>が指す事前割り当てリストに格納することで実現できます。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>This list of
     registers does not
     include
     the registers used by the storage-allocation
@@ -236,10 +388,31 @@ accumulate((x, y) => x + y,
       <SCHEME><SCHEMEINLINE>the-cdrs</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>the_tails</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
-    and the other registers that will be introduced in this section.</FOOTNOTE>
+    and the other registers that will be introduced in this section.</EN>
+    <JA>このレジスタリストには、記憶域割り当て
+    <SPLITINLINE>
+      <SCHEME>
+	システムが使用するレジスタ<EMDASH/><SCHEMEINLINE>root</SCHEMEINLINE>、
+      </SCHEME>
+      <JAVASCRIPT>
+	システムが使用するレジスタ（<SCHEMEINLINE>root</SCHEMEINLINE>、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>the-cars</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>the_heads</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>the-cdrs</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>the_tails</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    およびこの節で導入される他のレジスタ）は含まれません。</JA>
+    </BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+      <EN>
     We also assume that, in addition to the current working memory, there is
     free memory available into which we can copy the useful data.  The current
-    working memory consists of vectors whose base addresses are in 
+    working memory consists of vectors whose base addresses are in
     registers called
     <INDEX><USE>the_heads</USE><SUBINDEX>register</SUBINDEX></INDEX>
     <SPLITINLINE>
@@ -252,7 +425,7 @@ accumulate((x, y) => x + y,
       <SCHEME><SCHEMEINLINE>the-cdrs</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>the_tails</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
-    and the free memory is in registers called 
+    and the free memory is in registers called
     <INDEX><USE>new_heads</USE> register</INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>new-cars</SCHEMEINLINE></SCHEME>
@@ -263,11 +436,40 @@ accumulate((x, y) => x + y,
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>new-cdrs</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>new_tails</JAVASCRIPTINLINE>.</JAVASCRIPT>
+    </SPLITINLINE></EN>
+      <JA>
+    また、現在のワーキングメモリに加えて、有用なデータをコピーできるフリーメモリがあると仮定します。現在のワーキングメモリは、
+    <INDEX><USE>the_heads</USE><SUBINDEX>register</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>the-cars</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>the_heads</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
+    と
+    <INDEX><USE>the_tails</USE><SUBINDEX>register</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>the-cdrs</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>the_tails</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    というレジスタにベースアドレスが格納されているベクトルで構成されます。フリーメモリは
+    <INDEX><USE>new_heads</USE> register</INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>new-cars</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>new_heads</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <INDEX><USE>new_tails</USE> register</INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>new-cdrs</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>new_tails</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    というレジスタに格納されています。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <SHORT_PAGE lines="3"/>
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Garbage collection is triggered when we exhaust the free cells in the
     current working memory, that is, when a
     <SPLITINLINE>
@@ -291,12 +493,28 @@ accumulate((x, y) => x + y,
       <JAVASCRIPT>Figure<SPACE/><REF NAME="fig:memory-reconfig"/></JAVASCRIPT>
     </SPLITINLINE>
     shows the arrangement of memory just before and just after garbage
-    collection.
+    collection.</EN>
+      <JA>
+    ガベージコレクションは、現在のワーキングメモリのフリーセルを使い果たしたとき、つまり
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    操作がメモリベクトルの末尾を超えて<SCHEMEINLINE>free</SCHEMEINLINE>ポインタをインクリメントしようとしたときに発動されます。ガベージコレクションプロセスが完了すると、<SCHEMEINLINE>root</SCHEMEINLINE>ポインタは新しいメモリ内を指し、<SCHEMEINLINE>root</SCHEMEINLINE>からアクセス可能なすべてのオブジェクトは新しいメモリに移動済みとなり、<SCHEMEINLINE>free</SCHEMEINLINE>ポインタは新しいメモリ内で新しいペアを割り当てられる次の場所を示します。加えて、ワーキングメモリと新しいメモリの役割が入れ替わります。<EMDASH/>新しいペアは<SCHEMEINLINE>free</SCHEMEINLINE>が示す場所から新しいメモリ内に構築され、（以前の）ワーキングメモリは次のガベージコレクション用の新しいメモリとして利用可能になります。
+    <SPLITINLINE>
+      <SCHEME>図<SPACE/><REF NAME="fig:memory-reconfig_scheme"/></SCHEME>
+      <JAVASCRIPT>図<SPACE/><REF NAME="fig:memory-reconfig"/></JAVASCRIPT>
+    </SPLITINLINE>
+    は、ガベージコレクションの直前と直後のメモリの配置を示しています。</JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
 	<FIGURE web_scale="0.9" src="img_original/Fig5.15c.std.svg">
           <CAPTION>
-	    Reconfiguration of memory by the garbage-collection process.
+            <BILINGUAL>
+              <EN>Reconfiguration of memory by the garbage-collection process.</EN>
+              <JA>ガベージコレクションプロセスによるメモリの再構成。</JA>
+            </BILINGUAL>
 	  </CAPTION>
           <LABEL NAME="fig:memory-reconfig_scheme"/>
 	</FIGURE>
@@ -305,7 +523,10 @@ accumulate((x, y) => x + y,
 	<FIGURE>
 	  <FIGURE web_scale="0.9" src="img_javascript/Fig5.15c.std.svg"/>
           <CAPTION>
-	    Reconfiguration of memory by the garbage-collection process.
+            <BILINGUAL>
+              <EN>Reconfiguration of memory by the garbage-collection process.</EN>
+              <JA>ガベージコレクションプロセスによるメモリの再構成。</JA>
+            </BILINGUAL>
 	  </CAPTION>
           <LABEL NAME="fig:memory-reconfig"/>
 	</FIGURE>
@@ -314,6 +535,8 @@ accumulate((x, y) => x + y,
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The state of the garbage-collection process is controlled by
     maintaining two pointers:
     <INDEX><USE>free</USE> register</INDEX>
@@ -332,29 +555,64 @@ accumulate((x, y) => x + y,
       <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     position, we place a special tag that signals that this is an already-moved
-    object.  (Such an object is traditionally called a 
+    object.  (Such an object is traditionally called a
     <INDEX>broken heart</INDEX>
-    <EM>broken heart</EM>.)<FOOTNOTE>The term 
+    <EM>broken heart</EM>.)</EN>
+      <JA>
+    ガベージコレクションプロセスの状態は、2つのポインタ、
+    <INDEX><USE>free</USE> register</INDEX>
+    <SCHEMEINLINE>free</SCHEMEINLINE>と
+    <INDEX><USE>scan</USE> register</INDEX>
+    <SCHEMEINLINE>scan</SCHEMEINLINE>を維持することで制御されます。これらは新しいメモリの先頭を指すように初期化されます。アルゴリズムは、<SCHEMEINLINE>root</SCHEMEINLINE>が指すペアを新しいメモリの先頭に再配置することから始まります。ペアがコピーされ、<SCHEMEINLINE>root</SCHEMEINLINE>ポインタが新しい位置を指すように調整され、<SCHEMEINLINE>free</SCHEMEINLINE>ポインタがインクリメントされます。さらに、ペアの旧位置には内容が移動済みであることを示すマークが付けられます。このマーキングは次のように行います。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    位置に、すでに移動済みのオブジェクトであることを示す特別なタグを配置します。（このようなオブジェクトは伝統的に
+    <INDEX>broken heart</INDEX>
+    <EM>ブロークンハート</EM>と呼ばれます。）</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>The term
     <EM>broken heart</EM> was coined by
     <INDEX>Cressey, David</INDEX>
     David Cressey, who wrote a garbage collector
-    for 
+    for
     <INDEX>MDL</INDEX>
     <INDEX>Lisp<SUBINDEX>MDL dialect of</SUBINDEX></INDEX>
-    MDL, a dialect of Lisp developed at MIT during the early 1970s.</FOOTNOTE>
+    MDL, a dialect of Lisp developed at MIT during the early 1970s.</EN>
+    <JA><EM>ブロークンハート</EM>という用語は、
+    <INDEX>Cressey, David</INDEX>
+    David Cresseyが作りました。彼は1970年代初頭にMITで開発されたLispの方言である
+    <INDEX>MDL</INDEX>
+    <INDEX>Lisp<SUBINDEX>MDL dialect of</SUBINDEX></INDEX>
+    MDL用のガベージコレクタを書きました。</JA>
+    </BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+      <EN>
     In the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    position we place a 
+    position we place a
     <INDEX>forwarding address</INDEX>
     <EM>forwarding address</EM> that points at the location to which the object
-    has been moved.
+    has been moved.</EN>
+      <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    位置には、オブジェクトの移動先を指す
+    <INDEX>forwarding address</INDEX>
+    <EM>フォワーディングアドレス</EM>を配置します。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <DO_BREAK_PAGE/>
   <TEXT>
+    <BILINGUAL>
+      <EN>
     After relocating the root, the garbage collector enters its basic
     cycle.  At each step in the algorithm, the
     <SCHEMEINLINE>scan</SCHEMEINLINE> pointer
@@ -404,10 +662,45 @@ accumulate((x, y) => x + y,
     being scanned. Eventually, all accessible objects will have been moved and
     scanned, at which point the <SCHEMEINLINE>scan</SCHEMEINLINE> pointer will
     overtake the <SCHEMEINLINE>free</SCHEMEINLINE> pointer and the process will
-    terminate.
+    terminate.</EN>
+      <JA>
+    ルートを再配置した後、ガベージコレクタは基本サイクルに入ります。アルゴリズムの各ステップで、<SCHEMEINLINE>scan</SCHEMEINLINE>ポインタ（最初は再配置されたルートを指しています）は、新しいメモリに移動済みだがその
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    ポインタがまだ旧メモリ内のオブジェクトを参照しているペアを指しています。これらのオブジェクトはそれぞれ再配置され、<SCHEMEINLINE>scan</SCHEMEINLINE>ポインタがインクリメントされます。オブジェクトを再配置するには（例えば、スキャン中のペアの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    ポインタが示すオブジェクト）、まずそのオブジェクトがすでに移動済みかどうかを確認します（オブジェクトの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    位置にブロークンハートタグがあるかどうかで判断します）。オブジェクトがまだ移動されていなければ、<SCHEMEINLINE>free</SCHEMEINLINE>が示す場所にコピーし、<SCHEMEINLINE>free</SCHEMEINLINE>を更新し、オブジェクトの旧位置にブロークンハートを設定し、オブジェクトへのポインタ（この例ではスキャン中のペアの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    ポインタ）を新しい位置を指すように更新します。オブジェクトがすでに移動済みの場合は、そのフォワーディングアドレス（ブロークンハートの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    位置にあります）がスキャン中のペア内のポインタに代入されます。最終的に、アクセス可能なすべてのオブジェクトが移動およびスキャンされ、その時点で<SCHEMEINLINE>scan</SCHEMEINLINE>ポインタが<SCHEMEINLINE>free</SCHEMEINLINE>ポインタに追いつき、プロセスが終了します。</JA>
+    </BILINGUAL>
   </TEXT>
   
   <TEXT>
+    <BILINGUAL>
+      <EN>
     We can specify the stop-and-copy algorithm as a sequence of instructions for
     a register machine.  The basic step of relocating an object is accomplished
     by a subroutine called
@@ -418,11 +711,11 @@ accumulate((x, y) => x + y,
       </JAVASCRIPT>
     </SPLITINLINE>
     This subroutine gets its argument, a pointer to the object to be relocated,
-    from a register named 
+    from a register named
     <INDEX><USE>old</USE> register</INDEX>
     <SCHEMEINLINE>old</SCHEMEINLINE>.  It relocates the designated object
     (incrementing <SCHEMEINLINE>free</SCHEMEINLINE> in the process),
-    puts a pointer to the relocated object into a register called 
+    puts a pointer to the relocated object into a register called
     <INDEX><USE>new</USE> register</INDEX>
     <SCHEMEINLINE>new</SCHEMEINLINE>, and returns by branching to the entry
     point stored in the register
@@ -437,7 +730,27 @@ accumulate((x, y) => x + y,
     When the relocation of <SCHEMEINLINE>root</SCHEMEINLINE> has been
     accomplished, we install the new pointer as the new
     <SCHEMEINLINE>root</SCHEMEINLINE> and enter the main loop of the garbage
-    collector.
+    collector.</EN>
+      <JA>
+    ストップアンドコピーアルゴリズムは、レジスタマシンの命令列として指定できます。オブジェクトの再配置という基本ステップは、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>relocate-old-result-in-new</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>relocate_old_result_in_new</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    というサブルーチンによって実行されます。このサブルーチンは、再配置するオブジェクトへのポインタを引数として
+    <INDEX><USE>old</USE> register</INDEX>
+    <SCHEMEINLINE>old</SCHEMEINLINE>というレジスタから取得します。指定されたオブジェクトを再配置し（その過程で<SCHEMEINLINE>free</SCHEMEINLINE>をインクリメントし）、再配置されたオブジェクトへのポインタを
+    <INDEX><USE>new</USE> register</INDEX>
+    <SCHEMEINLINE>new</SCHEMEINLINE>というレジスタに格納し、レジスタ
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>relocate-continue</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>relocate_continue</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に格納されたエントリポイントに分岐して戻ります。ガベージコレクションを開始するには、<SCHEMEINLINE>free</SCHEMEINLINE>と<SCHEMEINLINE>scan</SCHEMEINLINE>を初期化した後、このサブルーチンを呼び出して<SCHEMEINLINE>root</SCHEMEINLINE>ポインタを再配置します。<SCHEMEINLINE>root</SCHEMEINLINE>の再配置が完了したら、新しいポインタを新しい<SCHEMEINLINE>root</SCHEMEINLINE>として設定し、ガベージコレクタのメインループに入ります。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <NAME>begin_garbage_collection</NAME>
       <SCHEME>
@@ -467,6 +780,8 @@ reassign-root
 
   <SHORT_PAGE lines="3"/>
   <TEXT>
+    <BILINGUAL>
+      <EN>
     In the main loop of the garbage collector we must determine whether
     there are any more objects to be scanned.  We do this by testing
     whether the <SCHEMEINLINE>scan</SCHEMEINLINE> pointer is coincident with
@@ -499,7 +814,36 @@ reassign-root
       <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    pointer.
+    pointer.</EN>
+      <JA>
+    ガベージコレクタのメインループでは、スキャンすべきオブジェクトがまだあるかどうかを判定しなければなりません。これは<SCHEMEINLINE>scan</SCHEMEINLINE>ポインタが<SCHEMEINLINE>free</SCHEMEINLINE>ポインタと一致するかどうかをテストして行います。ポインタが等しければ、アクセス可能なすべてのオブジェクトが再配置済みなので、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>gc-flip</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>gc_flip</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    に分岐して後始末を行い、中断された計算を続行できるようにします。まだスキャンすべきペアがある場合は、再配置サブルーチンを呼び出して次のペアの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を再配置します（
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    ポインタを<SCHEMEINLINE>old</SCHEMEINLINE>に配置することで）。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>relocate-continue</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>relocate_continue</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    レジスタは、サブルーチンが
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    ポインタの更新に戻るように設定されます。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <NAME>gc_loop</NAME>
       <SCHEME>
@@ -522,6 +866,8 @@ gc-loop
   </TEXT>
   
   <TEXT>
+    <BILINGUAL>
+      <EN>
     At
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>update-car</SCHEMEINLINE>,</SCHEME>
@@ -548,7 +894,34 @@ gc-loop
       <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE>,</JAVASCRIPT>
     </SPLITINLINE>
-    we are finished scanning that pair, so we continue with the main loop.
+    we are finished scanning that pair, so we continue with the main loop.</EN>
+      <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>update-car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>update_head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    では、スキャン中のペアの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    ポインタを更新し、次にペアの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の再配置に進みます。その再配置が完了すると
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>update-cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>update_tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    に戻ります。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の再配置と更新が終わると、そのペアのスキャンは完了なので、メインループに戻ります。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <NAME>update_head</NAME>
       <SCHEME>
@@ -584,6 +957,8 @@ update-cdr
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The subroutine
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>relocate-old-result-in-new</SCHEMEINLINE>
@@ -637,7 +1012,7 @@ update-cdr
       <JAVASCRIPTINLINE>relocate_old_result_in_new</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    uses a register 
+    uses a register
     <SPLITINLINE>
       <SCHEME>
 	<INDEX><USE>oldcr</USE> register</INDEX>
@@ -658,7 +1033,72 @@ update-cdr
       <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    of the object pointed at by <SCHEMEINLINE>old</SCHEMEINLINE>.<FOOTNOTE>The
+    of the object pointed at by <SCHEMEINLINE>old</SCHEMEINLINE>.</EN>
+      <JA>
+    サブルーチン
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>relocate-old-result-in-new</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>relocate_old_result_in_new</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、次のようにオブジェクトを再配置します。再配置するオブジェクト（<SCHEMEINLINE>old</SCHEMEINLINE>が指すもの）がペアでない場合は、同じポインタを変更せずに<SCHEMEINLINE>new</SCHEMEINLINE>に返します。（例えば、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が数値4であるペアをスキャンしているかもしれません。<REF NAME="sec:impl-list-ops"/>節で説明したように
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を<SCHEMEINLINE>n4</SCHEMEINLINE>で表現している場合、<QUOTE>再配置された</QUOTE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    ポインタは依然として<SCHEMEINLINE>n4</SCHEMEINLINE>であってほしいのです。）それ以外の場合は再配置を実行しなければなりません。再配置するペアの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    位置にブロークンハートタグが含まれている場合、そのペアは実際にはすでに移動済みなので、フォワーディングアドレスを（ブロークンハートの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    位置から）取得して<SCHEMEINLINE>new</SCHEMEINLINE>に返します。<SCHEMEINLINE>old</SCHEMEINLINE>のポインタがまだ移動されていないペアを指している場合は、そのペアを新しいメモリの最初のフリーセル（<SCHEMEINLINE>free</SCHEMEINLINE>が指す場所）に移動し、旧位置にブロークンハートタグとフォワーディングアドレスを格納してブロークンハートを設定します。
+    <SPLITINLINE>
+      <SCHEME>Relocate-old-result-in-new</SCHEME>
+      <JAVASCRIPT>サブルーチン
+      <JAVASCRIPTINLINE>relocate_old_result_in_new</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    はレジスタ
+    <SPLITINLINE>
+      <SCHEME>
+	<INDEX><USE>oldcr</USE> register</INDEX>
+	<SCHEMEINLINE>oldcr</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<INDEX><USE>oldht</USE> register</INDEX>
+	<JAVASCRIPTINLINE>oldht</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を使って、<SCHEMEINLINE>old</SCHEMEINLINE>が指すオブジェクトの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    または
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を保持します。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>The
     garbage collector uses the low-level predicate
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>pointer-to-pair?</SCHEMEINLINE></SCHEME>
@@ -704,7 +1144,50 @@ update-cdr
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>pair?</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>is_pair</JAVASCRIPTINLINE>.</JAVASCRIPT>
+    </SPLITINLINE></EN>
+    <JA>ガベージコレクタはリスト構造の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>pair?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_pair</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
+    操作ではなく、低レベルの述語
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>pointer-to-pair?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_pointer_to_pair</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を使います。これは、実際のシステムではガベージコレクションの目的でペアとして扱われるさまざまなものがありうるからです。例えば、
+    <SPLITINLINE>
+      <SCHEME>
+    IEEE標準に準拠するSchemeシステムでは
+      </SCHEME>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>
+	手続き
+      </SCHEME>
+      <JAVASCRIPT>
+	      関数
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    オブジェクトが、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>pair?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_pair</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    述語を満たさない特殊な種類の<QUOTE>ペア</QUOTE>として実装されることがあります。シミュレーション目的では、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>pointer-to-pair?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_pointer_to_pair</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>pair?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_pair</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    として実装できます。</JA>
+    </BILINGUAL>
   </FOOTNOTE>
 
     <SNIPPET EVAL="no" LATEX="yes">
@@ -778,6 +1261,8 @@ already-moved
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     At the very end of the garbage collection process, we interchange the
     role of old and new memories by interchanging pointers: interchanging
     <SPLITINLINE>
@@ -801,6 +1286,31 @@ already-moved
     </SPLITINLINE>
     We will then be ready to perform another garbage
     collection the next time memory runs out.
+    </EN>
+    <JA>
+    ガベージコレクション処理の最後に、ポインタを交換することで旧メモリと新メモリの役割を入れ替えます。具体的には、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>the-cars</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>the_heads</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>new-cars</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>new_heads</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を交換し、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>the-cdrs</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>the_tails</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>new-cdrs</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>new_tails</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を交換します。これにより、次にメモリが不足したときに再びガベージコレクションを実行する準備が整います。
+    </JA>
+    </BILINGUAL>
     <SNIPPET POSTPADDING="no">
       <NAME>testing_5_3_2</NAME>
       <REQUIRES>tagged_list</REQUIRES>

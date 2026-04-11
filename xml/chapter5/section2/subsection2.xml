@@ -1,12 +1,17 @@
 <SUBSECTION>
   <NAME>
-    The Assembler
+    <BILINGUAL>
+      <EN>The Assembler</EN>
+      <JA>アセンブラ</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:assembler"/>
 
   <INDEX>assembler<OPEN/></INDEX>
 
+  <BILINGUAL>
+  <EN>
   The assembler transforms the sequence of controller
   <SPLITINLINE>
     <SCHEME>expressions</SCHEME>
@@ -22,8 +27,21 @@
   chapter<SPACE/><REF NAME="chap:meta"></REF><EMDASH/>there is an input language (in this case, the
   register-machine language) and we must perform an appropriate action for each
   type of component in the language.
+  </EN>
+  <JA>
+  アセンブラは、マシンのコントローラ<SPLITINLINE>
+    <SCHEME>式</SCHEME>
+    <JAVASCRIPT>命令</JAVASCRIPT>
+  </SPLITINLINE>の列を、それぞれに実行<SPLITINLINE>
+    <SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT>
+  </SPLITINLINE>が付いたマシン命令のリストへと変換します。全体として、アセンブラは第<SPACE/><REF NAME="chap:meta"></REF>章で学んだ評価器とよく似ています<EMDASH/>入力言語（この場合はレジスタマシン言語）があり、その言語の各種コンポーネントに対して適切な動作を実行しなければなりません。
+  </JA>
+  </BILINGUAL>
    
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The technique of producing an execution
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -51,9 +69,28 @@
     registers by pointers to the register objects, and we can
     replace references to labels by pointers to the place in the
     instruction sequence that the label designates.
+    </EN>
+    <JA>
+    各命令に対して実行<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を生成する手法は、<REF NAME="sec:separating-analysis"/>節で解析と実行時の実行を分離して評価器を高速化するために使ったものとまったく同じです。第<SPACE/><REF NAME="chap:meta"></REF>章で見たように、
+    <INDEX>syntactic analysis, separated from execution<SUBINDEX>in register-machine simulator</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    の式の有用な解析の多くは、<SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>の実際の値を知らなくても実行できました。ここでも同様に、レジスタマシン言語の式の有用な解析の多くは、マシンレジスタの実際の内容を知らなくても実行できます。たとえば、レジスタへの参照をレジスタオブジェクトへのポインタに置き換えたり、ラベルへの参照をそのラベルが指す命令列中の位置へのポインタに置き換えたりできます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Before it can generate the instruction execution
     <SPLITINLINE>
       <SCHEME>procedures,</SCHEME>
@@ -69,9 +106,21 @@
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     for each instruction.
+    </EN>
+    <JA>
+    命令実行<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を生成する前に、アセンブラはすべてのラベルが何を指しているかを知る必要があるため、まずコントローラの<SPLITINLINE><SCHEME>テキスト</SCHEME><JAVASCRIPT>列</JAVASCRIPT></SPLITINLINE>をスキャンしてラベルと命令を分離します。<SPLITINLINE><SCHEME>テキスト</SCHEME><JAVASCRIPT>コントローラ</JAVASCRIPT></SPLITINLINE>をスキャンしながら、命令のリストと、各ラベルをそのリスト内の位置に関連付けるテーブルの両方を構築します。そしてアセンブラは、各命令に実行<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を挿入することで命令リストを拡張します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The <SCHEMEINLINE>assemble</SCHEMEINLINE>
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -127,6 +176,53 @@
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     and insert them into the instruction list, and returns the modified list.
+    </EN>
+    <JA>
+    <SCHEMEINLINE>assemble</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は、アセンブラへのメインエントリです。コントローラの<SPLITINLINE><SCHEME>テキスト</SCHEME><JAVASCRIPT>列</JAVASCRIPT></SPLITINLINE>とマシンモデルを引数として受け取り、モデルに格納される命令列を返します。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Assemble</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	関数
+	<JAVASCRIPTINLINE>assemble</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、与えられたコントローラ<SPLITINLINE><SCHEME>テキスト</SCHEME></SPLITINLINE>から初期の命令リストとラベルテーブルを構築するために
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>extract-labels</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>extract_labels</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を呼び出します。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>extract-labels</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>extract_labels</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    への第2引数は、これらの結果を処理するために呼び出される<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>です。この<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>update-insts!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>update_insts</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を使って命令実行<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を生成し、それらを命令リストに挿入して、変更されたリストを返します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>assemble</DECLARATION></INDEX> 
       <NAME>assemble</NAME>
@@ -166,8 +262,10 @@ function assemble(controller, machine) {
         list <SCHEMEINLINE>insts</SCHEMEINLINE> that the label designates.
       </SCHEME>
       <JAVASCRIPT>
+	      <BILINGUAL>
+	      <EN>
 	      The function <JAVASCRIPTINLINE>extract_labels</JAVASCRIPTINLINE> takes
-	      a list <JAVASCRIPTINLINE>controller</JAVASCRIPTINLINE> 
+	      a list <JAVASCRIPTINLINE>controller</JAVASCRIPTINLINE>
 	      and a function <JAVASCRIPTINLINE>receive</JAVASCRIPTINLINE>
 	      as arguments. The function <JAVASCRIPTINLINE>receive</JAVASCRIPTINLINE> will
 	      be called with two values: (1)<SPACE/>a list <JAVASCRIPTINLINE>insts</JAVASCRIPTINLINE>
@@ -176,6 +274,11 @@ function assemble(controller, machine) {
 	      <JAVASCRIPTINLINE>labels</JAVASCRIPTINLINE>, which associates each label from
 	      <JAVASCRIPTINLINE>controller</JAVASCRIPTINLINE> with the position in the list
 	      <JAVASCRIPTINLINE>insts</JAVASCRIPTINLINE> that the label designates.
+	      </EN>
+	      <JA>
+	      関数 <JAVASCRIPTINLINE>extract_labels</JAVASCRIPTINLINE> は、リスト <JAVASCRIPTINLINE>controller</JAVASCRIPTINLINE> と関数 <JAVASCRIPTINLINE>receive</JAVASCRIPTINLINE> を引数として受け取ります。関数 <JAVASCRIPTINLINE>receive</JAVASCRIPTINLINE> は2つの値で呼び出されます。(1)<SPACE/><JAVASCRIPTINLINE>controller</JAVASCRIPTINLINE> からの命令をそれぞれ含む命令データ構造のリスト <JAVASCRIPTINLINE>insts</JAVASCRIPTINLINE>、および (2)<SPACE/><JAVASCRIPTINLINE>controller</JAVASCRIPTINLINE> 内の各ラベルをリスト <JAVASCRIPTINLINE>insts</JAVASCRIPTINLINE> 内のそのラベルが指す位置に関連付けるテーブル <JAVASCRIPTINLINE>labels</JAVASCRIPTINLINE> です。
+	      </JA>
+	      </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
     
@@ -221,6 +324,8 @@ function extract_labels(controller, receive) {
       </JAVASCRIPT>
     </SNIPPET>
     
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Extract-labels</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The function
@@ -239,9 +344,26 @@ function extract_labels(controller, receive) {
     (and thus a label) an appropriate entry is added to the
     <SCHEMEINLINE>labels</SCHEMEINLINE> table.  Otherwise the element is
     accumulated onto the <SCHEMEINLINE>insts</SCHEMEINLINE>
-    list.<FOOTNOTE>
+    list.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Extract-labels</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数
+      <JAVASCRIPTINLINE>extract_labels</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、<SPLITINLINE><SCHEME><SCHEMEINLINE>text</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>controller</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
+    の要素を順にスキャンし、<SCHEMEINLINE>insts</SCHEMEINLINE> と <SCHEMEINLINE>labels</SCHEMEINLINE> を蓄積していくことで動作します。要素が<SPLITINLINE>
+      <SCHEME>シンボル</SCHEME>
+      <JAVASCRIPT>文字列</JAVASCRIPT>
+    </SPLITINLINE>であれば（つまりラベルであれば）、適切なエントリが <SCHEMEINLINE>labels</SCHEMEINLINE> テーブルに追加されます。そうでなければ、その要素は <SCHEMEINLINE>insts</SCHEMEINLINE> リストに蓄積されます。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     Using the
-    <INDEX><USE>receive</USE> <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE></INDEX> 
+    <INDEX><USE>receive</USE> <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE></INDEX>
     <SCHEMEINLINE>receive</SCHEMEINLINE>
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -259,8 +381,26 @@ function extract_labels(controller, receive) {
     <SCHEMEINLINE>insts</SCHEMEINLINE><EMDASH/>without explicitly making a
     compound data structure to hold them.  An alternative implementation, which
     returns an explicit pair of values, is
+    </EN>
+    <JA>
+    ここで
+    <INDEX><USE>receive</USE> <SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE></INDEX>
+    <SCHEMEINLINE>receive</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を使うのは、複合データ構造を明示的に作らずに
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>extract-labels</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>extract_labels</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    から実質的に2つの値<EMDASH/><SCHEMEINLINE>labels</SCHEMEINLINE> と <SCHEMEINLINE>insts</SCHEMEINLINE><EMDASH/>を返すための方法です。明示的に値のペアを返す別の実装は次のとおりです。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
-      <INDEX><DECLARATION>extract_labels</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>extract_labels</DECLARATION></INDEX>
       <NAME>extract_labels_alternative</NAME>
       <EXAMPLE>gcd_machine_complete_example</EXAMPLE>
       <SCHEME>
@@ -277,7 +417,7 @@ function extract_labels(controller, receive) {
                       labels)))))))
       </SCHEME>
   <JAVASCRIPT>
-function extract_labels(controller) { 
+function extract_labels(controller) {
     if (is_null(controller)) {
         return pair(null, null);
     } else {
@@ -286,7 +426,7 @@ function extract_labels(controller) {
         const labels = tail(result);
         const next_element = head(controller);
         return is_string(next_element)
-               ? pair(insts, 
+               ? pair(insts,
                       pair(make_label_entry(next_element, insts), labels))
                : pair(pair(make_inst(next_element), insts),
                       labels);
@@ -294,9 +434,16 @@ function extract_labels(controller) {
 }
   </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     which would be called by <SCHEMEINLINE>assemble</SCHEMEINLINE> as follows:
+    </EN>
+    <JA>
+    これは <SCHEMEINLINE>assemble</SCHEMEINLINE> から次のように呼び出されます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
-      <INDEX><DECLARATION>assemble</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>assemble</DECLARATION></INDEX>
       <NAME>assemble_alternative</NAME>
       <EXAMPLE>gcd_machine_complete_example</EXAMPLE>
       <SCHEME>
@@ -317,6 +464,8 @@ function assemble(controller, machine) {
   </JAVASCRIPT>
     </SNIPPET>
 
+    <BILINGUAL>
+    <EN>
     You can consider our use of <SCHEMEINLINE>receive</SCHEMEINLINE> as
     demonstrating an elegant way to
     <INDEX>returning multiple values</INDEX>
@@ -333,18 +482,33 @@ function assemble(controller, machine) {
     <QUOTE>continuation.</QUOTE>  Recall that we
     also used continuations to implement the backtracking control
     structure in the <SCHEMEINLINE>amb</SCHEMEINLINE> evaluator in
-    section<SPACE/><REF NAME="sec:amb-implementation"/>.</FOOTNOTE>
+    section<SPACE/><REF NAME="sec:amb-implementation"/>.
+    </EN>
+    <JA>
+    <SCHEMEINLINE>receive</SCHEMEINLINE> の使い方は、
+    <INDEX>returning multiple values</INDEX>
+    <INDEX><FUNCTION/><SUBINDEX>returning multiple values</SUBINDEX></INDEX>
+    複数の値を返すエレガントな方法のデモンストレーションとも、単にプログラミングのテクニックを披露する口実とも考えられます。<SCHEMEINLINE>receive</SCHEMEINLINE> のような、次に呼び出される<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>である引数は、
+    <INDEX>continuation<SUBINDEX>in register-machine simulator</SUBINDEX></INDEX>
+    <QUOTE>継続（continuation）</QUOTE>と呼ばれます。<REF NAME="sec:amb-implementation"/>節の <SCHEMEINLINE>amb</SCHEMEINLINE> 評価器でバックトラッキング制御構造を実装するためにも継続を使ったことを思い出してください。
+    </JA>
+    </BILINGUAL></FOOTNOTE>
   </TEXT>
 
   <SHORT_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Update-insts!</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>
 	The function
       <JAVASCRIPTINLINE>update_insts</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    modifies the instruction list, which initially contains only 
+    modifies the instruction list, which initially contains only
     <SPLITINLINE>
       <SCHEME>the text of the instructions,</SCHEME>
       <JAVASCRIPT>the controller instructions,</JAVASCRIPT>
@@ -354,6 +518,23 @@ function assemble(controller, machine) {
       <SCHEME>procedures:</SCHEME>
       <JAVASCRIPT>functions:</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Update-insts!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	関数
+      <JAVASCRIPTINLINE>update_insts</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は、最初は<SPLITINLINE>
+      <SCHEME>命令のテキスト</SCHEME>
+      <JAVASCRIPT>コントローラの命令</JAVASCRIPT>
+    </SPLITINLINE>のみを含む命令リストを、対応する実行<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を含むように変更します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>update_insts</DECLARATION></INDEX> 
       <NAME>update_insts</NAME>
@@ -395,6 +576,8 @@ function update_insts(insts, labels, machine) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The machine instruction data structure simply pairs the
     <SPLITINLINE><JAVASCRIPT>controller</JAVASCRIPT></SPLITINLINE>
     instruction <SPLITINLINE><SCHEME>text</SCHEME></SPLITINLINE> with the corresponding execution
@@ -421,6 +604,31 @@ function update_insts(insts, labels, machine) {
 	<JAVASCRIPTINLINE>update_insts</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    マシン命令データ構造は、<SPLITINLINE><JAVASCRIPT>コントローラの</JAVASCRIPT></SPLITINLINE>命令<SPLITINLINE><SCHEME>テキスト</SCHEME></SPLITINLINE>と対応する実行<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を単純にペアにしたものです。実行<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>extract-labels</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>extract_labels</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    が命令を構築する時点ではまだ利用できず、後から
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>update-insts!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>update_insts</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    によって挿入されます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>make_inst</DECLARATION></INDEX>
       <INDEX><DECLARATION>inst_controller_instruction</DECLARATION></INDEX>
@@ -457,6 +665,8 @@ function set_inst_execution_fun(inst, fun) {
       </JAVASCRIPT>
     </SNIPPET>
 
+    <BILINGUAL>
+    <EN>
     The
     <SPLITINLINE>
       <SCHEME>instruction text</SCHEME>
@@ -465,10 +675,25 @@ function set_inst_execution_fun(inst, fun) {
     is not used by our simulator, but is handy to keep
     around for debugging (see
     exercise<SPACE/><REF NAME="ex:reg-machine-instruction-trace"/>).
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>命令テキスト</SCHEME>
+      <JAVASCRIPT>コントローラの命令</JAVASCRIPT>
+    </SPLITINLINE>はシミュレータでは使用されませんが、デバッグ時に手元にあると便利です（exercise<SPACE/><REF NAME="ex:reg-machine-instruction-trace"/>を参照）。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Elements of the label table are pairs:
+    </EN>
+    <JA>
+    ラベルテーブルの要素はペアです。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>make_label_entry</DECLARATION></INDEX> 
       <NAME>make_label_entry</NAME>
@@ -483,7 +708,14 @@ function make_label_entry(label_name, insts) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Entries will be looked up in the table with
+    </EN>
+    <JA>
+    テーブル内のエントリは次の関数で検索されます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET POSTPADDING="no">
       <INDEX><DECLARATION>lookup_label</DECLARATION></INDEX> 
       <NAME>lookup_label</NAME>
@@ -507,8 +739,15 @@ function lookup_label(labels, label_name) {
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     The following register-machine code is ambiguous, because the label
     <SCHEMEINLINE>here</SCHEMEINLINE> is defined more than once:
+    </EN>
+    <JA>
+    以下のレジスタマシンのコードは、ラベル <SCHEMEINLINE>here</SCHEMEINLINE> が2回以上定義されているため曖昧です。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 start
@@ -533,6 +772,8 @@ there
 "there",
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     With the simulator as written, what will the contents of register
     <SCHEMEINLINE>a</SCHEMEINLINE> be when control reaches
     <SCHEMEINLINE>there</SCHEMEINLINE>?  Modify the
@@ -548,6 +789,21 @@ there
     </SPLITINLINE>
     so that the assembler will signal an error if the same label
     name is used to indicate two different locations.
+    </EN>
+    <JA>
+    現在のシミュレータでは、制御が <SCHEMEINLINE>there</SCHEMEINLINE> に到達したとき、レジスタ <SCHEMEINLINE>a</SCHEMEINLINE> の内容はどうなるでしょうか？同じラベル名が2つの異なる場所を示すために使われた場合にアセンブラがエラーを通知するように、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>extract-labels</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>extract_labels</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を変更してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:5_8"/>
   </EXERCISE>
 

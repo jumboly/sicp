@@ -1,6 +1,6 @@
 <SECTION>
 
-  <NAME>A Register-Machine Simulator</NAME>
+  <NAME><BILINGUAL><EN>A Register-Machine Simulator</EN><JA>レジスタマシンシミュレータ</JA></BILINGUAL></NAME>
 
   <SECTIONCONTENT/>
 
@@ -11,7 +11,10 @@
   <INDEX>simulation<SUBINDEX><ORDER>register</ORDER>of register machine<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
-    <LONG_PAGE lines="2"/>In order to gain a good understanding of the design of register machines,
+    <LONG_PAGE lines="2"/>
+    <BILINGUAL>
+    <EN>
+    In order to gain a good understanding of the design of register machines,
     we must test the machines we design to see if they perform as expected.
     One way to test a design is to hand-simulate the operation of the
     controller, as in exercise<SPACE/><REF NAME="ex:hand-sim"/>.  But this is
@@ -47,7 +50,7 @@
 	    --><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-	<INDEX><USE>make_machine</USE></INDEX> 
+	<INDEX><USE>make_machine</USE></INDEX>
 	<BR/>
 	constructs and returns a model of the machine with the given
 	registers, operations, and controller.
@@ -65,7 +68,7 @@
 	    --><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-	<INDEX><USE>set_register_contents</USE></INDEX> 
+	<INDEX><USE>set_register_contents</USE></INDEX>
 	<BR/>
 	stores a value in a simulated register in the given machine.
       </LI>
@@ -80,7 +83,7 @@
 	    --><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
 	  </JAVASCRIPT>
 	</SPLITINLINE>
-	<INDEX><USE>get_register_contents</USE></INDEX> 
+	<INDEX><USE>get_register_contents</USE></INDEX>
 	<BR/>
 	returns the contents of a simulated register in the given machine.
       </LI>
@@ -100,9 +103,80 @@
 	end of the sequence.
       </LI>
     </UL>
+    </EN>
+    <JA>
+    レジスタマシンの設計を十分に理解するには、設計したマシンが期待どおりに動作するかテストしなければなりません。設計をテストする一つの方法は、練習問題<SPACE/><REF NAME="ex:hand-sim"/>のように、コントローラの動作を手動でシミュレートすることです。しかし、これは最も単純なマシン以外ではきわめて面倒です。この節では、レジスタマシン言語で記述されたマシンのシミュレータを構築します。このシミュレータは、4つのインターフェース<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を持つ<SPLITINLINE><SCHEME>Scheme</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>プログラムです。最初の関数はレジスタマシンの記述からマシンのモデル（シミュレート対象のマシンの各部分に対応する部分を持つデータ構造）を構築し、残りの3つの関数はそのモデルを操作してマシンをシミュレートします：
+    <UL>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME>(make-machine register-names operations controller)</SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>make_machine(</JAVASCRIPTINLINE><!--
+	    --><META>register-names</META><!--
+	    --><JAVASCRIPTINLINE>, </JAVASCRIPTINLINE><!--
+            --><META>operations</META><!--
+	    --><JAVASCRIPTINLINE>, </JAVASCRIPTINLINE><!--
+            --><META>controller</META><!--
+	    --><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	<INDEX><USE>make_machine</USE></INDEX>
+	<BR/>
+	指定されたレジスタ、演算、コントローラを持つマシンのモデルを構築して返します。
+      </LI>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME>(set_register_contents machine-model register-name value)</SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>set_register_contents(</JAVASCRIPTINLINE><!--
+	    --><META>machine-model</META><!--
+	    --><JAVASCRIPTINLINE>, </JAVASCRIPTINLINE><!--
+	    --><META>register-name</META><!--
+	    --><JAVASCRIPTINLINE>, </JAVASCRIPTINLINE><!--
+            --><META>value</META><!--
+	    --><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	<INDEX><USE>set_register_contents</USE></INDEX>
+	<BR/>
+	指定されたマシンのシミュレートされたレジスタに値を格納します。
+      </LI>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME>(get-register-contents machine-model, register-name)</SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>get_register_contents(</JAVASCRIPTINLINE><!--
+	    --><META>machine-model</META><!--
+	    --><JAVASCRIPTINLINE>, </JAVASCRIPTINLINE><!--
+            --><META>register-name</META><!--
+	    --><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	<INDEX><USE>get_register_contents</USE></INDEX>
+	<BR/>
+	指定されたマシンのシミュレートされたレジスタの内容を返します。
+      </LI>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME>(start machine-model)</SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>start(</JAVASCRIPTINLINE><!--
+	    --><META>machine-model</META><!--
+	    --><JAVASCRIPTINLINE>)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	<INDEX><USE>start</USE> register machine</INDEX>
+	<BR/>
+	指定されたマシンの実行をシミュレートします。コントローラ列の先頭から開始し、列の末尾に到達すると停止します。
+      </LI>
+    </UL>
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     As an example of how these
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -116,6 +190,11 @@
     </SPLITINLINE>
     to be a model of the GCD machine
     of section<SPACE/><REF NAME="sec:register-machine-language"/> as follows:
+    </EN>
+    <JA>
+    これらの<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>の使い方の例として、<SPLITINLINE><SCHEME><SCHEMEINLINE>gcd-machine</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>gcd_machine</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を<SPACE/><REF NAME="sec:register-machine-language"/>節のGCDマシンのモデルとして次のように定義できます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>gcd_machine_example</NAME>
       <REQUIRES>gcd_machine</REQUIRES>
@@ -165,6 +244,8 @@ const gcd_machine =
           "gcd_done"));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The first argument to
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-machine</SCHEMEINLINE></SCHEME>
@@ -172,7 +253,7 @@ const gcd_machine =
       </JAVASCRIPT>
     </SPLITINLINE>
     is a list of register names. The next argument is a table (a list of
-    two-element lists) that pairs each operation name with a 
+    two-element lists) that pairs each operation name with a
     <SPLITINLINE>
       <SCHEME>Scheme procedure</SCHEME>
       <JAVASCRIPT>JavaScript function</JAVASCRIPT>
@@ -181,11 +262,27 @@ const gcd_machine =
     given the same input values). The last argument specifies the controller
     as a list of labels and machine instructions, as in
     section<SPACE/><REF NAME="sec:designing-register-machines"/>.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-machine</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_machine</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>の最初の引数はレジスタ名のリストです。次の引数は、各演算名をその演算を実装する<SPLITINLINE><SCHEME>Scheme手続き</SCHEME><JAVASCRIPT>JavaScript関数</JAVASCRIPT></SPLITINLINE>（すなわち、同じ入力値に対して同じ出力値を生成する関数）と対にしたテーブル（2要素リストのリスト）です。最後の引数は、<SPACE/><REF NAME="sec:designing-register-machines"/>節と同様に、ラベルとマシン命令のリストとしてコントローラを指定します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To compute GCDs with this machine, we set the input registers, start the
     machine, and examine the result when the simulation terminates:
+    </EN>
+    <JA>
+    このマシンでGCDを計算するには、入力レジスタを設定し、マシンを開始して、シミュレーションが終了したときに結果を調べます：
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>set_register_contents_a</NAME>
       <REQUIRES>gcd_machine</REQUIRES>
@@ -256,6 +353,8 @@ get_register_contents(gcd_machine, "a");
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
 
+    <BILINGUAL>
+    <EN>
     This computation will run much more slowly than a
     <SCHEMEINLINE>gcd</SCHEMEINLINE>
     <SPLITINLINE>
@@ -269,11 +368,23 @@ get_register_contents(gcd_machine, "a");
     </SPLITINLINE>
       because we will simulate low-level machine instructions, such as
       <SCHEMEINLINE>assign</SCHEMEINLINE>, by much more complex operations.
+    </EN>
+    <JA>
+    この計算は、<SPLITINLINE><SCHEME>Scheme</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>で書かれた<SCHEMEINLINE>gcd</SCHEMEINLINE><SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>よりもはるかに遅く実行されます。なぜなら、<SCHEMEINLINE>assign</SCHEMEINLINE>のような低レベルのマシン命令を、はるかに複雑な演算でシミュレートするからです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Use the simulator to test the machines you designed in
     exercise<SPACE/><REF NAME="ex:design-reg-machines"/>.
+    </EN>
+    <JA>
+    シミュレータを使って、練習問題<SPACE/><REF NAME="ex:design-reg-machines"/>で設計したマシンをテストしてください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:use-simulator"/>
   </EXERCISE>
 

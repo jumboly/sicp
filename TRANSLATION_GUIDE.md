@@ -343,6 +343,30 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | rename | リネームする | 変数のリネーム |
 | interleave | インターリーブする | |
 
+### レジスタマシン・コンパイラ（Chapter 5）
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| register machine | レジスタマシン | |
+| register | レジスタ | |
+| instruction | 命令 | レジスタマシンの |
+| storage allocation | 記憶領域の割り当て | |
+| garbage collection | ガベージコレクション | |
+| explicit-control evaluator | 明示的制御評価器 | |
+| compiler / compilation | コンパイラ / コンパイル | |
+| object code | オブジェクトコード | |
+| linkage | リンケージ | コンパイラの継続指定 |
+| instruction sequence | 命令列 | |
+| controller | コントローラ | レジスタマシンの制御部 |
+| data path | データパス | レジスタマシンのデータ経路 |
+| stack | スタック | |
+| subroutine | サブルーチン | |
+| tail-recursive | 末尾再帰的 | 用語集の再帰セクションにも記載 |
+| free list | フリーリスト | メモリ管理 |
+| broken heart | ブロークンハート | GC のフォワーディングポインタ |
+| root (GC) | ルート | GC のルート集合 |
+| stop-and-copy | ストップアンドコピー | GC アルゴリズム |
+
 ### その他
 
 | 英語 | 日本語 | 備考 |

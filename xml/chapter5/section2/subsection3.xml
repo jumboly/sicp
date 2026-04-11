@@ -2,7 +2,12 @@
   <NAME>
     <SPLITINLINE>
       <SCHEME>Generating Execution Procedures for Instructions</SCHEME>
-      <JAVASCRIPT>Instructions and Their Execution Functions</JAVASCRIPT>
+      <JAVASCRIPT>
+        <BILINGUAL>
+          <EN>Instructions and Their Execution Functions</EN>
+          <JA>命令とその実行関数</JA>
+        </BILINGUAL>
+      </JAVASCRIPT>
     </SPLITINLINE>
   </NAME>
 
@@ -12,6 +17,8 @@
   <INDEX>register-machine language<SUBINDEX>instructions</SUBINDEX><OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The assembler calls
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-execution-procedure</SCHEMEINLINE></SCHEME>
@@ -43,6 +50,39 @@
         meaning of the individual instructions in the register-machine language.
       </JAVASCRIPT>
     </SPLIT>
+    </EN>
+    <JA>
+    アセンブラは
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-execution-procedure</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>make_execution_function</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を呼び出して、コントローラの命令に対する実行
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を生成します。
+    <SPACE/><REF NAME="sec:separating-analysis"/>節の評価器における<SCHEMEINLINE>analyze</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    と同様に、命令の種類に基づいてディスパッチし、適切な実行
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を生成します。
+    <SPLIT>
+      <JAVASCRIPT>
+        これらの実行関数の詳細が、レジスタマシン言語における個々の命令の意味を決定します。
+      </JAVASCRIPT>
+    </SPLIT>
+    </JA>
+    </BILINGUAL>
 
     <SNIPPET>
       <INDEX><DECLARATION>make_execution_function</DECLARATION></INDEX> 
@@ -162,6 +202,8 @@ function make_execution_function(inst, labels, machine,
         an instruction.
       </SCHEME>
       <JAVASCRIPT>
+        <BILINGUAL>
+        <EN>
         The elements of the <JAVASCRIPTINLINE>controller</JAVASCRIPTINLINE> sequence
         received by <JAVASCRIPTINLINE>make_machine</JAVASCRIPTINLINE> and passed
         to <JAVASCRIPTINLINE>assemble</JAVASCRIPTINLINE> are strings (for
@@ -171,6 +213,11 @@ function make_execution_function(inst, labels, machine,
         of the list contains the arguments, such as the destination of the
         <JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE>.
         The dispatch in <JAVASCRIPTINLINE>make_execution_function</JAVASCRIPTINLINE> uses
+        </EN>
+        <JA>
+        <JAVASCRIPTINLINE>make_machine</JAVASCRIPTINLINE>が受け取り<JAVASCRIPTINLINE>assemble</JAVASCRIPTINLINE>に渡される<JAVASCRIPTINLINE>controller</JAVASCRIPTINLINE>シーケンスの要素は、文字列（ラベル用）とタグ付きリスト（命令用）です。命令のタグは命令の種類を識別する文字列で、たとえば<JAVASCRIPTINLINE>"go_to"</JAVASCRIPTINLINE>のようになっており、リストの残りの要素には<JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE>の行き先のような引数が含まれます。<JAVASCRIPTINLINE>make_execution_function</JAVASCRIPTINLINE>でのディスパッチには次の関数を使います。
+        </JA>
+        </BILINGUAL>
         <SNIPPET>
 	  <INDEX><DECLARATION>type</DECLARATION> in register machine</INDEX>
           <NAME>type_function</NAME>
@@ -185,6 +232,8 @@ function type(instruction) { return head(instruction); }
   <SPLIT>
     <JAVASCRIPT>
       <TEXT>
+        <BILINGUAL>
+        <EN>
         The tagged lists are constructed when the
         <JAVASCRIPTINLINE>list</JAVASCRIPTINLINE> expression that is the third
         argument to <JAVASCRIPTINLINE>make_machine</JAVASCRIPTINLINE> is
@@ -200,6 +249,11 @@ function type(instruction) { return head(instruction); }
         register-machine language. The instruction constructors and selectors
         are shown below, along with the execution-function generators that use
         the selectors.
+        </EN>
+        <JA>
+        タグ付きリストは、<JAVASCRIPTINLINE>make_machine</JAVASCRIPTINLINE>の第3引数である<JAVASCRIPTINLINE>list</JAVASCRIPTINLINE>式が評価されるときに構築されます。その<JAVASCRIPTINLINE>list</JAVASCRIPTINLINE>の各引数は、文字列（それ自体に評価される）か、命令タグ付きリストのコンストラクタの呼び出しです。たとえば、<JAVASCRIPTINLINE>assign("b", reg("t"))</JAVASCRIPTINLINE>は、コンストラクタ<JAVASCRIPTINLINE>assign</JAVASCRIPTINLINE>を引数<JAVASCRIPTINLINE>"b"</JAVASCRIPTINLINE>およびコンストラクタ<JAVASCRIPTINLINE>reg</JAVASCRIPTINLINE>を引数<JAVASCRIPTINLINE>"t"</JAVASCRIPTINLINE>で呼び出した結果とともに呼び出します。コンストラクタとその引数が、レジスタマシン言語における個々の命令の構文を決定します。以下に命令のコンストラクタとセレクタ、およびセレクタを使う実行関数ジェネレータを示します。
+        </JA>
+        </BILINGUAL>
       </TEXT>
     </JAVASCRIPT>
   </SPLIT>
@@ -218,7 +272,11 @@ function type(instruction) { return head(instruction); }
     <NAME>
       <SPLITINLINE>
 	<SCHEME><SCHEMEINLINE>Assign</SCHEMEINLINE> instructions</SCHEME>
-	<JAVASCRIPT>The instruction <JAVASCRIPTINLINE>assign</JAVASCRIPTINLINE>
+	<JAVASCRIPT>
+          <BILINGUAL>
+            <EN>The instruction <JAVASCRIPTINLINE>assign</JAVASCRIPTINLINE></EN>
+            <JA><JAVASCRIPTINLINE>assign</JAVASCRIPTINLINE> 命令</JA>
+          </BILINGUAL>
 	</JAVASCRIPT>
       </SPLITINLINE>
     </NAME>
@@ -228,6 +286,8 @@ function type(instruction) { return head(instruction); }
 
   <SHORT_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The
     <SPLITINLINE>
       <SCHEME>make-assign</SCHEME>
@@ -242,6 +302,20 @@ function type(instruction) { return head(instruction); }
       <JAVASCRIPT>makes execution functions for <JAVASCRIPTINLINE>assign</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     instructions:
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-assign</SCHEMEINLINE>手続き</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_assign_ef</JAVASCRIPTINLINE>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、<SCHEMEINLINE>assign</SCHEMEINLINE>命令の実行
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を生成します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>make_assign_ef</DECLARATION></INDEX> 
       <NAME>make_assign</NAME>
@@ -289,11 +363,18 @@ function make_assign_ef(inst, machine, labels, operations, pc) {
 	<INDEX><DECLARATION>assign-value-exp</DECLARATION></INDEX> 
       </SCHEME>
       <JAVASCRIPT>
+        <BILINGUAL>
+        <EN>
 	The function <JAVASCRIPTINLINE>assign</JAVASCRIPTINLINE> constructs
 	<JAVASCRIPTINLINE>assign</JAVASCRIPTINLINE> instructions.
 	The selectors <JAVASCRIPTINLINE>assign_@reg_@name</JAVASCRIPTINLINE> and
 	<JAVASCRIPTINLINE>assign_value_exp</JAVASCRIPTINLINE> extract the register name
 	and value expression from an <JAVASCRIPTINLINE>assign</JAVASCRIPTINLINE> instruction.
+        </EN>
+        <JA>
+	関数<JAVASCRIPTINLINE>assign</JAVASCRIPTINLINE>は<JAVASCRIPTINLINE>assign</JAVASCRIPTINLINE>命令を構築します。セレクタ<JAVASCRIPTINLINE>assign_@reg_@name</JAVASCRIPTINLINE>と<JAVASCRIPTINLINE>assign_value_exp</JAVASCRIPTINLINE>は、<JAVASCRIPTINLINE>assign</JAVASCRIPTINLINE>命令からレジスタ名と値の式を取り出します。
+        </JA>
+        </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
     <SNIPPET>
@@ -324,9 +405,11 @@ function assign_value_exp(assign_instruction) {
       </JAVASCRIPT>
     </SNIPPET>
 
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
-        The register name is looked up 
+        The register name is looked up
       </SCHEME>
       <JAVASCRIPT>
         The function <JAVASCRIPTINLINE>make_assign_ef</JAVASCRIPTINLINE> looks up the register name
@@ -378,8 +461,8 @@ function assign_value_exp(assign_instruction) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    of no arguments, called 
-    <INDEX><USE>value_fun</USE></INDEX> 
+    of no arguments, called
+    <INDEX><USE>value_fun</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>value-proc</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT>
@@ -403,9 +486,81 @@ function assign_value_exp(assign_instruction) {
     and corresponds directly to the saving in work we obtained by separating
     program analysis from execution in the evaluator of
     section<SPACE/><REF NAME="sec:separating-analysis"/>.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+        レジスタ名は
+      </SCHEME>
+      <JAVASCRIPT>
+        関数<JAVASCRIPTINLINE>make_assign_ef</JAVASCRIPTINLINE>は、レジスタ名を
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>get-register</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>get_register</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    で参照してターゲットのレジスタオブジェクトを取得します。値の式は、演算の結果である場合は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-operation-exp</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_@operation_@exp_@ef</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に渡され、そうでなければ
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-primitive-exp</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>make_@primitive_@exp_@ef</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に渡されます。これらの
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    （後述）は値の式を
+    <SPLITINLINE>
+      <SCHEME>パース</SCHEME>
+      <JAVASCRIPT>解析</JAVASCRIPT>
+    </SPLITINLINE>
+    して、値に対する実行
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を生成します。これは引数を取らない
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    で、
+    <INDEX><USE>value_fun</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>value-proc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+      <JAVASCRIPTINLINE>value_fun</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と呼ばれ、シミュレーション時に評価されてレジスタに代入する実際の値を生成します。レジスタ名の参照と値の式の
+    <SPLITINLINE>
+      <SCHEME>パース</SCHEME>
+      <JAVASCRIPT>解析</JAVASCRIPT>
+    </SPLITINLINE>
+    はアセンブル時に一度だけ行われ、命令がシミュレートされるたびに行われるわけではないことに注意してください。この作業の節約こそが実行
+    <INDEX>syntactic analysis, separated from execution<SUBINDEX>in register-machine simulator</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を使う理由であり、<SPACE/><REF NAME="sec:separating-analysis"/>節の評価器でプログラムの解析と実行を分離して得た作業の節約に直接対応しています。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The result returned by
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>make-assign</SCHEMEINLINE></SCHEME>
@@ -438,6 +593,40 @@ function assign_value_exp(assign_instruction) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-assign</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_assign_ef</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    が返すのは、<SCHEMEINLINE>assign</SCHEMEINLINE>命令に対する実行
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    です。この
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    が（マシンモデルの<SCHEMEINLINE>execute</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続きによって）</SCHEME>
+      <JAVASCRIPT>関数によって）</JAVASCRIPT>
+    </SPLITINLINE>
+    呼び出されると、ターゲットレジスタの内容を
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>value-proc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>value_fun</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を実行して得られた結果に設定します。次に、以下の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を実行して<SCHEMEINLINE>pc</SCHEMEINLINE>を次の命令に進めます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>advance_pc</DECLARATION></INDEX> 
       <NAME>advance_pc</NAME>
@@ -452,6 +641,8 @@ function advance_pc(pc) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Advance-pc</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>
@@ -462,13 +653,33 @@ function advance_pc(pc) {
     is the normal termination for all instructions except
     <SCHEMEINLINE>branch</SCHEMEINLINE> and
     <SPLITINLINE>
-      <SCHEME>    
+      <SCHEME>
 	<SCHEMEINLINE>goto</SCHEMEINLINE>.
       </SCHEME>
       <JAVASCRIPT>
 	<JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Advance-pc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	関数<JAVASCRIPTINLINE>advance_pc</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、<SCHEMEINLINE>branch</SCHEMEINLINE>と
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>goto</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を除くすべての命令の通常の終了処理です。
+    </JA>
+    </BILINGUAL>
     </TEXT>
 
   <SUBHEADING>
@@ -481,16 +692,25 @@ function advance_pc(pc) {
 	  instructions
 	</SCHEME>
 	<JAVASCRIPT>
+          <BILINGUAL>
+            <EN>
 	  The instructions
 	  <JAVASCRIPTINLINE>test</JAVASCRIPTINLINE>,
 	  <JAVASCRIPTINLINE>branch</JAVASCRIPTINLINE>, and
 	  <JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE>
+            </EN>
+            <JA>
+	  <JAVASCRIPTINLINE>test</JAVASCRIPTINLINE>命令、<JAVASCRIPTINLINE>branch</JAVASCRIPTINLINE>命令、<JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE>命令
+            </JA>
+          </BILINGUAL>
 	</JAVASCRIPT>
       </SPLITINLINE>
     </NAME>
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	<INDEX><USE>test</USE> (in register machine)<SUBINDEX>simulating</SUBINDEX></INDEX>
@@ -517,6 +737,32 @@ function advance_pc(pc) {
     for the condition is called, the result is assigned to the
     <SCHEMEINLINE>flag</SCHEMEINLINE> register, and the
     <SCHEMEINLINE>pc</SCHEMEINLINE> is advanced:
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	<INDEX><USE>test</USE> (in register machine)<SUBINDEX>simulating</SUBINDEX></INDEX>
+	<SCHEMEINLINE>Make-test</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	関数
+	<INDEX><USE>test</USE> (in register machine)<SUBINDEX>simulating</SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>make_test_ef</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、<SCHEMEINLINE>test</SCHEMEINLINE>命令を同様の方法で処理します。テストすべき条件を指定する式を取り出し、そのための実行
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を生成します。シミュレーション時に、条件の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    が呼び出され、その結果が<SCHEMEINLINE>flag</SCHEMEINLINE>レジスタに代入され、<SCHEMEINLINE>pc</SCHEMEINLINE>が進められます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>make_test_ef</DECLARATION></INDEX> 
       <NAME>make_test</NAME>
@@ -556,11 +802,18 @@ function make_test_ef(inst, machine, labels, operations, flag, pc) {
     </SNIPPET>
     <SPLIT>
       <JAVASCRIPT>
+        <BILINGUAL>
+        <EN>
 	The function
 	<JAVASCRIPTINLINE>test</JAVASCRIPTINLINE> constructs
 	<JAVASCRIPTINLINE>test</JAVASCRIPTINLINE> instructions. The selector
 	<JAVASCRIPTINLINE>test_condition</JAVASCRIPTINLINE> extracts the condition
 	from a test.
+        </EN>
+        <JA>
+	関数<JAVASCRIPTINLINE>test</JAVASCRIPTINLINE>は<JAVASCRIPTINLINE>test</JAVASCRIPTINLINE>命令を構築します。セレクタ<JAVASCRIPTINLINE>test_condition</JAVASCRIPTINLINE>はtest命令から条件を取り出します。
+        </JA>
+        </BILINGUAL>
 	<SNIPPET>
 	  <INDEX><DECLARATION>test_condition</DECLARATION></INDEX>
 	  <INDEX><DECLARATION>test</DECLARATION> (in register machine)<SUBINDEX>instruction constructor</SUBINDEX></INDEX>
@@ -580,6 +833,8 @@ function test_condition(test_instruction) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The execution
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -607,6 +862,31 @@ function test_condition(test_instruction) {
     enforces this.  Notice also that the label is looked up at assembly time,
     not each time the <SCHEMEINLINE>branch</SCHEMEINLINE> instruction is
     simulated.
+    </EN>
+    <JA>
+    <SCHEMEINLINE>branch</SCHEMEINLINE>命令の実行
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、<SCHEMEINLINE>flag</SCHEMEINLINE>レジスタの内容を調べ、分岐が取られる場合は<SCHEMEINLINE>pc</SCHEMEINLINE>の内容を分岐先に設定し、取られない場合は単に<SCHEMEINLINE>pc</SCHEMEINLINE>を進めます。
+    <INDEX><USE>branch</USE> (in register machine)<SUBINDEX>simulating</SUBINDEX></INDEX>
+    <SCHEMEINLINE>branch</SCHEMEINLINE>命令で指定される行き先はラベルでなければならず、
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>make-branch</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>make_branch_ef</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    がこれを強制することに注意してください。また、ラベルの参照はアセンブル時に行われ、<SCHEMEINLINE>branch</SCHEMEINLINE>命令がシミュレートされるたびに行われるわけではないことにも注意してください。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>make_branch_ef</DECLARATION></INDEX> 
       <NAME>make_branch_5</NAME>
@@ -647,11 +927,18 @@ function make_branch_ef(inst, machine, labels, flag, pc) {
 
     <SPLIT>
       <JAVASCRIPT>
+        <BILINGUAL>
+        <EN>
 	The function <JAVASCRIPTINLINE>branch</JAVASCRIPTINLINE>
 	constructs <JAVASCRIPTINLINE>branch</JAVASCRIPTINLINE> instructions. The
-	selector 
+	selector
 	<JAVASCRIPTINLINE>branch_dest</JAVASCRIPTINLINE> extracts
 	the destination from a branch.
+        </EN>
+        <JA>
+	関数<JAVASCRIPTINLINE>branch</JAVASCRIPTINLINE>は<JAVASCRIPTINLINE>branch</JAVASCRIPTINLINE>命令を構築します。セレクタ<JAVASCRIPTINLINE>branch_dest</JAVASCRIPTINLINE>はbranch命令から行き先を取り出します。
+        </JA>
+        </BILINGUAL>
 	<SNIPPET>
 	  <INDEX>register-machine language<SUBINDEX><DECLARATION>branch</DECLARATION></SUBINDEX></INDEX>
 	  <INDEX><DECLARATION>branch</DECLARATION> (in register machine)<SUBINDEX>instruction constructor</SUBINDEX></INDEX>
@@ -671,6 +958,8 @@ function branch_dest(branch_instruction) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     A
     <INDEX><USE>go_to</USE> (in register machine)<SUBINDEX>simulating</SUBINDEX></INDEX>
     <SPLITINLINE>
@@ -681,6 +970,16 @@ function branch_dest(branch_instruction) {
     specified either as a label or as a register, and there is no condition to
     check<EMDASH/>the <SCHEMEINLINE>pc</SCHEMEINLINE> is always set to the
     new destination.
+    </EN>
+    <JA>
+    <INDEX><USE>go_to</USE> (in register machine)<SUBINDEX>simulating</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>goto</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    命令はbranchに似ていますが、行き先がラベルとしてもレジスタとしても指定でき、チェックすべき条件がない点が異なります。<SCHEMEINLINE>pc</SCHEMEINLINE>は常に新しい行き先に設定されます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>make_go_to_ef</DECLARATION></INDEX> 
       <NAME>make_go_to</NAME>
@@ -724,10 +1023,17 @@ function make_go_to_ef(inst, machine, labels, pc) {
 
     <SPLIT>
       <JAVASCRIPT>
+        <BILINGUAL>
+        <EN>
 	The function <JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE> constructs
-	<JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE> instructions. The selector 
+	<JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE> instructions. The selector
 	<JAVASCRIPTINLINE>go_to_dest</JAVASCRIPTINLINE> extracts the destination from a
 	<JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE> instruction.
+        </EN>
+        <JA>
+	関数<JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE>は<JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE>命令を構築します。セレクタ<JAVASCRIPTINLINE>go_to_dest</JAVASCRIPTINLINE>は<JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE>命令から行き先を取り出します。
+        </JA>
+        </BILINGUAL>
 	<SNIPPET POSTPADDING="no">
 	  <INDEX><DECLARATION>go_to</DECLARATION> (in register machine)<SUBINDEX>instruction constructor</SUBINDEX></INDEX>
 	  <INDEX>register-machine language<SUBINDEX><DECLARATION>go_to</DECLARATION></SUBINDEX></INDEX>
@@ -749,14 +1055,21 @@ function go_to_dest(go_to_instruction) {
 
   <DO_BREAK_PAGE/>
   <SUBHEADING>
-    <NAME>Other instructions</NAME>
+    <NAME><BILINGUAL><EN>Other instructions</EN><JA>その他の命令</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The stack instructions
     <SCHEMEINLINE>save</SCHEMEINLINE> and <SCHEMEINLINE>restore</SCHEMEINLINE>
     simply use the stack with the designated register and advance the
     <SCHEMEINLINE>pc</SCHEMEINLINE>:
+    </EN>
+    <JA>
+    スタック命令<SCHEMEINLINE>save</SCHEMEINLINE>と<SCHEMEINLINE>restore</SCHEMEINLINE>は、指定されたレジスタでスタックを使い、<SCHEMEINLINE>pc</SCHEMEINLINE>を進めるだけです。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>make_save_ef</DECLARATION></INDEX> 
       <INDEX><DECLARATION>make_restore_ef</DECLARATION></INDEX> 
@@ -803,12 +1116,19 @@ function make_restore_ef(inst, machine, stack, pc) {
 
     <SPLIT>
       <JAVASCRIPT>
+        <BILINGUAL>
+        <EN>
 	The functions <JAVASCRIPTINLINE>save</JAVASCRIPTINLINE> and
 	<JAVASCRIPTINLINE>restore</JAVASCRIPTINLINE> construct
 	<JAVASCRIPTINLINE>save</JAVASCRIPTINLINE> and <JAVASCRIPTINLINE>restore</JAVASCRIPTINLINE> instructions. The
 	selector
 	<JAVASCRIPTINLINE>stack_inst_reg_name</JAVASCRIPTINLINE>
 	extracts the register name from such instructions.
+        </EN>
+        <JA>
+	関数<JAVASCRIPTINLINE>save</JAVASCRIPTINLINE>と<JAVASCRIPTINLINE>restore</JAVASCRIPTINLINE>は<JAVASCRIPTINLINE>save</JAVASCRIPTINLINE>命令と<JAVASCRIPTINLINE>restore</JAVASCRIPTINLINE>命令を構築します。セレクタ<JAVASCRIPTINLINE>stack_inst_reg_name</JAVASCRIPTINLINE>はこれらの命令からレジスタ名を取り出します。
+        </JA>
+        </BILINGUAL>
 	<SNIPPET>
 	  <INDEX><DECLARATION>save</DECLARATION> (in register machine)<SUBINDEX>instruction constructor</SUBINDEX></INDEX>
 	  <INDEX>register-machine language<SUBINDEX><DECLARATION>save</DECLARATION></SUBINDEX></INDEX>
@@ -833,6 +1153,8 @@ function stack_inst_reg_name(stack_instruction) {
   </TEXT>
   
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The final instruction type, handled by
     <INDEX><USE>perform</USE> (in register machine)<SUBINDEX>simulating</SUBINDEX></INDEX>
     <SPLITINLINE>
@@ -851,6 +1173,28 @@ function stack_inst_reg_name(stack_instruction) {
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     is executed and the <SCHEMEINLINE>pc</SCHEMEINLINE> advanced.
+    </EN>
+    <JA>
+    最後の命令タイプは、
+    <INDEX><USE>perform</USE> (in register machine)<SUBINDEX>simulating</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-perform</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+      <JAVASCRIPTINLINE>make_perform_ef</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    によって処理され、実行すべきアクションのための実行
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を生成します。シミュレーション時にアクション
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    が実行され、<SCHEMEINLINE>pc</SCHEMEINLINE>が進められます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>make_perform_ef</DECLARATION></INDEX> 
       <NAME>make_perform</NAME>
@@ -889,11 +1233,18 @@ function make_perform_ef(inst, machine, labels, operations, pc) {
 
     <SPLIT>
       <JAVASCRIPT>
-	The function <JAVASCRIPTINLINE>perform</JAVASCRIPTINLINE> 
+        <BILINGUAL>
+        <EN>
+	The function <JAVASCRIPTINLINE>perform</JAVASCRIPTINLINE>
 	constructs <JAVASCRIPTINLINE>perform</JAVASCRIPTINLINE> instructions. The
-	selector 
+	selector
 	<JAVASCRIPTINLINE>perform_@action</JAVASCRIPTINLINE> extracts
 	the action from a <JAVASCRIPTINLINE>perform</JAVASCRIPTINLINE> instruction.
+        </EN>
+        <JA>
+	関数<JAVASCRIPTINLINE>perform</JAVASCRIPTINLINE>は<JAVASCRIPTINLINE>perform</JAVASCRIPTINLINE>命令を構築します。セレクタ<JAVASCRIPTINLINE>perform_@action</JAVASCRIPTINLINE>はperform命令からアクションを取り出します。
+        </JA>
+        </BILINGUAL>
 	<SNIPPET POSTPADDING="no">
 	  <INDEX><DECLARATION>perform</DECLARATION> (in register machine)<SUBINDEX>instruction constructor</SUBINDEX></INDEX>
 	  <INDEX>register-machine language<SUBINDEX><DECLARATION>perform</DECLARATION></SUBINDEX></INDEX>
@@ -915,15 +1266,17 @@ function perform_action(perform_instruction) {
   </TEXT>
   
   <SUBHEADING>
-    <NAME>Execution
+    <NAME><BILINGUAL><EN>Execution
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
-    for subexpressions</NAME>
+    for subexpressions</EN><JA>部分式のための実行<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE></JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The value of a
     <INDEX><USE>reg</USE> (in register machine)<SUBINDEX>simulating</SUBINDEX></INDEX>
     <SCHEMEINLINE>reg</SCHEMEINLINE>,
@@ -956,6 +1309,41 @@ function perform_action(perform_instruction) {
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     to produce values for these expressions during the simulation:
+    </EN>
+    <JA>
+    <INDEX><USE>reg</USE> (in register machine)<SUBINDEX>simulating</SUBINDEX></INDEX>
+    <SCHEMEINLINE>reg</SCHEMEINLINE>、
+    <INDEX><USE>label</USE> (in register machine)<SUBINDEX>simulating</SUBINDEX></INDEX>
+    <SCHEMEINLINE>label</SCHEMEINLINE>、または
+    <INDEX><USE>constant</USE> (in register machine)<SUBINDEX>simulating</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>const</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>constant</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    式の値は、レジスタへの代入
+    <SPLITINLINE>
+      <SCHEME>（<SCHEMEINLINE>make-assign</SCHEMEINLINE>）</SCHEME>
+      <JAVASCRIPT>（上記の<JAVASCRIPTINLINE>make_assign_ef</JAVASCRIPTINLINE>）</JAVASCRIPT>
+    </SPLITINLINE>
+    や演算への入力
+    <SPLITINLINE>
+      <SCHEME>（<SCHEMEINLINE>make-operation-exp</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT>
+      （<JAVASCRIPTINLINE>make_@operation_@exp_@ef</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    後述）のために必要になることがあります。次の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、シミュレーション中にこれらの式の値を生成するための実行
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を生成します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>make_primitive_exp_ef</DECLARATION></INDEX> 
       <NAME>make_primitive_exp</NAME>
@@ -1027,10 +1415,17 @@ function make_primitive_exp_ef(exp, machine, labels) {
         </SNIPPET>
       </SCHEME>
       <JAVASCRIPT>
+        <BILINGUAL>
+        <EN>
 	The syntax of <JAVASCRIPTINLINE>reg</JAVASCRIPTINLINE>,
 	<JAVASCRIPTINLINE>label</JAVASCRIPTINLINE>, and <JAVASCRIPTINLINE>constant</JAVASCRIPTINLINE>
         expressions is determined by the following constructor functions, along with
         corresponding predicates and selectors.
+        </EN>
+        <JA>
+	<JAVASCRIPTINLINE>reg</JAVASCRIPTINLINE>、<JAVASCRIPTINLINE>label</JAVASCRIPTINLINE>、および<JAVASCRIPTINLINE>constant</JAVASCRIPTINLINE>式の構文は、以下のコンストラクタ関数と、対応する述語およびセレクタによって決まります。
+        </JA>
+        </BILINGUAL>
 	<SNIPPET>
 	  <INDEX><DECLARATION>reg</DECLARATION> (in register machine)</INDEX>
 	  <INDEX>register-machine language<SUBINDEX><DECLARATION>reg</DECLARATION></SUBINDEX></INDEX>
@@ -1074,6 +1469,8 @@ function label_exp_label(exp) { return head(tail(exp)); }
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>Assign</SCHEMEINLINE>,
@@ -1108,6 +1505,42 @@ function label_exp_label(exp) { return head(tail(exp)); }
     </SPLITINLINE>
     for an <QUOTE>operation expression</QUOTE><EMDASH/>a list containing the
     operation and operand expressions from the instruction:
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>assign</SCHEMEINLINE>、
+	<SCHEMEINLINE>perform</SCHEMEINLINE>、および
+	<SCHEMEINLINE>test</SCHEMEINLINE>
+	命令は、
+      </SCHEME>
+      <JAVASCRIPT>
+	<SCHEMEINLINE>assign</SCHEMEINLINE>、
+	<SCHEMEINLINE>perform</SCHEMEINLINE>、および
+	<SCHEMEINLINE>test</SCHEMEINLINE>
+	命令は、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    マシン演算（
+    <INDEX><USE>op</USE> (in register machine)<SUBINDEX>simulating</SUBINDEX></INDEX>
+    <SCHEMEINLINE>op</SCHEMEINLINE>式で指定）をいくつかのオペランド（<SCHEMEINLINE>reg</SCHEMEINLINE>式や
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>const</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>constant</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    式で指定）に適用することを含む場合があります。次の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、<QUOTE>演算式</QUOTE>（命令から取り出した演算とオペランドの式を含むリスト）のための実行
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を生成します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>make_operation_exp_ef</DECLARATION></INDEX> 
       <NAME>make_operation_exp</NAME>
@@ -1158,7 +1591,15 @@ function make_operation_exp_ef(exp, machine, labels, operations) {
 	</SNIPPET>
       </SCHEME>
       <JAVASCRIPT>
-	The syntax of operation expressions is determined by<DONT_BREAK_PAGE strength="4"/>
+        <BILINGUAL>
+        <EN>
+	The syntax of operation expressions is determined by
+        </EN>
+        <JA>
+	演算式の構文は以下によって決まります。
+        </JA>
+        </BILINGUAL>
+	<DONT_BREAK_PAGE strength="4"/>
 	<SNIPPET>
 	  <INDEX><DECLARATION>op</DECLARATION> (in register machine)<SUBINDEX>simulating</SUBINDEX></INDEX>
 	  <INDEX>register-machine language<SUBINDEX><DECLARATION>op</DECLARATION></SUBINDEX></INDEX>
@@ -1183,6 +1624,8 @@ function operation_exp_operands(op_exp) { return tail(op_exp); }
       </JAVASCRIPT>
     </SPLIT>
 
+    <BILINGUAL>
+    <EN>
     Observe that the treatment of operation expressions is very much like
     the treatment of
     <SPLITINLINE>
@@ -1206,45 +1649,99 @@ function operation_exp_operands(op_exp) { return tail(op_exp); }
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    for each operand.  
+    for each operand.
     <SPLITINLINE>
       <SCHEME>
-	At simulation time, we call the operand	
+	At simulation time, we call the operand
 	procedures
-	and apply the Scheme procedure	
+	and apply the Scheme procedure
       </SCHEME>
       <JAVASCRIPT>
-	At simulation time, we call the operand	
+	At simulation time, we call the operand
 	functions
 	and apply the JavaScript function
       </JAVASCRIPT>
     </SPLITINLINE>
-    that simulates the operation to the resulting values. 
+    that simulates the operation to the resulting values.
+    </EN>
+    <JA>
+    演算式の処理は、<REF NAME="sec:separating-analysis"/>節の評価器における
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>analyze-application</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>analyze_application</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    による
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    適用の処理と非常によく似ていることに注目してください。各オペランドに対して実行
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を生成しています。
+    <SPLITINLINE>
+      <SCHEME>
+	シミュレーション時に、オペランドの手続きを呼び出し、演算をシミュレートするScheme手続きを
+      </SCHEME>
+      <JAVASCRIPT>
+	シミュレーション時に、オペランドの関数を呼び出し、演算をシミュレートするJavaScript関数を
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    結果の値に適用します。
+    </JA>
+    </BILINGUAL>
 
     <SPLIT>
       <JAVASCRIPT>
+        <BILINGUAL>
+        <EN>
 	We make use of the function
-	<JAVASCRIPTINLINE>apply_in_underlying_javascript</JAVASCRIPTINLINE>, as we did 
-	in <JAVASCRIPTINLINE>apply_primitive_function</JAVASCRIPTINLINE> in 
+	<JAVASCRIPTINLINE>apply_in_underlying_javascript</JAVASCRIPTINLINE>, as we did
+	in <JAVASCRIPTINLINE>apply_primitive_function</JAVASCRIPTINLINE> in
 	section<SPACE/><REF NAME="sec:running-eval"/>. This is needed to apply
 	<JAVASCRIPTINLINE>op</JAVASCRIPTINLINE> to all elements of the argument list
-	<JAVASCRIPTINLINE>afuns</JAVASCRIPTINLINE> 
+	<JAVASCRIPTINLINE>afuns</JAVASCRIPTINLINE>
 	produced by the first <JAVASCRIPTINLINE>map</JAVASCRIPTINLINE>,
 	as if they were separate arguments to
 	<JAVASCRIPTINLINE>op</JAVASCRIPTINLINE>. Without this,
 	<JAVASCRIPTINLINE>op</JAVASCRIPTINLINE> would have been restricted to be a unary
 	function.
+        </EN>
+        <JA>
+	ここでは<REF NAME="sec:running-eval"/>節の<JAVASCRIPTINLINE>apply_primitive_function</JAVASCRIPTINLINE>で使ったのと同様に、関数<JAVASCRIPTINLINE>apply_in_underlying_javascript</JAVASCRIPTINLINE>を利用しています。これは、最初の<JAVASCRIPTINLINE>map</JAVASCRIPTINLINE>で生成された引数リスト<JAVASCRIPTINLINE>afuns</JAVASCRIPTINLINE>のすべての要素を、あたかも<JAVASCRIPTINLINE>op</JAVASCRIPTINLINE>への個別の引数であるかのように<JAVASCRIPTINLINE>op</JAVASCRIPTINLINE>に適用するために必要です。これがなければ、<JAVASCRIPTINLINE>op</JAVASCRIPTINLINE>は単項関数に制限されてしまいます。
+        </JA>
+        </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
   </TEXT>
   <TEXT>
-  The simulation
+    <BILINGUAL>
+    <EN>
+    The simulation
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     is found by looking up the operation name in the operation table for the
     machine:
+    </EN>
+    <JA>
+    シミュレーション
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、マシンの演算テーブルで演算名を検索することで見つかります。
+    </JA>
+    </BILINGUAL>
     <SNIPPET POSTPADDING="no">
       <INDEX><DECLARATION>lookup_prim</DECLARATION></INDEX> 
       <NAME>lookup_prim</NAME>
@@ -1268,6 +1765,8 @@ function lookup_prim(symbol, operations) {
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     The treatment of machine operations above permits them to operate
     on labels as well as on constants and the contents of registers.
     Modify the expression-processing
@@ -1277,6 +1776,16 @@ function lookup_prim(symbol, operations) {
     </SPLITINLINE>
     to enforce the condition that operations can be used only with registers
     and constants.
+    </EN>
+    <JA>
+    上記のマシン演算の処理では、定数やレジスタの内容だけでなく、ラベルに対しても演算を行うことが許されています。演算がレジスタと定数のみで使用できるという条件を強制するように、式を処理する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を変更してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:5_9"/>
   </EXERCISE>
 
@@ -1297,6 +1806,8 @@ function lookup_prim(symbol, operations) {
   </SPLIT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     When we introduced
     <INDEX><USE>save</USE> (in register machine)</INDEX>
     <SCHEMEINLINE>save</SCHEMEINLINE> and
@@ -1305,6 +1816,15 @@ function lookup_prim(symbol, operations) {
     section<SPACE/><REF NAME="sec:stack-recursion"/>, we didn<APOS/>t specify
     what would happen if you tried to restore a register that was not the last
     one saved, as in the sequence
+    </EN>
+    <JA>
+    <REF NAME="sec:stack-recursion"/>節で
+    <INDEX><USE>save</USE> (in register machine)</INDEX>
+    <SCHEMEINLINE>save</SCHEMEINLINE>と
+    <INDEX><USE>restore</USE> (in register machine)</INDEX>
+    <SPLITINLINE>restore</SPLITINLINE>を導入したとき、最後に保存されたものではないレジスタを復元しようとした場合に何が起こるかは指定しませんでした。たとえば次のような列です。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (save y)
@@ -1317,6 +1837,8 @@ save(x);
 restore(y);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     <SHORT_PAGE lines="2"/>There are several reasonable possibilities for the meaning of
     <SCHEMEINLINE>restore</SCHEMEINLINE>:
     <OL>
@@ -1366,10 +1888,50 @@ restore(y);
 	operation initialize all the register stacks.
       </LI>
     </OL>
+    </EN>
+    <JA>
+    <SHORT_PAGE lines="2"/><SCHEMEINLINE>restore</SCHEMEINLINE>の意味にはいくつかの合理的な解釈があります。
+    <OL>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(restore y)</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>restore(y)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	は、その値がどのレジスタから来たかに関係なく、スタックに最後に保存された値を<SCHEMEINLINE>y</SCHEMEINLINE>に入れます。これが私たちのシミュレータの動作です。この動作を利用して、<REF NAME="sec:stack-recursion"/>節（図<SPACE/><REF NAME="fig:fib-machine"/>）のフィボナッチマシンから命令を1つ削除する方法を示してください。
+      </LI>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(restore y)</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>restore(y)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	は、スタックに最後に保存された値を<SCHEMEINLINE>y</SCHEMEINLINE>に入れますが、その値が<SCHEMEINLINE>y</SCHEMEINLINE>から保存されたものである場合に限ります。そうでなければエラーを通知します。このように動作するようにシミュレータを変更してください。<SCHEMEINLINE>save</SCHEMEINLINE>が値と一緒にレジスタ名もスタックに入れるように変更する必要があります。
+      </LI>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(restore y)</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>restore(y)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	は、<SCHEMEINLINE>y</SCHEMEINLINE>の後に他のどのレジスタが保存され復元されていなかったかに関係なく、<SCHEMEINLINE>y</SCHEMEINLINE>から最後に保存された値を<SCHEMEINLINE>y</SCHEMEINLINE>に入れます。このように動作するようにシミュレータを変更してください。各レジスタに別々のスタックを関連付ける必要があります。
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>initialize-stack</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>initialize_stack</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	演算がすべてのレジスタスタックを初期化するようにしてください。
+      </LI>
+    </OL>
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:stack-behavior"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     The simulator can be used to help determine the data paths required
     for implementing a machine with a given controller.  Extend
     the assembler to store the following information in the machine model:
@@ -1424,10 +1986,57 @@ restore(y);
     this new information.  To test your analyzer, define the Fibonacci machine
     from figure<SPACE/><REF NAME="fig:fib-machine"/> and examine the lists you
     constructed.
+    </EN>
+    <JA>
+    シミュレータは、与えられたコントローラでマシンを実装するために必要なデータパスを決定するのに役立てることができます。以下の情報をマシンモデルに格納するようにアセンブラを拡張してください。
+    <UL>
+      <LI>
+	すべての命令のリスト（重複を除去し、命令の種類（<SCHEMEINLINE>assign</SCHEMEINLINE>、
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>goto</SCHEMEINLINE>、</SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE>、</JAVASCRIPT>
+	</SPLITINLINE>
+	など）でソートしたもの）
+      </LI>
+      <LI>
+	エントリポイントを保持するために使われるレジスタの（重複なしの）リスト（これらは
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>goto</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>
+	命令で参照されるレジスタです）
+      </LI>
+      <LI>
+	<SCHEMEINLINE>save</SCHEMEINLINE>または<SCHEMEINLINE>restore</SCHEMEINLINE>されるレジスタの（重複なしの）リスト
+      </LI>
+      <LI>
+	各レジスタについて、それに代入される値の出所の（重複なしの）リスト（たとえば、図<SPACE/><REF NAME="fig:fact-machine"/>の階乗マシンにおけるレジスタ<SCHEMEINLINE>val</SCHEMEINLINE>の出所は
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(const 1)</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>constant(1)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	と
+	<SPLITINLINE>
+	  <SCHEME>
+	    <SCHEMEINLINE>((op *) (reg n) (reg val))</SCHEMEINLINE>です）。
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>list(op("*"), reg("n"), reg("val"))</JAVASCRIPTINLINE>です）。
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+      </LI>
+    </UL>
+    この新しい情報にアクセスできるように、マシンへのメッセージパッシングインタフェースを拡張してください。解析器をテストするために、図<SPACE/><REF NAME="fig:fib-machine"/>のフィボナッチマシンを定義し、構築したリストを調べてください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:simulated-data-paths"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Modify the simulator so that it uses the controller sequence to determine
     what registers the machine has rather than requiring a list of registers as
     an argument to
@@ -1443,6 +2052,22 @@ restore(y);
     </SPLITINLINE>
     you can allocate them one at a time when they are first seen during assembly
     of the instructions.
+    </EN>
+    <JA>
+    シミュレータを変更して、レジスタのリストを
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-machine</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>make_machine</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の引数として要求するのではなく、コントローラ列を使ってマシンがどのレジスタを持つかを決定するようにしてください。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>make-machine</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+      <JAVASCRIPTINLINE>make_machine</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    でレジスタを事前に割り当てる代わりに、命令のアセンブル中にレジスタが最初に現れたときに1つずつ割り当てることができます。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:5_12"/>
   </EXERCISE>
 

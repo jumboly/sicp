@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Structure of the Compiler
+    <BILINGUAL>
+      <EN>Structure of the Compiler</EN>
+      <JA>コンパイラの構造</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:compiler-structure"/>
@@ -9,6 +12,8 @@
 
   <LONG_PAGE lines="1"/>  
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In section<SPACE/><REF NAME="sec:separating-analysis"/> we modified our
     original metacircular interpreter to separate
     <INDEX>compiler for JavaScript<SUBINDEX>analyzing evaluator vs.</SUBINDEX></INDEX>
@@ -36,9 +41,37 @@
     </SPLITINLINE>
     however, we will generate sequences of instructions to be run by our
     register machine.
+    </EN>
+    <JA>
+    <REF NAME="sec:separating-analysis"/>節では、元のメタ循環インタプリタを修正して、
+    <INDEX>compiler for JavaScript<SUBINDEX>analyzing evaluator vs.</SUBINDEX></INDEX>
+    解析と実行を分離しました。各
+    <SPLITINLINE>
+      <SCHEME>
+        式
+      </SCHEME>
+      <JAVASCRIPT>
+        コンポーネント
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を解析して、環境を引数として受け取り必要な操作を実行する実行
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を生成しました。コンパイラでも本質的に同じ解析を行います。ただし、実行
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を生成する代わりに、レジスタマシンで実行される命令列を生成します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -70,7 +103,39 @@
       <JAVASCRIPT>component-syntax functions</JAVASCRIPT>
     </SPLITINLINE>
     defined in
-    section<SPACE/><REF NAME="sec:representing-expressions"/>.<FOOTNOTE>Notice,
+    section<SPACE/><REF NAME="sec:representing-expressions"/>.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>compile</SCHEMEINLINE>は、コンパイラにおけるトップレベルのディスパッチです。これは<REF NAME="sec:core-of-evaluator"/>節の<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>、
+    <REF NAME="sec:separating-analysis"/>節の
+    <SCHEMEINLINE>analyze</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>、そして
+    <REF NAME="sec:eceval-core"/>節の明示的制御評価器における
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>eval-dispatch</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    エントリポイントに対応します。コンパイラはインタプリタと同様に、
+    <INDEX>compiler for JavaScript<SUBINDEX>expression-syntax <SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE></SUBINDEX></INDEX>
+    <REF NAME="sec:representing-expressions"/>節で定義された
+    <SPLITINLINE>
+      <SCHEME>式の構文手続き</SCHEME>
+      <JAVASCRIPT>コンポーネント構文関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を使用します。
+    </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>Notice,
     however, that our compiler is a
     <SPLITINLINE>
       <SCHEME>Scheme</SCHEME>
@@ -99,7 +164,36 @@
       <SCHEME>Scheme procedures</SCHEME>
       <JAVASCRIPT>JavaScript functions</JAVASCRIPT>
     </SPLITINLINE>
-    in our register machine simulation.)</FOOTNOTE>
+    in our register machine simulation.)</EN>
+    <JA>ただし、このコンパイラは
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    プログラムであり、式を操作するために使う構文
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、メタ循環評価器で使われている実際の
+    <SPLITINLINE>
+      <SCHEME>Schemeの手続き</SCHEME>
+      <JAVASCRIPT>JavaScriptの関数</JAVASCRIPT>
+    </SPLITINLINE>
+    であることに注意してください。一方、明示的制御評価器では、同等の構文操作がレジスタマシンの操作として利用可能であると仮定しました。（もちろん、レジスタマシンを
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    でシミュレートしたときは、実際の
+    <SPLITINLINE>
+      <SCHEME>Schemeの手続き</SCHEME>
+      <JAVASCRIPT>JavaScriptの関数</JAVASCRIPT>
+    </SPLITINLINE>
+    をレジスタマシンシミュレーションの中で使用しました。）</JA>
+    </BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Compile</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The function <JAVASCRIPTINLINE>compile</JAVASCRIPTINLINE></JAVASCRIPT>
@@ -127,6 +221,34 @@
     specialized
     <INDEX>code generator</INDEX>
     <EM>code generator</EM>:
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Compile</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数<JAVASCRIPTINLINE>compile</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>は、コンパイルする
+    <SPLITINLINE>
+      <SCHEME>
+	式
+      </SCHEME>
+      <JAVASCRIPT>
+	コンポーネント
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の構文的な型に基づいてケース分析を行います。
+    <SPLITINLINE>
+      <SCHEME>
+	式
+      </SCHEME>
+      <JAVASCRIPT>
+	コンポーネント
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の型ごとに、専用の
+    <INDEX>code generator</INDEX>
+    <EM>コードジェネレータ</EM>にディスパッチします：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" POSTPADDING="no">
       <INDEX><DECLARATION>compile</DECLARATION></INDEX>
       <NAME>compile</NAME>
@@ -189,10 +311,12 @@ function compile(component, target, linkage) {
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Targets and linkages</NAME>
+    <NAME><BILINGUAL><EN>Targets and linkages</EN><JA>ターゲットとリンケージ</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>Compile</SCHEMEINLINE>
@@ -283,8 +407,94 @@ function compile(component, target, linkage) {
 	designated label as the linkage descriptor).
       </LI>
     </UL>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>Compile</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	関数<JAVASCRIPTINLINE>compile</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    とそれが呼び出すコードジェネレータは、コンパイルする
+    <INDEX>code generator<SUBINDEX>arguments of</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>
+        式
+      </SCHEME>
+      <JAVASCRIPT>
+        コンポーネント
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に加えて2つの引数を受け取ります。1つは
+    <INDEX>target register</INDEX>
+    <EM>ターゲット</EM>で、コンパイルされたコードが
+    <SPLITINLINE>
+      <SCHEME>
+        式
+      </SCHEME>
+      <JAVASCRIPT>
+        コンポーネント
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の値を返すレジスタを指定します。もう1つは
+    <INDEX>linkage descriptor</INDEX>
+    <EM>リンケージ記述子</EM>で、
+    <SPLITINLINE>
+      <SCHEME>
+        式
+      </SCHEME>
+      <JAVASCRIPT>
+        コンポーネント
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    のコンパイルで生成されたコードが、実行を終えた後にどう進むべきかを記述します。リンケージ記述子は、コードに次の3つのうちいずれかを要求します：
+    <UL>
+      <LI>
+	列中の次の命令に進む（これはリンケージ記述子
+	<INDEX><USE>next</USE> (linkage descriptor)</INDEX>
+	<SPLITINLINE>
+	  <SCHEME>
+	    <SCHEMEINLINE>next</SCHEMEINLINE>
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>"next"</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	で指定されます）
+      </LI>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME>
+	    コンパイル中の手続きからリターンする
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    関数呼び出しからのリターンの一部として、<JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE>レジスタの現在の値にジャンプする
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	（これはリンケージ記述子
+	<INDEX><ORDER>return</ORDER>\texttt{return} (linkage descriptor)</INDEX>
+	<SPLITINLINE>
+	  <SCHEME>
+	    <SCHEMEINLINE>return</SCHEMEINLINE>
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>"return"</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	で指定されます）
+      </LI>
+      <LI>
+	名前付きエントリポイントにジャンプする（これは指定されたラベルをリンケージ記述子として使うことで指定されます）
+      </LI>
+    </UL>
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     For example, compiling the
     <SPLITINLINE>
       <SCHEME>
@@ -312,6 +522,35 @@ function compile(component, target, linkage) {
     </SPLITINLINE>
     should produce
     the instruction
+    </EN>
+    <JA>
+    たとえば、
+    <SPLITINLINE>
+      <SCHEME>
+        式
+      </SCHEME>
+      <JAVASCRIPT>
+        リテラル
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>5</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>
+        （これは自己評価的です）
+      </SCHEME>
+    </SPLITINLINE>
+    を、ターゲットを<SCHEMEINLINE>val</SCHEMEINLINE>レジスタ、リンケージを
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>next</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>"next"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    としてコンパイルすると、次の命令が生成されるはずです。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (assign val (const 5))
@@ -320,6 +559,8 @@ function compile(component, target, linkage) {
 assign("val", constant(5))
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Compiling the same expression with a linkage of
     <SPLITINLINE>
       <SCHEME>
@@ -330,6 +571,20 @@ assign("val", constant(5))
       </JAVASCRIPT>
     </SPLITINLINE>
     should produce the instructions
+    </EN>
+    <JA>
+    同じ式をリンケージ
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>return</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>"return"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    でコンパイルすると、次の命令が生成されるはずです。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (assign val (const 5))
@@ -340,6 +595,8 @@ assign("val", constant(5)),
 go_to(reg("continue"))
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     In the first case, execution will continue with the next instruction
     in the sequence. In the second case,
     <SPLITINLINE>
@@ -348,10 +605,22 @@ go_to(reg("continue"))
     </SPLITINLINE>
     In both cases, the value of the expression will be placed into
     the target <SCHEMEINLINE>val</SCHEMEINLINE> register.
+    </EN>
+    <JA>
+    最初のケースでは、実行は列中の次の命令に続きます。2番目のケースでは、
+    <SPLITINLINE>
+      <SCHEME>手続き呼び出しからリターンします。</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE>レジスタに格納されているエントリポイントにジャンプします。</JAVASCRIPT>
+    </SPLITINLINE>
+    いずれの場合も、式の値はターゲットレジスタ<SCHEMEINLINE>val</SCHEMEINLINE>に格納されます。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <JAVASCRIPT>
+        <BILINGUAL>
+        <EN>
         Our compiler uses the <JAVASCRIPTINLINE>"return"</JAVASCRIPTINLINE> linkage when compiling
-        the return expression of a return statement. 
+        the return expression of a return statement.
         Just as in the explicit-control evaluator, returning from a function call happens in three steps:
         <OL>
           <LI>reverting the stack to the marker and restoring <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> (which holds a continuation set up at the beginning of the function call)</LI>
@@ -361,13 +630,28 @@ go_to(reg("continue"))
         Compilation of a return statement explicitly generates code for reverting the stack and restoring <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE>.
         The return expression is compiled with target <JAVASCRIPTINLINE>val</JAVASCRIPTINLINE> and linkage <JAVASCRIPTINLINE>"return"</JAVASCRIPTINLINE>
         so that the generated code for computing the return value places the return value in <JAVASCRIPTINLINE>val</JAVASCRIPTINLINE> and ends by
-        jumping to <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE>. 
+        jumping to <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE>.
+        </EN>
+        <JA>
+        コンパイラは、return文のreturn式をコンパイルするときに<JAVASCRIPTINLINE>"return"</JAVASCRIPTINLINE>リンケージを使用します。
+        明示的制御評価器と同様に、関数呼び出しからのリターンは3つのステップで行われます：
+        <OL>
+          <LI>スタックをマーカーまで戻し、<JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE>を復元する（これは関数呼び出しの最初に設定された継続を保持しています）</LI>
+          <LI>戻り値を計算し、<JAVASCRIPTINLINE>val</JAVASCRIPTINLINE>に格納する</LI>
+          <LI><JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE>のエントリポイントにジャンプする</LI>
+        </OL>
+        return文のコンパイルでは、スタックの復帰と<JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE>の復元を行うコードを明示的に生成します。
+        return式は、ターゲット<JAVASCRIPTINLINE>val</JAVASCRIPTINLINE>、リンケージ<JAVASCRIPTINLINE>"return"</JAVASCRIPTINLINE>でコンパイルされるため、
+        戻り値を計算するための生成コードは戻り値を<JAVASCRIPTINLINE>val</JAVASCRIPTINLINE>に格納し、
+        <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE>にジャンプして終了します。
+        </JA>
+        </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Instruction sequences and stack usage</NAME>
+    <NAME><BILINGUAL><EN>Instruction sequences and stack usage</EN><JA>命令列とスタックの使用</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <LABEL NAME="sec:instruction-sequences"/>
@@ -375,6 +659,8 @@ go_to(reg("continue"))
   <INDEX>instruction sequence<OPEN/></INDEX>
   
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Each code generator returns an
     <INDEX>code generator<SUBINDEX>value of</SUBINDEX></INDEX>
     <EM>instruction sequence</EM> containing
@@ -408,9 +694,46 @@ go_to(reg("continue"))
       <SCHEME>component expressions.</SCHEME>
       <JAVASCRIPT>subcomponents.</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    各コードジェネレータは、その
+    <INDEX>code generator<SUBINDEX>value of</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>
+        式
+      </SCHEME>
+      <JAVASCRIPT>
+        コンポーネント
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に対して生成したオブジェクトコードを含む<EM>命令列</EM>を返します。
+    <SPLITINLINE>
+      <SCHEME>複合式</SCHEME>
+      <JAVASCRIPT>複合コンポーネント</JAVASCRIPT>
+    </SPLITINLINE>
+    のコード生成は、
+    <SPLITINLINE>
+      <SCHEME>構成式</SCHEME>
+      <JAVASCRIPT>サブコンポーネント</JAVASCRIPT>
+    </SPLITINLINE>
+    に対するより単純なコードジェネレータの出力を組み合わせることで実現されます。これは、
+    <SPLITINLINE>
+      <SCHEME>複合式</SCHEME>
+      <JAVASCRIPT>複合コンポーネント</JAVASCRIPT>
+    </SPLITINLINE>
+    の評価が、
+    <SPLITINLINE>
+      <SCHEME>構成式</SCHEME>
+      <JAVASCRIPT>サブコンポーネント</JAVASCRIPT>
+    </SPLITINLINE>
+    を評価することで実現されるのと同じです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The simplest method for combining instruction sequences is a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -448,6 +771,33 @@ go_to(reg("continue"))
     That is, if <LATEXINLINE>$seq_1$</LATEXINLINE> and
     <LATEXINLINE>$seq_2$</LATEXINLINE> are sequences of instructions, then
     evaluating
+    </EN>
+    <JA>
+    命令列を組み合わせる最も単純な方法は、
+    <INDEX><USE>append_instruction_sequences</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>append-instruction-sequences</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>append_instruction_sequences</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    という
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    です。
+    <SPLITINLINE>
+      <SCHEME>
+	これは任意の数の命令列
+      </SCHEME>
+      <JAVASCRIPT>
+	これは順に実行される2つの命令列
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を引数として受け取り、それらを連結して結合された列を返します。つまり、<LATEXINLINE>$seq_1$</LATEXINLINE>と<LATEXINLINE>$seq_2$</LATEXINLINE>が命令列であるとき、
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <SCHEME>
       (append-instruction-sequences $seq_1$ $seq_2$)
@@ -456,7 +806,10 @@ go_to(reg("continue"))
       append_instruction_sequences(<META>seq</META>$_1$, <META>seq</META>$_2$)
       </JAVASCRIPT>
     </SNIPPET>
-    produces the sequence
+    <BILINGUAL>
+    <EN>produces the sequence</EN>
+    <JA>を評価すると、次の列が生成されます。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <SCHEME>
       $seq_1$
@@ -471,6 +824,8 @@ go_to(reg("continue"))
 
   <LONG_PAGE lines="1"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Whenever registers might need to be saved, the compiler<APOS/>s code
     generators use
     <INDEX><USE>preserving</USE></INDEX>
@@ -495,6 +850,23 @@ go_to(reg("continue"))
     of the register around the first sequence before appending the sequences.
     Otherwise, <SCHEMEINLINE>preserving</SCHEMEINLINE> simply returns the
     appended instruction sequences.  Thus, for example,
+    </EN>
+    <JA>
+    レジスタの退避が必要になる可能性がある場合、コンパイラのコードジェネレータは
+    <INDEX><USE>preserving</USE></INDEX>
+    <SCHEMEINLINE>preserving</SCHEMEINLINE>を使います。これは命令列を組み合わせるためのより巧妙な方法です。
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>Preserving</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	関数<JAVASCRIPTINLINE>preserving</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は3つの引数、すなわちレジスタの集合と、順に実行される2つの命令列を受け取ります。この関数は、2番目の列の実行に必要であれば、集合内の各レジスタの内容が1番目の列の実行中に保存されるように列を連結します。つまり、1番目の列がレジスタを変更し、2番目の列が実際にそのレジスタの元の内容を必要とする場合、<SCHEMEINLINE>preserving</SCHEMEINLINE>は1番目の列の前後にそのレジスタの<SCHEMEINLINE>save</SCHEMEINLINE>と<SCHEMEINLINE>restore</SCHEMEINLINE>を挿入してから列を連結します。
+    そうでなければ、<SCHEMEINLINE>preserving</SCHEMEINLINE>は単に連結された命令列を返します。したがって、たとえば
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <SCHEME>
       (preserving (list $reg_1$ $reg_2$) $seq_1$ $seq_2$)
@@ -503,12 +875,20 @@ go_to(reg("continue"))
       preserving(list(<META>reg</META>$_1$, <META>reg</META>$_2$), <META>seq</META>$_1$, <META>seq</META>$_2$)
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     produces one of the following four sequences of instructions, depending on
     how
     <META>seq</META><LATEXINLINE>$_1$</LATEXINLINE> and
     <META>seq</META><LATEXINLINE>$_2$</LATEXINLINE> use
     <META>reg</META><LATEXINLINE>$_1$</LATEXINLINE> and
     <META>reg</META><LATEXINLINE>$_2$</LATEXINLINE>:
+    </EN>
+    <JA>
+    を評価すると、
+    <META>seq</META><LATEXINLINE>$_1$</LATEXINLINE>と<META>seq</META><LATEXINLINE>$_2$</LATEXINLINE>が<META>reg</META><LATEXINLINE>$_1$</LATEXINLINE>と<META>reg</META><LATEXINLINE>$_2$</LATEXINLINE>をどのように使うかに応じて、次の4つの命令列のいずれかが生成されます：
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <!-- comment from original latex (Abelson/Sussman): -->
   <!--  %Whew!  What a pain it was to set this, because of the blank lines. -->
@@ -542,6 +922,8 @@ go_to(reg("continue"))
     <PDF_ONLY>\medskip</PDF_ONLY>
   </SPLIT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     By using <SCHEMEINLINE>preserving</SCHEMEINLINE> to combine instruction
     sequences the compiler avoids unnecessary
     <INDEX>compiler for JavaScript<SUBINDEX>stack usage</SUBINDEX></INDEX>
@@ -565,15 +947,36 @@ go_to(reg("continue"))
         <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> and the code for returning
         from a function restores it: These corresponding
   <JAVASCRIPTINLINE>save</JAVASCRIPTINLINE> and <JAVASCRIPTINLINE>restore</JAVASCRIPTINLINE>
-  instructions are explicitly generated 
+  instructions are explicitly generated
 	by different calls to <JAVASCRIPTINLINE>compile</JAVASCRIPTINLINE>,
   not as a matched pair by <JAVASCRIPTINLINE>preserving</JAVASCRIPTINLINE>
   (as we will see in section<SPACE/><REF NAME="sec:compiling-combinations"/>).
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SCHEMEINLINE>preserving</SCHEMEINLINE>を使って命令列を組み合わせることで、コンパイラは不要な
+    <INDEX>compiler for JavaScript<SUBINDEX>stack usage</SUBINDEX></INDEX>
+    スタック操作を回避します。これにより、<SCHEMEINLINE>save</SCHEMEINLINE>命令と<SCHEMEINLINE>restore</SCHEMEINLINE>命令を生成するかどうかの詳細が<SCHEMEINLINE>preserving</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の内部に隔離され、個々のコードジェネレータの記述で生じる関心事から分離されます。
+    実際、<SCHEMEINLINE>save</SCHEMEINLINE>命令や<SCHEMEINLINE>restore</SCHEMEINLINE>命令はコード
+    <SPLITINLINE>
+      <SCHEME>ジェネレータが明示的に生成することはありません。</SCHEME>
+      <JAVASCRIPT>
+	      ジェネレータが明示的に生成することはありません。ただし、関数呼び出しのコードが<JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE>を退避し、関数からのリターンのコードがそれを復元するという例外があります。これらの対応する<JAVASCRIPTINLINE>save</JAVASCRIPTINLINE>命令と<JAVASCRIPTINLINE>restore</JAVASCRIPTINLINE>命令は、<JAVASCRIPTINLINE>preserving</JAVASCRIPTINLINE>による対として生成されるのではなく、<JAVASCRIPTINLINE>compile</JAVASCRIPTINLINE>への異なる呼び出しによって明示的に生成されます（<REF NAME="sec:compiling-combinations"/>節で見ることになります）。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In principle, we could represent an instruction sequence simply as a
     list of instructions.
     <SPLITINLINE>
@@ -613,9 +1016,38 @@ go_to(reg("continue"))
     that combine instruction sequences will derive
     register-use information for the combined sequence from the
     information associated with the sequences being combined.
+    </EN>
+    <JA>
+    原理的には、命令列を単なる命令のリストとして表現することもできます。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Append-instruction-sequences</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	関数<JAVASCRIPTINLINE>append_instruction_sequences</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は通常のリストの<SCHEMEINLINE>append</SCHEMEINLINE>を実行することで命令列を組み合わせることができるでしょう。しかし、その場合<SCHEMEINLINE>preserving</SCHEMEINLINE>は複雑な操作になります。なぜなら、各命令列がレジスタをどのように使うかを判定するために各命令列を解析しなければならないからです。
+    <SPLITINLINE>
+      <SCHEME>
+	      <SCHEMEINLINE>Preserving</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	      関数<JAVASCRIPTINLINE>preserving</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は複雑であるだけでなく非効率的でもあります。なぜなら、命令列の各引数を解析しなければなりませんが、それらの列自体が<SCHEMEINLINE>preserving</SCHEMEINLINE>の呼び出しによって構築された可能性があり、その場合は各部分がすでに解析済みだからです。このような繰り返しの解析を避けるために、各命令列にレジスタの使用に関する情報を関連付けます。基本的な命令列を構築するときにこの情報を明示的に提供し、命令列を組み合わせる
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は、組み合わせる列に関連付けられた情報から、結合された列のレジスタ使用情報を導出します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     An instruction sequence will contain three pieces of information:
     <UL>
       <LI>the set of registers that must be initialized before the
@@ -636,6 +1068,25 @@ go_to(reg("continue"))
     </UL>
     We will represent an instruction sequence as a list of its three
     parts.  The constructor for instruction sequences is thus
+    </EN>
+    <JA>
+    命令列は3つの情報を含みます：
+    <UL>
+      <LI>列中の命令が実行される前に初期化されていなければならないレジスタの集合（これらのレジスタはその列に<EM>必要</EM>であると言います）
+      </LI>
+      <LI>列中の命令によって値が変更されるレジスタの集合
+      </LI>
+      <LI>列中の実際の命令
+      <SPLITINLINE>
+	<SCHEME>
+	  （<EM>文</EM>とも呼ばれます）
+	</SCHEME>
+      </SPLITINLINE>
+      </LI>
+    </UL>
+    命令列をこれら3つの部分のリストとして表現します。命令列のコンストラクタは次の通りです。
+    </JA>
+    </BILINGUAL>
     <INDEX><DECLARATION>make_instruction_sequence</DECLARATION></INDEX>
     <SNIPPET EVAL="no">
       <NAME>make_instruction_sequence</NAME>
@@ -652,6 +1103,8 @@ function make_instruction_sequence(needs, modifies, instructions) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     For example, the two-instruction
     sequence that looks up the value of the
     <SPLITINLINE>
@@ -674,6 +1127,25 @@ function make_instruction_sequence(needs, modifies, instructions) {
     <SCHEMEINLINE>continue</SCHEMEINLINE> to have been initialized, and
     modifies register <SCHEMEINLINE>val</SCHEMEINLINE>.
     This sequence would therefore be constructed as
+    </EN>
+    <JA>
+    たとえば、現在の環境で
+    <SPLITINLINE>
+      <SCHEME>
+	変数<SCHEMEINLINE>x</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	シンボル<JAVASCRIPTINLINE>"x"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の値を検索し、結果を<SCHEMEINLINE>val</SCHEMEINLINE>に代入し、
+    <SPLITINLINE>
+      <SCHEME>その後リターンする</SCHEME>
+      <JAVASCRIPT>その後継続に進む</JAVASCRIPT>
+    </SPLITINLINE>
+    2命令の列は、レジスタ<SCHEMEINLINE>env</SCHEMEINLINE>と<SCHEMEINLINE>continue</SCHEMEINLINE>が初期化されていることを必要とし、レジスタ<SCHEMEINLINE>val</SCHEMEINLINE>を変更します。したがって、この列は次のように構築されます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
       (make-instruction-sequence '(env continue) '(val)
@@ -692,6 +1164,8 @@ make_instruction_sequence(list("env", "continue"), list("val"),
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -699,6 +1173,16 @@ make_instruction_sequence(list("env", "continue"), list("val"),
     </SPLITINLINE>
     for combining instruction sequences are shown in
     section<SPACE/><REF NAME="sec:combining-instruction-sequences"/>.
+    </EN>
+    <JA>
+    命令列を組み合わせる
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    は<REF NAME="sec:combining-instruction-sequences"/>節で示します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <INDEX>instruction sequence<CLOSE/></INDEX>
@@ -713,6 +1197,8 @@ make_instruction_sequence(list("env", "continue"), list("val"),
   
   <EXERCISE>
     <LABEL NAME="ex:comp-optimize"/>
+    <BILINGUAL>
+    <EN>
     In evaluating a
     <INDEX>compiler for JavaScript<SUBINDEX>stack usage</SUBINDEX></INDEX>
     <INDEX><USE>preserving</USE></INDEX>
@@ -762,6 +1248,51 @@ make_instruction_sequence(list("env", "continue"), list("val"),
     <SCHEMEINLINE>restore</SCHEMEINLINE> operations are superfluous and
     thus could be eliminated by the compiler<APOS/>s
     <SCHEMEINLINE>preserving</SCHEMEINLINE> mechanism:
+    </EN>
+    <JA>
+    <INDEX>compiler for JavaScript<SUBINDEX>stack usage</SUBINDEX></INDEX>
+    <INDEX><USE>preserving</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    適用を評価する際、明示的制御評価器は常に
+    <SPLITINLINE>
+      <SCHEME>演算子</SCHEME>
+      <JAVASCRIPT>関数式</JAVASCRIPT>
+    </SPLITINLINE>
+    の評価の前後で<SCHEMEINLINE>env</SCHEMEINLINE>レジスタを退避・復元し、各
+    <SPLITINLINE>
+      <SCHEME>オペランド</SCHEME>
+      <JAVASCRIPT>引数式</JAVASCRIPT>
+    </SPLITINLINE>
+    （最後のものを除く）の評価の前後で<SCHEMEINLINE>env</SCHEMEINLINE>を退避・復元し、各
+    <SPLITINLINE>
+      <SCHEME>オペランド</SCHEME>
+      <JAVASCRIPT>引数式</JAVASCRIPT>
+    </SPLITINLINE>
+    の評価の前後で<SCHEMEINLINE>argl</SCHEMEINLINE>を退避・復元し、
+    <SPLITINLINE>
+      <SCHEME>オペランド</SCHEME>
+      <JAVASCRIPT>引数式</JAVASCRIPT>
+    </SPLITINLINE>
+    列の評価の前後で
+    <SPLITINLINE>
+      <SCHEME>
+        <SCHEMEINLINE>proc</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+        <JAVASCRIPTINLINE>fun</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を退避・復元します。以下の各
+    <SPLITINLINE>
+      <SCHEME>組み合わせ</SCHEME>
+      <JAVASCRIPT>適用</JAVASCRIPT>
+    </SPLITINLINE>
+    について、これらの<SCHEMEINLINE>save</SCHEMEINLINE>操作と<SCHEMEINLINE>restore</SCHEMEINLINE>操作のうちどれが不要であり、したがってコンパイラの<SCHEMEINLINE>preserving</SCHEMEINLINE>メカニズムによって除去できるかを述べてください：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" POSTPADDING="no">
       <SCHEME>
       (f 'x 'y)
@@ -785,6 +1316,8 @@ f(g("x"), "y")
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Using the
     <INDEX>compiler for JavaScript<SUBINDEX>explicit-control evaluator vs.</SUBINDEX></INDEX>
     <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>optimizations (additional)</SUBINDEX></INDEX>
@@ -852,6 +1385,76 @@ f(g("x"), "y")
 	altogether.  What do you think of this idea?
       </LI>
     </OL>
+    </EN>
+    <JA>
+    <INDEX>compiler for JavaScript<SUBINDEX>explicit-control evaluator vs.</SUBINDEX></INDEX>
+    <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>optimizations (additional)</SUBINDEX></INDEX>
+    <SCHEMEINLINE>preserving</SCHEMEINLINE>メカニズムを使うことで、コンパイラは
+    <SPLITINLINE>
+      <SCHEME>
+	組み合わせの演算子
+      </SCHEME>
+      <JAVASCRIPT>
+	適用の関数式
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    が
+    <SPLITINLINE>
+      <SCHEME>
+	シンボルである場合
+      </SCHEME>
+      <JAVASCRIPT>
+	名前である場合
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に、その評価の前後で<SCHEMEINLINE>env</SCHEMEINLINE>を退避・復元することを回避します。このような最適化を評価器に組み込むこともできるでしょう。実際、<REF NAME="sec:eceval"/>節の明示的制御評価器は、
+    <SPLITINLINE>
+      <SCHEME>
+	オペランドのない組み合わせ
+      </SCHEME>
+      <JAVASCRIPT>
+	引数のない適用
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を特殊ケースとして扱うことで、同様の最適化をすでに行っています。
+    <DO_BREAK_PAGE/>
+    <OL>
+      <LI>
+	明示的制御評価器を拡張して、
+	<SPLITINLINE>
+	  <SCHEME>
+	演算子がシンボルである組み合わせ
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    関数式が名前である適用
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	を別のクラスの
+	<SPLITINLINE>
+	  <SCHEME>
+	    式
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    コンポーネント
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	として認識させ、そのような
+	<SPLITINLINE>
+	  <SCHEME>
+	    式
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    コンポーネント
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	の評価でこの事実を活用してください。
+      </LI>
+      <LI>
+	Alyssa P. Hackerは、評価器を拡張してますます多くの特殊ケースを認識させることで、コンパイラのすべての最適化を取り込むことができ、それによってコンパイルの利点が完全になくなるだろうと提案しています。この考えについてどう思いますか？
+      </LI>
+    </OL>
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:5_33"/>
   </EXERCISE>
 

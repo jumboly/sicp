@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Subroutines
+    <BILINGUAL>
+      <EN>Subroutines</EN>
+      <JA>サブルーチン</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:subroutines"/>
@@ -9,6 +12,8 @@
   <INDEX>subroutine in register machine<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SHORT_PAGE lines="1"/>When designing a machine to perform a computation, we would often
     prefer to arrange for components to be shared by different parts of
     the computation rather than duplicate the components.  Consider a
@@ -32,18 +37,32 @@
     without showing how they connect to the rest of the machine.  The figure
     also shows the corresponding portions of the machine<APOS/>s controller
     sequence.
+    </EN>
+    <JA>
+    <SHORT_PAGE lines="1"/>計算を行うマシンを設計するとき、コンポーネントを重複させるよりも、計算の異なる部分で共有できるように配置することが望ましい場合がよくあります。2つの最大公約数（GCD）計算を含むマシンを考えましょう<EMDASH/>1つはレジスタ <SCHEMEINLINE>a</SCHEMEINLINE> と <SCHEMEINLINE>b</SCHEMEINLINE> の内容の GCD を求め、もう1つはレジスタ <SCHEMEINLINE>c</SCHEMEINLINE> と <SCHEMEINLINE>d</SCHEMEINLINE> の内容の GCD を求めます。まずプリミティブな <SCHEMEINLINE>gcd</SCHEMEINLINE> 演算があると仮定し、その2つの <SCHEMEINLINE>gcd</SCHEMEINLINE> のインスタンスをより基本的な演算で展開することから始めるとよいでしょう。
+    <SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:gcd-machine-1_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:gcd-machine-1"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、結果として得られるマシンのデータパスのうち GCD 部分だけを示しており、マシンの残りの部分との接続は省略しています。この図には、マシンのコントローラシーケンスの対応する部分も示されています。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
 	    <SCHEME>
         <FIGURE split_scale="0.8" src="img_original/Fig5.7b.std.svg">
-          <CAPTION>Portions of the data paths and controller sequence for
-          a machine with two GCD computations.</CAPTION>
+          <CAPTION><BILINGUAL><EN>Portions of the data paths and controller sequence for
+          a machine with two GCD computations.</EN><JA>2つの GCD 計算を持つマシンのデータパスとコントローラシーケンスの一部。</JA></BILINGUAL></CAPTION>
           <LABEL NAME="fig:gcd-machine-1_scheme"/>
         </FIGURE>
 	    </SCHEME>
 	    <JAVASCRIPT>
         <FIGURE src="img_javascript/Fig5.7b.std.svg">
-          <CAPTION>Portions of the data paths and controller sequence for
-          a machine with two GCD computations.</CAPTION>
+          <CAPTION><BILINGUAL><EN>Portions of the data paths and controller sequence for
+          a machine with two GCD computations.</EN><JA>2つの GCD 計算を持つマシンのデータパスとコントローラシーケンスの一部。</JA></BILINGUAL></CAPTION>
           <LABEL NAME="fig:gcd-machine-1"/>
         </FIGURE>
 	    </JAVASCRIPT>
@@ -96,6 +115,8 @@
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     This machine has two remainder operation boxes and two boxes for
     testing equality.  If the duplicated components are complicated, as is the
     remainder box, this will not be an economical way to build the
@@ -112,9 +133,16 @@
     computing the second GCD as well as the first.  If we do this, we obtain the
     controller sequence shown in
     figure<SPACE/><REF NAME="fig:gcd-machine-2"/>.
+    </EN>
+    <JA>
+    このマシンには剰余演算ボックスが2つと、等値テスト用のボックスが2つあります。剰余ボックスのように重複するコンポーネントが複雑な場合、これはマシンを構築する経済的な方法とは言えません。両方の GCD 計算で同じコンポーネントを使用すれば、データパスコンポーネントの重複を避けることができます。ただし、そうすることでマシン全体の残りの計算に影響を与えないことが条件です。コントローラが <SPLITINLINE><SCHEME><SCHEMEINLINE>gcd-2</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>gcd_2</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> に到達するまでにレジスタ <SCHEMEINLINE>a</SCHEMEINLINE> と <SCHEMEINLINE>b</SCHEMEINLINE> の値が不要になっている場合（あるいはこれらの値を他のレジスタに退避できる場合）、2番目の GCD の計算でもレジスタ <SCHEMEINLINE>c</SCHEMEINLINE> と <SCHEMEINLINE>d</SCHEMEINLINE> の代わりにレジスタ <SCHEMEINLINE>a</SCHEMEINLINE> と <SCHEMEINLINE>b</SCHEMEINLINE> を使うようにマシンを変更できます。そうすると、図<SPACE/><REF NAME="fig:gcd-machine-2"/>に示すコントローラシーケンスが得られます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We have removed the duplicate data-path components (so that the data paths
     are again as in figure<SPACE/><REF NAME="fig:gcd-machine"/>), but the
     controller now has two GCD sequences that differ only in their entry-point
@@ -123,7 +151,7 @@
     <EM>subroutine</EM><EMDASH/>at the end of which we branch back to the
     correct place in the main instruction sequence.  We can accomplish this as
     follows: Before branching to <SCHEMEINLINE>gcd</SCHEMEINLINE>, we place a
-    distinguishing value (such as 0 or<SPACE/>1) into a special register, 
+    distinguishing value (such as 0 or<SPACE/>1) into a special register,
     <INDEX><USE>continue</USE> register</INDEX>
     <SCHEMEINLINE>continue</SCHEMEINLINE>.  At the end of the
     <SCHEMEINLINE>gcd</SCHEMEINLINE> subroutine we return either to
@@ -132,6 +160,13 @@
     Figure<SPACE/><REF NAME="fig:gcd-machine-2cont"/> shows the relevant portion
     of the resulting controller sequence, which includes only a single copy of
     the <SCHEMEINLINE>gcd</SCHEMEINLINE> instructions.
+    </EN>
+    <JA>
+    重複するデータパスコンポーネントを取り除きました（データパスは再び図<SPACE/><REF NAME="fig:gcd-machine"/>と同じになります）が、コントローラにはエントリポイントのラベルだけが異なる2つの GCD シーケンスが残っています。これら2つのシーケンスを、単一のシーケンス<EMDASH/><SCHEMEINLINE>gcd</SCHEMEINLINE> <EM>サブルーチン</EM><EMDASH/>への分岐に置き換え、その末尾でメインの命令シーケンスの正しい場所に戻るようにした方がよいでしょう。これは次のように実現できます。<SCHEMEINLINE>gcd</SCHEMEINLINE> に分岐する前に、特別なレジスタ
+    <INDEX><USE>continue</USE> register</INDEX>
+    <SCHEMEINLINE>continue</SCHEMEINLINE> に識別用の値（0 や<SPACE/>1 など）を格納します。<SCHEMEINLINE>gcd</SCHEMEINLINE> サブルーチンの末尾では、<SCHEMEINLINE>continue</SCHEMEINLINE> レジスタの値に応じて <SPLITINLINE><SCHEME><SCHEMEINLINE>after-gcd-1</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>after_gcd_1</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> または <SPLITINLINE><SCHEME><SCHEMEINLINE>after-gcd-2</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>after_gcd_2</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> のいずれかに戻ります。図<SPACE/><REF NAME="fig:gcd-machine-2cont"/>は、結果として得られるコントローラシーケンスの該当部分を示しており、<SCHEMEINLINE>gcd</SCHEMEINLINE> 命令のコピーは1つだけです。
+    </JA>
+    </BILINGUAL>
     <FIGURE CENTER="no">
       <SNIPPET EVAL="no" LATEX="yes">
 	<SCHEME>
@@ -173,9 +208,9 @@ after-gcd-2
 "after_gcd_2"
 	</JAVASCRIPT>
       </SNIPPET>
-      <CAPTION>Portions of the controller sequence for a machine that
+      <CAPTION><BILINGUAL><EN>Portions of the controller sequence for a machine that
       uses the same data-path components for two different GCD
-      computations.</CAPTION>
+      computations.</EN><JA>2つの異なる GCD 計算に同じデータパスコンポーネントを使用するマシンのコントローラシーケンスの一部。</JA></BILINGUAL></CAPTION>
       <LABEL NAME="fig:gcd-machine-2"/>
     </FIGURE>
     <FIGURE CENTER="no">
@@ -230,15 +265,17 @@ after-gcd-2
 	</JAVASCRIPT>
       </SNIPPET>
       <CAPTION>
-	Using a <SCHEMEINLINE>continue</SCHEMEINLINE> register to avoid
+	<BILINGUAL><EN>Using a <SCHEMEINLINE>continue</SCHEMEINLINE> register to avoid
 	the duplicate controller sequence in
-	figure<SPACE/><REF NAME="fig:gcd-machine-2"/>.
+	figure<SPACE/><REF NAME="fig:gcd-machine-2"/>.</EN><JA><SCHEMEINLINE>continue</SCHEMEINLINE> レジスタを使用して、図<SPACE/><REF NAME="fig:gcd-machine-2"/>の重複するコントローラシーケンスを回避する。</JA></BILINGUAL>
       </CAPTION>
       <LABEL NAME="fig:gcd-machine-2cont"/>
     </FIGURE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     This is a reasonable approach for handling small problems, but it would be
     awkward if there were many instances of GCD computations in the controller
     sequence.  To decide where to continue executing after the
@@ -253,9 +290,16 @@ after-gcd-2
     register a label in the controller sequence in such a way that this value
     can be fetched from the register and used to continue execution at the
     designated entry point.
+    </EN>
+    <JA>
+    これは小さな問題を扱うには合理的なアプローチですが、コントローラシーケンス内に GCD 計算のインスタンスが多数ある場合には厄介です。<SCHEMEINLINE>gcd</SCHEMEINLINE> サブルーチンの後でどこから実行を継続するかを決めるには、<SCHEMEINLINE>gcd</SCHEMEINLINE> を使用するすべての場所に対して、データパス内のテストとコントローラ内の分岐命令が必要になります。サブルーチンを実装するより強力な方法は、<SCHEMEINLINE>continue</SCHEMEINLINE> レジスタに、サブルーチン完了後に実行を継続すべきコントローラシーケンス内のエントリポイントのラベルを保持させることです。この戦略を実装するには、レジスタマシンのデータパスとコントローラの間に新しい種類の接続が必要です。すなわち、コントローラシーケンス内のラベルをレジスタに代入し、その値をレジスタから取り出して指定されたエントリポイントから実行を継続できるようにする方法が必要です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To reflect this ability, we will extend the
     <INDEX><USE>assign</USE> (in register machine)<SUBINDEX>storing label in register</SUBINDEX></INDEX>
     <SCHEMEINLINE>assign</SCHEMEINLINE>
@@ -276,6 +320,22 @@ after-gcd-2
     stored in the <SCHEMEINLINE>continue</SCHEMEINLINE> register.  This leads
     to the controller sequence shown in
     figure<SPACE/><REF NAME="fig:gcd-mach-2labels"/>.
+    </EN>
+    <JA>
+    この能力を反映するために、レジスタマシン言語の
+    <INDEX><USE>assign</USE> (in register machine)<SUBINDEX>storing label in register</SUBINDEX></INDEX>
+    <SCHEMEINLINE>assign</SCHEMEINLINE>
+    命令を拡張して、コントローラシーケンスのラベルを（特殊な定数として）レジスタに代入できるようにします。また、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>goto</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<INDEX><USE>go_to</USE> (in register machine)<SUBINDEX>destination in register</SUBINDEX></INDEX>
+	<JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    命令も拡張して、定数ラベルで記述されたエントリポイントだけでなく、レジスタの内容で記述されたエントリポイントからも実行を継続できるようにします。これらの新しい構成要素を使えば、<SCHEMEINLINE>gcd</SCHEMEINLINE> サブルーチンを <SCHEMEINLINE>continue</SCHEMEINLINE> レジスタに格納された場所への分岐で終了させることができます。これにより、図<SPACE/><REF NAME="fig:gcd-mach-2labels"/>に示すコントローラシーケンスが得られます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
     <FIGURE CENTER="no">
       <SNIPPET EVAL="no" LATEX="yes">
@@ -325,14 +385,16 @@ after-gcd-2
 	</JAVASCRIPT>
       </SNIPPET>
       <CAPTION>
-	Assigning labels to the <SCHEMEINLINE>continue</SCHEMEINLINE> register
+	<BILINGUAL><EN>Assigning labels to the <SCHEMEINLINE>continue</SCHEMEINLINE> register
 	simplifies  and generalizes the strategy shown in
-	figure<SPACE/><REF NAME="fig:gcd-machine-2cont"/>.
+	figure<SPACE/><REF NAME="fig:gcd-machine-2cont"/>.</EN><JA><SCHEMEINLINE>continue</SCHEMEINLINE> レジスタにラベルを代入することで、図<SPACE/><REF NAME="fig:gcd-machine-2cont"/>に示した戦略を簡潔化・一般化する。</JA></BILINGUAL>
       </CAPTION>
       <LABEL NAME="fig:gcd-mach-2labels"/>
     </FIGURE>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     A machine with more than one subroutine could use multiple
     continuation registers (e.g., <SPLITINLINE><SCHEME><SCHEMEINLINE>gcd-continue</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>gcd_continue</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>,
     <SPLITINLINE><SCHEME><SCHEMEINLINE>factorial-continue</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>factorial_continue</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>) or we could have all
@@ -348,6 +410,11 @@ after-gcd-2
     not know where to go when it is finished.  The mechanism developed in the
     next section to handle recursion also provides a better solution to this
     problem of nested subroutine calls.
+    </EN>
+    <JA>
+    複数のサブルーチンを持つマシンでは、複数の継続レジスタを使用できます（例えば <SPLITINLINE><SCHEME><SCHEMEINLINE>gcd-continue</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>gcd_continue</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> や <SPLITINLINE><SCHEME><SCHEMEINLINE>factorial-continue</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>factorial_continue</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>）。あるいは、すべてのサブルーチンで単一の <SCHEMEINLINE>continue</SCHEMEINLINE> レジスタを共有することもできます。共有する方がより経済的ですが、あるサブルーチン（<SCHEMEINLINE>sub1</SCHEMEINLINE>）が別のサブルーチン（<SCHEMEINLINE>sub2</SCHEMEINLINE>）を呼び出す場合には注意が必要です。<SCHEMEINLINE>sub1</SCHEMEINLINE> が <SCHEMEINLINE>sub2</SCHEMEINLINE> の呼び出しのために <SCHEMEINLINE>continue</SCHEMEINLINE> を設定する前に、<SCHEMEINLINE>continue</SCHEMEINLINE> の内容を別のレジスタに退避しておかなければ、<SCHEMEINLINE>sub1</SCHEMEINLINE> は自身の処理が終わった後にどこへ戻ればよいかわからなくなります。次の節で再帰を扱うために開発するメカニズムは、このネストされたサブルーチン呼び出しの問題に対するより良い解決策も提供します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <INDEX>register machine<SUBINDEX>subroutine<CLOSE/></SUBINDEX></INDEX>

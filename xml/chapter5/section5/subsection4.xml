@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Combining Instruction Sequences
+    <BILINGUAL>
+    <EN>Combining Instruction Sequences</EN>
+    <JA>命令列の結合</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:combining-instruction-sequences"/>
@@ -8,6 +11,8 @@
   <INDEX>instruction sequence<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     This section describes the details on how instruction sequences are
     represented and combined.  Recall from
     section<SPACE/><REF NAME="sec:instruction-sequences"/> that an instruction
@@ -18,6 +23,11 @@
     doesn<APOS/>t need or modify any registers.
     So to determine the registers needed
     and modified by instruction sequences we use the selectors
+    </EN>
+    <JA>
+    この節では、命令列がどのように表現され結合されるかの詳細を説明します。節<SPACE/><REF NAME="sec:instruction-sequences"/>で見たように、命令列は必要レジスタ集合、変更レジスタ集合、そして実際の命令のリストとして表現されます。また、ラベル<SPLITINLINE><SCHEME>（シンボル）</SCHEME><JAVASCRIPT>（文字列）</JAVASCRIPT></SPLITINLINE>は、レジスタを必要も変更もしない命令列の退化したケースと見なします。命令列が必要とするレジスタと変更するレジスタを判定するために、次のセレクタを使います。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>registers_needed</DECLARATION></INDEX>
       <INDEX><DECLARATION>registers_modified</DECLARATION></INDEX>
@@ -45,8 +55,15 @@ function instructions(s) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     and to determine whether a given
     sequence needs or modifies a given register we use the predicates
+    </EN>
+    <JA>
+    また、ある命令列が特定のレジスタを必要とするか、または変更するかを判定するために、次の述語を使います。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>needs_register</DECLARATION></INDEX>
       <INDEX><DECLARATION>modifies_register</DECLARATION></INDEX>
@@ -67,11 +84,20 @@ function modifies_register(seq, reg) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     In terms of these predicates and selectors, we can implement the
     various instruction sequence combiners used throughout the compiler.
+    </EN>
+    <JA>
+    これらの述語とセレクタを使って、コンパイラ全体で使用されるさまざまな命令列結合子を実装できます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The basic combiner is
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>append-instruction-sequences</SCHEMEINLINE>.
@@ -106,9 +132,21 @@ function modifies_register(seq, reg) {
       <SCHEME>any of the other sequences that are not initialized (modified) by sequences preceding it.</SCHEME>
       <JAVASCRIPT>the second sequence that are not initialized (modified) by the first sequence.</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    基本的な結合子は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>append-instruction-sequences</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>append_instruction_sequences</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    です。これは、順次実行される<SPLITINLINE><SCHEME>任意個の</SCHEME><JAVASCRIPT>2つの</JAVASCRIPT></SPLITINLINE>命令列を引数として受け取り、<SPLITINLINE><SCHEME>すべての</SCHEME><JAVASCRIPT>2つの</JAVASCRIPT></SPLITINLINE>命令列の命令を結合した命令列を返します。微妙な点は、結果の命令列が必要とするレジスタと変更するレジスタをどう決定するかです。変更レジスタ集合は、<SPLITINLINE><SCHEME>いずれかの命令列が変更するレジスタの集合です。</SCHEME><JAVASCRIPT>どちらかの命令列が変更するレジスタの集合です。</JAVASCRIPT></SPLITINLINE>必要レジスタ集合は、最初の命令列を実行する前に初期化されていなければならないレジスタ（最初の命令列の必要レジスタ集合）に加え、<SPLITINLINE><SCHEME>他の命令列が必要とするレジスタのうち、先行する命令列で初期化（変更）されないものです。</SCHEME><JAVASCRIPT>2番目の命令列が必要とするレジスタのうち、最初の命令列で初期化（変更）されないものです。</JAVASCRIPT></SPLITINLINE>
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	The sequences are appended two at a time by
@@ -164,6 +202,18 @@ function modifies_register(seq, reg) {
       </JAVASCRIPT>
     </SPLITINLINE>
     is implemented as follows:
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	命令列は<SCHEMEINLINE>append-2-sequences</SCHEMEINLINE>によって2つずつ結合されます。この関数は
+      </SCHEME>
+      <JAVASCRIPT>関数<JAVASCRIPTINLINE>append_instruction_sequences</JAVASCRIPTINLINE>は、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    2つの命令列<SCHEMEINLINE>seq1</SCHEMEINLINE>と<SCHEMEINLINE>seq2</SCHEMEINLINE>を受け取り、<SPLITINLINE><SCHEME>文</SCHEME><JAVASCRIPT>命令</JAVASCRIPT></SPLITINLINE>が<SCHEMEINLINE>seq1</SCHEMEINLINE>の<SPLITINLINE><SCHEME>文</SCHEME><JAVASCRIPT>命令</JAVASCRIPT></SPLITINLINE>に続いて<SCHEMEINLINE>seq2</SCHEMEINLINE>の<SPLITINLINE><SCHEME>文</SCHEME><JAVASCRIPT>命令</JAVASCRIPT></SPLITINLINE>を並べたものであり、変更レジスタ集合は<SCHEMEINLINE>seq1</SCHEMEINLINE>または<SCHEMEINLINE>seq2</SCHEMEINLINE>のいずれかが変更するレジスタの集合であり、必要レジスタ集合は<SCHEMEINLINE>seq1</SCHEMEINLINE>が必要とするレジスタに加えて<SCHEMEINLINE>seq2</SCHEMEINLINE>が必要とするレジスタのうち<SCHEMEINLINE>seq1</SCHEMEINLINE>が変更しないもの、という命令列を返します。（集合演算で言えば、新しい必要レジスタ集合は、<SCHEMEINLINE>seq1</SCHEMEINLINE>の必要レジスタ集合と、<SCHEMEINLINE>seq2</SCHEMEINLINE>の必要レジスタ集合から<SCHEMEINLINE>seq1</SCHEMEINLINE>の変更レジスタ集合を引いた差集合との和集合です。）したがって、<SPLITINLINE><SCHEME><SCHEMEINLINE>append-instruction-sequences</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>append_instruction_sequences</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>は次のように実装されます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>append_instruction_sequences</DECLARATION></INDEX>
       <NAME>append_instruction_sequences</NAME>
@@ -198,6 +248,8 @@ function append_instruction_sequences(seq1, seq2) {
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     This
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -206,6 +258,11 @@ function append_instruction_sequences(seq1, seq2) {
     uses some simple operations for manipulating sets
     represented as lists, similar to the (unordered) set representation
     described in section<SPACE/><REF NAME="sec:representing-sets"/>:
+    </EN>
+    <JA>
+    この<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>は、節<SPACE/><REF NAME="sec:representing-sets"/>で説明した（順序なし）集合表現と同様の、リストとして表現された集合を操作するための単純な演算を使います。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>list_union</DECLARATION></INDEX>
       <INDEX><DECLARATION>list_difference</DECLARATION></INDEX>
@@ -241,6 +298,8 @@ function list_difference(s1, s2) {
     </SNIPPET>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
         <SCHEMEINLINE>Preserving</SCHEMEINLINE>,
@@ -309,7 +368,20 @@ function list_difference(s1, s2) {
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     implements this strategy recursively, walking down the list of registers to
-    be preserved:<SPLITINLINE><SCHEME><FOOTNOTE>Note that <SCHEMEINLINE>preserving</SCHEMEINLINE>
+    be preserved:
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+        <SCHEMEINLINE>Preserving</SCHEMEINLINE>は、
+      </SCHEME>
+      <JAVASCRIPT>
+        関数<JAVASCRIPTINLINE>preserving</JAVASCRIPTINLINE>は、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    2番目の主要な命令列結合子であり、レジスタのリスト<SCHEMEINLINE>regs</SCHEMEINLINE>と、順次実行される2つの命令列<SCHEMEINLINE>seq1</SCHEMEINLINE>と<SCHEMEINLINE>seq2</SCHEMEINLINE>を受け取ります。返される命令列の<SPLITINLINE><SCHEME>文</SCHEME><JAVASCRIPT>命令</JAVASCRIPT></SPLITINLINE>は、<SCHEMEINLINE>seq1</SCHEMEINLINE>の<SPLITINLINE><SCHEME>文</SCHEME><JAVASCRIPT>命令</JAVASCRIPT></SPLITINLINE>に続いて<SCHEMEINLINE>seq2</SCHEMEINLINE>の<SPLITINLINE><SCHEME>文</SCHEME><JAVASCRIPT>命令</JAVASCRIPT></SPLITINLINE>を並べたものですが、<SCHEMEINLINE>seq1</SCHEMEINLINE>が変更し<SCHEMEINLINE>seq2</SCHEMEINLINE>が必要とする<SCHEMEINLINE>regs</SCHEMEINLINE>内のレジスタを保護するために、<SCHEMEINLINE>seq1</SCHEMEINLINE>の前後に適切な<SCHEMEINLINE>save</SCHEMEINLINE>命令と<SCHEMEINLINE>restore</SCHEMEINLINE>命令が付加されます。これを実現するために、<SCHEMEINLINE>preserving</SCHEMEINLINE>はまず、必要な<SCHEMEINLINE>save</SCHEMEINLINE>に続いて<SCHEMEINLINE>seq1</SCHEMEINLINE>の<SPLITINLINE><SCHEME>文</SCHEME><JAVASCRIPT>命令</JAVASCRIPT></SPLITINLINE>、そして必要な<SCHEMEINLINE>restore</SCHEMEINLINE>を並べた命令列を作成します。この命令列は、<SCHEMEINLINE>seq1</SCHEMEINLINE>が必要とするレジスタに加えて、保存・復元されるレジスタも必要とし、変更レジスタ集合は<SCHEMEINLINE>seq1</SCHEMEINLINE>が変更するレジスタから保存・復元されるレジスタを除いたものになります。この拡張された命令列と<SCHEMEINLINE>seq2</SCHEMEINLINE>が通常の方法で結合されます。次の<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>は、保存すべきレジスタのリストを辿りながら、この戦略を再帰的に実装しています。
+    </JA>
+    </BILINGUAL><SPLITINLINE><SCHEME><FOOTNOTE>Note that <SCHEMEINLINE>preserving</SCHEMEINLINE>
     calls <SCHEMEINLINE>append</SCHEMEINLINE> with three
     <INDEX><USE>append</USE><SUBINDEX><ORDER>arbitrary</ORDER>with arbitrary number of arguments</SUBINDEX></INDEX>
     arguments.  Though the definition of <SCHEMEINLINE>append</SCHEMEINLINE>
@@ -364,6 +436,8 @@ function preserving(regs, seq1, seq2) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Another sequence combiner,
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>tack-on-instruction-sequence</SCHEMEINLINE>,
@@ -397,6 +471,16 @@ function preserving(regs, seq1, seq2) {
     </SPLITINLINE>
     body<APOS/>s sets of needed and modified
     registers when we tack it onto the other sequence.
+    </EN>
+    <JA>
+    もう一つの命令列結合子
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>tack-on-instruction-sequence</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tack_on_instruction_sequence</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は、<SPLITINLINE><SCHEME><SCHEMEINLINE>compile-lambda</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>compile_lambda_expression</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>が<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>の本体を別の命令列に付加するために使います。<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>の本体は、結合された命令列の一部として<QUOTE>インライン</QUOTE>で実行されるわけではないので、そのレジスタの使用は、それが埋め込まれている命令列のレジスタ使用に影響を与えません。したがって、<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>の本体を別の命令列に付加する際には、本体の必要レジスタ集合と変更レジスタ集合を無視します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>tack_on_instruction_sequence</DECLARATION></INDEX>
       <NAME>tack_on_instruction_sequence</NAME>
@@ -419,6 +503,8 @@ function tack_on_instruction_sequence(seq, body_seq) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Compile-if</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The functions
@@ -446,6 +532,25 @@ function tack_on_instruction_sequence(seq, body_seq) {
     test, one branch or the other will be entered.  Because of this, the
     registers needed by the second branch are still needed by the combined
     sequence, even if these are modified by the first branch.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Compile-if</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数<JAVASCRIPTINLINE>compile_conditional</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>compile-procedure-call</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>compile_function_call</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は、テストに続く2つの代替分岐を結合するために、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>parallel-instruction-sequences</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>parallel_instruction_sequences</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    という特別な結合子を使います。2つの分岐が順次実行されることは決してありません。テストの特定の評価に対して、一方の分岐だけが実行されます。このため、2番目の分岐が必要とするレジスタは、たとえそれが最初の分岐で変更されるとしても、結合された命令列にとって依然として必要です。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" POSTPADDING="no">
       <INDEX><DECLARATION>parallel_instruction_sequences</DECLARATION></INDEX>
       <NAME>parallel_instruction_sequences</NAME>

@@ -1,5 +1,10 @@
 <SECTION>
-  <NAME>Designing Register Machines</NAME>
+  <NAME>
+    <BILINGUAL>
+      <EN>Designing Register Machines</EN>
+      <JA>レジスタマシンの設計</JA>
+    </BILINGUAL>
+  </NAME>
 
   <SECTIONCONTENT/>
 
@@ -13,6 +18,8 @@
   <INDEX>operation<SUBINDEX>in register machine<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To design a register machine, we must design its <EM>data paths</EM>
     (registers and operations) and the <EM>controller</EM> that sequences
     these operations.  To illustrate the design of a simple register
@@ -27,6 +34,18 @@
       <SCHEME>procedure:</SCHEME>
       <JAVASCRIPT>function:</JAVASCRIPT>
       </SPLITINLINE>
+    </EN>
+    <JA>
+    レジスタマシンを設計するには、<EM>データパス</EM>（レジスタと演算）と、これらの演算を順序付ける<EM>コントローラ</EM>を設計しなければなりません。単純なレジスタマシンの設計を説明するために、2つの整数の
+    <INDEX><USE>gcd</USE><SUBINDEX>register machine for<OPEN/></SUBINDEX></INDEX>
+    最大公約数（GCD）を計算するのに使われるユークリッドの互除法を見てみましょう。
+    <INDEX>Euclid<APOS/>s Algorithm</INDEX>
+    <REF NAME="sec:gcd"/>節で見たように、ユークリッドの互除法は次の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+      </SPLITINLINE>で指定される反復的プロセスとして実行できます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <EXAMPLE>gcd_example</EXAMPLE>	
       <SCHEME>
@@ -44,6 +63,8 @@ function gcd(a, b) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     A machine to carry out this algorithm must keep track of two numbers,
     <LATEXINLINE>$a$</LATEXINLINE> and<SPACE/><LATEXINLINE>$b$</LATEXINLINE>, so let us
     assume that these numbers are stored in two registers with those names. The
@@ -69,9 +90,18 @@ function gcd(a, b) {
     <SCHEMEINLINE>a</SCHEMEINLINE>, and finally the remainder stored in
     <SCHEMEINLINE>t</SCHEMEINLINE> will be placed in
     <SCHEMEINLINE>b</SCHEMEINLINE>.)
+    </EN>
+    <JA>
+    このアルゴリズムを実行するマシンは2つの数<LATEXINLINE>$a$</LATEXINLINE>と<SPACE/><LATEXINLINE>$b$</LATEXINLINE>を追跡しなければならないので、これらの数がそれぞれの名前を持つ2つのレジスタに格納されると仮定しましょう。必要な基本演算は、レジスタ<SCHEMEINLINE>b</SCHEMEINLINE>の内容がゼロかどうかのテストと、レジスタ<SCHEMEINLINE>a</SCHEMEINLINE>の内容をレジスタ<SCHEMEINLINE>b</SCHEMEINLINE>の内容で割った剰余の計算です。
+
+    剰余の演算は複雑なプロセスですが、ここでは剰余を計算するプリミティブなデバイスがあると仮定しましょう。GCDアルゴリズムの各サイクルでは、レジスタ<SCHEMEINLINE>a</SCHEMEINLINE>の内容をレジスタ<SCHEMEINLINE>b</SCHEMEINLINE>の内容で置き換え、<SCHEMEINLINE>b</SCHEMEINLINE>の内容を<SCHEMEINLINE>a</SCHEMEINLINE>の旧い内容を<SCHEMEINLINE>b</SCHEMEINLINE>の旧い内容で割った剰余で置き換えなければなりません。これらの置き換えを同時に行えると便利ですが、このレジスタマシンのモデルでは各ステップで1つのレジスタにしか新しい値を代入できないと仮定します。置き換えを実現するために、このマシンでは<SCHEMEINLINE>t</SCHEMEINLINE>と呼ぶ3番目の<QUOTE>一時的な</QUOTE>レジスタを使います。（まず剰余を<SCHEMEINLINE>t</SCHEMEINLINE>に格納し、次に<SCHEMEINLINE>b</SCHEMEINLINE>の内容を<SCHEMEINLINE>a</SCHEMEINLINE>に格納し、最後に<SCHEMEINLINE>t</SCHEMEINLINE>に格納された剰余を<SCHEMEINLINE>b</SCHEMEINLINE>に格納します。）
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can illustrate the registers and operations required for this
     machine by using the
     <INDEX>data paths for register machine<SUBINDEX>data-path diagram</SUBINDEX></INDEX>
@@ -81,8 +111,8 @@ function gcd(a, b) {
     diagram, the registers (<SCHEMEINLINE>a</SCHEMEINLINE>,
     <SCHEMEINLINE>b</SCHEMEINLINE>, and <SCHEMEINLINE>t</SCHEMEINLINE>) are
     represented by rectangles.  Each way to assign a value to a register is
-    indicated by an arrow with <SPLITINLINE><SCHEME>an <SCHEMEINLINE>X</SCHEMEINLINE></SCHEME><JAVASCRIPT>a button<EMDASH/>drawn as <LATEXINLINE>$\otimes$</LATEXINLINE><EMDASH/></JAVASCRIPT></SPLITINLINE> behind the 
-    head, pointing from the source of data to the register.  
+    indicated by an arrow with <SPLITINLINE><SCHEME>an <SCHEMEINLINE>X</SCHEMEINLINE></SCHEME><JAVASCRIPT>a button<EMDASH/>drawn as <LATEXINLINE>$\otimes$</LATEXINLINE><EMDASH/></JAVASCRIPT></SPLITINLINE> behind the
+    head, pointing from the source of data to the register.
     <SPLITINLINE><SCHEME>We can think of the <SCHEMEINLINE>X</SCHEMEINLINE> as a button that, when pushed,</SCHEME><JAVASCRIPT>When pushed, the button</JAVASCRIPT></SPLITINLINE> allows
     the value at the source to <QUOTE>flow</QUOTE> into the designated register.
     The label next to each button is the name we will use to refer to the
@@ -95,9 +125,19 @@ function gcd(a, b) {
     the <SCHEMEINLINE>t&lt;-r</SCHEMEINLINE> assignment), or a constant
     (a built-in value that cannot be changed, represented in a data-path
     diagram by a triangle containing the constant).
+    </EN>
+    <JA>
+    このマシンに必要なレジスタと演算は、図<SPACE/><REF NAME="fig:gcd-machine"/>に示す
+    <INDEX>data paths for register machine<SUBINDEX>data-path diagram</SUBINDEX></INDEX>
+    <INDEX>register machine<SUBINDEX>data-path diagram</SUBINDEX></INDEX>
+    データパス図で表すことができます。この図では、レジスタ（<SCHEMEINLINE>a</SCHEMEINLINE>、<SCHEMEINLINE>b</SCHEMEINLINE>、<SCHEMEINLINE>t</SCHEMEINLINE>）は長方形で表されています。レジスタに値を代入する各方法は、データの出所からレジスタへ向かう矢印の先端の背後に<SPLITINLINE><SCHEME><SCHEMEINLINE>X</SCHEMEINLINE></SCHEME><JAVASCRIPT>ボタン（<LATEXINLINE>$\otimes$</LATEXINLINE>で描かれる）</JAVASCRIPT></SPLITINLINE>を付けて示されます。<SPLITINLINE><SCHEME><SCHEMEINLINE>X</SCHEMEINLINE>はボタンと考えることができ、押すと</SCHEME><JAVASCRIPT>ボタンを押すと、</JAVASCRIPT></SPLITINLINE>ソースの値が指定されたレジスタに<QUOTE>流れ込む</QUOTE>ことができます。各ボタンの横のラベルは、そのボタンを参照するために使う名前です。名前は任意であり、覚えやすいように選ぶことができます（たとえば、<SCHEMEINLINE>a&lt;-b</SCHEMEINLINE>はレジスタ<SCHEMEINLINE>b</SCHEMEINLINE>の内容をレジスタ<SCHEMEINLINE>a</SCHEMEINLINE>に代入するボタンを押すことを表します）。レジスタのデータの出所は、別のレジスタ（<SCHEMEINLINE>a&lt;-b</SCHEMEINLINE>の代入のように）、演算結果（<SCHEMEINLINE>t&lt;-r</SCHEMEINLINE>の代入のように）、または定数（変更できない組み込みの値で、データパス図では定数を含む三角形で表される）のいずれかです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     An operation that computes a value from constants and the contents
     of registers is represented in a data-path diagram by a trapezoid
     containing a name for the operation.  For example, the box marked
@@ -121,6 +161,14 @@ function gcd(a, b) {
     <SPLITINLINE><SCHEME><SCHEMEINLINE>X</SCHEMEINLINE></SCHEME><JAVASCRIPT><LATEXINLINE>$\otimes$</LATEXINLINE></JAVASCRIPT></SPLITINLINE> buttons as switches, the data-path diagram
     is very like the wiring diagram for a machine that could be constructed
     from electrical components.
+    </EN>
+    <JA>
+    定数とレジスタの内容から値を計算する演算は、データパス図では演算の名前を含む台形で表されます。たとえば、図<SPACE/><REF NAME="fig:gcd-machine"/>で<SCHEMEINLINE>rem</SCHEMEINLINE>と記された箱は、接続されたレジスタ<SCHEMEINLINE>a</SCHEMEINLINE>と<SCHEMEINLINE>b</SCHEMEINLINE>の内容の剰余を計算する演算を表しています。矢印（ボタンなし）は入力レジスタと定数から箱へ向かい、矢印が演算の出力値をレジスタに接続します。テストは、テストの名前を含む円で表されます。たとえば、このGCDマシンにはレジスタ<SCHEMEINLINE>b</SCHEMEINLINE>の内容がゼロかどうかをテストする演算があります。
+    <INDEX>test operation in register machine</INDEX>
+    <INDEX>register machine<SUBINDEX>test operation</SUBINDEX></INDEX>
+    テストにも入力レジスタと定数からの矢印がありますが、出力の矢印はありません。その値はデータパスではなくコントローラによって使われます。全体として、データパス図はマシンに必要なレジスタと演算、およびそれらの接続方法を示しています。矢印をワイヤ、<SPLITINLINE><SCHEME><SCHEMEINLINE>X</SCHEMEINLINE></SCHEME><JAVASCRIPT><LATEXINLINE>$\otimes$</LATEXINLINE></JAVASCRIPT></SPLITINLINE>ボタンをスイッチと見なすと、データパス図は電気部品から構成できるマシンの配線図に非常に似ています。
+    </JA>
+    </BILINGUAL>
     <FIGURE>
       <FIGURE split_scale="0.3" web_scale="0.6" src="img_original/Fig5.1a.std.svg"/>
       <LABEL NAME="fig:gcd-machine"/>
@@ -129,6 +177,8 @@ function gcd(a, b) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In order for the data paths to actually compute GCDs, the buttons must
     be pushed in the correct sequence.  We will describe this sequence in
     terms of a
@@ -155,6 +205,14 @@ function gcd(a, b) {
     <SCHEMEINLINE>b</SCHEMEINLINE>.  When the controller reaches
     <SCHEMEINLINE>done</SCHEMEINLINE>, we will find the value of the GCD in
     register <SCHEMEINLINE>a</SCHEMEINLINE>.
+    </EN>
+    <JA>
+    データパスが実際にGCDを計算するには、ボタンを正しい順序で押さなければなりません。この順序を、図<SPACE/><REF NAME="fig:gcd-controller"/>に示す
+    <INDEX>register machine<SUBINDEX>controller diagram</SUBINDEX></INDEX>
+    <INDEX>controller for register machine<SUBINDEX>controller diagram</SUBINDEX></INDEX>
+    コントローラ図で記述します。コントローラ図の要素は、データパスの各部品をどのように操作すべきかを示しています。コントローラ図の長方形の箱は押すべきデータパスのボタンを識別し、矢印はあるステップから次のステップへの順序を記述します。図のひし形は判断を表します。ひし形で識別されるデータパスのテストの値に応じて、2つの順序矢印のうちの1つがたどられます。コントローラを物理的な比喩で解釈することもできます。図をビー玉が転がる迷路だと考えてください。ビー玉が箱に転がり込むと、その箱が名付けるデータパスのボタンを押します。ビー玉が判断ノード（<SCHEMEINLINE>b</SCHEMEINLINE><LATEXINLINE>$\, =0$</LATEXINLINE>のテストなど）に転がり込むと、指定されたテストの結果によって決まる経路でノードを出ます。データパスとコントローラを合わせると、GCDを計算するマシンが完全に記述されます。レジスタ<SCHEMEINLINE>a</SCHEMEINLINE>と<SCHEMEINLINE>b</SCHEMEINLINE>に数を入れた後、<SCHEMEINLINE>start</SCHEMEINLINE>と記された場所からコントローラ（転がるビー玉）をスタートさせます。コントローラが<SCHEMEINLINE>done</SCHEMEINLINE>に到達したとき、レジスタ<SCHEMEINLINE>a</SCHEMEINLINE>にGCDの値が入っています。
+    </JA>
+    </BILINGUAL>
     <WEB_ONLY>
       <!-- Figure code is duplicated in subsection1.xml in a PDF_ONLY -->
     <FIGURE>
@@ -169,6 +227,8 @@ function gcd(a, b) {
   
   <EXERCISE>
     <LABEL NAME="ex:iterative-fact"/>
+    <BILINGUAL>
+    <EN>
     Design a register machine to compute
     <INDEX><USE>factorial</USE><SUBINDEX>register machine for (iterative)</SUBINDEX></INDEX>
     factorials using the iterative
@@ -179,6 +239,16 @@ function gcd(a, b) {
     </SPLITINLINE>
     Draw data-path and
     controller diagrams for this machine.
+    </EN>
+    <JA>
+    次の<SPLITINLINE POSTPADDING="no">
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>で指定される反復的アルゴリズムを使って
+    <INDEX><USE>factorial</USE><SUBINDEX>register machine for (iterative)</SUBINDEX></INDEX>
+    階乗を計算するレジスタマシンを設計してください。このマシンのデータパス図とコントローラ図を描いてください。
+    </JA>
+    </BILINGUAL>
     <SNIPPET POSTPADDING="no">
       <EXAMPLE>factorial_example</EXAMPLE>
       <SCHEME>
@@ -203,6 +273,8 @@ function factorial(n) {
       </JAVASCRIPT>
     </SNIPPET>
     <SOLUTION>
+      <BILINGUAL>
+      <EN>
       (Solution by GitHub user escolmebartlebooth)
       In <JAVASCRIPTINLINE>factorial(n)</JAVASCRIPTINLINE>, the function
       <JAVASCRIPTINLINE>iter(product, counter)</JAVASCRIPTINLINE> is seeded by the
@@ -219,11 +291,21 @@ function factorial(n) {
       <JAVASCRIPTINLINE>multiply</JAVASCRIPTINLINE> and
       <JAVASCRIPTINLINE>plus</JAVASCRIPTINLINE> with two assignments.
       There is one test: <JAVASCRIPTINLINE>greater than</JAVASCRIPTINLINE>.
+      </EN>
+      <JA>
+      （GitHub ユーザー escolmebartlebooth による解答）
+      <JAVASCRIPTINLINE>factorial(n)</JAVASCRIPTINLINE>では、関数<JAVASCRIPTINLINE>iter(product, counter)</JAVASCRIPTINLINE>が引数<JAVASCRIPTINLINE>(1, 1)</JAVASCRIPTINLINE>で初期化され、<JAVASCRIPTINLINE>counter > n</JAVASCRIPTINLINE>になるまで実行され、その時点で product が返されます。<JVASCRIPTINLINE>gcd(a, b)</JVASCRIPTINLINE>とは異なり、レジスタの代入順序を正しく守れば、このレジスタマシンには一時レジスタは不要です。
+
+      データパスには3つのレジスタがあります：<JAVASCRIPTINLINE>product</JAVASCRIPTINLINE>、<JAVASCRIPTINLINE>counter</JAVASCRIPTINLINE>、<JAVASCRIPTINLINE>n</JAVASCRIPTINLINE>です。2つの演算<JAVASCRIPTINLINE>multiply</JAVASCRIPTINLINE>と<JAVASCRIPTINLINE>plus</JAVASCRIPTINLINE>があり、2つの代入があります。テストは1つ：<JAVASCRIPTINLINE>greater than</JAVASCRIPTINLINE>です。
+      </JA>
+      </BILINGUAL>
 
       <FIGURE src="img_javascript/ex5-1-solution-1.png">
 	<LABEL NAME= "ex:5-1"/>
       </FIGURE>
 
+      <BILINGUAL>
+      <EN>
       For the controller, we start by filling the three registers with the desired
       factorial <JAVASCRIPTINLINE>n</JAVASCRIPTINLINE> and the value
       <JAVASCRIPTINLINE>1</JAVASCRIPTINLINE> (seeding
@@ -239,6 +321,11 @@ function factorial(n) {
       <JAVASCRIPTINLINE>counter > n</JAVASCRIPTINLINE>. Once counter is > n, the product
       is
       <JAVASCRIPTINLINE>factorial(n)</JAVASCRIPTINLINE> and can be returned.
+      </EN>
+      <JA>
+      コントローラでは、まず3つのレジスタに目的の階乗の<JAVASCRIPTINLINE>n</JAVASCRIPTINLINE>と値<JAVASCRIPTINLINE>1</JAVASCRIPTINLINE>（<JAVASCRIPTINLINE>product</JAVASCRIPTINLINE>と<JAVASCRIPTINLINE>counter</JAVASCRIPTINLINE>の初期値）を入れます。関数<JAVASCRIPTINLINE>iter</JAVASCRIPTINLINE>が実行され、<JAVASCRIPTINLINE>counter > n</JAVASCRIPTINLINE>かどうかをテストします。<JAVASCRIPTINLINE>counter &lt;= n</JAVASCRIPTINLINE>であれば、<JAVASCRIPTINLINE>product</JAVASCRIPTINLINE>が<JAVASCRIPTINLINE>product * counter</JAVASCRIPTINLINE>に更新され、続いて counter が<JAVASCRIPTINLINE>counter + 1</JAVASCRIPTINLINE>に更新され、<JAVASCRIPTINLINE>counter > n</JAVASCRIPTINLINE>になるまでこのプロセスが繰り返されます。counter が n より大きくなると、product が<JAVASCRIPTINLINE>factorial(n)</JAVASCRIPTINLINE>となり、返すことができます。
+      </JA>
+      </BILINGUAL>
 
       <FIGURE src="img_javascript/ex5-1-solution-2.png">
 	<LABEL NAME= "ex:5-1-2"/>

@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Lexical Addressing
+    <BILINGUAL>
+      <EN>Lexical Addressing</EN>
+      <JA>レキシカルアドレッシング</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:lexical-addressing"/>
@@ -9,6 +12,8 @@
   <INDEX>lexical addressing<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     One of the most common optimizations performed by compilers is the
     optimization of
     <SPLITINLINE>
@@ -71,6 +76,45 @@
       <JAVASCRIPT>function of five arguments</JAVASCRIPT>
     </SPLITINLINE>
     that is returned by
+    </EN>
+    <JA>
+    コンパイラが行う最も一般的な最適化の1つは、
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>
+    の検索の最適化です。これまでに実装した私たちのコンパイラは、評価器マシンの
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>lookup-variable-value</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>lookup_symbol_value</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    演算を使うコードを生成します。この演算は、現在束縛されている各
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>
+    と比較しながら、実行時環境の中をフレームごとに外側に向かって検索します。フレームが深くネストしていたり、多数の
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>
+    がある場合、この検索はコストが高くなる可能性があります。たとえば、次の式から返される
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>5引数の関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の適用において、式
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(* x y z)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>x * y * z</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を評価する際に <SCHEMEINLINE>x</SCHEMEINLINE> の値を検索する問題を考えてみましょう。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <SCHEME>
 (let ((x 3) (y 4))
@@ -104,6 +148,8 @@
       </SCHEME>
     </SPLIT>
     <SHORT_PAGE lines="2"/>
+    <BILINGUAL>
+    <EN>
     Each time
     <SPLITINLINE>
       <SCHEME>
@@ -200,8 +246,98 @@
       <JAVASCRIPT>binding</JAVASCRIPT>
     </SPLITINLINE>
     in that frame.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>lookup-variable-value</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>lookup_symbol_value</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    が <SCHEMEINLINE>x</SCHEMEINLINE> を検索するたびに、シンボル
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>x</SCHEMEINLINE> が
+	<SCHEMEINLINE>y</SCHEMEINLINE> や
+	<SCHEMEINLINE>z</SCHEMEINLINE>（最初のフレーム内）と <SCHEMEINLINE>eq?</SCHEMEINLINE> でなく、
+	<SCHEMEINLINE>a</SCHEMEINLINE>、<SCHEMEINLINE>b</SCHEMEINLINE>、
+	<SCHEMEINLINE>c</SCHEMEINLINE>、<SCHEMEINLINE>d</SCHEMEINLINE>、
+	<SCHEMEINLINE>e</SCHEMEINLINE>（2番目のフレーム内）とも一致しないことを判定しなければなりません。
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>"x"</JAVASCRIPTINLINE> が
+	<JAVASCRIPTINLINE>"y"</JAVASCRIPTINLINE> や
+	<JAVASCRIPTINLINE>"z"</JAVASCRIPTINLINE>（最初のフレーム内）と等しくなく、
+	<JAVASCRIPTINLINE>"a"</JAVASCRIPTINLINE>、
+	<JAVASCRIPTINLINE>"b"</JAVASCRIPTINLINE>、
+	<JAVASCRIPTINLINE>"c"</JAVASCRIPTINLINE>、
+	<JAVASCRIPTINLINE>"d"</JAVASCRIPTINLINE>、
+	<JAVASCRIPTINLINE>"e"</JAVASCRIPTINLINE>（2番目のフレーム内）とも等しくないことを判定しなければなりません。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLIT>
+      <SCHEME>
+	当面、プログラムが
+	<SCHEMEINLINE>define</SCHEMEINLINE> を使わない<EMDASH/>つまり変数は
+	<SCHEMEINLINE>lambda</SCHEMEINLINE> によってのみ束縛されると仮定します。
+      </SCHEME>
+    </SPLIT>
+    私たちの言語は
+    <INDEX>lexical scoping<SUBINDEX>environment structure and</SUBINDEX></INDEX>
+    レキシカルスコープなので、任意の
+    <SPLITINLINE>
+      <SCHEME>
+        式
+      </SCHEME>
+      <JAVASCRIPT>
+        コンポーネント
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の実行時環境は、その
+    <SPLITINLINE>
+      <SCHEME>
+        式
+      </SCHEME>
+      <JAVASCRIPT>
+        コンポーネント
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    が現れるプログラムのレキシカル構造と並行する構造を持ちます。<SPLITINLINE><SCHEME><FOOTNOTE>内部定義を許す場合、スキャンアウトしない限りこれは成り立ちません。練習問題<SPACE/><REF NAME="ex:lexical-address-end"/>を参照してください。
+    </FOOTNOTE></SCHEME></SPLITINLINE>
+    したがって、コンパイラは上の式を解析する際に、
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    が適用されるたびに、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(* x y z)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>x * y * z</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    における
+    <SPLITINLINE>
+      <SCHEME>
+	変数
+	<SCHEMEINLINE>x</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>x</JAVASCRIPTINLINE> の束縛
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    が、現在のフレームから2つ外側のフレームにあり、そのフレームの最初の
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>束縛</JAVASCRIPT>
+    </SPLITINLINE>
+    であることがわかります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can exploit this fact by inventing a new kind of
     <SPLITINLINE>
       <SCHEME>variable-lookup</SCHEME>
@@ -276,8 +412,81 @@
 	and frames do not need to include symbols at run time.
       </JAVASCRIPT>
     </SPLIT>
+    </EN>
+    <JA>
+    この事実を利用するために、新しい種類の
+    <SPLITINLINE>
+      <SCHEME>変数検索</SCHEME>
+      <JAVASCRIPT>名前検索</JAVASCRIPT>
+    </SPLITINLINE>
+    演算
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lexical-address-lookup</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>lexical_address_lookup</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を考案できます。この演算は環境と
+    <INDEX>lexical addressing<SUBINDEX>lexical address</SUBINDEX></INDEX>
+    <EM>レキシカルアドレス</EM>を引数として受け取ります。レキシカルアドレスは2つの数で構成されます。<EM>フレーム番号</EM>は何個のフレームを飛ばすかを指定し、<EM>変位番号</EM>はそのフレーム内で何個の
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>束縛</JAVASCRIPT>
+    </SPLITINLINE>
+    を飛ばすかを指定します。
+    <INDEX><USE>lexical_address_lookup</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Lexical-address-lookup</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>lexical_address_lookup</JAVASCRIPTINLINE> 演算
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、現在の環境からの相対的なレキシカルアドレスに格納されている
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>
+    の値を返します。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lexical-address-lookup</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>lexical_address_lookup</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    演算をマシンに追加すれば、コンパイラに
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lookup-variable-value</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>lookup_symbol_value</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の代わりにこの演算を使って
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>
+    を参照するコードを生成させることができます。同様に、コンパイル済みコードは
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>set-variable-value!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>assign_symbol_value</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の代わりに、新しい
+    <INDEX><USE>lexical_address_assign</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lexical-address-set!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>lexical_address_assign</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    演算を使えます。
+    <SPLIT>
+      <JAVASCRIPT>
+	レキシカルアドレッシングを使えば、オブジェクトコードに名前へのシンボル的な参照を含める必要がなくなり、フレームも実行時にシンボルを含む必要がなくなります。
+      </JAVASCRIPT>
+    </SPLIT>
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In order to generate such code, the compiler must be able to determine
     the lexical address of a
     <SPLITINLINE>
@@ -307,6 +516,32 @@
     <SCHEMEINLINE>x</SCHEMEINLINE> is at (1,0),
     <SCHEMEINLINE>y</SCHEMEINLINE> is at (1,1), and
     <SCHEMEINLINE>c</SCHEMEINLINE> is at (0,2).
+    </EN>
+    <JA>
+    このようなコードを生成するために、コンパイラは参照をコンパイルしようとしている
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>
+    のレキシカルアドレスを決定できなければなりません。プログラム中の
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>
+    のレキシカルアドレスは、コード中のどこにいるかによって変わります。たとえば、以下のプログラムでは、式
+    <LATEXINLINE>$e_1$</LATEXINLINE> における <SCHEMEINLINE>x</SCHEMEINLINE> のアドレスは (2,0) です<EMDASH/>2つ前のフレームの最初の
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>
+    です。その位置では
+    <SCHEMEINLINE>y</SCHEMEINLINE> はアドレス (0,0) にあり、<SCHEMEINLINE>c</SCHEMEINLINE> はアドレス (1,2) にあります。
+    式 <LATEXINLINE>$e_2$</LATEXINLINE> では、
+    <SCHEMEINLINE>x</SCHEMEINLINE> は (1,0)、
+    <SCHEMEINLINE>y</SCHEMEINLINE> は (1,1)、
+    <SCHEMEINLINE>c</SCHEMEINLINE> は (0,2) にあります。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <SCHEME>
 ((lambda (x y)
@@ -326,6 +561,8 @@
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     One way for the compiler to produce code that uses lexical addressing
     is to maintain a data structure called a
     <INDEX>compile-time environment</INDEX>
@@ -428,9 +665,102 @@
     </SPLITINLINE>
     use the compile-time
     environment in order to generate the appropriate lexical addresses.
+    </EN>
+    <JA>
+    コンパイラがレキシカルアドレッシングを使うコードを生成する方法の1つは、
+    <INDEX>compile-time environment</INDEX>
+    <EM>コンパイル時環境</EM>と呼ばれるデータ構造を維持することです。これは、特定の
+    <SPLITINLINE>
+      <SCHEME>変数アクセス</SCHEME>
+      <JAVASCRIPT>名前アクセス</JAVASCRIPT>
+    </SPLITINLINE>
+    演算が実行される際に、実行時環境のどのフレームのどの位置にどの
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>束縛</JAVASCRIPT>
+    </SPLITINLINE>
+    があるかを追跡します。コンパイル時環境はフレームのリストで、各フレームは
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>シンボル</JAVASCRIPT>
+    </SPLITINLINE>
+    のリストを含みます。
+    <SPLITINLINE>
+      <SCHEME>
+	（コンパイル時には値は計算されないので、変数に束縛された値はもちろんありません。）
+      </SCHEME>
+      <JAVASCRIPT>
+	コンパイル時には値は計算されないので、シンボルに関連付けられた値はありません。
+	（練習問題<SPACE/><REF NAME="ex:constant-optimisations"/>では、定数の最適化としてこれを変更します。）
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    コンパイル時環境は
+    <SCHEMEINLINE>compile</SCHEMEINLINE> への追加の引数となり、各コード生成器に引き渡されます。<SCHEMEINLINE>compile</SCHEMEINLINE> のトップレベル呼び出しでは、
+    <SPLITINLINE>
+      <SCHEME>
+	空のコンパイル時環境を使います。
+      </SCHEME>
+      <JAVASCRIPT>
+	すべてのプリミティブ関数とプリミティブな値の名前を含むコンパイル時環境を使います。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>lambda</SCHEMEINLINE> の本体
+      </SCHEME>
+      <JAVASCRIPT>
+	ラムダ式の本体
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    がコンパイルされる際、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>compile-lambda-body</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>compile_lambda_body</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は
+    <SPLITINLINE>
+      <SCHEME>
+	手続き
+      </SCHEME>
+      <JAVASCRIPT>関数
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    のパラメータを含むフレームでコンパイル時環境を拡張し、
+    <SPLITINLINE>
+      <SCHEME>本体を構成する並びが</SCHEME>
+    </SPLITINLINE>
+    本体がその拡張された環境でコンパイルされるようにします。
+    <SPLIT>
+      <JAVASCRIPT>
+	同様に、ブロックの本体がコンパイルされる際、
+	<JAVASCRIPTINLINE>compile_block</JAVASCRIPTINLINE>
+	は本体の
+	<INDEX>compiler for JavaScript<SUBINDEX>scanning out internal declarations</SUBINDEX></INDEX>
+	スキャンアウトされたローカル名を含むフレームでコンパイル時環境を拡張します。
+      </JAVASCRIPT>
+    </SPLIT>
+    コンパイルの各時点で、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>compile-variable</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>compile_name</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>compile-assignment</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>compile_assignment_declaration</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、適切なレキシカルアドレスを生成するためにコンパイル時環境を使います。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLIT>
       <SCHEME>
 	Exercises<SPACE/><REF NAME="ex:lexical-address-start"/>
@@ -450,6 +780,20 @@
 	describe other uses for	the compile-time environment.
       </JAVASCRIPT>
     </SPLIT>
+    </EN>
+    <JA>
+    <SPLIT>
+      <SCHEME>
+	練習問題<SPACE/><REF NAME="ex:lexical-address-start"/>から<SPACE/><REF NAME="ex:lexical-address-end"/>では、レキシカルアドレッシング戦略のこのスケッチを完成させ、レキシカル検索をコンパイラに組み込む方法を説明します。
+	練習問題<SPACE/><REF NAME="ex:cte-open-code"/>では、コンパイル時環境の別の用途を説明します。
+      </SCHEME>
+      <JAVASCRIPT>
+	練習問題<SPACE/><REF NAME="ex:lexical-address-start"/>から<SPACE/><REF NAME="ex:impl-lex-addr"/>では、レキシカルアドレッシング戦略のこのスケッチを完成させ、レキシカル検索をコンパイラに組み込む方法を説明します。
+	練習問題<SPACE/><REF NAME="ex:lexical-constants"/>と<SPACE/><REF NAME="ex:constant-optimisations"/>では、コンパイル時環境の別の用途を説明します。
+      </JAVASCRIPT>
+    </SPLIT>
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SPLIT>
@@ -464,6 +808,8 @@
   </SPLIT>
   
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Write a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -530,11 +876,76 @@
       <JAVASCRIPT>of the name</JAVASCRIPT>
     </SPLITINLINE>
     at a specified lexical address.
+    </EN>
+    <JA>
+    新しい検索演算を実装する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>lexical_address_lookup</USE></INDEX>
+    <INDEX><USE>lexical_address_assign</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lexical-address-lookup</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>lexical_address_lookup</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を書いてください。この関数は2つの引数<EMDASH/>レキシカルアドレスと実行時環境<EMDASH/>を受け取り、指定されたレキシカルアドレスに格納されている
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>
+    の値を返します。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Lexical-address-lookup</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数
+      <JAVASCRIPTINLINE ALLOW_BREAK="yes">lexical_@address_@lookup</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>
+    の値が
+    <SPLITINLINE>
+      <SCHEME>シンボル <SCHEMEINLINE>*unassigned*</SCHEMEINLINE> である場合にエラーを通知するべきです。<FOOTNOTE>これは、
+      <INDEX>scanning out internal definitions<SUBINDEX><ORDER>compiler</ORDER>in compiler</SUBINDEX></INDEX>
+      <INDEX>compiler for JavaScript<SUBINDEX>scanning out internal definitions</SUBINDEX></INDEX>
+      内部定義を除去するスキャンアウト手法を実装する場合に必要な変数検索の変更です（練習問題<SPACE/><REF NAME="ex:lexical-address-end"/>）。レキシカルアドレッシングが機能するためには、これらの定義を除去する必要があります。</FOOTNOTE>
+      </SCHEME>
+      <JAVASCRIPT>文字列 <JAVASCRIPTINLINE>"*unassigned*"</JAVASCRIPTINLINE> である場合にエラーを通知するべきです。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <COMMENT>
+      The footnote can be safely dropped, because the scanning
+      method is the default in the JavaScript adaptation.
+    </COMMENT>
+    また、指定されたレキシカルアドレスにある
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>
+    の値を変更する演算を実装する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lexical-address-set!</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>lexical_address_assign</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    も書いてください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:lexical-address-start"/>
     <LABEL NAME="ex:lexical-address-lookup"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Modify the compiler to maintain the
     <INDEX>compile-time environment</INDEX>
     compile-time environment as
@@ -548,10 +959,28 @@
 	<JAVASCRIPTINLINE>compile_block</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    上で説明したように、コンパイラが
+    <INDEX>compile-time environment</INDEX>
+    コンパイル時環境を維持するように変更してください。つまり、
+    <SCHEMEINLINE>compile</SCHEMEINLINE> と各種コード生成器にコンパイル時環境の引数を追加し、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>compile-lambda-body</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>compile_lambda_body</JAVASCRIPTINLINE> と
+	<JAVASCRIPTINLINE>compile_block</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    で拡張するようにします。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:5_43"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Write a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -579,6 +1008,33 @@
     environment.  For example, in the program fragment that is shown above, the
     compile-time environment during the compilation of expression
     <LATEXINLINE>$e_1$</LATEXINLINE> is
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>シンボル</JAVASCRIPT>
+    </SPLITINLINE>
+    と
+    <INDEX>compile-time environment</INDEX>
+    コンパイル時環境を引数として受け取り、その環境に対する
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>シンボル</JAVASCRIPT>
+    </SPLITINLINE>
+    のレキシカルアドレスを返す
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>find-variable</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>find_symbol</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を書いてください。たとえば、上に示したプログラム断片では、式
+    <LATEXINLINE>$e_1$</LATEXINLINE> のコンパイル中のコンパイル時環境は次のようになります。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME><SCHEMEINLINE>((y z) (a b c d e) (x y))</SCHEMEINLINE>.
       </SCHEME>
@@ -592,12 +1048,24 @@ list(list("y", "z"),
 	</SNIPPET>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Find-variable</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The function <JAVASCRIPTINLINE>find_symbol</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
     should produce
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Find-variable</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>関数 <JAVASCRIPTINLINE>find_symbol</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は次のような結果を返すべきです。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <SCHEME>
 (find-variable 'c '((y z) (a b c d e) (x y)))
@@ -651,6 +1119,8 @@ find_symbol("w", list(list("y", "z"),
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Using
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>find-variable</SCHEMEINLINE></SCHEME>
@@ -718,12 +1188,65 @@ find_symbol("w", list(list("y", "z"),
       <JAVASCRIPT>lambda</JAVASCRIPT>
     </SPLITINLINE>
     combination at the beginning of this section.
+    </EN>
+    <JA>
+    練習問題<SPACE/><REF NAME="ex:find-variable"/>の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>find-variable</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>find_symbol</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を使って、
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>compile-variable</SCHEMEINLINE>
+	と
+	<SCHEMEINLINE>compile-assignment</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>compile_assignment_declaration</JAVASCRIPTINLINE>
+	と
+	<JAVASCRIPTINLINE>compile_name</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    をレキシカルアドレス命令を出力するように書き換えてください。
+    <SPLIT>
+      <SCHEME>
+	<SCHEMEINLINE>find-variable</SCHEMEINLINE> が
+	<SCHEMEINLINE>not-found</SCHEMEINLINE> を返す場合（つまり変数がコンパイル時環境にない場合）、コード生成器には以前と同様に評価器の演算を使って束縛を検索させるべきです。
+	（コンパイル時に見つからない変数が存在できるのはグローバル環境だけです。グローバル環境は実行時環境の一部ですが、コンパイル時環境の一部ではありません。<FOOTNOTE>レキシカルアドレスはグローバル環境の変数にアクセスするために使えません。これらの名前はいつでも対話的に定義・再定義できるからです。練習問題<SPACE/><REF NAME="ex:lexical-address-end"/>のように内部定義をスキャンアウトすると、コンパイラが見るのはトップレベルの定義だけとなり、それらはグローバル環境に作用します。定義のコンパイルでは、定義された名前はコンパイル時環境に入りません。</FOOTNOTE>
+	したがって、望むなら、評価器の演算に <SCHEMEINLINE>env</SCHEMEINLINE> にある実行時環境全体を検索させる代わりに、演算
+	<SCHEMEINLINE>(op<SPACE/>get-global-environment)</SCHEMEINLINE> で得られるグローバル環境を直接参照させることができます。）
+	<COMMENT>
+	  This is not possible in an interactive system that keeps
+	  extending the program environment. Note the new
+	  <JAVASCRIPTINLINE>driver_loop</JAVASCRIPTINLINE> in
+	  <REF NAME="sec:running-eval"/> and the same idea recurring in
+	  <JAVASCRIPTINLINE>compile_and_go</JAVASCRIPTINLINE> in
+	  <REF NAME="sec:interfacing-compiled-code"/>.
+	</COMMENT>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>find_symbol</JAVASCRIPTINLINE> が
+	<JAVASCRIPTINLINE>"not found"</JAVASCRIPTINLINE> を返す場合（つまり名前がコンパイル時環境にない場合）、コンパイル時エラーを報告するべきです。
+      </JAVASCRIPT>
+    </SPLIT>
+    変更したコンパイラを、この節の冒頭にあるネストされた
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>lambda</JAVASCRIPT>
+    </SPLITINLINE>
+    の組み合わせなど、いくつかの簡単なケースでテストしてください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:impl-lex-addr"/>
   </EXERCISE>
 
   <SPLIT>
     <SCHEME>
       <EXERCISE>
+	<BILINGUAL>
+	<EN>
 	We argued in section<SPACE/><REF NAME="sec:internal-definitions"/> that
 	internal definitions for block structure should not be considered
 	<QUOTE>real</QUOTE> <SCHEMEINLINE>define</SCHEMEINLINE>s.  Rather, a
@@ -742,12 +1265,23 @@ find_symbol("w", list(list("y", "z"),
 	before it compiles a
 	procedure
 	body.
+	</EN>
+	<JA>
+	<REF NAME="sec:internal-definitions"/>節では、ブロック構造の内部定義を「本物の」<SCHEMEINLINE>define</SCHEMEINLINE> と見なすべきではないと論じました。むしろ、手続きの本体は、定義される内部変数が通常の <SCHEMEINLINE>lambda</SCHEMEINLINE> 変数として設置され、<SCHEMEINLINE>set!</SCHEMEINLINE> を使って正しい値に初期化されるかのように解釈されるべきです。
+	<REF NAME="sec:internal-definitions"/>節と練習問題<SPACE/><REF NAME="ex:internal-defs"/>では、
+	<INDEX>scanning out internal definitions<SUBINDEX><ORDER>compiler</ORDER>in compiler</SUBINDEX></INDEX>
+	<INDEX>compiler for Scheme<SUBINDEX>scanning out internal definitions</SUBINDEX></INDEX>
+	内部定義をスキャンアウトすることでメタ循環インタプリタを変更する方法を示しました。手続きの本体をコンパイルする前に同じ変換を実行するようにコンパイラを変更してください。
+	</JA>
+	</BILINGUAL>
 	<LABEL NAME="ex:lexical-address-end"/>
       </EXERCISE>
     </SCHEME>
     <JAVASCRIPT>
       <SHORT_PAGE lines="1"/>
       <EXERCISE>
+	<BILINGUAL>
+	<EN>
 	In JavaScript, an attempt to assign a new value to a name that is declared
 	as a
 	<INDEX>constant (in JavaScript)<SUBINDEX>detecting assignment to</SUBINDEX></INDEX>
@@ -767,6 +1301,19 @@ find_symbol("w", list(list("y", "z"),
 	Modify <JAVASCRIPTINLINE>compile_assignment</JAVASCRIPTINLINE>
 	to report an appropriate error when it detects an
 	assignment to a	constant.
+	</EN>
+	<JA>
+	JavaScript では、
+	<INDEX>constant (in JavaScript)<SUBINDEX>detecting assignment to</SUBINDEX></INDEX>
+	定数として宣言された名前に新しい値を代入しようとするとエラーになります。
+	練習問題<SPACE/><REF NAME="ex:mutable"/>では、このようなエラーを実行時に検出する方法を示しました。この節で紹介した手法を使えば、定数への代入の試みを<EM>コンパイル時</EM>に検出できます。このために、
+	<JAVASCRIPTINLINE>compile_lambda_body</JAVASCRIPTINLINE> と
+	<JAVASCRIPTINLINE>compile_block</JAVASCRIPTINLINE>
+	を拡張して、名前が変数として宣言されたか（<JAVASCRIPTINLINE>let</JAVASCRIPTINLINE> またはパラメータとして）、定数として宣言されたか（<JAVASCRIPTINLINE>const</JAVASCRIPTINLINE> または
+	<JAVASCRIPTINLINE>function</JAVASCRIPTINLINE> として）をコンパイル時環境に記録するようにしてください。
+	<JAVASCRIPTINLINE>compile_assignment</JAVASCRIPTINLINE> を変更して、定数への代入を検出した場合に適切なエラーを報告するようにしてください。
+	</JA>
+	</BILINGUAL>
 	<LABEL NAME="ex:lexical-constants"/>
       </EXERCISE>
     </JAVASCRIPT>
@@ -775,6 +1322,8 @@ find_symbol("w", list(list("y", "z"),
   <SPLIT>
     <SCHEME>
       <EXERCISE>
+	<BILINGUAL>
+	<EN>
 	In this section we have focused on the use of the compile-time
 	environment to produce lexical addresses.  But there are other uses
 	for compile-time environments.  For instance, in
@@ -791,12 +1340,24 @@ find_symbol("w", list(list("y", "z"),
 	open-code it as a primitive, ignoring the new binding.  For example,
 	consider the
 	procedure
+	</EN>
+	<JA>
+	この節では、レキシカルアドレスを生成するためのコンパイル時環境の使用に焦点を当てました。しかし、コンパイル時環境には他の用途もあります。たとえば、練習問題<SPACE/><REF NAME="ex:open-code"/>では、
+	<INDEX>compiler for Scheme<SUBINDEX>open-coding of primitives</SUBINDEX></INDEX>
+	<INDEX>open-coding of primitives</INDEX>
+	<INDEX>reserved words</INDEX>
+	<INDEX>compile-time environment<SUBINDEX>open-coding and</SUBINDEX></INDEX>
+	プリミティブ手続きをオープンコーディングすることでコンパイル済みコードの効率を高めました。その実装では、オープンコーディングされる手続きの名前を予約語として扱いました。プログラムがそのような名前を再束縛しても、練習問題<SPACE/><REF NAME="ex:open-code"/>で説明した仕組みは新しい束縛を無視してプリミティブとしてオープンコーディングします。たとえば、次の手続きを考えてみましょう。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET>
 	  <SCHEME>
 (lambda (+ * a b x y)
   (+ (* a x) (* b y)))
 	  </SCHEME>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	which computes a linear combination of <SCHEMEINLINE>x</SCHEMEINLINE> and
 	<SCHEMEINLINE>y</SCHEMEINLINE>.  We might call it with arguments
 	<SCHEMEINLINE>+matrix</SCHEMEINLINE>, <SCHEMEINLINE>*matrix</SCHEMEINLINE>,
@@ -813,12 +1374,30 @@ find_symbol("w", list(list("y", "z"),
 	or
 	<SCHEMEINLINE>set!</SCHEMEINLINE>
 	these names.)
+	</EN>
+	<JA>
+	これは <SCHEMEINLINE>x</SCHEMEINLINE> と
+	<SCHEMEINLINE>y</SCHEMEINLINE> の線形結合を計算します。引数として
+	<SCHEMEINLINE>+matrix</SCHEMEINLINE>、<SCHEMEINLINE>*matrix</SCHEMEINLINE>、
+	および4つの行列を渡して呼び出すことができますが、オープンコーディングコンパイラは
+	<SCHEMEINLINE>(+ (* a x) (* b y))</SCHEMEINLINE>
+	の中の <SCHEMEINLINE>+</SCHEMEINLINE> と <SCHEMEINLINE>*</SCHEMEINLINE> をプリミティブの <SCHEMEINLINE>+</SCHEMEINLINE> と
+	<SCHEMEINLINE>*</SCHEMEINLINE> としてオープンコーディングしてしまいます。プリミティブ手続きの名前を含む式に対して正しいコードをコンパイルするように、コンパイル時環境を参照するようオープンコーディングコンパイラを変更してください。
+	（プログラムがこれらの名前を
+	<SCHEMEINLINE>define</SCHEMEINLINE>
+	や
+	<SCHEMEINLINE>set!</SCHEMEINLINE>
+	しない限り、コードは正しく動作します。）
+	</JA>
+	</BILINGUAL>
 	<LABEL NAME="ex:cte-open-code"/>
       </EXERCISE>
     </SCHEME>
     <JAVASCRIPT>
       <EXERCISE>
         <LABEL NAME="ex:constant-optimisations"/>
+	<BILINGUAL>
+	<EN>
         Knowledge about constants at compile time opens the door to many
         optimizations that allow us to generate more efficient object code. In
         addition to the extension of the
@@ -832,7 +1411,7 @@ find_symbol("w", list(list("y", "z"),
           <LI>
             A constant declaration such as <JAVASCRIPTINLINE>const</JAVASCRIPTINLINE><FIXED_SPACE/><META>name</META><FIXED_SPACE/><JAVASCRIPTINLINE>=</JAVASCRIPTINLINE><FIXED_SPACE/><META>literal</META><JAVASCRIPTINLINE>;</JAVASCRIPTINLINE> allows us
             to replace all occurrences of <META>name</META> within the scope of
-            the declaration by <META>literal</META> so that <META>name</META> 
+            the declaration by <META>literal</META> so that <META>name</META>
             doesn<APOS/>t have to be looked up in the runtime environment. This optimization is
             called <EM>constant propagation</EM>. Use an extended compile-time
             environment to store literal constants, and modify
@@ -874,6 +1453,35 @@ find_symbol("w", list(list("y", "z"),
             <LABEL NAME="foot:ex-ast-transformations"/>
           </LI>
         </OL>
+	</EN>
+	<JA>
+        コンパイル時に定数についての知識があると、より効率的なオブジェクトコードを生成できる多くの最適化への道が開けます。練習問題<SPACE/><REF NAME="ex:lexical-constants"/>で定数として宣言された名前を示すように
+	<INDEX>compile-time environment</INDEX>
+	コンパイル時環境を拡張したのに加えて、コンパイル時にわかっている定数の値や、コードの最適化に役立つ他の情報を格納することもできます。
+        <OL>
+          <LI>
+            <JAVASCRIPTINLINE>const</JAVASCRIPTINLINE><FIXED_SPACE/><META>name</META><FIXED_SPACE/><JAVASCRIPTINLINE>=</JAVASCRIPTINLINE><FIXED_SPACE/><META>literal</META><JAVASCRIPTINLINE>;</JAVASCRIPTINLINE> のような定数宣言があると、宣言のスコープ内の <META>name</META> のすべての出現を <META>literal</META> で置き換えることができ、<META>name</META> を実行時環境で検索する必要がなくなります。この最適化は<EM>定数伝播</EM>と呼ばれます。拡張されたコンパイル時環境を使ってリテラル定数を格納し、
+            <JAVASCRIPTINLINE>compile_name</JAVASCRIPTINLINE> を変更して、生成される <JAVASCRIPTINLINE>assign</JAVASCRIPTINLINE>
+	    命令で <JAVASCRIPTINLINE>lookup_symbol_value</JAVASCRIPTINLINE> 演算の代わりに格納された定数を使うようにしてください。
+          </LI>
+          <LI>
+	    関数宣言は定数宣言に展開される派生コンポーネントです。グローバル環境にあるプリミティブ関数の名前も定数と見なすことにしましょう。
+	    どの名前がコンパイル済み関数を参照し、どの名前がプリミティブ関数を参照するかを追跡するようにコンパイル時環境をさらに拡張すれば、関数がコンパイル済みかプリミティブかを判定するテストを実行時からコンパイル時に移すことができます。これにより、生成されたコードで関数適用ごとに1回実行しなければならないテストをコンパイラが実行するものに置き換えられるため、オブジェクトコードが効率的になります。このような拡張されたコンパイル時環境を使って、
+            <JAVASCRIPTINLINE>compile_function_call</JAVASCRIPTINLINE>
+	    を変更し、呼び出される関数がコンパイル済みかプリミティブかをコンパイル時に判定できる場合、
+	    <JAVASCRIPTINLINE>compiled_branch</JAVASCRIPTINLINE> または
+            <JAVASCRIPTINLINE>primitive_branch</JAVASCRIPTINLINE>
+            の命令のみを生成するようにしてください。
+          </LI>
+          <LI>
+            (a) のように定数名をリテラル値で置き換えると、別の最適化への道が開けます。すなわち、リテラル値へのプリミティブ関数の適用をコンパイル時に計算した結果で置き換えることです。この最適化は<EM>定数畳み込み</EM>と呼ばれ、コンパイラ内で加算を実行することにより
+            <JAVASCRIPTINLINE>40 + 2</JAVASCRIPTINLINE> のような式を
+            <JAVASCRIPTINLINE>42</JAVASCRIPTINLINE> で置き換えます。数値に対する算術演算と文字列の連結について定数畳み込みを実行するようにコンパイラを拡張してください。
+            <LABEL NAME="foot:ex-ast-transformations"/>
+          </LI>
+        </OL>
+	</JA>
+	</BILINGUAL>
       </EXERCISE>
     </JAVASCRIPT>
   </SPLIT>

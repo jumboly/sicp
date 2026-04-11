@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    An Example of Compiled Code
+    <BILINGUAL>
+    <EN>An Example of Compiled Code</EN>
+    <JA>コンパイル済みコードの例</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:compiled-code"/>
@@ -9,6 +12,8 @@
   <INDEX><USE>factorial</USE><SUBINDEX>compilation of<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Now that we have seen all the elements of the compiler, let us examine
     an example of compiled code to see how things fit together.  We will
     compile the
@@ -47,6 +52,41 @@
 	but allow the string to span multiple lines):
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    コンパイラのすべての要素を見てきたので、コンパイル済みコードの例を調べて、すべてがどのように組み合わさるかを確認しましょう。再帰的な
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>factorial</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>factorial</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の
+    <SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    を
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>compile</SCHEMEINLINE> を呼び出して
+      </SCHEME>
+      <JAVASCRIPT>
+	<SCHEMEINLINE>compile</SCHEMEINLINE> の第一引数として、プログラムの文字列表現に <SCHEMEINLINE>parse</SCHEMEINLINE> を適用した結果を渡して
+	（ここでは
+	<INDEX><ORDER>''</ORDER><JAVASCRIPTINLINE>`</JAVASCRIPTINLINE> (back quote)</INDEX>
+	<INDEX>quotation marks<SUBINDEX>back quotes</SUBINDEX></INDEX>
+	<INDEX>back quotes</INDEX>
+	<INDEX>string(s)<SUBINDEX>typed over multiple lines</SUBINDEX></INDEX>
+	バッククォート
+	<JAVASCRIPTINLINE>`</JAVASCRIPTINLINE><LATEXINLINE>$\ldots$</LATEXINLINE><JAVASCRIPTINLINE>`</JAVASCRIPTINLINE> を使用しています。これはシングルクォートやダブルクォートと同様に機能しますが、文字列を複数行にまたがって記述できます）
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    コンパイルします：
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (compile
@@ -69,6 +109,8 @@ function factorial(n) {
         "next");
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     We have specified that the value of the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>define</SCHEMEINLINE> expression</SCHEME>
@@ -92,9 +134,34 @@ function factorial(n) {
     </SPLITINLINE>
     as the linkage
     descriptor is arbitrary.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>define</SCHEMEINLINE> 式</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    の値を <SCHEMEINLINE>val</SCHEMEINLINE> レジスタに格納するよう指定しています。
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>define</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    の実行後にコンパイル済みコードが何をするかは問わないので、リンケージ記述子として
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>next</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>"next"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を選んでいますが、これは任意の選択です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>Compile</SCHEMEINLINE>
@@ -107,7 +174,7 @@ function factorial(n) {
   to a constant declaration and then
       </JAVASCRIPT>
     </SPLITINLINE>
-calls    
+calls
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>compile-definition</SCHEMEINLINE> to compile </SCHEME>
       <JAVASCRIPT>
@@ -162,6 +229,66 @@ calls
     </SPLITINLINE>
     there is no linkage code
     in this case.  The skeleton of the compiled code is thus
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>Compile</SCHEMEINLINE> は式が定義であると判定し、
+      </SCHEME>
+      <JAVASCRIPT>
+	関数 <SCHEMEINLINE>compile</SCHEMEINLINE> は関数宣言が与えられたと判定し、それを定数宣言に変換してから
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>compile-definition</SCHEMEINLINE> を呼び出してコンパイルします。これは</SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>compile_declaration</JAVASCRIPTINLINE> を呼び出します。これは
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    代入される値を計算するコード（ターゲットは <SCHEMEINLINE>val</SCHEMEINLINE>）、続いて
+    <SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    を設定するコード、続いて
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>define</SCHEMEINLINE> の値（シンボル <SCHEMEINLINE>ok</SCHEMEINLINE>）
+      </SCHEME>
+      <JAVASCRIPT>
+	宣言の値（値 <SCHEMEINLINE>undefined</SCHEMEINLINE>）
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    をターゲットレジスタに格納するコード、そして最後にリンケージコードをコンパイルします。
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>Env</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<SCHEMEINLINE>env</SCHEMEINLINE> レジスタ
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、
+    <SPLITINLINE>
+      <SCHEME>
+	定義
+      </SCHEME>
+      <JAVASCRIPT>
+	宣言
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を設定するために必要なので、値の計算の前後で保存されます。リンケージが
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>next</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>"next"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    なので、この場合はリンケージコードはありません。コンパイル済みコードの骨格は次のようになります。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <SCHEME>
 $\langle save$ env $if\ modified\ by\ code\ to\ compute\ value\rangle$
@@ -187,6 +314,8 @@ assign("val", constant(undefined))
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The expression that is
     <SPLITINLINE>
       <SCHEME>to be</SCHEME>
@@ -283,6 +412,80 @@ assign("val", constant(undefined))
      isn<APOS/>t executed at this point,
     so its use of <SCHEMEINLINE>env</SCHEMEINLINE> is irrelevant.)
     Therefore, the skeleton for the compiled code becomes
+    </EN>
+    <JA>
+    名前 <SCHEMEINLINE>factorial</SCHEMEINLINE> の値を生成するためにコンパイルされる式は、階乗を計算する
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を値とする
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lambda</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>ラムダ</JAVASCRIPT>
+    </SPLITINLINE>
+    式です。
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>Compile</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	関数 <SCHEMEINLINE>compile</SCHEMEINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>compile-lambda</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>compile_lambda_expression</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を呼び出してこれを処理します。この関数は
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    本体をコンパイルし、新しいエントリポイントとしてラベルを付け、新しいエントリポイントの
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    本体を実行時環境と結合して結果を <SCHEMEINLINE>val</SCHEMEINLINE> に代入する命令を生成します。次に、この地点に挿入されるコンパイル済み
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    コードをスキップします。
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    コード自体は、
+    <SPLITINLINE>
+      <SCHEME>手続きの定義</SCHEME>
+      <JAVASCRIPT>関数の宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    環境にパラメータ <SCHEMEINLINE>n</SCHEMEINLINE> を
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の引数に束縛するフレームを拡張することから始まります。そして実際の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    本体が続きます。
+    <SPLITINLINE>
+      <SCHEME>変数</SCHEME>
+      <JAVASCRIPT>名前</JAVASCRIPT>
+    </SPLITINLINE>
+    の値のためのこのコードは <SCHEMEINLINE>env</SCHEMEINLINE> レジスタを変更しないので、上で示したオプションの <SCHEMEINLINE>save</SCHEMEINLINE> と <SCHEMEINLINE>restore</SCHEMEINLINE> は生成されません。（<SPLITINLINE><SCHEME><SCHEMEINLINE>entry2</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>entry1</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    コードはこの時点では実行されないので、<SCHEMEINLINE>env</SCHEMEINLINE> の使用は関係ありません。）したがって、コンパイル済みコードの骨格は次のようになります。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <SCHEME>
   (assign val (op make-compiled-procedure)
@@ -326,6 +529,8 @@ $\texttt{ }\texttt{ }$assign("val", list(op("make_compiled_function"),
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     A
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -365,16 +570,65 @@ $\texttt{ }\texttt{ }$assign("val", list(op("make_compiled_function"),
 	<SCHEMEINLINE>if</SCHEMEINLINE> expression:
       </SCHEME>
       <JAVASCRIPT>
-	return statement:<FOOTNOTE>
+	return statement:</JAVASCRIPT>
+    </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    本体は常に（<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>compile-lambda-body</SCHEMEINLINE> によって）</SCHEME>
+      <JAVASCRIPT>
+      <JAVASCRIPTINLINE>compile_lambda_body</JAVASCRIPTINLINE> によって）</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>シーケンスとして</SCHEME>
+    </SPLITINLINE>
+    ターゲット <SCHEMEINLINE>val</SCHEMEINLINE>、リンケージ
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>return</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>"next"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    でコンパイルされます。この場合、
+    <SPLITINLINE>
+      <SCHEME>
+	シーケンス
+      </SCHEME>
+      <JAVASCRIPT>
+	本体
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は単一の
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>if</SCHEMEINLINE> 式
+      </SCHEME>
+      <JAVASCRIPT>
+	return 文</JAVASCRIPT>
+    </SPLITINLINE>
+    で構成されています：
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
   Because of the <JAVASCRIPTINLINE>append_return_undefined</JAVASCRIPTINLINE> in
   <JAVASCRIPTINLINE>compile_lambda_body</JAVASCRIPTINLINE>, the body actually
   consists of a sequence with two return statements. However, the dead-code check
   in <JAVASCRIPTINLINE>compile_@sequence</JAVASCRIPTINLINE> will stop after the compilation
   of the first return statement,
   so the body effectively consists of only a single return statement.
+    </EN>
+    <JA>
+  <JAVASCRIPTINLINE>compile_lambda_body</JAVASCRIPTINLINE> 内の <JAVASCRIPTINLINE>append_return_undefined</JAVASCRIPTINLINE> のため、本体は実際には2つの return 文からなるシーケンスで構成されています。しかし、<JAVASCRIPTINLINE>compile_@sequence</JAVASCRIPTINLINE> のデッドコードチェックが最初の return 文のコンパイル後に停止するので、本体は事実上1つの return 文だけで構成されていることになります。
+    </JA>
+    </BILINGUAL>
 </FOOTNOTE>
-      </JAVASCRIPT>
-    </SPLITINLINE>
     <SNIPPET EVAL="no">
       <SCHEME>
 (if (= n 1)
@@ -390,22 +644,31 @@ return n === 1
 
     <SPLIT>
       <JAVASCRIPT>
+        <BILINGUAL>
+        <EN>
 	      The function
 	      <JAVASCRIPTINLINE>compile_return_statement</JAVASCRIPTINLINE>
         generates code to revert the stack using the marker and to restore
        	the <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> register,
-	      and then compiles the return 
+	      and then compiles the return
         expression with target <SCHEMEINLINE>val</SCHEMEINLINE> and linkage
 	      <SCHEMEINLINE>"return"</SCHEMEINLINE>, because
 	      its value is to be returned from the function.
+        </EN>
+        <JA>
+	      関数 <JAVASCRIPTINLINE>compile_return_statement</JAVASCRIPTINLINE> は、マーカーを使ってスタックを元に戻し、<JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> レジスタを復元するコードを生成し、次に return 式をターゲット <SCHEMEINLINE>val</SCHEMEINLINE>、リンケージ <SCHEMEINLINE>"return"</SCHEMEINLINE> でコンパイルします。その値は関数から返されるものだからです。
+        </JA>
+        </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>Compile-if</SCHEMEINLINE>
       </SCHEME>
       <JAVASCRIPT>
-	The return expression is a conditional expression, 
+	The return expression is a conditional expression,
 	for which
 	<JAVASCRIPTINLINE>compile_conditional</JAVASCRIPTINLINE>
       </JAVASCRIPT>
@@ -454,6 +717,52 @@ return n === 1
       <SCHEME>procedure.)</SCHEME>
       <JAVASCRIPT>function.)</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>Compile-if</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	return 式は条件式であり、
+	<JAVASCRIPTINLINE>compile_conditional</JAVASCRIPTINLINE> が
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    まず述語を計算し（ターゲットは <SCHEMEINLINE>val</SCHEMEINLINE>）、結果をチェックして述語が偽であれば真の分岐を飛び越えるコードを生成します。レジスタ
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Env</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><SCHEMEINLINE>env</SCHEMEINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と <SCHEMEINLINE>continue</SCHEMEINLINE> は、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>if</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>条件</JAVASCRIPT>
+    </SPLITINLINE>
+    式の残りの部分で必要になる可能性があるので、述語コードの前後で保存されます。
+    <SPLIT>
+      <SCHEME>
+	<SCHEMEINLINE>if</SCHEMEINLINE> 式は手続き本体を構成するシーケンスの最後の式（唯一の式）なので、ターゲットは <SCHEMEINLINE>val</SCHEMEINLINE>、リンケージは <SCHEMEINLINE>return</SCHEMEINLINE> であり、したがって
+      </SCHEME>
+      <JAVASCRIPT>
+      </JAVASCRIPT>
+    </SPLIT>
+    真の分岐と偽の分岐はともにターゲット <SCHEMEINLINE>val</SCHEMEINLINE>、リンケージ
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>return</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>"return"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    でコンパイルされます。（つまり、条件式の値、すなわちどちらかの分岐で計算された値が
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の値となります。）
+    </JA>
+    </BILINGUAL>
     <SNIPPET LATEX="yes">
       <SCHEME>
   $\langle save$ continue, env $if\ modified\ by\ predicate\ and\ needed\ by\ branches\rangle$
@@ -485,6 +794,8 @@ $\texttt{ }\texttt{ }$revert_stack_to_marker(),
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The predicate
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>(= n 1)</SCHEMEINLINE></SCHEME>
@@ -497,6 +808,23 @@ $\texttt{ }\texttt{ }$revert_stack_to_marker(),
       operator combination).
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    述語
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(= n 1)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>n === 1</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は
+    <SPLITINLINE>
+      <SCHEME>手続き呼び出しです。</SCHEME>
+      <JAVASCRIPT>関数適用です（演算子の組み合わせの変換後）。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
+    <BILINGUAL>
+    <EN>
     This looks up the
     <SPLITINLINE>
       <SCHEME>
@@ -552,6 +880,59 @@ $\texttt{ }\texttt{ }$revert_stack_to_marker(),
     don<APOS/>t result in
     any saving of registers, because in this case those evaluations don<APOS/>t
     modify the registers in question.
+    </EN>
+    <JA>
+    これは
+    <SPLITINLINE>
+      <SCHEME>
+    演算子（シンボル <SCHEMEINLINE>=</SCHEMEINLINE>）
+      </SCHEME>
+      <JAVASCRIPT>
+	関数式（シンボル <JAVASCRIPTINLINE>"==="</JAVASCRIPTINLINE>）
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を探索し、その値を
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>proc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fun</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    に格納します。次に引数 <SCHEMEINLINE>1</SCHEMEINLINE> と <SCHEMEINLINE>n</SCHEMEINLINE> の値を <SCHEMEINLINE>argl</SCHEMEINLINE> に組み立てます。そして
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>proc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fun</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    がプリミティブ
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    か複合
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    かをテストし、それに応じてプリミティブ分岐または複合分岐にディスパッチします。両方の分岐は
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>after-call</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>after_call</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    ラベルで合流します。
+    <SPLITINLINE>
+      <JAVASCRIPT>
+      複合分岐では、<JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> をプリミティブ分岐の後に飛ぶように設定し、コンパイル済み関数の return 文のリバート操作に対応するマーカーをスタックにプッシュする必要があります。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>
+	演算子とオペランド
+      </SCHEME>
+      <JAVASCRIPT>
+	関数式と引数式
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の評価の前後でレジスタを保存する必要はありません。この場合、それらの評価は対象のレジスタを変更しないからです。
+    </JA>
+    </BILINGUAL>
     <SNIPPET LATEX="yes">
       <SCHEME>
   (assign proc
@@ -598,6 +979,8 @@ $\texttt{ }\texttt{ }$assign("fun", list(op("lookup_symbol_value"),
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The true branch, which is the constant 1, compiles (with target
     <SCHEMEINLINE>val</SCHEMEINLINE> and linkage
     <SPLITINLINE>
@@ -609,6 +992,20 @@ $\texttt{ }\texttt{ }$assign("fun", list(op("lookup_symbol_value"),
       </JAVASCRIPT>
     </SPLITINLINE>
     to
+    </EN>
+    <JA>
+    真の分岐は定数 1 であり、（ターゲット <SCHEMEINLINE>val</SCHEMEINLINE>、リンケージ
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>return</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>"return"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    で）次のようにコンパイルされます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <SCHEME>
 (assign val (const 1))
@@ -619,6 +1016,8 @@ $\texttt{ }\texttt{ }$assign("val", constant(1)),
   go_to(reg("continue")),
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The code for the false branch is another
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -686,6 +1085,69 @@ $\texttt{ }\texttt{ }$assign("val", constant(1)),
       </JAVASCRIPT>
     </SPLITINLINE>
     linkage in the branches.
+    </EN>
+    <JA>
+    偽の分岐のコードは別の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    呼び出しで、
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    はシンボル
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>*</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>"*"</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の値であり、引数は <SCHEMEINLINE>n</SCHEMEINLINE> と別の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    呼び出し（<SCHEMEINLINE>factorial</SCHEMEINLINE> の呼び出し）の結果です。これらの呼び出しのそれぞれが
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>proc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fun</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と <SCHEMEINLINE>argl</SCHEMEINLINE> を設定し、それぞれ独自のプリミティブ分岐と複合分岐を持ちます。図<SPACE/><REF NAME="fig:comp-factorial1"/>に <SCHEMEINLINE>factorial</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の
+    <SPLITINLINE>
+      <SCHEME>
+	定義
+      </SCHEME>
+      <JAVASCRIPT>
+	宣言
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の完全なコンパイル結果を示します。上で示した <SCHEMEINLINE>continue</SCHEMEINLINE> と <SCHEMEINLINE>env</SCHEMEINLINE> の <SCHEMEINLINE>save</SCHEMEINLINE> と <SCHEMEINLINE>restore</SCHEMEINLINE> が実際に生成されていることに注目してください。これらのレジスタは述語内の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    呼び出しによって変更され、分岐内の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    呼び出しと
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>return</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>"return"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    リンケージで必要とされるからです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <FIGURE CENTER="no" CONTINUED="yes">
@@ -796,12 +1258,24 @@ false-branch4
     </JAVASCRIPT>
   </SNIPPET>
   <CAPTION>
+    <BILINGUAL>
+    <EN>
     Compilation of the declaration of the <SCHEMEINLINE>factorial</SCHEMEINLINE>
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     (continued on next page).
+    </EN>
+    <JA>
+    <SCHEMEINLINE>factorial</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の宣言のコンパイル結果（次ページに続く）。
+    </JA>
+    </BILINGUAL>
   </CAPTION>
   <LABEL NAME="fig:comp-factorial1"/>
   </FIGURE>
@@ -916,7 +1390,7 @@ after-lambda1
   assign("val", constant(undefined))
     </JAVASCRIPT>
   </SNIPPET>
-  <CAPTION>(continued)</CAPTION>
+  <CAPTION><BILINGUAL><EN>(continued)</EN><JA>（続き）</JA></BILINGUAL></CAPTION>
   <LABEL NAME="fig:continued_1"/>
 </FIGURE>
 
@@ -930,12 +1404,24 @@ after-lambda1
   </SPLITINLINE>
   
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Consider the following declaration of a factorial
     <SPLITINLINE>
       <SCHEME>procedure,</SCHEME>
       <JAVASCRIPT>function,</JAVASCRIPT>
     </SPLITINLINE>
     which is slightly different from the one given above:
+    </EN>
+    <JA>
+    次の階乗
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の宣言を考えてみましょう。上で示したものとは少し異なります。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (define (factorial-alt n)
@@ -951,6 +1437,8 @@ function factorial_alt(n) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Compile this
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -959,10 +1447,22 @@ function factorial_alt(n) {
     and compare the resulting code with that produced for
     <SCHEMEINLINE>factorial</SCHEMEINLINE>.  Explain any differences you find.
     Does either program execute more efficiently than the other?
+    </EN>
+    <JA>
+    この
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    をコンパイルし、<SCHEMEINLINE>factorial</SCHEMEINLINE> に対して生成されたコードと比較してください。見つかった違いを説明してください。どちらのプログラムがより効率的に実行されますか？
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:5_36"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Compile the
     <INDEX>iterative process<SUBINDEX>recursive process vs.</SUBINDEX></INDEX>
     <INDEX>recursive process<SUBINDEX>iterative process vs.</SUBINDEX></INDEX>
@@ -971,6 +1471,18 @@ function factorial_alt(n) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <INDEX>iterative process<SUBINDEX>recursive process vs.</SUBINDEX></INDEX>
+    <INDEX>recursive process<SUBINDEX>iterative process vs.</SUBINDEX></INDEX>
+    反復的な階乗
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    をコンパイルしてください。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (define (factorial n)
@@ -992,14 +1504,23 @@ function factorial(n) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Annotate the resulting code, showing the essential difference between
     the code for iterative and recursive versions of
     <SCHEMEINLINE>factorial</SCHEMEINLINE> that makes one process build up
     stack space and the other run in constant stack space.
+    </EN>
+    <JA>
+    生成されたコードに注釈を付け、<SCHEMEINLINE>factorial</SCHEMEINLINE> の反復版と再帰版のコードにおいて、一方がスタック領域を増大させ、もう一方が一定のスタック領域で実行される本質的な違いを示してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:compiled-fact"/>
   </EXERCISE>
 
 <EXERCISE>
+  <BILINGUAL>
+  <EN>
   What
   <SPLITINLINE>
     <SCHEME>
@@ -1011,6 +1532,20 @@ function factorial(n) {
   </SPLITINLINE>
   was compiled to produce the code shown in
   figure<SPACE/><REF NAME="fig:compilation-example1"/>?
+  </EN>
+  <JA>
+  図<SPACE/><REF NAME="fig:compilation-example1"/>に示されたコードを生成するためにコンパイルされた
+  <SPLITINLINE>
+    <SCHEME>
+      式
+    </SCHEME>
+    <JAVASCRIPT>
+      プログラム
+    </JAVASCRIPT>
+  </SPLITINLINE>
+  は何ですか？
+  </JA>
+  </BILINGUAL>
   <LABEL NAME="ex:compiled-code"/>
 </EXERCISE>
       
@@ -1110,8 +1645,16 @@ $\texttt{ }\texttt{ }$assign("val", list(op("make_compiled_function"),
     </JAVASCRIPT>
   </SNIPPET>
   <CAPTION>
+    <BILINGUAL>
+    <EN>
     An example of compiler output (continued on next page).
     See exercise<SPACE/><REF NAME="ex:compiled-code"/>.
+    </EN>
+    <JA>
+    コンパイラ出力の例（次ページに続く）。
+    練習問題<SPACE/><REF NAME="ex:compiled-code"/>を参照。
+    </JA>
+    </BILINGUAL>
   </CAPTION>
   <LABEL NAME="fig:compilation-example1"/>
   </FIGURE>
@@ -1154,13 +1697,15 @@ after-lambda15
   assign("val", constant(undefined))
     </JAVASCRIPT>
   </SNIPPET>
-    <CAPTION>(continued)</CAPTION>
+    <CAPTION><BILINGUAL><EN>(continued)</EN><JA>（続き）</JA></BILINGUAL></CAPTION>
     <LABEL NAME="fig:continued_2"/>
   </FIGURE>
 
   <INDEX><USE>factorial</USE><SUBINDEX>compilation of<CLOSE/></SUBINDEX></INDEX>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     What
     <INDEX>order of evaluation<SUBINDEX>in compiler</SUBINDEX></INDEX>
     <SPLITINLINE>
@@ -1188,10 +1733,36 @@ after-lambda15
     </SPLITINLINE>
     evaluation affect the efficiency of the code that
     constructs the argument list?
+    </EN>
+    <JA>
+    <INDEX>order of evaluation<SUBINDEX>in compiler</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>
+	<INDEX>compiler for Scheme<SUBINDEX>order of operand evaluation</SUBINDEX></INDEX>
+      </SCHEME>
+      <JAVASCRIPT>
+	<INDEX>compiler for JavaScript<SUBINDEX>order of argument evaluation</SUBINDEX></INDEX>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    私たちのコンパイラは
+    <SPLITINLINE>
+      <SCHEME>組み合わせのオペランド</SCHEME>
+      <JAVASCRIPT>適用の引数</JAVASCRIPT>
+    </SPLITINLINE>
+    に対してどのような評価順序を生成しますか？左から右（ECMAScript 仕様で規定されている順序）ですか、右から左ですか、それとも別の順序ですか？コンパイラのどこでこの順序が決定されていますか？コンパイラを修正して、別の評価順序を生成するようにしてください。（<SPACE/><REF NAME="sec:eceval-core"/>節の明示制御評価器における評価順序の議論を参照してください。）
+    <SPLITINLINE>
+      <SCHEME>オペランド</SCHEME>
+      <JAVASCRIPT>引数</JAVASCRIPT>
+    </SPLITINLINE>
+    の評価順序を変更すると、引数リストを構築するコードの効率にどのような影響がありますか？
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:5_39"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     One way to understand the compiler<APOS/>s
     <INDEX>compiler for JavaScript<SUBINDEX>stack usage</SUBINDEX></INDEX>
     <INDEX><USE>preserving</USE></INDEX>
@@ -1205,11 +1776,20 @@ after-lambda15
     operations that are generated.
     Compare the code to that generated with the
     <SCHEMEINLINE>preserving</SCHEMEINLINE> mechanism intact.
+    </EN>
+    <JA>
+    <INDEX>compiler for JavaScript<SUBINDEX>stack usage</SUBINDEX></INDEX>
+    <INDEX><USE>preserving</USE></INDEX>
+    コンパイラのスタック使用を最適化する <SCHEMEINLINE>preserving</SCHEMEINLINE> メカニズムを理解する一つの方法は、このアイデアを使わなかった場合にどのような余分な操作が生成されるかを確認することです。<SCHEMEINLINE>preserving</SCHEMEINLINE> を修正して、常に <SCHEMEINLINE>save</SCHEMEINLINE> と <SCHEMEINLINE>restore</SCHEMEINLINE> 操作を生成するようにしてください。いくつかの簡単な式をコンパイルし、生成される不要なスタック操作を特定してください。<SCHEMEINLINE>preserving</SCHEMEINLINE> メカニズムが有効な場合に生成されるコードと比較してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:5_40"/>
   </EXERCISE>
 
   <EXERCISE>
     <LABEL NAME="ex:open-code"/>
+    <BILINGUAL>
+    <EN>
     Our compiler is clever about avoiding unnecessary stack operations,
     but it is not clever at all when it comes to compiling calls to the primitive
     <SPLITINLINE>
@@ -1259,7 +1839,50 @@ after-lambda15
       <SCHEME><SCHEMEINLINE>(+ a 1)</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>a + 1</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
-    might be compiled into something as simple as<FOOTNOTE>We have used
+    might be compiled into something as simple as
+    </EN>
+    <JA>
+    私たちのコンパイラは不要なスタック操作を避けることに関しては賢いのですが、言語のプリミティブ
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    への呼び出しをマシンが提供するプリミティブ操作でコンパイルすることに関しては全く賢くありません。例えば、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(+ a 1)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>a + 1</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を計算するためにどれだけのコードがコンパイルされるかを考えてみてください。コードは <SCHEMEINLINE>argl</SCHEMEINLINE> に引数リストを準備し、（環境でシンボル
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>+</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>"+"</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を探索して見つけた）プリミティブ加算
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>proc</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>fun</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    に格納し、その
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    がプリミティブか複合かをテストします。コンパイラは常にテストを実行するコードと、プリミティブ分岐と複合分岐の両方のコード（実際にはどちらか一方しか実行されない）を生成します。プリミティブを実装するコントローラの部分は示していませんが、これらの命令はマシンのデータパスのプリミティブ算術操作を使用すると想定しています。コンパイラがプリミティブを
+    <INDEX>compiler for JavaScript<SUBINDEX>open coding of primitives</SUBINDEX></INDEX>
+    <INDEX>open coding of primitives</INDEX>
+    <EM>オープンコーディング</EM>できたら<EMDASH/>つまり、これらのプリミティブなマシン操作を直接使用するコードを生成できたら<EMDASH/>どれだけ少ないコードが生成されるかを考えてみてください。式
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(+ a 1)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>a + 1</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は次のように単純なものにコンパイルできるかもしれません。
+    </JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>We have used
     the same symbol <SCHEMEINLINE>+</SCHEMEINLINE> here to denote both the
     source-language
     <SPLITINLINE>
@@ -1268,7 +1891,12 @@ after-lambda15
     </SPLITINLINE>
     and the machine operation.  In general there will not be a
     one-to-one correspondence between primitives of the source language
-    and primitives of the machine.</FOOTNOTE>
+    and primitives of the machine.</EN><JA>ここではソース言語の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    とマシン操作の両方を表すために同じシンボル <SCHEMEINLINE>+</SCHEMEINLINE> を使用しています。一般に、ソース言語のプリミティブとマシンのプリミティブの間に一対一の対応があるとは限りません。</JA></BILINGUAL></FOOTNOTE>
     <SNIPPET EVAL="no">
       <SCHEME>
 (assign val (op lookup-variable-value) (const a) (reg env))
@@ -1279,6 +1907,8 @@ assign("val", list(op("lookup_symbol_value"), constant("a"), reg("env"))),
 assign("val", list(op("+"), reg("val"), constant(1)))
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     In this exercise we will extend our compiler to support open coding of
     selected primitives.  Special-purpose code will be generated for calls to these primitive
     <SPLITINLINE>
@@ -1298,7 +1928,24 @@ assign("val", list(op("+"), reg("val"), constant(1)))
     <SCHEMEINLINE>arg2</SCHEMEINLINE>. The results may be put into
     <SCHEMEINLINE>val</SCHEMEINLINE>, <SCHEMEINLINE>arg1</SCHEMEINLINE>, or
     <SCHEMEINLINE>arg2</SCHEMEINLINE>.
+    </EN>
+    <JA>
+    この練習問題では、選択されたプリミティブのオープンコーディングをサポートするようにコンパイラを拡張します。これらのプリミティブ
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    への呼び出しに対して、一般的な
+    <SPLITINLINE>
+      <SCHEME>手続き適用</SCHEME>
+      <JAVASCRIPT>関数適用</JAVASCRIPT>
+    </SPLITINLINE>
+    コードの代わりに専用コードが生成されます。これをサポートするために、マシンに特別な引数レジスタ <SCHEMEINLINE>arg1</SCHEMEINLINE> と <SCHEMEINLINE>arg2</SCHEMEINLINE> を追加します。マシンのプリミティブ算術操作は <SCHEMEINLINE>arg1</SCHEMEINLINE> と <SCHEMEINLINE>arg2</SCHEMEINLINE> から入力を受け取ります。結果は <SCHEMEINLINE>val</SCHEMEINLINE>、<SCHEMEINLINE>arg1</SCHEMEINLINE>、または <SCHEMEINLINE>arg2</SCHEMEINLINE> に格納できます。
+    </JA>
+    </BILINGUAL>
     <P/>
+    <BILINGUAL>
+    <EN>
     The compiler must be able to recognize the application of an
     open-coded primitive in the source program.  We will augment the
     dispatch in the <SCHEMEINLINE>compile</SCHEMEINLINE>
@@ -1332,8 +1979,42 @@ assign("val", list(op("+"), reg("val"), constant(1)))
     form our compiler has a code
     generator.  In this exercise we will construct a family of code generators
     for the open-coded primitives.
+    </EN>
+    <JA>
+    コンパイラはソースプログラム内のオープンコーディングされたプリミティブの適用を認識できなければなりません。<SCHEMEINLINE>compile</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    のディスパッチを拡張して、現在認識している
+    <SPLITINLINE>
+      <SCHEME>
+	<INDEX>reserved words</INDEX>
+	予約語（特殊形式）に加えて、これらのプリミティブの名前も認識するようにします。<FOOTNOTE><BILINGUAL><EN>Making
+	the primitives into reserved words is in general a bad idea, since a user
+	cannot then rebind these names to different procedures.
+	Moreover, if we add reserved words to
+	a compiler that is in use, existing programs that define procedures
+	with these names will stop working.  See
+	exercise<SPACE/><REF NAME="ex:cte-open-code"/> for ideas on how to avoid
+	this problem.</EN><JA>プリミティブを予約語にするのは一般に悪い考えです。ユーザーがこれらの名前を別の手続きに再束縛できなくなるからです。さらに、使用中のコンパイラに予約語を追加すると、これらの名前で手続きを定義している既存のプログラムが動作しなくなります。この問題を回避する方法については、練習問題<SPACE/><REF NAME="ex:cte-open-code"/>を参照してください。</JA></BILINGUAL></FOOTNOTE>
+      </SCHEME>
+      <JAVASCRIPT>
+	構文形式に加えて、これらのプリミティブの名前も認識するようにします。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    各
+    <SPLITINLINE>
+      <SCHEME>特殊</SCHEME>
+      <JAVASCRIPT>構文</JAVASCRIPT>
+    </SPLITINLINE>
+    形式に対してコンパイラはコードジェネレータを持っています。この練習問題では、オープンコーディングされたプリミティブ用のコードジェネレータのファミリーを構築します。
+    </JA>
+    </BILINGUAL>
     <OL>
       <LI>
+	<BILINGUAL>
+	<EN>
 	The open-coded primitives, unlike the
 	<SPLITINLINE>
 	  <SCHEME>special</SCHEME>
@@ -1382,10 +2063,61 @@ assign("val", list(op("+"), reg("val"), constant(1)))
 	  <JAVASCRIPT>argument-expression</JAVASCRIPT>
 	</SPLITINLINE>
 	evaluation.
+	</EN>
+	<JA>
+	オープンコーディングされたプリミティブは、
+	<SPLITINLINE>
+	  <SCHEME>特殊</SCHEME>
+	  <JAVASCRIPT>構文</JAVASCRIPT>
+	</SPLITINLINE>
+	形式とは異なり、すべて
+	<SPLITINLINE>
+	  <SCHEME>オペランド</SCHEME>
+	  <JAVASCRIPT>引数式</JAVASCRIPT>
+	</SPLITINLINE>
+	を評価する必要があります。すべてのオープンコーディング用コードジェネレータが使用するコードジェネレータ
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>spread-arguments</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>spread_arguments</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	を書いてください。
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>Spread-arguments</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT>
+	    関数
+	    <JAVASCRIPTINLINE>spread_arguments</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	は
+	<SPLITINLINE>
+	  <SCHEME>オペランドリスト</SCHEME>
+	  <JAVASCRIPT>引数式のリスト</JAVASCRIPT>
+	</SPLITINLINE>
+	を受け取り、与えられた
+	<SPLITINLINE>
+	  <SCHEME>オペランド</SCHEME>
+	  <JAVASCRIPT>引数式</JAVASCRIPT>
+	</SPLITINLINE>
+	を連続する引数レジスタをターゲットとしてコンパイルします。
+	<SPLITINLINE>
+	  <SCHEME>オペランド</SCHEME>
+	  <JAVASCRIPT>引数式</JAVASCRIPT>
+	</SPLITINLINE>
+	にオープンコーディングされたプリミティブの呼び出しが含まれる可能性があるため、
+	<SPLITINLINE>
+	  <SCHEME>オペランド</SCHEME>
+	  <JAVASCRIPT>引数式</JAVASCRIPT>
+	</SPLITINLINE>
+	の評価中に引数レジスタを保存する必要があることに注意してください。
+	</JA>
+	</BILINGUAL>
       </LI>
       <LI>
 	<SPLIT>
 	  <JAVASCRIPT>
+	    <BILINGUAL>
+	    <EN>
 	    The JavaScript operators
 	    <JAVASCRIPTINLINE>===</JAVASCRIPTINLINE>,
 	    <SCHEMEINLINE>*</SCHEMEINLINE>,
@@ -1400,8 +2132,23 @@ assign("val", list(op("+"), reg("val"), constant(1)))
 	    not possible to redeclare these names, because they do not
 	    meet the syntactic restrictions for names. This means it is safe
 	    to open-code them.
+	    </EN>
+	    <JA>
+	    JavaScript の演算子
+	    <JAVASCRIPTINLINE>===</JAVASCRIPTINLINE>、
+	    <SCHEMEINLINE>*</SCHEMEINLINE>、
+	    <SCHEMEINLINE>-</SCHEMEINLINE>、<SCHEMEINLINE>+</SCHEMEINLINE>
+	    などは、レジスタマシンではプリミティブ関数として実装されており、グローバル環境ではシンボル
+	    <JAVASCRIPTINLINE>"==="</JAVASCRIPTINLINE>、
+	    <SCHEMEINLINE>"*"</SCHEMEINLINE>、
+	    <SCHEMEINLINE>"-"</SCHEMEINLINE>、
+	    <SCHEMEINLINE>"+"</SCHEMEINLINE> で参照されます。JavaScript ではこれらの名前を再宣言することはできません。名前の構文上の制約を満たさないからです。つまり、これらをオープンコーディングしても安全です。
+	    </JA>
+	    </BILINGUAL>
 	  </JAVASCRIPT>
 	</SPLIT>
+	<BILINGUAL>
+	<EN>
 	For each of the primitive
 	<SPLITINLINE>
 	  <SCHEME>procedures</SCHEME>
@@ -1430,20 +2177,60 @@ assign("val", list(op("+"), reg("val"), constant(1)))
 	</SPLITINLINE>
 	Make <SCHEMEINLINE>compile</SCHEMEINLINE> dispatch to these code
 	generators.
+	</EN>
+	<JA>
+	プリミティブ
+	<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>=</SCHEMEINLINE>、</SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>===</JAVASCRIPTINLINE>、</JAVASCRIPT>
+	</SPLITINLINE>
+	<SCHEMEINLINE>*</SCHEMEINLINE>、
+	<SCHEMEINLINE>-</SCHEMEINLINE>、<SCHEMEINLINE>+</SCHEMEINLINE> のそれぞれについて、
+	<SPLITINLINE>
+	  <SCHEME>その演算子を持つ組み合わせ
+	  </SCHEME>
+	  <JAVASCRIPT>その関数を名前で指定する関数式を持つ適用
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	とターゲットおよびリンケージ記述子を受け取り、引数をレジスタに展開してから、指定されたターゲットと指定されたリンケージで操作を実行するコードを生成するコードジェネレータを書いてください。
+	<SPLITINLINE>
+	  <SCHEME>2つのオペランドを持つ式のみ扱えればよいです。</SCHEME>
+	</SPLITINLINE>
+	<SCHEMEINLINE>compile</SCHEMEINLINE> がこれらのコードジェネレータにディスパッチするようにしてください。
+	</JA>
+	</BILINGUAL>
       </LI>
       <LI>
+	<BILINGUAL>
+	<EN>
 	Try your new compiler on the <SCHEMEINLINE>factorial</SCHEMEINLINE>
 	example.  Compare the resulting code with the result produced without
 	open coding.
+	</EN>
+	<JA>
+	新しいコンパイラを <SCHEMEINLINE>factorial</SCHEMEINLINE> の例で試してください。生成されたコードをオープンコーディングなしで生成された結果と比較してください。
+	</JA>
+	</BILINGUAL>
       </LI>
       <SPLIT>
 	<SCHEME>
 	  <LI>
+	    <BILINGUAL>
+	    <EN>
 	    Extend your code generators for <SCHEMEINLINE>+</SCHEMEINLINE> and
 	    <SCHEMEINLINE>*</SCHEMEINLINE> so that they
 	    can handle expressions with arbitrary numbers of operands.  An
 	    expression with more than two operands will have to be compiled into a
 	    sequence of operations, each with only two inputs.
+	    </EN>
+	    <JA>
+	    <SCHEMEINLINE>+</SCHEMEINLINE> と <SCHEMEINLINE>*</SCHEMEINLINE> のコードジェネレータを拡張して、任意の数のオペランドを持つ式を処理できるようにしてください。3つ以上のオペランドを持つ式は、それぞれ2つの入力のみを持つ操作の列にコンパイルする必要があります。
+	    </JA>
+	    </BILINGUAL>
 	  </LI>
 	</SCHEME>
       </SPLIT>

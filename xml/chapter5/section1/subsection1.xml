@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    A Language for Describing Register Machines
+    <BILINGUAL>
+      <EN>A Language for Describing Register Machines</EN>
+      <JA>レジスタマシンを記述する言語</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:register-machine-language"/>
@@ -8,6 +11,8 @@
   <INDEX>register machine<SUBINDEX>language for describing<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Data-path and controller diagrams are adequate for representing simple
     machines such as GCD, but they are unwieldy for describing large
     machines such as a
@@ -20,9 +25,21 @@
     information given by the data-path and controller
     diagrams. We will start with a notation that directly
     mirrors the diagrams.
+    </EN>
+    <JA>
+    データパスとコントローラの図は、最大公約数（GCD）のような単純なマシンを表現するには十分ですが、
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    のインタプリタのような大規模なマシンを記述するには扱いにくくなります。複雑なマシンを扱えるようにするために、データパスとコントローラの図が提供するすべての情報をテキスト形式で表現する言語を作ることにします。まず、図を直接反映した記法から始めましょう。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We define the data paths of a machine by describing the registers and
     the operations.  To describe a register, we give it a name
     and specify the buttons that control assignment to it.  We give each
@@ -30,12 +47,19 @@
     the register under the button<APOS/>s control.  (The source is a register,
     a constant, or an operation.) To describe an operation, we give
     it a name and specify its inputs (registers or constants).
+    </EN>
+    <JA>
+    マシンのデータパスは、レジスタと演算を記述することで定義します。レジスタを記述するには、名前を付け、そのレジスタへの代入を制御するボタンを指定します。各ボタンにも名前を付け、そのボタンの制御下でレジスタに入るデータのソースを指定します。（ソースはレジスタ、定数、または演算です。）演算を記述するには、名前を付け、その入力（レジスタまたは定数）を指定します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    We define the controller of a machine as a sequence of 
+    <BILINGUAL>
+    <EN>
+    We define the controller of a machine as a sequence of
     <INDEX>register-machine language<SUBINDEX>instructions</SUBINDEX></INDEX>
-    <EM>instructions</EM> together with 
+    <EM>instructions</EM> together with
       <INDEX>register-machine language<SUBINDEX>label</SUBINDEX></INDEX>
       <EM>labels</EM> that identify
       <INDEX>register-machine language<SUBINDEX>entry point</SUBINDEX></INDEX>
@@ -68,7 +92,7 @@
 	  the label.
 	</LI>
 	<LI>
-	  An	  
+	  An
 	  <SPLITINLINE>
 	    <SCHEME>
 	      <INDEX>register-machine language<SUBINDEX><ORDER>goto</ORDER><SCHEMEINLINE>goto</SCHEMEINLINE></SUBINDEX></INDEX>
@@ -87,6 +111,53 @@
 	  instruction) naming a controller label at which to continue execution.
 	</LI>
       </UL>
+    </EN>
+    <JA>
+    マシンのコントローラは、
+    <INDEX>register-machine language<SUBINDEX>instructions</SUBINDEX></INDEX>
+    <EM>命令</EM>の列と、その列の中の
+      <INDEX>register-machine language<SUBINDEX>label</SUBINDEX></INDEX>
+      <EM>ラベル</EM>（
+      <INDEX>register-machine language<SUBINDEX>entry point</SUBINDEX></INDEX>
+      <EM>エントリポイント</EM>を示す）として定義します。命令は次のいずれかです：
+      <UL>
+	<LI>
+	  レジスタに値を代入するために押すデータパスのボタンの名前。（これはコントローラ図のボックスに対応します。）
+	</LI>
+	<LI>
+	  <INDEX><USE>test</USE> (in register machine)</INDEX>
+	  <INDEX>register-machine language<SUBINDEX><USE>test</USE></SUBINDEX></INDEX>
+	  <SCHEMEINLINE>test</SCHEMEINLINE>
+	  命令。指定されたテストを実行します。
+	</LI>
+	<LI>
+	  <INDEX>register-machine language<SUBINDEX><USE>branch</USE></SUBINDEX></INDEX>
+	  <INDEX><USE>branch</USE> (in register machine)</INDEX>
+	  <INDEX>register-machine language<SUBINDEX><USE>label</USE></SUBINDEX></INDEX>
+	  <INDEX><USE>label</USE> (in register machine)</INDEX>
+	  条件分岐（<SCHEMEINLINE>branch</SCHEMEINLINE> 命令）。直前のテストの結果に基づいて、コントローラのラベルが示す位置に分岐します。（テストと分岐を合わせて、コントローラ図のひし形に対応します。）テストが偽の場合、コントローラは列の次の命令に進みます。そうでなければ、ラベルの後の命令に進みます。
+	</LI>
+	<LI>
+	  <SPLITINLINE>
+	    <SCHEME>
+	      <INDEX>register-machine language<SUBINDEX><ORDER>goto</ORDER><SCHEMEINLINE>goto</SCHEMEINLINE></SUBINDEX></INDEX>
+	      <INDEX><USE>goto</USE> (in register machine)</INDEX>
+	    </SCHEME>
+	    <JAVASCRIPT>
+	      <INDEX>register-machine language<SUBINDEX><USE>go_to</USE></SUBINDEX></INDEX>
+	      <INDEX><USE>go_to</USE> (in register machine)</INDEX>
+	    </JAVASCRIPT>
+	  </SPLITINLINE>
+	  無条件分岐（
+	  <SPLITINLINE>
+	    <SCHEME><SCHEMEINLINE>goto</SCHEMEINLINE></SCHEME>
+	    <JAVASCRIPT><JAVASCRIPTINLINE>go_to</JAVASCRIPTINLINE></JAVASCRIPT>
+	  </SPLITINLINE>
+	  命令）。実行を継続するコントローラのラベルを指定します。
+	</LI>
+      </UL>
+    </JA>
+    </BILINGUAL>
 
     <PDF_ONLY>
       <!-- Figure moved here for SICP JS pagination -->
@@ -98,10 +169,17 @@
     </FIGURE>
     </PDF_ONLY>
 
+    <BILINGUAL>
+    <EN>
     The machine starts at the beginning of the controller instruction
     sequence and stops when execution reaches the end of the sequence.
     Except when a branch changes the flow of control, instructions are
     executed in the order in which they are listed.
+    </EN>
+    <JA>
+    マシンはコントローラの命令列の先頭から開始し、実行が列の末尾に達すると停止します。分岐によって制御の流れが変わる場合を除き、命令はリストされた順に実行されます。
+    </JA>
+    </BILINGUAL>
     <WEB_ONLY>
       <!-- Figure code appears again in this file in a PDF_ONLY for SICP JS pagination -->
     <FIGURE CENTER="no">
@@ -168,14 +246,23 @@ controller(
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Figure<SPACE/><REF NAME="fig:gcd-machine-spec"/> shows the GCD machine
     described in this way.  This example only hints at the generality of these
     descriptions, since the GCD machine is a very simple case: Each register has
     only one button, and each button and test is used only once in the
     controller.
+    </EN>
+    <JA>
+    図<SPACE/><REF NAME="fig:gcd-machine-spec"/>は、この方法で記述された GCD マシンを示しています。この例は記述の一般性を示唆するにすぎません。GCD マシンは非常に単純なケースだからです。各レジスタにはボタンが1つしかなく、各ボタンとテストはコントローラ内で1回しか使われていません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Unfortunately, it is difficult to read such a description.  In order
     to understand the controller instructions we must constantly refer
     back to the definitions of the button names and the operation names,
@@ -183,9 +270,16 @@ controller(
     definitions of the operation names.  We will thus transform our
     notation to combine the information from the data-path and controller
     descriptions so that we see it all together.
+    </EN>
+    <JA>
+    残念ながら、このような記述は読みにくいものです。コントローラの命令を理解するためには、ボタン名と演算名の定義を常に参照しなければならず、ボタンが何をするかを理解するためには、演算名の定義も参照しなければならないかもしれません。そこで、データパスとコントローラの記述からの情報を統合して一度に見渡せるように、記法を変換することにします。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     To obtain this form of description, we will replace the arbitrary
     button and operation names by the definitions of their behavior.  That
     is, instead of saying (in the controller) <QUOTE>Push button
@@ -217,6 +311,21 @@ controller(
     contents of register <SCHEMEINLINE>b</SCHEMEINLINE> and the
     constant 0.</QUOTE>  We will omit the data-path description, leaving only
     the controller sequence.  Thus, the GCD machine is described as follows:
+    </EN>
+    <JA>
+    この形式の記述を得るために、任意のボタン名と演算名を、それらの動作の定義で置き換えます。つまり、（コントローラで）<QUOTE>ボタン <SCHEMEINLINE>t&lt;-r</SCHEMEINLINE> を押す</QUOTE>と言い、（データパスで）別途<QUOTE>ボタン <SCHEMEINLINE>t&lt;-r</SCHEMEINLINE> は <SCHEMEINLINE>rem</SCHEMEINLINE> 演算の値をレジスタ <SCHEMEINLINE>t</SCHEMEINLINE> に代入する</QUOTE>、<QUOTE><SCHEMEINLINE>rem</SCHEMEINLINE> 演算の入力はレジスタ
+    <INDEX>register-machine language<SUBINDEX><USE>assign</USE></SUBINDEX></INDEX>
+    <INDEX><USE>assign</USE> (in register machine)</INDEX>
+    <INDEX>register-machine language<SUBINDEX><USE>op</USE></SUBINDEX></INDEX>
+    <INDEX><USE>op</USE> (in register machine)</INDEX>
+    <INDEX>register-machine language<SUBINDEX><USE>reg</USE></SUBINDEX></INDEX>
+    <INDEX><USE>reg</USE> (in register machine)</INDEX>
+    <SCHEMEINLINE>a</SCHEMEINLINE> と <SCHEMEINLINE>b</SCHEMEINLINE> の内容である</QUOTE>と言う代わりに、（コントローラで）<QUOTE>レジスタ <SCHEMEINLINE>a</SCHEMEINLINE> と <SCHEMEINLINE>b</SCHEMEINLINE> の内容に対する <SCHEMEINLINE>rem</SCHEMEINLINE> 演算の値をレジスタ <SCHEMEINLINE>t</SCHEMEINLINE> に代入するボタンを押す</QUOTE>と言います。同様に、（コントローラで）<QUOTE><SCHEMEINLINE>=</SCHEMEINLINE> テストを実行する</QUOTE>と言い、（データパスで）別途<QUOTE><SCHEMEINLINE>=</SCHEMEINLINE> テストはレジスタ <SCHEMEINLINE>b</SCHEMEINLINE> の内容と定数 0 に対して動作する</QUOTE>と言う代わりに、<QUOTE>レジスタ <SCHEMEINLINE>b</SCHEMEINLINE> の
+    <INDEX>register-machine language<SUBINDEX><USE>constant</USE></SUBINDEX></INDEX>
+    <INDEX><USE>constant</USE> (in register machine)</INDEX>
+    内容と定数 0 に対して <SCHEMEINLINE>=</SCHEMEINLINE> テストを実行する</QUOTE>と言います。データパスの記述は省略し、コントローラの列のみを残します。こうして、GCD マシンは次のように記述されます：
+    </JA>
+    </BILINGUAL>
     <!-- 
          %(registers a b t)
          %(operations rem =)
@@ -292,6 +401,8 @@ function controller_sequence(controller) {
 </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     This form of description is easier to read than the kind illustrated
     in figure<SPACE/><REF NAME="fig:gcd-machine-spec"/>, but it also has disadvantages:
     <UL>
@@ -327,25 +438,65 @@ function controller_sequence(controller) {
     understanding controllers than with understanding the elements and
     connections in data paths.  We should keep in mind,
     however, that data-path design is crucial in designing real machines.
+    </EN>
+    <JA>
+    この形式の記述は、図<SPACE/><REF NAME="fig:gcd-machine-spec"/>に示した種類のものよりも読みやすいですが、欠点もあります：
+    <UL>
+      <LI>大規模なマシンでは冗長になります。データパス要素の完全な記述が、コントローラの命令列でその要素が言及されるたびに繰り返されるからです。（GCD の例ではこれは問題になりません。各演算とボタンは1回しか使われないからです。）さらに、データパスの記述を繰り返すことで、マシンの実際のデータパス構造が見えにくくなります。大規模なマシンでは、レジスタ、演算、ボタンがいくつあり、それらがどのように接続されているかが明らかではありません。
+      </LI>
+      <LI>
+	マシン定義のコントローラ命令は
+	<SPLITINLINE>
+	  <SCHEME>Lisp</SCHEME>
+	  <JAVASCRIPT>JavaScript</JAVASCRIPT>
+	</SPLITINLINE>
+	の式のように見えるため、それらが任意の
+	<SPLITINLINE>
+	  <SCHEME>Lisp</SCHEME>
+	  <JAVASCRIPT>JavaScript</JAVASCRIPT>
+	</SPLITINLINE>
+	の式ではないことを忘れがちです。記述できるのは、正当なマシン演算だけです。たとえば、演算が直接操作できるのは定数とレジスタの内容だけであり、他の演算の結果に対しては操作できません。
+      </LI>
+    </UL>
+
+    これらの欠点にもかかわらず、本章ではこのレジスタマシン言語を一貫して使用します。なぜなら、データパスの要素と接続を理解することよりも、コントローラを理解することにより関心があるからです。ただし、実際のマシンの設計においてはデータパスの設計が極めて重要であることを心に留めておくべきです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Use the register-machine language to describe the
     <INDEX><USE>factorial</USE><SUBINDEX>register machine for (iterative)</SUBINDEX></INDEX>
     iterative factorial
     machine of exercise<SPACE/><REF NAME="ex:iterative-fact"/>.
+    </EN>
+    <JA>
+    レジスタマシン言語を使って、練習問題<SPACE/><REF NAME="ex:iterative-fact"/>の
+    <INDEX><USE>factorial</USE><SUBINDEX>register machine for (iterative)</SUBINDEX></INDEX>
+    反復的な階乗マシンを記述してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:iterative-fact-2"/>
   </EXERCISE>
 
 
   <SUBHEADING>
-    <NAME>Actions</NAME>
+    <NAME>
+      <BILINGUAL>
+        <EN>Actions</EN>
+        <JA>アクション</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>actions, in register machine<OPEN/></INDEX>
   <INDEX>register machine<SUBINDEX>actions<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Let us modify the GCD machine so that we can type in the numbers
     whose GCD we want and get the answer
     <SPLITINLINE>
@@ -364,19 +515,52 @@ function controller_sequence(controller) {
       <JAVASCRIPT>JavaScript)</JAVASCRIPT>
     </SPLITINLINE>
     that they are available as primitive
-    operations.<SPLITINLINE><SCHEME><FOOTNOTE>This assumption glosses over a
+    operations.
+    </EN>
+    <JA>
+    GCD マシンを変更して、最大公約数を求めたい数値を入力し、答えを
+    <SPLITINLINE>
+      <SCHEME>端末に出力できる</SCHEME>
+      <JAVASCRIPT>出力できる</JAVASCRIPT>
+    </SPLITINLINE>
+    ようにしましょう。読み取りと出力ができるマシンの作り方は議論しませんが、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>read</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>prompt</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    と <SCHEMEINLINE>display</SCHEMEINLINE> を
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    で使うときと同様に、それらがプリミティブな演算として利用可能であると仮定します。
+    </JA>
+    </BILINGUAL><SPLITINLINE><SCHEME><FOOTNOTE>
+    <BILINGUAL>
+    <EN>This assumption glosses over a
     great deal of complexity.  Usually a large portion of the implementation of
     a Lisp system is dedicated to making reading
-    and printing work.</FOOTNOTE></SCHEME><JAVASCRIPT><FOOTNOTE>
-        This assumption glosses over a great deal of complexity. Implementation of reading 
+    and printing work.</EN>
+    <JA>この仮定は多くの複雑さを覆い隠しています。通常、Lisp システムの実装の大部分は、読み取りと出力を動作させることに費やされます。</JA>
+    </BILINGUAL></FOOTNOTE></SCHEME><JAVASCRIPT><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+        This assumption glosses over a great deal of complexity. Implementation of reading
         and printing requires significant effort, for example to handle character encodings
-        for different languages. 
+        for different languages.
+    </EN>
+    <JA>
+        この仮定は多くの複雑さを覆い隠しています。読み取りと出力の実装には、たとえば異なる言語の文字エンコーディングを扱うなど、大きな労力が必要です。
+    </JA>
+    </BILINGUAL>
       </FOOTNOTE>
     </JAVASCRIPT>
   </SPLITINLINE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Read</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>
@@ -406,6 +590,35 @@ function controller_sequence(controller) {
       </JAVASCRIPT>
     </SPLITINLINE>
     just as we do any other operation that computes a value.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Read</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	演算
+	<INDEX><USE>prompt</USE> operation in register machine</INDEX>
+	<JAVASCRIPTINLINE>prompt</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、レジスタに格納できる値を生成するという点で、これまで使ってきた演算と同様です。しかし
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>read</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>prompt</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    はどのレジスタからも入力を受け取りません。その値は、私たちが設計しているマシンの部分の外側で起こることに依存します。マシンの演算がこのような振る舞いを持つことを許容し、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>read</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>prompt</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の使用を、値を計算する他の演算と同様に図示し記述します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
     <PDF_ONLY>
@@ -473,6 +686,8 @@ controller(
     </FIGURE>
     </PDF_ONLY>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>Print</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT>
@@ -499,17 +714,35 @@ controller(
     the contents of register
     <SCHEMEINLINE>a</SCHEMEINLINE> is represented
     in a controller sequence by the instruction
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>Print</SCHEMEINLINE> は、</SCHEME>
+      <JAVASCRIPT>
+	一方、演算
+	<INDEX><USE>display</USE> operation in register machine</INDEX>
+	<JAVASCRIPTINLINE>display</JAVASCRIPTINLINE> は、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    これまで使ってきた演算とは根本的に異なります。レジスタに格納される出力値を生成しないのです。効果はありますが、その効果は私たちが設計しているマシンの一部に対するものではありません。この種の演算を<EM>アクション</EM>と呼ぶことにします。アクションは、データパス図では値を計算する演算と同様に、アクション名を含む台形として表現します。入力（レジスタまたは定数）からアクションのボックスに矢印が向かいます。アクションにはボタンも関連付けます。ボタンを押すとアクションが実行されます。コントローラにアクションのボタンを押させるために、
+    <INDEX>register-machine language<SUBINDEX><USE>perform</USE></SUBINDEX></INDEX>
+    <INDEX><USE>perform</USE> (in register machine)</INDEX>
+    <SCHEMEINLINE>perform</SCHEMEINLINE> という新しい種類の命令を使います。したがって、レジスタ <SCHEMEINLINE>a</SCHEMEINLINE> の内容を出力するアクションは、コントローラの列では次の命令で表現されます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (perform (op print) (reg a))
       </SCHEME>
       <JAVASCRIPT>
-perform(list(op("display"), reg("a")))      
+perform(list(op("display"), reg("a")))
       </JAVASCRIPT>
     </SNIPPET>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	Figure<SPACE/><REF NAME="fig:gcd-with-io_scheme"/>
@@ -525,6 +758,19 @@ perform(list(op("display"), reg("a")))
     the result.
     This structure is like the driver loops we used in the interpreters of
     chapter<SPACE/><REF NAME="chap:meta"></REF>.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	図<SPACE/><REF NAME="fig:gcd-with-io_scheme"/>
+      </SCHEME>
+      <JAVASCRIPT>
+	図<SPACE/><REF NAME="fig:gcd-with-io"/>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、新しい GCD マシンのデータパスとコントローラを示しています。答えを出力した後にマシンを停止させる代わりに、最初からやり直すようにしたので、数のペアを繰り返し読み取り、その最大公約数を計算し、結果を出力します。この構造は、第<SPACE/><REF NAME="chap:meta"></REF>章のインタプリタで使用したドライバループに似ています。
+    </JA>
+    </BILINGUAL>
     <!--  % (registers a b t) (operations read = rem print) -->
     <SPLIT>
       <SCHEME>

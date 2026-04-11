@@ -168,7 +168,34 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 4.4.2 How the Query System Works
 - [x] Section 4.4.3 Is Logic Programming Mathematical Logic?
 - [x] Section 4.4.4 Implementing the Query System
-- [ ] Chapter 5 以降
+- [x] Chapter 5 導入部
+- [x] Section 5.1 Designing Register Machines (導入部)
+- [x] Section 5.1.1 A Language for Describing Register Machines
+- [x] Section 5.1.2 Abstraction in Machine Design
+- [x] Section 5.1.3 Subroutines
+- [x] Section 5.1.4 Using a Stack to Implement Recursion
+- [x] Section 5.1.5 Instruction Summary
+- [x] Section 5.2 A Register-Machine Simulator (導入部)
+- [x] Section 5.2.1 The Machine Model
+- [x] Section 5.2.2 The Assembler
+- [x] Section 5.2.3 Generating Execution Functions for Instructions
+- [x] Section 5.2.4 Monitoring Machine Performance
+- [x] Section 5.3 Storage Allocation and Garbage Collection (導入部)
+- [x] Section 5.3.1 Memory as Vectors
+- [x] Section 5.3.2 Maintaining the Illusion of Infinite Memory
+- [x] Section 5.4 The Explicit-Control Evaluator (導入部)
+- [x] Section 5.4.1 The Dispatcher and Basic Evaluation
+- [x] Section 5.4.2 Evaluating Function Applications
+- [x] Section 5.4.3 Blocks, Assignments, and Declarations
+- [x] Section 5.4.4 Running the Evaluator
+- [x] Section 5.5 Compilation (導入部)
+- [x] Section 5.5.1 Structure of the Compiler
+- [x] Section 5.5.2 Compiling Components
+- [x] Section 5.5.3 Compiling Combinations
+- [x] Section 5.5.4 Combining Instruction Sequences
+- [x] Section 5.5.5 An Example of Compiled Code
+- [x] Section 5.5.6 Lexical Addressing
+- [x] Section 5.5.7 Interfacing Compiled Code to the Evaluator
 
 ## インライン実行
 

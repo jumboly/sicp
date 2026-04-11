@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Running the Evaluator
+    <BILINGUAL>
+      <EN>Running the Evaluator</EN>
+      <JA>評価器の実行</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:running-evaluator"/>
@@ -8,6 +11,8 @@
   <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>running<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     With the implementation of the explicit-control evaluator we come to
     the end of a development, begun in chapter<SPACE/><REF NAME="chap:fun"></REF>, in which we have
     explored successively more precise
@@ -36,9 +41,29 @@
     treatment of evaluation.  To understand the behavior of the
     explicit-control evaluator, we can simulate it and monitor its
     performance.
+      </EN>
+      <JA>
+    明示的制御評価器の実装をもって、第<SPACE/><REF NAME="chap:fun"></REF>章で始めた一連の開発の締めくくりとなります。この開発の中で、私たちは評価プロセスのモデルを段階的により精密なものにしてきました。
+    <INDEX>models of evaluation</INDEX>
+    <INDEX>evaluation<SUBINDEX>models of</SUBINDEX></INDEX>
+    まず比較的非形式的な置換モデルから始め、次に第<SPACE/><REF NAME="chap:state"></REF>章で環境モデルに拡張して状態と変化を扱えるようにしました。第<SPACE/><REF NAME="chap:meta"></REF>章のメタ循環評価器では、
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    自体を言語として使い、
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>コンポーネント</JAVASCRIPT>
+    </SPLITINLINE>
+    の評価中に構築される環境構造をより明確にしました。そして今、レジスタマシンを用いることで、評価器の記憶管理、引数渡し、制御の仕組みを詳しく見てきました。記述の各段階で、以前のより不正確な扱いでは明らかでなかった問題を提起し、あいまいさを解消する必要がありました。明示的制御評価器の動作を理解するために、シミュレーションを行い、その性能を監視することができます。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     We will install a
     <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>driver loop</SUBINDEX></INDEX>
     <INDEX>driver loop<SUBINDEX><ORDER>explicit</ORDER>in explicit-control evaluator</SUBINDEX></INDEX>
@@ -53,7 +78,7 @@
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     of section<SPACE/><REF NAME="sec:running-eval"/>. The evaluator
-    will repeatedly print a prompt, read 
+    will repeatedly print a prompt, read
     <SPLITINLINE>
       <SCHEME>an expression,</SCHEME>
       <JAVASCRIPT>a program,</JAVASCRIPT>
@@ -77,11 +102,57 @@
       <JAVASCRIPT>
         If nothing is entered at the prompt, we jump to the label
         <JAVASCRIPTINLINE>evaluator_done</JAVASCRIPTINLINE>, which is
-        the last entry point in the controller. 
+        the last entry point in the controller.
       </JAVASCRIPT>
     </SPLITINLINE>
     The following instructions form the beginning of the
-    explicit-control evaluator<APOS/>s controller sequence:<FOOTNOTE>We assume
+    explicit-control evaluator<APOS/>s controller sequence:
+      </EN>
+      <JA>
+    評価器マシンに
+    <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>driver loop</SUBINDEX></INDEX>
+    <INDEX>driver loop<SUBINDEX><ORDER>explicit</ORDER>in explicit-control evaluator</SUBINDEX></INDEX>
+    ドライバループを組み込みます。これは<SPACE/><REF NAME="sec:running-eval"/>節の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>driver-loop</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>driver_loop</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    と同じ役割を果たします。評価器はプロンプトを表示し、
+    <SPLITINLINE>
+      <SCHEME>式を読み込み、</SCHEME>
+      <JAVASCRIPT>プログラムを読み込み、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>eval-dispatch</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>eval_dispatch</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に移って
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>
+    を評価し、結果を表示するという動作を繰り返します。
+    <SPLITINLINE>
+      <JAVASCRIPT>
+        プロンプトで何も入力されなかった場合は、コントローラの最後のエントリポイントであるラベル
+        <JAVASCRIPTINLINE>evaluator_done</JAVASCRIPTINLINE> にジャンプします。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    以下の命令列は、明示的制御評価器のコントローラ列の先頭を構成します。
+      </JA>
+    </BILINGUAL>
+    <FOOTNOTE>
+    <BILINGUAL>
+      <EN>
+    We assume
     here that
     <SPLITINLINE>
       <SCHEME>
@@ -103,14 +174,34 @@
     would be
     implemented using low-level input-output operations such as transferring
     single characters to and from a device.
+      </EN>
+      <JA>
+    ここでは
+    <SPLITINLINE>
+      <SCHEME>
+	      <SCHEMEINLINE>read</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	      <JAVASCRIPTINLINE>user_read</JAVASCRIPTINLINE>、
+	      <JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE>、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    および各種表示操作がプリミティブなマシン操作として利用できると仮定しています。これはシミュレーションには便利ですが、実際にはまったく非現実的です。これらは実際には非常に複雑な操作です。実際には、
+    <SPLITINLINE>
+      <SCHEME>それらは</SCHEME>
+      <JAVASCRIPT>読み込みと表示は</JAVASCRIPT>
+    </SPLITINLINE>
+    デバイスとの間で1文字ずつ転送するような低レベルの入出力操作を使って実装されることになります。
+      </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
 	<P/>
 	To support the
 	<SCHEMEINLINE>get-global-environment</SCHEMEINLINE> operation we define
 	<SNIPPET EVAL="no">
-	  <INDEX><DECLARATION>the-global-environment</DECLARATION></INDEX> 
-	  <INDEX><DECLARATION>get-global-environment</DECLARATION></INDEX> 
+	  <INDEX><DECLARATION>the-global-environment</DECLARATION></INDEX>
+	  <INDEX><DECLARATION>get-global-environment</DECLARATION></INDEX>
 	  <NAME>the_global</NAME>
 	  <SCHEME>
 	    (define the-global-environment (setup-environment))
@@ -170,13 +261,23 @@
       <SCHEME>
       </SCHEME>
       <JAVASCRIPT>
+        <BILINGUAL>
+          <EN>
         We store the current environment, initially the global environment,
         in the variable <JAVASCRIPTINLINE>current_@environment</JAVASCRIPTINLINE>
         and update it each time around the loop to remember past declarations.
         The operations
 	<JAVASCRIPTINLINE>get_@current_@environment</JAVASCRIPTINLINE> and
-	<JAVASCRIPTINLINE>set_@current_@environment</JAVASCRIPTINLINE> 
+	<JAVASCRIPTINLINE>set_@current_@environment</JAVASCRIPTINLINE>
 	simply get and set this variable.
+          </EN>
+          <JA>
+        現在の環境（初期値はグローバル環境）を変数 <JAVASCRIPTINLINE>current_@environment</JAVASCRIPTINLINE> に格納し、ループを回るたびに更新して過去の宣言を記憶します。操作
+	<JAVASCRIPTINLINE>get_@current_@environment</JAVASCRIPTINLINE> と
+	<JAVASCRIPTINLINE>set_@current_@environment</JAVASCRIPTINLINE>
+	は、単にこの変数を取得および設定するだけです。
+          </JA>
+        </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>get_current_environment</DECLARATION></INDEX>
       <INDEX><DECLARATION>set_current_environment</DECLARATION></INDEX>
@@ -198,6 +299,8 @@ function set_current_environment(env) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     When we encounter an
     <INDEX>error handling<SUBINDEX>in explicit-control evaluator</SUBINDEX></INDEX>
     <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>error handling</SUBINDEX></INDEX>
@@ -206,7 +309,7 @@ function set_current_environment(env) {
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    (such as the 
+    (such as the
     <SPLITINLINE>
       <SCHEME><QUOTE>unknown procedure type error</QUOTE></SCHEME>
       <JAVASCRIPT><QUOTE>unknown function type</QUOTE> error</JAVASCRIPT>
@@ -217,9 +320,36 @@ function set_current_environment(env) {
       <JAVASCRIPT><JAVASCRIPTINLINE>apply_dispatch</JAVASCRIPTINLINE>),
       </JAVASCRIPT>
     </SPLITINLINE>
-    we print an error message and return to the driver loop.<FOOTNOTE>There are
+    we print an error message and return to the driver loop.
+      </EN>
+      <JA>
+    <INDEX>error handling<SUBINDEX>in explicit-control evaluator</SUBINDEX></INDEX>
+    <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>error handling</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    でエラーに遭遇した場合（たとえば
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>apply-dispatch</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_dispatch</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    で示される
+    <SPLITINLINE>
+      <SCHEME><QUOTE>unknown procedure type</QUOTE> エラー）、</SCHEME>
+      <JAVASCRIPT><QUOTE>unknown function type</QUOTE> エラー）、</JAVASCRIPT>
+    </SPLITINLINE>
+    エラーメッセージを表示してドライバループに戻ります。
+      </JA>
+    </BILINGUAL>
+    <FOOTNOTE>
+    <BILINGUAL>
+      <EN>There are
     other errors that we would like the interpreter to handle, but these are not
-    so simple.  See exercise<SPACE/><REF NAME="ex:interp-errors"/>.</FOOTNOTE>
+    so simple.  See exercise<SPACE/><REF NAME="ex:interp-errors"/>.</EN>
+      <JA>インタプリタに処理させたいエラーは他にもありますが、それらはそれほど単純ではありません。練習問題<SPACE/><REF NAME="ex:interp-errors"/>を参照してください。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET EVAL="no" LATEX="yes">
       <INDEX><DECLARATION>unknown_component_type</DECLARATION></INDEX> 
       <INDEX><DECLARATION>unknown_function_type</DECLARATION></INDEX> 
@@ -257,6 +387,8 @@ function set_current_environment(env) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     For the purposes of the simulation, we initialize the stack each time
     through the driver loop, since it might not be empty after an error
     <SPLITINLINE>
@@ -267,21 +399,50 @@ function set_current_environment(env) {
 	(such as an undeclared name)
       </JAVASCRIPT>
     </SPLITINLINE>
-    interrupts an evaluation.<FOOTNOTE>We
+    interrupts an evaluation.
+      </EN>
+      <JA>
+    シミュレーションのために、ドライバループを通過するたびにスタックを初期化します。エラー
+    <SPLITINLINE>
+      <SCHEME>
+	（未定義の変数など）
+      </SCHEME>
+      <JAVASCRIPT>
+	（未宣言の名前など）
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    によって評価が中断された後は、スタックが空でない可能性があるためです。
+      </JA>
+    </BILINGUAL>
+    <FOOTNOTE>
+    <BILINGUAL>
+      <EN>We
     could perform the stack initialization only after errors, but doing it in
     the driver loop will be convenient for monitoring the evaluator<APOS/>s
-    performance, as described below.</FOOTNOTE>
+    performance, as described below.</EN>
+      <JA>スタックの初期化はエラーの後だけに行うこともできますが、ドライバループ内で行う方が、後述する評価器の性能監視に便利です。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
   </TEXT>
 
   <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>controller<CLOSE/></SUBINDEX></INDEX>
   
   <TEXT>
+    <BILINGUAL>
+      <EN>
     If we combine all the code fragments presented in sections
     <REF NAME="sec:eceval-core"/><ENDASH/><REF NAME="sec:running-evaluator"/>,
     we can create an
     <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>machine model</SUBINDEX></INDEX>
     evaluator machine model that we can run using the
     register-machine simulator of section<SPACE/><REF NAME="sec:simulator"/>.
+      </EN>
+      <JA>
+    <REF NAME="sec:eceval-core"/>節から<REF NAME="sec:running-evaluator"/>節までに示したすべてのコード断片を組み合わせると、
+    <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>machine model</SUBINDEX></INDEX>
+    <SPACE/><REF NAME="sec:simulator"/>節のレジスタマシンシミュレータで実行できる評価器マシンモデルを作成できます。
+      </JA>
+    </BILINGUAL>
 
     <SNIPPET EVAL="no" LATEX="yes">
       <INDEX><DECLARATION>eceval</DECLARATION></INDEX>
@@ -615,7 +776,9 @@ const eceval_controller =
       </JAVASCRIPT>
     </SNIPPET>
 
-    We must define 
+    <BILINGUAL>
+      <EN>
+    We must define
     <SPLITINLINE>
       <SCHEME>Scheme procedures</SCHEME>
       <JAVASCRIPT>JavaScript functions</JAVASCRIPT>
@@ -629,6 +792,21 @@ const eceval_controller =
     we used for the metacircular evaluator in
     section<SPACE/><REF NAME="sec:mc-eval"/>, together with the few additional
     ones defined in footnotes throughout section<SPACE/><REF NAME="sec:eceval"/>.
+      </EN>
+      <JA>
+    評価器がプリミティブとして使用する操作をシミュレートするために、
+    <SPLITINLINE>
+      <SCHEME>Scheme の手続き</SCHEME>
+      <JAVASCRIPT>JavaScript の関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を定義する必要があります。これらは<SPACE/><REF NAME="sec:mc-eval"/>節のメタ循環評価器で使用した
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    と同じもので、<SPACE/><REF NAME="sec:eceval"/>節全体の脚注で定義されたいくつかの追加のものも含みます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <SCHEME>
 (define eceval-operations
@@ -765,7 +943,10 @@ const eceval_operations =
 
   
   <TEXT>
-    Finally, we can initialize the global environment and run the evaluator:
+    <BILINGUAL>
+      <EN>Finally, we can initialize the global environment and run the evaluator:</EN>
+      <JA>最後に、グローバル環境を初期化して評価器を実行できます。</JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>the_global_environment</DECLARATION></INDEX>
       <NAME>ec_eval_all</NAME>
@@ -866,6 +1047,8 @@ EC-evaluate value:
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Of course, evaluating
     <SPLITINLINE>
       <SCHEME>expressions</SCHEME>
@@ -896,18 +1079,50 @@ EC-evaluate value:
       <JAVASCRIPT>JavaScript</JAVASCRIPT>
     </SPLITINLINE>
     interpreter.
+      </EN>
+      <JA>
+    もちろん、この方法で
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>
+    を評価すると、
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    に直接入力した場合よりもはるかに時間がかかります。なぜなら、複数段階のシミュレーションが関わるためです。私たちの
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>
+    は明示的制御評価器マシンによって評価され、そのマシンは
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    プログラムによってシミュレートされ、そのプログラム自体が
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    インタプリタによって評価されているのです。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>running<CLOSE/></SUBINDEX></INDEX>
   
-  <SUBHEADING> 
-    <NAME>Monitoring the performance of the evaluator</NAME>
+  <SUBHEADING>
+    <NAME><BILINGUAL><EN>Monitoring the performance of the evaluator</EN><JA>評価器の性能のモニタリング</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>monitoring performance (stack use)<OPEN/></SUBINDEX></INDEX>
   
   <SHORT_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Simulation can be a powerful tool to guide the implementation of
     evaluators.
     <INDEX>simulation<SUBINDEX><ORDER>machine</ORDER>as machine-design tool</SUBINDEX></INDEX>
@@ -929,6 +1144,23 @@ EC-evaluate value:
       <JAVASCRIPT><JAVASCRIPTINLINE>print_result</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     entry point to print the statistics:
+      </EN>
+      <JA>
+    シミュレーションは、評価器の実装を導くための強力なツールとなりえます。
+    <INDEX>simulation<SUBINDEX><ORDER>machine</ORDER>as machine-design tool</SUBINDEX></INDEX>
+    シミュレーションによって、レジスタマシン設計のバリエーションを探索するだけでなく、シミュレートされた評価器の性能をモニタリングすることも容易になります。たとえば、性能における重要な要因の一つは、評価器がスタックをどれだけ効率的に使用するかです。スタック使用量の統計を収集するバージョンのシミュレータ（<REF NAME="sec:monitor"/>節）で評価器のレジスタマシンを定義し、評価器の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>print-result</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>print_result</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    エントリポイントに統計を表示する命令を追加することで、さまざまな
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>
+    の評価に必要なスタック操作の回数を観察できます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET LATEX="yes">
       <INDEX><DECLARATION>print_result</DECLARATION><SUBINDEX>monitored-stack version</SUBINDEX></INDEX>
       <SCHEME EVAL="no">
@@ -947,7 +1179,10 @@ EC-evaluate value:
   go_to(label("read_evaluate_print_loop")),
       </JAVASCRIPT>
     </SNIPPET>
-    Interactions with the evaluator now look like this:
+    <BILINGUAL>
+      <EN>Interactions with the evaluator now look like this:</EN>
+      <JA>評価器とのやり取りは次のようになります。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEMEOUTPUT>
 ;;; EC-Eval input:
@@ -999,6 +1234,8 @@ EC-evaluate value:
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
 
+    <BILINGUAL>
+      <EN>
     Note that the driver loop of the evaluator reinitializes the stack
     at the start of
     each interaction, so that the statistics printed will refer only to
@@ -1006,11 +1243,23 @@ EC-evaluate value:
     <SPLITINLINE>
       <SCHEME>expression.</SCHEME>
       <JAVASCRIPT>program.</JAVASCRIPT>
-      </SPLITINLINE>
+    </SPLITINLINE>
+      </EN>
+      <JA>
+    評価器のドライバループは各やり取りの開始時にスタックを再初期化するため、表示される統計は直前の
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>
+    の評価に使用されたスタック操作のみを参照することに注意してください。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
     <LABEL NAME="ex:tail-rec-fact"/>
+    <BILINGUAL>
+      <EN>
     Use the monitored stack to explore the
     <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>tail recursion</SUBINDEX></INDEX>
     <INDEX>tail recursion<SUBINDEX>explicit-control evaluator and</SUBINDEX></INDEX>
@@ -1023,6 +1272,20 @@ EC-evaluate value:
       <SCHEME>procedure</SCHEME>
     <JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>
     from section<SPACE/><REF NAME="sec:recursion-and-iteration"/>:
+      </EN>
+      <JA>
+    モニタ付きスタックを使って、評価器の
+    <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>tail recursion</SUBINDEX></INDEX>
+    <INDEX>tail recursion<SUBINDEX>explicit-control evaluator and</SUBINDEX></INDEX>
+    末尾再帰特性（<REF NAME="sec:tail-recursion-return"/>節）を調べてください。評価器を起動し、<REF NAME="sec:recursion-and-iteration"/>節の
+    <INDEX><USE>factorial</USE><SUBINDEX>stack usage, interpreted</SUBINDEX></INDEX>
+    反復的な <SCHEMEINLINE>factorial</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    を定義してください。
+      </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
       (define (factorial n)
@@ -1045,6 +1308,8 @@ function factorial(n) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     Run the
     <SPLITINLINE><SCHEME>procedure</SCHEME>
     <JAVASCRIPT>function</JAVASCRIPT>
@@ -1067,11 +1332,30 @@ function factorial(n) {
 	and is thus determined by two constants.
       </LI>
     </OL>
+      </EN>
+      <JA>
+    この
+    <SPLITINLINE><SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    をいくつかの小さな <LATEXINLINE>$n$</LATEXINLINE> の値で実行してください。それぞれの値について、<LATEXINLINE>$n!$</LATEXINLINE> の計算に必要なスタックの最大深さとプッシュ回数を記録してください。
+    <OL>
+      <LI>
+	<LATEXINLINE>$n!$</LATEXINLINE> の評価に必要な最大深さは <LATEXINLINE>$n$</LATEXINLINE> に依存しないことがわかるでしょう。その深さはいくつですか？
+      </LI>
+      <LI>
+	データから、任意の <LATEXINLINE>$n \geq 1$</LATEXINLINE> に対して <LATEXINLINE>$n!$</LATEXINLINE> の評価に使用されるプッシュ操作の総数を <LATEXINLINE>$n$</LATEXINLINE> の式で表す公式を求めてください。使用される操作の数は <LATEXINLINE>$n$</LATEXINLINE> の線形関数であり、したがって2つの定数で決まることに注意してください。
+      </LI>
+    </OL>
+      </JA>
+    </BILINGUAL>
   </EXERCISE>
 
   <SHORT_PAGE lines="2"/>
   <EXERCISE>
     <LABEL NAME="ex:rec-fact"/>
+    <BILINGUAL>
+      <EN>
     For comparison with exercise<SPACE/><REF NAME="ex:tail-rec-fact"/>, explore
     the behavior of the following
     <SPLITINLINE>
@@ -1081,6 +1365,17 @@ function factorial(n) {
     for computing
     <INDEX><USE>factorial</USE><SUBINDEX>stack usage, interpreted</SUBINDEX></INDEX>
     factorials recursively:
+      </EN>
+      <JA>
+    練習問題<SPACE/><REF NAME="ex:tail-rec-fact"/>との比較のために、階乗を再帰的に計算する次の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の振る舞いを調べてください。
+    <INDEX><USE>factorial</USE><SUBINDEX>stack usage, interpreted</SUBINDEX></INDEX>
+      </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
       (define (factorial n)
@@ -1096,6 +1391,8 @@ function factorial(n) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     By running this
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -1107,6 +1404,16 @@ function factorial(n) {
     <LATEXINLINE>$n \geq 1$</LATEXINLINE>.  (Again, these functions will be
     linear.)  Summarize your experiments by filling in the following table with
     the appropriate expressions in terms of <LATEXINLINE>$n$</LATEXINLINE>:
+      </EN>
+      <JA>
+    この
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    をモニタ付きスタックで実行して、<LATEXINLINE>$n \geq 1$</LATEXINLINE> に対する <LATEXINLINE>$n!$</LATEXINLINE> の評価に使用されるスタックの最大深さとプッシュの総数を <LATEXINLINE>$n$</LATEXINLINE> の関数として求めてください。（これらも線形関数になります。）以下の表に <LATEXINLINE>$n$</LATEXINLINE> を用いた適切な式を記入して、実験結果をまとめてください。
+      </JA>
+    </BILINGUAL>
     <WEB_ONLY>
       <FIGURE src="img_original/527table.svg">
 	<LABEL NAME="527table"/>
@@ -1127,19 +1434,28 @@ function factorial(n) {
      </LATEX>
       </BLOCKQUOTE>
     </PDF_ONLY>
+    <BILINGUAL>
+      <EN>
     The maximum depth is a measure of the amount of space used by the
     evaluator in carrying out the computation, and the number of pushes
     correlates well with the time required.
+      </EN>
+      <JA>
+    最大深さは、評価器が計算を実行する際に使用する空間の量の尺度であり、プッシュの回数は所要時間とよく相関します。
+      </JA>
+    </BILINGUAL>
   </EXERCISE>
       
   <EXERCISE>
+    <BILINGUAL>
+      <EN>
     Modify the definition of the evaluator by changing
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>eval-sequence</SCHEMEINLINE>
-      as described in section<SPACE/><REF NAME="sec:sequence-evaluation"/> 
+      as described in section<SPACE/><REF NAME="sec:sequence-evaluation"/>
       </SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>ev_return</JAVASCRIPTINLINE>
-      as described in section<SPACE/><REF NAME="sec:tail-recursion-return"/> 
+      as described in section<SPACE/><REF NAME="sec:tail-recursion-return"/>
       </JAVASCRIPT>
     </SPLITINLINE>
     so that the evaluator is no longer
@@ -1154,13 +1470,43 @@ function factorial(n) {
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     now require space that grows linearly with their input.
+      </EN>
+      <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>eval-sequence</SCHEMEINLINE>
+      を<REF NAME="sec:sequence-evaluation"/>節で説明した
+      </SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>ev_return</JAVASCRIPTINLINE>
+      を<REF NAME="sec:tail-recursion-return"/>節で説明した
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    ように変更して、評価器が
+    <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>tail recursion</SUBINDEX></INDEX>
+    <INDEX>tail recursion<SUBINDEX>explicit-control evaluator and</SUBINDEX></INDEX>
+    末尾再帰的でなくなるように評価器の定義を修正してください。練習問題<SPACE/><REF NAME="ex:tail-rec-fact"/>と<SPACE/><REF NAME="ex:rec-fact"/>の実験を再実行して、<SCHEMEINLINE>factorial</SCHEMEINLINE>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の両方のバージョンで、入力に対して線形に増加する空間が必要になることを示してください。
+      </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:5_29"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+      <EN>
     Monitor the stack operations in the tree-recursive
     <INDEX><USE>fib</USE><SUBINDEX>stack usage, interpreted</SUBINDEX></INDEX>
     Fibonacci computation:
+      </EN>
+      <JA>
+    木構造再帰的な
+    <INDEX><USE>fib</USE><SUBINDEX>stack usage, interpreted</SUBINDEX></INDEX>
+    フィボナッチ計算におけるスタック操作をモニタしてください。
+      </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>fib</DECLARATION><SUBINDEX>tree-recursive version</SUBINDEX><FRAGILE/></INDEX>
       <SCHEME>
@@ -1175,6 +1521,8 @@ function fib(n) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     <OL>
       <LI>
 	Give a formula in terms of <LATEXINLINE>$n$</LATEXINLINE> for the
@@ -1205,6 +1553,18 @@ function fib(n) {
 	<LATEXINLINE>$b$</LATEXINLINE>.
       </LI>
     </OL>
+      </EN>
+      <JA>
+    <OL>
+      <LI>
+	<LATEXINLINE>$n \geq 2$</LATEXINLINE> に対して <LATEXINLINE>${\textrm{Fib}}(n)$</LATEXINLINE> の計算に必要なスタックの最大深さを <LATEXINLINE>$n$</LATEXINLINE> の式で表す公式を与えてください。ヒント：<REF NAME="sec:tree-recursion"/>節で、このプロセスが使用する空間は <LATEXINLINE>$n$</LATEXINLINE> に対して線形に増加すると論じました。
+      </LI>
+      <LI>
+	<LATEXINLINE>$n \geq 2$</LATEXINLINE> に対して <LATEXINLINE>${\textrm{Fib}}(n)$</LATEXINLINE> の計算に使用されるプッシュの総数の公式を与えてください。プッシュの回数（所要時間とよく相関する）は <LATEXINLINE>$n$</LATEXINLINE> に対して指数関数的に増加することがわかるでしょう。ヒント：<LATEXINLINE>$S(n)$</LATEXINLINE> を <LATEXINLINE>${\textrm{Fib}}(n)$</LATEXINLINE> の計算に使用されるプッシュの回数とします。<LATEXINLINE>$S(n)$</LATEXINLINE> を <LATEXINLINE>$S(n-1)$</LATEXINLINE>、<LATEXINLINE>$S(n-2)$</LATEXINLINE>、および <LATEXINLINE>$n$</LATEXINLINE> に依存しない固定の<QUOTE>オーバーヘッド</QUOTE>定数 <LATEXINLINE>$k$</LATEXINLINE> で表す公式が存在することを論じられるはずです。その公式を示し、<LATEXINLINE>$k$</LATEXINLINE> の値を述べてください。次に、<LATEXINLINE>$S(n)$</LATEXINLINE> が <LATEXINLINE>$a {\textrm{Fib}}(n+1) + b$</LATEXINLINE> と表せることを示し、<LATEXINLINE>$a$</LATEXINLINE> と <LATEXINLINE>$b$</LATEXINLINE> の値を与えてください。
+      </LI>
+    </OL>
+      </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:rec-fib"/>
   </EXERCISE>
 
@@ -1212,6 +1572,8 @@ function fib(n) {
 
   <EXERCISE>
     <LABEL NAME="ex:interp-errors"/>
+    <BILINGUAL>
+      <EN>
     Our evaluator currently catches and signals only two kinds of
     <INDEX>error handling<SUBINDEX>in explicit-control evaluator</SUBINDEX></INDEX>
     <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>error handling</SUBINDEX></INDEX>
@@ -1246,12 +1608,47 @@ function fib(n) {
       <JAVASCRIPT>JavaScript</JAVASCRIPT>
     </SPLITINLINE>
     system.  This is analogous
-    to the computer crashing when a user program makes an error.<FOOTNOTE>
+    to the computer crashing when a user program makes an error.
+      </EN>
+      <JA>
+    現在の評価器は、未知の
+    <INDEX>error handling<SUBINDEX>in explicit-control evaluator</SUBINDEX></INDEX>
+    <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>error handling</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>
+        式
+      </SCHEME>
+      <JAVASCRIPT>
+        コンポーネント
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    型と未知の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    型という2種類のエラーのみを捕捉して通知します。それ以外のエラーは、評価器の
+    <SPLITINLINE>
+      <SCHEME>
+	read-eval-print
+      </SCHEME>
+      <JAVASCRIPT>
+	read-evaluate-print
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    ループから抜け出してしまいます。レジスタマシンシミュレータを使って評価器を実行する場合、これらのエラーは基盤となる
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    システムによって捕捉されます。これは、ユーザープログラムがエラーを起こしたときにコンピュータがクラッシュするのと同様です。
+      </JA>
+    </BILINGUAL><FOOTNOTE>
     <SPLIT>
       <SCHEME>
 	Regrettably, this is the normal state of affairs in
 	<INDEX>C<SUBINDEX>error handling</SUBINDEX></INDEX>
-	conventional compiler-based language systems such as C.  
+	conventional compiler-based language systems such as C.
 	<INDEX>UNIX</INDEX>
 	In UNIX<LATEXINLINE>$^{\textrm{TM}}$</LATEXINLINE><WEB_ONLY><SPACE/><SPACE/></WEB_ONLY> the system <QUOTE>dumps
 	core,</QUOTE> and in
@@ -1264,13 +1661,22 @@ function fib(n) {
 	computer<EMDASH/>if you<APOS/>re lucky.
       </SCHEME>
       <JAVASCRIPT>
+        <BILINGUAL>
+          <EN>
         This manifests itself as, for example, a <QUOTE>kernel panic</QUOTE> or a <QUOTE>blue
         screen of death</QUOTE> or even a reboot. Automatic rebooting is an approach
         typically used on phones and tablets. Most modern operating systems do a
         decent job of preventing user programs from causing an entire machine to
         crash.
+          </EN>
+          <JA>
+        これは、たとえば<QUOTE>カーネルパニック</QUOTE>や<QUOTE>ブルースクリーン</QUOTE>、あるいは再起動として現れます。自動再起動は、スマートフォンやタブレットで一般的に使われるアプローチです。最近のほとんどのオペレーティングシステムは、ユーザープログラムがマシン全体をクラッシュさせることを防ぐ点でまずまずの仕事をしています。
+          </JA>
+        </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT></FOOTNOTE>
+    <BILINGUAL>
+      <EN>
     It is a large project to
     make a real error system work, but it is well worth the effort to understand
     what is involved here.
@@ -1310,7 +1716,7 @@ function fib(n) {
 	<SPLITINLINE>
 	  <SCHEME>
 	    <SCHEMEINLINE>car</SCHEMEINLINE>
-	    of a symbol.	    
+	    of a symbol.
 	  </SCHEME>
 	  <JAVASCRIPT>
 	    <JAVASCRIPTINLINE>head</JAVASCRIPTINLINE>
@@ -1349,6 +1755,71 @@ function fib(n) {
 	This is a major project.
       </LI>
     </OL>
+      </EN>
+      <JA>
+    本格的なエラーシステムを動作させるのは大きなプロジェクトですが、ここで何が関わっているかを理解する価値は十分にあります。
+    <OL>
+      <LI>
+	束縛されていない
+	<SPLITINLINE>
+	  <SCHEME>変数</SCHEME>
+	  <JAVASCRIPT>名前</JAVASCRIPT>
+	</SPLITINLINE>
+	にアクセスしようとするなど、評価プロセスで発生するエラーは、ルックアップ操作を変更して、ユーザーの
+	<SPLITINLINE>
+	  <SCHEME>変数</SCHEME>
+	  <JAVASCRIPT>名前</JAVASCRIPT>
+	</SPLITINLINE>
+	の値としてありえない特別な条件コードを返すようにすることで捕捉できます。評価器はこの条件コードを検査して、
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>signal-error</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>signal_error</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	に移行するために必要な処理を行えます。評価器のどこでこのような変更が必要かをすべて見つけて修正してください。これは多大な作業です。
+      </LI>
+      <LI>
+	さらに厄介なのは、プリミティブな
+	<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+	の適用時に通知されるエラーの処理です。たとえば、ゼロによる除算や、
+	<SPLITINLINE>
+	  <SCHEME>
+	    シンボルの <SCHEMEINLINE>car</SCHEMEINLINE>
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    文字列の <JAVASCRIPTINLINE>head</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	を取得しようとする場合です。プロフェッショナルに書かれた高品質なシステムでは、各プリミティブの適用はプリミティブの一部として安全性がチェックされます。たとえば、
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>
+	の呼び出しのたびに、まず引数がペアであることをチェックできます。引数がペアでなければ、適用は特別な条件コードを評価器に返し、評価器が失敗を報告します。レジスタマシンシミュレータでは、各プリミティブ
+	<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+	に適用可能かどうかをチェックさせ、失敗時に適切な特別な条件コードを返すようにすることでこれを実現できます。そうすれば、評価器の
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>primitive-apply</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>primitive_apply</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	コードが条件コードをチェックして、必要に応じて
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>signal-error</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>signal_error</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	に移行できます。この構造を構築して動作させてください。これは大きなプロジェクトです。
+      </LI>
+    </OL>
+      </JA>
+    </BILINGUAL>
   </EXERCISE>
 
   <INDEX>explicit-control evaluator for JavaScript<CLOSE/></INDEX>

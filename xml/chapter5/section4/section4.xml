@@ -1,5 +1,10 @@
 <SECTION>
-  <NAME>The Explicit-Control Evaluator</NAME>
+  <NAME>
+    <BILINGUAL>
+      <EN>The Explicit-Control Evaluator</EN>
+      <JA>明示的制御評価器</JA>
+    </BILINGUAL>
+  </NAME>
 
   <PDF_ONLY>
     <!-- Figure moved here from later for SICP JS pagination -->
@@ -18,6 +23,8 @@
   <INDEX>explicit-control evaluator for JavaScript<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     In section<SPACE/><REF NAME="sec:designing-register-machines"/> we saw how to
     transform simple
     <SPLITINLINE>
@@ -89,10 +96,73 @@
     The chip designers started with the data-path and controller specifications
     for a register machine similar to the evaluator described in this section
     and used design automation programs to construct the
-    integrated-circuit layout.<FOOTNOTE>See 
+    integrated-circuit layout.
+      </EN>
+      <JA>
+    <SPACE/><REF NAME="sec:designing-register-machines"/>節では、単純な
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    プログラムをレジスタマシンの記述に変換する方法を見ました。ここでは、より複雑なプログラム、すなわち<SPACE/><REF NAME="sec:core-of-evaluator"/>節から<REF NAME="sec:running-eval"/>節のメタ循環評価器に対して、同じ変換を行います。メタ循環評価器は、
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    インタプリタの動作が、関数
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>eval</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<SCHEMEINLINE>evaluate</SCHEMEINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と<SCHEMEINLINE>apply</SCHEMEINLINE>によってどのように記述できるかを示すものでした。本節で開発する<EM>明示的制御評価器</EM>は、評価プロセスで使われる
+    <SPLITINLINE>
+      <SCHEME>手続き呼び出し</SCHEME>
+      <JAVASCRIPT>関数呼び出し</JAVASCRIPT>
+    </SPLITINLINE>
+    や引数渡しの基盤となるメカニズムが、レジスタとスタックに対する操作によってどのように記述できるかを示します。さらに、明示的制御評価器は、従来のコンピュータのネイティブなマシン語に非常に近い言語で書かれた
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    インタプリタの実装として機能します。この評価器は、<SPACE/><REF NAME="sec:simulator"/>節のレジスタマシンシミュレータで実行できます。あるいは、
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    評価器のマシン語実装を構築するための出発点として、さらには
+    <INDEX>Scheme chip</INDEX>
+    <INDEX>integrated-circuit implementation of Scheme</INDEX>
+    <INDEX>chip implementation of Scheme</INDEX>
+    <INDEX>Scheme<SUBINDEX>integrated-circuit implementation of</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>Scheme の式</SCHEME>
+      <JAVASCRIPT>JavaScript プログラム</JAVASCRIPT>
+    </SPLITINLINE>
+    を評価するための専用マシンとしても利用できます。図<SPACE/><REF NAME="fig:Scheme-chip"/>は、そのようなハードウェア実装を示しています。
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>
+        本書の原著で JavaScript の代わりに使われていた言語である Scheme
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の評価器として機能するシリコンチップです。チップの設計者は、本節で説明する評価器と同様のレジスタマシンのデータパスとコントローラの仕様から出発し、設計自動化プログラムを使って集積回路のレイアウトを構築しました。
+      </JA>
+    </BILINGUAL>
+    <FOOTNOTE>
+      <BILINGUAL>
+	<EN>See
     <INDEX>Batali, John Dean</INDEX>
     <CITATION>Batali et al.<SPACE/>1982</CITATION> for more
-    information on the chip and the method by which it was designed.</FOOTNOTE>
+    information on the chip and the method by which it was designed.</EN>
+	<JA>このチップとその設計方法の詳細については、
+    <INDEX>Batali, John Dean</INDEX>
+    <CITATION>Batali et al.<SPACE/>1982</CITATION>を参照してください。</JA>
+      </BILINGUAL>
+    </FOOTNOTE>
   </TEXT>
 
   <WEB_ONLY>
@@ -111,13 +181,20 @@
 
   
   <SUBHEADING>
-    <NAME>Registers and operations</NAME>
+    <NAME>
+      <BILINGUAL>
+        <EN>Registers and operations</EN>
+        <JA>レジスタと操作</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>data paths<OPEN/></SUBINDEX></INDEX>
   <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>operations</SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     In designing the explicit-control evaluator, we must specify the
     operations to be used in our register machine.  We described the
     metacircular evaluator in terms of abstract syntax, using
@@ -167,9 +244,48 @@
     replace these operations by more elementary operations, using the
     list-structure implementation we described in
     section<SPACE/><REF NAME="sec:storage-allocation"/>.
+      </EN>
+      <JA>
+    明示的制御評価器を設計するにあたり、レジスタマシンで使用する操作を指定しなければなりません。メタ循環評価器は、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>quoted?</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>is_literal</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    や
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>make-procedure</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT>
+      <JAVASCRIPTINLINE>make_function</JAVASCRIPTINLINE>
+    </JAVASCRIPT>
+    </SPLITINLINE>
+    といった
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を使って、抽象構文の観点から記述されていました。レジスタマシンの実装では、これらの
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を基本的なリスト構造のメモリ操作の列に展開し、それらの操作をレジスタマシン上に実装することもできるでしょう。しかし、そうすると評価器が非常に長くなり、詳細によって基本構造が見えにくくなってしまいます。説明を明確にするために、<SPACE/><REF NAME="sec:representing-expressions"/>節で与えた構文
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    と、<SPACE/><REF NAME="sec:eval-data-structures"/>節および<SPACE/><REF NAME="sec:running-eval"/>節で与えた環境やその他の実行時データを表現するための
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を、レジスタマシンのプリミティブ操作として含めることにします。低レベルのマシン語でプログラムしたり、ハードウェアで実装したりできる評価器を完全に仕様化するには、<SPACE/><REF NAME="sec:storage-allocation"/>節で説明したリスト構造の実装を使って、これらの操作をより基本的な操作に置き換えることになります。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Our
     <SPLITINLINE>
       <SCHEME>Scheme</SCHEME>
@@ -226,7 +342,7 @@
     in the designated environment. The <SCHEMEINLINE>continue</SCHEMEINLINE> register is
     used to implement recursion, as explained in section<SPACE/><REF
     NAME="sec:stack-recursion"/>. (The evaluator needs to call itself recursively, since
-    evaluating <SPLITINLINE><SCHEME>an expression</SCHEME><JAVASCRIPT>a 
+    evaluating <SPLITINLINE><SCHEME>an expression</SCHEME><JAVASCRIPT>a
     component</JAVASCRIPT></SPLITINLINE> requires  evaluating its
     <SPLITINLINE><SCHEME>subexpressions.</SCHEME><JAVASCRIPT>subcomponents.</JAVASCRIPT></SPLITINLINE>) The registers
     <SPLITINLINE>
@@ -238,14 +354,85 @@
       </JAVASCRIPT>
     </SPLITINLINE>
     <SCHEMEINLINE>argl</SCHEMEINLINE>, and <SCHEMEINLINE>unev</SCHEMEINLINE> are
-    used in evaluating function applications. 
+    used in evaluating function applications.
+      </EN>
+      <JA>
+    私たちの
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    評価器のレジスタマシンは、1つのスタックと7つのレジスタを含みます。
+    <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>registers</SUBINDEX></INDEX>
+    <INDEX><USE>comp</USE> register</INDEX>
+    <SPLITINLINE>
+      <SCHEME> <SCHEMEINLINE>exp</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT> <SCHEMEINLINE>comp</SCHEMEINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>env</USE> register</INDEX>
+    <SCHEMEINLINE>env</SCHEMEINLINE>、
+    <INDEX><USE>val</USE> register</INDEX>
+    <SCHEMEINLINE>val</SCHEMEINLINE>、
+    <INDEX><USE>continue</USE> register<SUBINDEX><ORDER>explicit</ORDER>in explicit-control evaluator</SUBINDEX></INDEX>
+    <SCHEMEINLINE>continue</SCHEMEINLINE>、
+    <INDEX><USE>fun</USE> register</INDEX>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>proc</SCHEMEINLINE>、
+      </SCHEME>
+      <JAVASCRIPT>
+	<SCHEMEINLINE>fun</SCHEMEINLINE>、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>argl</USE> register</INDEX>
+    <SCHEMEINLINE>argl</SCHEMEINLINE>、そして
+    <INDEX><USE>unev</USE> register</INDEX>
+    <SCHEMEINLINE>unev</SCHEMEINLINE>です。
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>Exp</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>comp</JAVASCRIPTINLINE>レジスタ
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は、評価すべき
+    <SPLITINLINE>
+      <SCHEME>
+	式
+      </SCHEME>
+      <JAVASCRIPT>
+	コンポーネント
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を保持するために使われ、<SCHEMEINLINE>env</SCHEMEINLINE>は評価を行う環境を格納します。評価が完了すると、<SCHEMEINLINE>val</SCHEMEINLINE>には、指定された環境で
+    <SPLITINLINE><SCHEME>式</SCHEME><JAVASCRIPT>コンポーネント</JAVASCRIPT></SPLITINLINE>
+    を評価して得られた値が格納されます。<SCHEMEINLINE>continue</SCHEMEINLINE>レジスタは、<SPACE/><REF NAME="sec:stack-recursion"/>節で説明したように、再帰を実装するために使われます（評価器は自分自身を再帰的に呼び出す必要があります。<SPLITINLINE><SCHEME>式</SCHEME><JAVASCRIPT>コンポーネント</JAVASCRIPT></SPLITINLINE>の評価には、その<SPLITINLINE><SCHEME>部分式</SCHEME><JAVASCRIPT>サブコンポーネント</JAVASCRIPT></SPLITINLINE>の評価が必要だからです）。レジスタ
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>proc</SCHEMEINLINE>、
+      </SCHEME>
+      <JAVASCRIPT>
+	<SCHEMEINLINE>fun</SCHEMEINLINE>、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>argl</SCHEMEINLINE>、<SCHEMEINLINE>unev</SCHEMEINLINE>は、関数適用の評価に使われます。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     We will not provide a data-path diagram to show how the registers and
     operations of the evaluator are connected, nor will we give the
     complete list of machine operations.  These are implicit in the
     evaluator<APOS/>s controller, which will be presented in detail.
+      </EN>
+      <JA>
+    評価器のレジスタと操作がどのように接続されているかを示すデータパス図は提供しませんし、マシン操作の完全なリストも示しません。これらは評価器のコントローラに暗黙的に含まれており、コントローラについては詳しく説明します。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>data paths<CLOSE/></SUBINDEX></INDEX>

@@ -1,5 +1,5 @@
 <CHAPTER>
-  <NAME>Computing with Register Machines</NAME>
+  <NAME><BILINGUAL><EN>Computing with Register Machines</EN><JA>レジスタマシンによる計算</JA></BILINGUAL></NAME>
   <LABEL NAME="chap:reg"></LABEL>
   <PDF_ONLY>\addtocontents{toc}{\protect\enlargethispage{\baselineskip}}</PDF_ONLY>
 
@@ -33,11 +33,18 @@
 
   <EPIGRAPH>
 
+    <BILINGUAL>
+    <EN>
     My aim is to show that the heavenly machine is not a kind of divine,
     live being, but a kind of clockwork (and he who believes that a clock
     has soul attributes the maker<APOS/>s glory to the work), insofar as nearly
     all the manifold motions are caused by a most simple and material
     force, just as all motions of the clock are caused by a single weight.
+    </EN>
+    <JA>
+    私の目的は、天の機械が神聖な生き物の一種ではなく、時計仕掛けの一種であることを示すことです（時計に魂があると信じる者は、作り手の栄光を作品に帰しているのです）。ほとんどすべての多様な運動が、ごく単純で物質的な力によって引き起こされるという点で、ちょうど時計のすべての運動が一つの錘によって引き起こされるのと同じなのです。
+    </JA>
+    </BILINGUAL>
 
     <INDEX>Kepler, Johannes</INDEX>
     <ATTRIBUTION><AUTHOR>Johannes Kepler</AUTHOR>
@@ -50,6 +57,8 @@
 
   <TEXT>
     <NOINDENT/>
+    <BILINGUAL>
+    <EN>
     We began this book by studying processes and by describing processes
     in terms of
     <SPLITINLINE><SCHEME>procedures</SCHEME>
@@ -86,6 +95,30 @@
     iterative processes (that is, are evaluated using constant space)
     whereas other recursive procedures generate recursive
     processes</SCHEME></SPLITINLINE>.
+    </EN>
+    <JA>
+    本書ではまずプロセスを学び、
+    <SPLITINLINE><SCHEME>Lisp</SCHEME>
+    <JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>
+    で書かれた
+    <SPLITINLINE><SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    によってプロセスを記述することから始めました。これらの
+    <SPLITINLINE><SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>
+    の意味を説明するために、一連の評価モデルを用いてきました。すなわち、第<SPACE/><REF NAME="chap:fun"></REF>章の置換モデル、第<SPACE/><REF NAME="chap:state"></REF>章の環境モデル、そして第<SPACE/><REF NAME="chap:meta"></REF>章のメタ循環評価器です。特にメタ循環評価器の検討は、
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    のような言語がどのように解釈されるかについての多くの謎を解き明かしました。しかしメタ循環評価器でさえ、重要な問いに答えられていません。
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    システムにおける制御の仕組みを明らかにできていないからです。たとえば、評価器は部分式の評価がどのようにしてその値を使う式に値を返すのかを説明しません<SPLITINLINE><SCHEME>。また、再帰的手続きのうちあるものが反復的プロセスを生成し（つまり定数空間で評価され）、他の再帰的手続きが再帰的プロセスを生成する理由も説明しません</SCHEME></SPLITINLINE>。
+    </JA>
+    </BILINGUAL>
     <SPLITINLINE>
       <SCHEME>
         These questions remain unanswered because the metacircular
@@ -96,37 +129,61 @@
         than Lisp itself.
       </SCHEME>
       <JAVASCRIPT>
+        <BILINGUAL>
+        <EN>
         Also, the evaluator does not explain how some recursive
         functions can generate iterative processes (that is, be
         evaluated using constant space) whereas other recursive
-        functions will generate recursive processes.<FOOTNOTE>
+        functions will generate recursive processes.</EN>
+        <JA>また、評価器は再帰関数のうちあるものが反復的プロセスを生成でき（つまり定数空間で評価され）、他の再帰関数が再帰的プロセスを生成する理由も説明しません。</JA>
+        </BILINGUAL><FOOTNOTE>
+	<BILINGUAL>
+	<EN>
 	With our metacircular evaluator, a recursive function
 	always gives rise to a recursive process, even when
-	the process should be iterative according to the 
+	the process should be iterative according to the
 	distinction of section<SPACE/><REF NAME="sec:recursion-and-iteration"/>.
         See footnote<SPACE/><REF NAME="foot:apply"/> in
         section<SPACE/><REF NAME="sec:core-of-evaluator"/>.
+	</EN>
+	<JA>
+	私たちのメタ循環評価器では、再帰関数は、
+	<REF NAME="sec:recursion-and-iteration"/>節の区別に従えば反復的であるべきプロセスであっても、
+	常に再帰的プロセスを生じます。
+        <REF NAME="sec:core-of-evaluator"/>節の
+	脚注<SPACE/><REF NAME="foot:apply"/>を参照してください。
+	</JA>
+	</BILINGUAL>
       </FOOTNOTE>
+      <BILINGUAL>
+      <EN>
       This chapter addresses both of these issues.
+      </EN>
+      <JA>
+      本章ではこれらの問題の両方に取り組みます。
+      </JA>
+      </BILINGUAL>
       </JAVASCRIPT>
     </SPLITINLINE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
-        In this chapter we 
+        In this chapter we
       </SCHEME>
       <JAVASCRIPT>
         We
       </JAVASCRIPT>
     </SPLITINLINE>
     will describe processes in terms of the step-by-step
-    operation of a traditional computer.  Such a computer, or 
+    operation of a traditional computer.  Such a computer, or
     <INDEX>register machine</INDEX>
-    <EM>register machine</EM>, sequentially executes 
+    <EM>register machine</EM>, sequentially executes
     <EM>instructions</EM> that
-    manipulate the contents of a fixed set of storage elements called 
+    manipulate the contents of a fixed set of storage elements called
     <INDEX>register(s)</INDEX>
     <EM>registers</EM>.  A typical register-machine instruction applies a
     primitive operation to the contents of some registers and assigns the
@@ -162,9 +219,48 @@
       <JAVASCRIPT>JavaScript</JAVASCRIPT>
     </SPLITINLINE>
     program that uses these descriptions to simulate the machines we design.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+        本章では、
+      </SCHEME>
+      <JAVASCRIPT>
+        ここでは、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    従来のコンピュータのステップごとの動作という観点からプロセスを記述します。そのようなコンピュータ、すなわち
+    <INDEX>register machine</INDEX>
+    <EM>レジスタマシン</EM>は、
+    <INDEX>register(s)</INDEX>
+    <EM>レジスタ</EM>と呼ばれる固定された記憶素子の集合の内容を操作する<EM>命令</EM>を逐次的に実行します。典型的なレジスタマシン命令は、いくつかのレジスタの内容にプリミティブな演算を適用し、その結果を別のレジスタに代入します。レジスタマシンで実行されるプロセスの記述は、従来のコンピュータの<QUOTE>機械語</QUOTE>プログラムによく似たものになります。しかし、特定のコンピュータの機械語に焦点を当てるのではなく、いくつかの
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を調べ、それぞれの
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を実行する特定のレジスタマシンを設計します。つまり、機械語のプログラマの視点ではなく、ハードウェアアーキテクトの視点から課題に取り組みます。レジスタマシンの設計を通じて、再帰などの重要なプログラミング構造を実装するための仕組みを開発します。また、レジスタマシンの設計を記述するための言語も提示します。<REF NAME="sec:simulator"/>節では、これらの記述を使って設計したマシンをシミュレートする
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    プログラムを実装します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Most of the primitive operations of our register machines are very
     simple.  For example, an operation might add the numbers fetched from
     two registers, producing a result to be stored into a third register.
@@ -187,9 +283,30 @@
     which require an elaborate storage-allocation mechanism.  In
     section<SPACE/><REF NAME="sec:storage-allocation"/> we study their
     implementation in terms of more elementary operations.
+    </EN>
+    <JA>
+    レジスタマシンのプリミティブな演算のほとんどは非常に単純です。たとえば、ある演算は2つのレジスタから取得した数値を加算し、結果を第3のレジスタに格納するかもしれません。このような演算は、容易に記述できるハードウェアで実行できます。しかし、リスト構造を扱うためには、メモリ操作の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    および
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    も使用する必要があり、これらには精巧な記憶領域の割り当て機構が必要です。<REF NAME="sec:storage-allocation"/>節では、より基本的な演算によるそれらの実装を学びます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In section<SPACE/><REF NAME="sec:eceval"/>, after we have accumulated
     experience formulating simple
     <SPLITINLINE>
@@ -214,6 +331,26 @@
     </SPLITINLINE>
     programs into sequences of instructions that can be executed directly with
     the registers and operations of the evaluator register machine.
+    </EN>
+    <JA>
+    <REF NAME="sec:eceval"/>節では、単純な
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    をレジスタマシンとして定式化する経験を積んだ後、<REF NAME="sec:mc-eval"/>節のメタ循環評価器が記述するアルゴリズムを実行するマシンを設計します。これにより、評価器における制御の仕組みの明示的なモデルを提供し、
+    <SPLITINLINE>
+      <SCHEME>Scheme の式</SCHEME>
+      <JAVASCRIPT>JavaScript のプログラム</JAVASCRIPT>
+    </SPLITINLINE>
+    がどのように解釈されるかについての理解のギャップを埋めます。<REF NAME="sec:compilation"/>節では、
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    のプログラムを、評価器レジスタマシンのレジスタと演算で直接実行できる命令列に変換する、単純なコンパイラを学びます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <CHAPTERCONTENT/>

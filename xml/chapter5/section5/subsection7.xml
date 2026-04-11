@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Interfacing Compiled Code to the Evaluator
+    <BILINGUAL>
+      <EN>Interfacing Compiled Code to the Evaluator</EN>
+      <JA>コンパイル済みコードと評価器のインターフェース</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:interfacing-compiled-code"/>
@@ -11,6 +14,8 @@
 
   <SHORT_PAGE lines="3"/>
   <TEXT>
+    <BILINGUAL>
+      <EN>
     We have not yet explained how to load compiled code into the evaluator
     machine or how to run it.  We will assume that the explicit-control-evaluator
     machine has been defined as in
@@ -21,7 +26,7 @@
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    <INDEX><USE>compile_and_go</USE></INDEX> 
+    <INDEX><USE>compile_and_go</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>compile-and-go</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>compile_and_go</JAVASCRIPTINLINE>
@@ -57,6 +62,51 @@
     </SPLITINLINE>
     into the machine and use the
     evaluator to call<SPACE/>it:
+      </EN>
+      <JA>
+    コンパイル済みコードを評価器マシンにロードする方法や、それを実行する方法についてはまだ説明していません。明示的制御評価器マシンは、<REF NAME="sec:running-evaluator"/>節で定義したとおりに、脚注<SPACE/><REF NAME="foot:compiler-ops"/>（<REF NAME="sec:compiling-components"/>節）で指定された追加の操作を含めて定義されているものとします。ここでは、
+    <SPLITINLINE>
+      <SCHEME>procedure</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <INDEX><USE>compile_and_go</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>compile-and-go</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>compile_and_go</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を実装します。これは
+    <SPLITINLINE>
+      <SCHEME>Scheme 式</SCHEME>
+      <JAVASCRIPT>JavaScript プログラム</JAVASCRIPT>
+    </SPLITINLINE>
+    をコンパイルし、結果のオブジェクトコードを評価器マシンにロードし、評価器のグローバル環境でそのコードを実行させ、結果を表示し、評価器のドライバループに入ります。また、解釈実行される
+    <SPLITINLINE>
+      <SCHEME>
+	式
+      </SCHEME>
+      <JAVASCRIPT>
+	コンポーネント
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    がコンパイル済み
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    だけでなく解釈実行される
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    も呼び出せるように評価器を修正します。これにより、コンパイル済み
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    をマシンに組み込み、評価器を使ってそれを呼び出すことができます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>compile_and_go_example</NAME>
       <REQUIRES>compile_and_go</REQUIRES>
@@ -110,6 +160,8 @@ EC-evaluate value:
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     To allow the evaluator to handle compiled
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -135,7 +187,40 @@ EC-evaluate value:
       <JAVASCRIPT>functions)</JAVASCRIPT>
     </SPLITINLINE>
     and transfers control directly to the entry point of the
-    compiled code:<FOOTNOTE>Of course, compiled
+    compiled code:
+      </EN>
+      <JA>
+    評価器がコンパイル済み
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を扱えるようにするには（たとえば、上の <SCHEMEINLINE>factorial</SCHEMEINLINE> の呼び出しを評価するために）、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>apply-dispatch</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>apply_dispatch</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    （<REF NAME="sec:procedure-application"/>節）のコードを変更して、コンパイル済み
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を（複合
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    やプリミティブ
+    <SPLITINLINE>
+      <SCHEME>手続きとは</SCHEME>
+      <JAVASCRIPT>関数とは</JAVASCRIPT>
+    </SPLITINLINE>
+    別に）認識し、コンパイル済みコードのエントリポイントに直接制御を移すようにする必要があります。
+      </JA>
+    </BILINGUAL>
+    <FOOTNOTE><BILINGUAL>
+      <EN>Of course, compiled
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
@@ -148,7 +233,19 @@ EC-evaluate value:
     are compound (nonprimitive).  For compatibility with the terminology used
     in the explicit-control evaluator, in this section we will use
     <QUOTE>compound</QUOTE> to mean interpreted (as opposed to
-    compiled).</FOOTNOTE>
+    compiled).</EN>
+      <JA>もちろん、コンパイル済み
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    も解釈実行される
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    も、どちらも複合（非プリミティブ）です。明示的制御評価器で使われている用語との互換性のために、この節では<QUOTE>複合</QUOTE>を（コンパイル済みに対して）解釈実行されるという意味で使います。</JA>
+    </BILINGUAL></FOOTNOTE>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>apply_dispatch</DECLARATION><SUBINDEX>modified for compiled code</SUBINDEX></INDEX>
       <INDEX><DECLARATION>compiled_apply</DECLARATION></INDEX> 
@@ -206,10 +303,12 @@ compiled-apply
         restored before the compiled code is executed.
       </SCHEME>
       <JAVASCRIPT>
+        <BILINGUAL>
+          <EN>
         At
 	<JAVASCRIPTINLINE>compiled_apply</JAVASCRIPTINLINE>, as at
 	<JAVASCRIPTINLINE>compound_apply</JAVASCRIPTINLINE>, we push a marker to the stack
-        so that a return statement in the compiled function 
+        so that a return statement in the compiled function
         can revert the stack to this state.
 
         Note that there is no save of
@@ -219,16 +318,32 @@ compiled-apply
         arranged so that at
         <JAVASCRIPTINLINE>apply_dispatch</JAVASCRIPTINLINE>, the
         continuation would be at the top of the stack.
+          </EN>
+          <JA>
+        <JAVASCRIPTINLINE>compiled_apply</JAVASCRIPTINLINE> では、<JAVASCRIPTINLINE>compound_apply</JAVASCRIPTINLINE> と同様に、コンパイル済み関数内の return 文がスタックをこの状態に戻せるように、マーカーをスタックにプッシュします。
+
+        スタックのマーキングの前に <JAVASCRIPTINLINE>compiled_apply</JAVASCRIPTINLINE> で <JAVASCRIPTINLINE>continue</JAVASCRIPTINLINE> を save していないことに注意してください。これは、<JAVASCRIPTINLINE>apply_dispatch</JAVASCRIPTINLINE> の時点で継続がスタックの先頭にあるように評価器が設計されているためです。
+          </JA>
+        </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     To enable us to run some compiled code when we start the evaluator
     machine, we add a <SCHEMEINLINE>branch</SCHEMEINLINE> instruction at
     the beginning of the evaluator machine, which causes the machine to
-    go to a new entry point if the <SCHEMEINLINE>flag</SCHEMEINLINE> register 
-    is set.<FOOTNOTE>Now that the evaluator machine starts
+    go to a new entry point if the <SCHEMEINLINE>flag</SCHEMEINLINE> register
+    is set.
+      </EN>
+      <JA>
+    評価器マシンの起動時にコンパイル済みコードを実行できるようにするために、評価器マシンの先頭に <SCHEMEINLINE>branch</SCHEMEINLINE> 命令を追加します。これは、<SCHEMEINLINE>flag</SCHEMEINLINE> レジスタが設定されている場合に、マシンを新しいエントリポイントに分岐させます。
+      </JA>
+    </BILINGUAL>
+    <FOOTNOTE><BILINGUAL>
+      <EN>Now that the evaluator machine starts
     with a <SCHEMEINLINE>branch</SCHEMEINLINE>, we must always initialize the
     <SCHEMEINLINE>flag</SCHEMEINLINE> register before starting the evaluator
     machine.  To start the machine at its ordinary
@@ -241,7 +356,18 @@ compiled-apply
       </JAVASCRIPT>
     </SPLITINLINE>
     loop, we
-    could use
+    could use</EN>
+      <JA>評価器マシンが <SCHEMEINLINE>branch</SCHEMEINLINE> で始まるようになったため、評価器マシンを起動する前に必ず <SCHEMEINLINE>flag</SCHEMEINLINE> レジスタを初期化しなければなりません。マシンを通常の
+    <SPLITINLINE>
+      <SCHEME>
+	read-eval-print
+      </SCHEME>
+      <JAVASCRIPT>
+	read-evaluate-print
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    ループから起動するには、次のようにします。</JA>
+    </BILINGUAL>
     <SNIPPET POSTPADDING="no">
       <INDEX><DECLARATION>start_eceval</DECLARATION></INDEX> 
       <NAME>start_eceval</NAME>
@@ -276,6 +402,8 @@ $\texttt{ }\texttt{ }$branch(label("external_entry")), // branches if flag is se
   $\ldots$
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>External-entry</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT>The code at <JAVASCRIPTINLINE>external_entry</JAVASCRIPTINLINE>
@@ -307,7 +435,37 @@ $\texttt{ }\texttt{ }$branch(label("external_entry")), // branches if flag is se
 	read-evaluate-print
       </JAVASCRIPT>
     </SPLITINLINE>
-    loop.<FOOTNOTE>Since
+    loop.
+      </EN>
+      <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>External-entry</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>external_entry</JAVASCRIPTINLINE> のコード</JAVASCRIPT>
+    </SPLITINLINE>
+    は、マシンが起動時に <SCHEMEINLINE>val</SCHEMEINLINE> に、結果を <SCHEMEINLINE>val</SCHEMEINLINE> に格納して
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(goto (reg continue))</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>go_to(reg("continue"))</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    で終わる命令列の場所が入っていると仮定しています。このエントリポイントから開始すると、<SCHEMEINLINE>val</SCHEMEINLINE> が指す場所にジャンプしますが、その前に <SCHEMEINLINE>continue</SCHEMEINLINE> を設定して、実行が
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>print-result</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>print_result</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    に戻るようにします。ここで <SCHEMEINLINE>val</SCHEMEINLINE> の値が表示され、その後評価器の
+    <SPLITINLINE>
+      <SCHEME>
+	read-eval-print
+      </SCHEME>
+      <JAVASCRIPT>
+	read-evaluate-print
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    ループの先頭に進みます。
+      </JA>
+    </BILINGUAL>
+    <FOOTNOTE><BILINGUAL>
+      <EN>Since
     a compiled
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -324,7 +482,24 @@ $\texttt{ }\texttt{ }$branch(label("external_entry")), // branches if flag is se
     <SPLITINLINE>
       <SCHEME>procedure:</SCHEME>
       <JAVASCRIPT>function:</JAVASCRIPT>
-      </SPLITINLINE>
+      </SPLITINLINE></EN>
+      <JA>コンパイル済み
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    はシステムが表示しようとする可能性のあるオブジェクトなので、システムの表示操作
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>user-print</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>user_print</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    （<REF NAME="sec:running-eval"/>節より）も、コンパイル済み
+    <SPLITINLINE>
+      <SCHEME>手続きの</SCHEME>
+      <JAVASCRIPT>関数の</JAVASCRIPT>
+    </SPLITINLINE>
+    コンポーネントを表示しようとしないように修正します。</JA>
+    </BILINGUAL>
       <SNIPPET EVAL="no">
 	<INDEX><DECLARATION>user_print</DECLARATION><SUBINDEX>modified for compiled code</SUBINDEX></INDEX>
 	<NAME>user_print_2</NAME>
@@ -396,6 +571,8 @@ external-entry
   <INDEX>explicit-control evaluator for JavaScript<SUBINDEX>modified for compiled code<CLOSE/></SUBINDEX></INDEX>
   
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Now we can use the following
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -452,19 +629,83 @@ external-entry
     </SPLITINLINE>
     <SCHEMEINLINE>assemble</SCHEMEINLINE> from the
     register-machine simulator
-    (section<SPACE/><REF NAME="sec:assembler"/>).  
+    (section<SPACE/><REF NAME="sec:assembler"/>).
+      </EN>
+      <JA>
+    これで、次の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を使って
+    <SPLITINLINE>
+      <SCHEME>手続き定義</SCHEME>
+      <JAVASCRIPT>関数宣言</JAVASCRIPT>
+    </SPLITINLINE>
+    をコンパイルし、コンパイル済みコードを実行し、
+    <SPLITINLINE>
+      <SCHEME>
+	read-eval-print
+      </SCHEME>
+      <JAVASCRIPT>
+	read-evaluate-print
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    ループを実行して
+    <SPLITINLINE>
+      <SCHEME>手続きを</SCHEME>
+      <JAVASCRIPT>関数を</JAVASCRIPT>
+    </SPLITINLINE>
+    試すことができます。コンパイル済みコードが結果を <SCHEMEINLINE>val</SCHEMEINLINE> に入れて <SCHEMEINLINE>continue</SCHEMEINLINE> の場所に
+    <SPLITINLINE>
+      <SCHEME>戻る</SCHEME>
+      <JAVASCRIPT>進む</JAVASCRIPT>
+    </SPLITINLINE>
+    ようにしたいので、
+    <SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>プログラム</JAVASCRIPT>
+    </SPLITINLINE>
+    をターゲット <SCHEMEINLINE>val</SCHEMEINLINE>、リンケージ
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>return</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	      <JAVASCRIPTINLINE>"return"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    でコンパイルします。コンパイラが生成したオブジェクトコードを評価器レジスタマシン用の実行可能な命令に変換するために、レジスタマシンシミュレータの
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>assemble</SCHEMEINLINE> を使います（<REF NAME="sec:assembler"/>節）。
+      </JA>
+    </BILINGUAL>
     <SPLIT>
       <JAVASCRIPT>
+        <BILINGUAL>
+          <EN>
 	For the interpreted program to refer to the names that
 	are declared at top level in the compiled program, we
-        <INDEX>scanning out declarations<SUBINDEX>in compiler</SUBINDEX></INDEX>	
-	scan out the top-level names and 
+        <INDEX>scanning out declarations<SUBINDEX>in compiler</SUBINDEX></INDEX>
+	scan out the top-level names and
 	extend the global environment by binding these names to
 	<JAVASCRIPTINLINE>"*unassigned*"</JAVASCRIPTINLINE>,
-	knowing that the compiled code will assign them 
+	knowing that the compiled code will assign them
 	the correct values.
+          </EN>
+          <JA>
+	解釈実行されるプログラムがコンパイル済みプログラムのトップレベルで宣言された名前を参照できるようにするために、
+        <INDEX>scanning out declarations<SUBINDEX>in compiler</SUBINDEX></INDEX>
+	トップレベルの名前をスキャンアウトし、それらの名前を <JAVASCRIPTINLINE>"*unassigned*"</JAVASCRIPTINLINE> に束縛してグローバル環境を拡張します。コンパイル済みコードが正しい値を代入することがわかっているからです。
+          </JA>
+        </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+      <EN>
 We then initialize
     the <SCHEMEINLINE>val</SCHEMEINLINE> register to point to the list
     of instructions, set the
@@ -475,6 +716,16 @@ We then initialize
       </JAVASCRIPT>
     </SPLITINLINE>
     and start the evaluator.
+      </EN>
+      <JA>
+次に、<SCHEMEINLINE>val</SCHEMEINLINE> レジスタを命令のリストを指すように初期化し、評価器が
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>external-entry</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>external_entry</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    に進むように <SCHEMEINLINE>flag</SCHEMEINLINE> を設定して、評価器を起動します。
+      </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>display_instructions</NAME>
       <JAVASCRIPT>
@@ -996,11 +1247,20 @@ function compile_and_go(program) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     If we have set up
     <INDEX>compiler for JavaScript<SUBINDEX>monitoring performance (stack use) of compiled code</SUBINDEX></INDEX>
     stack monitoring, as at the end of
     section<SPACE/><REF NAME="sec:running-evaluator"/>, we can examine the
     stack usage of compiled code:
+    </EN>
+    <JA>
+    <REF NAME="sec:running-evaluator"/>節の末尾のように
+    <INDEX>compiler for JavaScript<SUBINDEX>monitoring performance (stack use) of compiled code</SUBINDEX></INDEX>
+    スタックの監視を設定していれば、コンパイル済みコードのスタック使用状況を調べることができます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <NAME>compile_and_go_example_2</NAME>
       <REQUIRES>compile_and_go</REQUIRES>
@@ -1057,6 +1317,8 @@ EC-evaluate value:
 120
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Compare
     <INDEX>compiler for JavaScript<SUBINDEX>explicit-control evaluator vs.</SUBINDEX></INDEX>
     this example with the evaluation of
@@ -1080,28 +1342,75 @@ EC-evaluate value:
       </JAVASCRIPT>
     </SPLITINLINE>
     This illustrates the optimization that results from our compilation strategy.
+    </EN>
+    <JA>
+    この例を、<REF NAME="sec:running-evaluator"/>節の末尾に示した、同じ
+    <INDEX>compiler for JavaScript<SUBINDEX>explicit-control evaluator vs.</SUBINDEX></INDEX>
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の解釈実行版による
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(factorial 5)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>factorial(5)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の評価と比較してみましょう。
+    <SPLITINLINE>
+      <SCHEME>
+        解釈実行版では144回のプッシュと最大スタック深さ28が必要でした。
+      </SCHEME>
+      <JAVASCRIPT>
+        解釈実行版では151回のプッシュと最大スタック深さ28が必要でした。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    これは、私たちのコンパイル戦略による最適化の効果を示しています。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Interpretation and compilation</NAME>
+    <NAME>
+      <BILINGUAL>
+        <EN>Interpretation and compilation</EN>
+        <JA>解釈実行とコンパイル</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>interpreter<SUBINDEX>compiler vs.</SUBINDEX></INDEX>
   <INDEX>compiler<SUBINDEX>interpreter vs.</SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     With the programs in this section, we can now experiment with the
     alternative execution strategies of interpretation and
-    compilation.<FOOTNOTE>We can do even better by extending the compiler
+    compilation.</EN>
+    <JA>
+    この節のプログラムを使えば、解釈実行とコンパイルという2つの代替実行戦略を実験できるようになりました。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>We can do even better by extending the compiler
     to allow compiled code to call interpreted
     <SPLITINLINE>
       <SCHEME>procedures.</SCHEME>
       <JAVASCRIPT>functions.</JAVASCRIPT>
     </SPLITINLINE>
-    See exercise<SPACE/><REF NAME="ex:compiled-call-interpreted"/>.</FOOTNOTE>
+    See exercise<SPACE/><REF NAME="ex:compiled-call-interpreted"/>.</EN>
+    <JA>コンパイル済みコードが解釈実行される
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を呼べるようにコンパイラを拡張すれば、さらに良くできます。
+    練習問題<SPACE/><REF NAME="ex:compiled-call-interpreted"/>を参照してください。</JA>
+    </BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     An interpreter raises the machine to the level of the user program; a
     compiler lowers the user program to the level of the machine language.
-    We can regard the 
+    We can regard the
     <SPLITINLINE>
       <SCHEME>
         Scheme
@@ -1119,7 +1428,22 @@ EC-evaluate value:
     Compiled code can execute faster, because the steps of program execution
     are organized in terms of the machine language, and the compiler is free
     to make optimizations that cut across the higher-level
-    abstractions.<FOOTNOTE>Independent of the strategy of execution, we
+    abstractions.</EN>
+    <JA>
+    インタプリタはマシンをユーザープログラムのレベルに引き上げます。コンパイラはユーザープログラムをマシン語のレベルに引き下げます。
+    <SPLITINLINE>
+      <SCHEME>
+        Scheme
+      </SCHEME>
+      <JAVASCRIPT>
+        JavaScript
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    言語（あるいは任意のプログラミング言語）は、マシン語の上に築かれた一貫性のある抽象の体系と見なすことができます。
+    インタプリタは対話的なプログラム開発とデバッグに適しています。プログラム実行のステップがこれらの抽象に基づいて構成されるため、プログラマにとってより理解しやすいからです。
+    コンパイル済みコードはより高速に実行できます。プログラム実行のステップがマシン語に基づいて構成され、コンパイラは高レベルの抽象を横断する最適化を自由に行えるからです。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>Independent of the strategy of execution, we
     incur significant overhead if we insist that
     <INDEX>error handling<SUBINDEX>in compiled code</SUBINDEX></INDEX>
     errors encountered in
@@ -1142,20 +1466,36 @@ EC-evaluate value:
       result, it falls to programmers to explicitly provide error checking.
       Unfortunately, people often neglect to do this, even in
       critical applications where speed is not a constraint.  Their programs
-      lead fast and dangerous lives.  For example, the notorious 
+      lead fast and dangerous lives.  For example, the notorious
       <INDEX>Internet <QUOTE>Worm</QUOTE></INDEX>
       <QUOTE>Worm</QUOTE>
-      that paralyzed the Internet in 1988 exploited the 
+      that paralyzed the Internet in 1988 exploited the
       <INDEX>UNIX</INDEX>
       UNIX<LATEXINLINE>$^{\textrm{TM}}$</LATEXINLINE>
       operating system<APOS/>s failure to check whether the input buffer has
       overflowed in the finger daemon. (See
       <INDEX>Spafford, Eugene H.</INDEX>
-      <CITATION>Spafford 1989</CITATION>.)
-  </FOOTNOTE>
+      <CITATION>Spafford 1989</CITATION>.)</EN>
+    <JA>実行戦略に関係なく、ユーザープログラムの実行中に遭遇する
+    <INDEX>error handling<SUBINDEX>in compiled code</SUBINDEX></INDEX>
+    エラーを、システムの停止や誤った結果の生成を許すのではなく、検出して通知することを要求すると、かなりのオーバーヘッドが発生します。例えば、配列の範囲外参照は、参照を実行する前にその有効性を検査することで検出できます。しかし、この検査のオーバーヘッドは配列参照そのもののコストの何倍にもなりえるため、プログラマはそのような検査が望ましいかどうかを速度と安全性を天秤にかけて判断すべきです。優れたコンパイラは、そのような検査を含むコードを生成でき、冗長な検査を避け、コンパイル済みコードにおけるエラー検査の範囲と種類をプログラマが制御できるようにすべきです。
+    <P/>
+      <INDEX>C<SUBINDEX>error handling</SUBINDEX></INDEX>
+      C や C++ のような広く使われている言語のコンパイラは、できるだけ高速に実行するため、実行コードにほとんどエラー検査操作を入れません。その結果、エラー検査を明示的に提供するのはプログラマの責任となります。残念ながら、速度が制約にならないような重要なアプリケーションでさえ、人々はこれを怠りがちです。そのようなプログラムは速いが危険な生涯を送ります。例えば、1988年にインターネットを麻痺させた悪名高い
+      <INDEX>Internet <QUOTE>Worm</QUOTE></INDEX>
+      <QUOTE>ワーム</QUOTE>
+      は、
+      <INDEX>UNIX</INDEX>
+      UNIX<LATEXINLINE>$^{\textrm{TM}}$</LATEXINLINE>
+      オペレーティングシステムの finger デーモンで入力バッファがオーバーフローしたかどうかの検査が行われていないことを悪用しました。（
+      <INDEX>Spafford, Eugene H.</INDEX>
+      <CITATION>Spafford 1989</CITATION>を参照。）</JA>
+    </BILINGUAL></FOOTNOTE>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The alternatives of interpretation and compilation also lead to
     different strategies for
     <INDEX>porting a language</INDEX>
@@ -1178,7 +1518,24 @@ EC-evaluate value:
     program on the new machine by first compiling it with the compiler running
     on our
     original <SPLITINLINE><SCHEME>Lisp</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE> system, and linking it with a compiled version of the runtime
-    library.<FOOTNOTE>Of course, with either the interpretation or the
+    library.</EN>
+    <JA>
+    解釈実行とコンパイルという2つの選択肢は、新しいコンピュータに言語を
+    <INDEX>porting a language</INDEX>
+    移植する際の戦略にも違いをもたらします。新しいマシンに
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    を実装したいとしましょう。一つの戦略は、<REF NAME="sec:eceval"/>節の明示的制御評価器から始めて、その命令を新しいマシンの命令に翻訳することです。別の戦略は、コンパイラから始めて、コード生成器を変更して新しいマシン用のコードを生成させることです。2番目の戦略では、元の
+    <SPLITINLINE><SCHEME>Lisp</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>
+    システム上で動作するコンパイラでプログラムをまずコンパイルし、ランタイムライブラリのコンパイル済みバージョンとリンクすることで、新しいマシン上で任意の
+    <SPLITINLINE><SCHEME>Lisp</SCHEME>
+    <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    プログラムを実行できます。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>Of course, with either the interpretation or the
     compilation strategy we must also implement for the new machine storage
     allocation, input and output, and all the various operations that we took
     as <QUOTE>primitive</QUOTE> in our discussion of
@@ -1191,9 +1548,23 @@ EC-evaluate value:
     and then compile them for the new machine.  Ultimately, everything reduces
     to a small kernel (such as garbage collection and the mechanism for
     applying actual machine primitives) that is hand-coded for the new
-    machine.</FOOTNOTE>  Better yet, we can compile the compiler itself, and run
+    machine.</EN>
+    <JA>もちろん、解釈実行戦略でもコンパイル戦略でも、新しいマシン用にメモリ割り当て、入出力、そして評価器やコンパイラの議論で<QUOTE>プリミティブ</QUOTE>として扱ったさまざまな操作をすべて実装しなければなりません。ここでの作業を最小限にする一つの戦略は、これらの操作をできるだけ多く
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    で書き、それを新しいマシン用にコンパイルすることです。最終的には、すべてが小さなカーネル（ガベージコレクションや実際のマシンプリミティブを適用するメカニズムなど）に帰着し、それだけを新しいマシン用に手書きのコードで実装します。</JA>
+    </BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+    <EN>  Better yet, we can compile the compiler itself, and run
     this on the new machine to compile other
-    <SPLITINLINE><SCHEME>Lisp</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE> programs.<FOOTNOTE>
+    <SPLITINLINE><SCHEME>Lisp</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE> programs.</EN>
+    <JA>さらに良いことに、コンパイラ自身をコンパイルして、新しいマシン上でそれを実行し、他の
+    <SPLITINLINE><SCHEME>Lisp</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>
+    プログラムをコンパイルすることもできます。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL>
+    <EN>
     This strategy leads to amusing tests of correctness of
     the compiler, such as checking
     whether the compilation of a program on the new machine, using the
@@ -1205,13 +1576,27 @@ EC-evaluate value:
     </SPLITINLINE>
     system.  Tracking down the source of differences is fun but often
     frustrating, because the results are extremely sensitive to minuscule
-    details.</FOOTNOTE>  Or we can compile one of the interpreters of
+    details.</EN>
+    <JA>
+    この戦略は、コンパイラの正しさについて面白いテストにつながります。例えば、コンパイル済みのコンパイラを使って新しいマシン上でプログラムをコンパイルした結果が、元の
+    <SPLITINLINE>
+      <SCHEME>Lisp</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    システム上でプログラムをコンパイルした結果と同一かどうかを確認するなどです。差異の原因を追跡するのは楽しいですが、結果が微細な詳細に非常に敏感であるため、しばしばフラストレーションがたまります。</JA>
+    </BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+    <EN>  Or we can compile one of the interpreters of
     section<SPACE/><REF NAME="sec:mc-eval"/> to produce an interpreter that
-    runs on the new machine.
+    runs on the new machine.</EN>
+    <JA>あるいは、<REF NAME="sec:mc-eval"/>節のインタプリタの一つをコンパイルして、新しいマシン上で動作するインタプリタを作ることもできます。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
     <LABEL NAME="ex:measure-factorial-ratio"/>
+    <BILINGUAL>
+    <EN>
     By
     <INDEX>compiler for JavaScript<SUBINDEX>monitoring performance (stack use) of compiled code</SUBINDEX></INDEX>
     <INDEX><USE>factorial</USE><SUBINDEX>stack usage, compiled</SUBINDEX></INDEX>
@@ -1266,9 +1651,45 @@ EC-evaluate value:
 	hand-tailored version?
       </LI>
     </OL>
+    </EN>
+    <JA>
+    コンパイル済みコードが使用するスタック操作を、同じ計算に対して評価器が使用するスタック操作と
+    <INDEX>compiler for JavaScript<SUBINDEX>monitoring performance (stack use) of compiled code</SUBINDEX></INDEX>
+    <INDEX><USE>factorial</USE><SUBINDEX>stack usage, compiled</SUBINDEX></INDEX>
+    比較することで、コンパイラがスタックの使用をどの程度最適化しているかを、速度（スタック操作の総数の削減）と空間（最大スタック深さの削減）の両面から判断できます。この最適化されたスタック使用を、同じ計算に対する専用マシンの性能と比較すると、コンパイラの品質がある程度わかります。
+    <OL>
+      <LI>
+	練習問題<SPACE/><REF NAME="ex:rec-fact"/>では、上で示した再帰的な階乗
+	<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+	を使って <LATEXINLINE>$n!$</LATEXINLINE> を計算するために評価器が必要とするプッシュの回数と最大スタック深さを、<LATEXINLINE>$n$</LATEXINLINE> の関数として求めました。練習問題<SPACE/><REF NAME="ex:measure-fact"/>では、図<SPACE/><REF NAME="fig:fact-machine"/>に示した専用の階乗マシンについて同じ測定を行いました。今度は、コンパイル済みの <SCHEMEINLINE>factorial</SCHEMEINLINE>
+	<SPLITINLINE>
+	  <SCHEME>手続き</SCHEME>
+	  <JAVASCRIPT>関数</JAVASCRIPT>
+	</SPLITINLINE>
+	を使って同じ分析を行ってください。
+	<TEXT>
+	  <PDF_ONLY>\quad</PDF_ONLY>
+	  コンパイル版のプッシュ回数と解釈実行版のプッシュ回数の比を求め、最大スタック深さについても同様にしてください。<LATEXINLINE>$n!$</LATEXINLINE> の計算に使われる操作回数とスタック深さは <LATEXINLINE>$n$</LATEXINLINE> に対して線形なので、<LATEXINLINE>$n$</LATEXINLINE> が大きくなるにつれてこれらの比は定数に近づくはずです。その定数はいくつでしょうか？同様に、専用マシンのスタック使用量と解釈実行版の使用量の比も求めてください。
+	</TEXT>
+	<TEXT>
+	  <PDF_ONLY>\quad</PDF_ONLY>
+	専用マシン対解釈実行コードの比を、コンパイル済みコード対解釈実行コードの比と比較してください。専用マシンの方がコンパイル済みコードよりもはるかに効率的であることがわかるはずです。手作業で調整されたコントローラコードは、私たちの初歩的な汎用コンパイラが生成するものよりもはるかに優れているはずだからです。
+	</TEXT>
+      </LI>
+      <LI>
+	手作業で調整されたバージョンの性能に近づくようなコードを生成するために、コンパイラの改善点を提案できますか？
+      </LI>
+    </OL>
+    </JA>
+    </BILINGUAL>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Carry out an analysis like the one in
     exercise<SPACE/><REF NAME="ex:measure-factorial-ratio"/> to determine the
     effectiveness of compiling the tree-recursive
@@ -1279,6 +1700,19 @@ EC-evaluate value:
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    練習問題<SPACE/><REF NAME="ex:measure-factorial-ratio"/>と同様の分析を行い、木構造再帰的な
+    <INDEX>compiler for JavaScript<SUBINDEX>monitoring performance (stack use) of compiled code</SUBINDEX></INDEX>
+    <INDEX><USE>fib</USE><SUBINDEX>stack usage, compiled</SUBINDEX></INDEX>
+    フィボナッチ
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    のコンパイルの有効性を判断してください。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <SCHEME>
 (define (fib n)
@@ -1287,11 +1721,13 @@ EC-evaluate value:
       (+ (fib (- n 1)) (fib (- n 2)))))
       </SCHEME>
       <JAVASCRIPT>
-function fib(n) { 
-    return n &lt; 2 ? n : fib(n - 1) + fib(n - 2); 
+function fib(n) {
+    return n &lt; 2 ? n : fib(n - 1) + fib(n - 2);
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     compared to the effectiveness of using the special-purpose Fibonacci machine
     of figure<SPACE/><REF NAME="fig:fib-machine"/>.  (For measurement of the
     interpreted performance, see exercise<SPACE/><REF NAME="ex:rec-fib"/>.)
@@ -1299,10 +1735,18 @@ function fib(n) {
     <LATEXINLINE>$n$</LATEXINLINE>; hence the ratios of stack operations will not
     approach a limiting value that is independent of
     <LATEXINLINE>$n$</LATEXINLINE>.
+    </EN>
+    <JA>
+    図<SPACE/><REF NAME="fig:fib-machine"/>の専用フィボナッチマシンの使用と比較してください。（解釈実行の性能の測定については、練習問題<SPACE/><REF NAME="ex:rec-fib"/>を参照してください。）
+    フィボナッチの場合、使用される時間リソースは <LATEXINLINE>$n$</LATEXINLINE> に対して線形ではないため、スタック操作の比は <LATEXINLINE>$n$</LATEXINLINE> に依存しない極限値には近づきません。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:measure-fib-ratio"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     This section described how to modify the explicit-control evaluator so
     that interpreted code can call compiled
     <SPLITINLINE>
@@ -1367,6 +1811,69 @@ function fib(n) {
     code it is assembling be defined there), so we will add a register
     called <SCHEMEINLINE>compapp</SCHEMEINLINE> to the evaluator machine to
     hold this entry point, and add an instruction to initialize it:
+    </EN>
+    <JA>
+    この節では、解釈実行されるコードがコンパイル済み
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を呼べるように明示的制御評価器を変更する方法を説明しました。
+    コンパイル済み
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    がプリミティブ
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    やコンパイル済み
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    だけでなく、解釈実行される
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    も呼べるようにコンパイラを変更する方法を示してください。これには
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>compile-procedure-call</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>compile_function_call</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を変更して、複合（解釈実行される）
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    の場合を処理する必要があります。
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>compile-proc-appl</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>compile_fun_appl</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と同じ <SCHEMEINLINE>target</SCHEMEINLINE> と <SCHEMEINLINE>linkage</SCHEMEINLINE> の組み合わせをすべて処理するようにしてください。
+    実際の
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    適用を行うために、コードは評価器の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>compound-apply</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>compound_apply</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    エントリポイントにジャンプする必要があります。このラベルはオブジェクトコード内で直接参照できません（アセンブラは、アセンブルするコードで参照されるすべてのラベルがそこで定義されていることを要求するため）。そこで、評価器マシンに <SCHEMEINLINE>compapp</SCHEMEINLINE> というレジスタを追加してこのエントリポイントを保持し、初期化する命令を追加します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET LATEX="yes">
       <SCHEME>
   (assign compapp (label compound-apply))
@@ -1381,6 +1888,8 @@ $\texttt{ }\texttt{ }$assign("compapp", label("compound_apply")),
   $\ldots$
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     To test your code, start by
     <SPLITINLINE>
       <SCHEME>
@@ -1435,15 +1944,77 @@ $\texttt{ }\texttt{ }$assign("compapp", label("compound_apply")),
 	<SCHEMEINLINE>f</SCHEMEINLINE>.
       </SCHEME>
       <JAVASCRIPT>
-	declare 
+	declare
 	<SCHEMEINLINE>g</SCHEMEINLINE> and try to call
 	<SCHEMEINLINE>f</SCHEMEINLINE>.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    コードをテストするには、まず
+    <SPLITINLINE>
+      <SCHEME>
+	手続き
+      </SCHEME>
+      <JAVASCRIPT>
+	関数
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>g</SCHEMEINLINE> を呼び出す
+    <SPLITINLINE>
+      <SCHEME>
+	手続き
+      </SCHEME>
+      <JAVASCRIPT>
+	関数
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>f</SCHEMEINLINE> を
+    <SPLITINLINE>
+      <SCHEME>
+	定義
+      </SCHEME>
+      <JAVASCRIPT>
+	宣言
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    してください。
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>compile-and-go</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>compile_@and_@go</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を使って <SCHEMEINLINE>f</SCHEMEINLINE> の
+    <SPLITINLINE>
+      <SCHEME>
+	定義
+      </SCHEME>
+      <JAVASCRIPT>
+	宣言
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    をコンパイルし、評価器を起動してください。次に、評価器で
+    <SCHEMEINLINE>g</SCHEMEINLINE> を
+    <SPLITINLINE>
+      <SCHEME>
+	定義し、
+      </SCHEME>
+      <JAVASCRIPT>
+	宣言し、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>f</SCHEMEINLINE> を呼び出してみてください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:compiled-call-interpreted"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     The
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>compile-and-go</SCHEMEINLINE></SCHEME>
@@ -1452,9 +2023,9 @@ $\texttt{ }\texttt{ }$assign("compapp", label("compound_apply")),
     </SPLITINLINE>
     interface implemented in this section is
     awkward, since the compiler can be called only once (when the
-    evaluator machine is started).  Augment the compiler<ENDASH/><PDF_ONLY>\linebreak[2]</PDF_ONLY>interpreter 
+    evaluator machine is started).  Augment the compiler<ENDASH/><PDF_ONLY>\linebreak[2]</PDF_ONLY>interpreter
     interface by providing a
-    <INDEX><USE>compile_and_run</USE></INDEX> 
+    <INDEX><USE>compile_and_run</USE></INDEX>
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>compile-and-run</SCHEMEINLINE></SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>compile_and_run</JAVASCRIPTINLINE>
@@ -1462,6 +2033,24 @@ $\texttt{ }\texttt{ }$assign("compapp", label("compound_apply")),
     </SPLITINLINE>
     primitive that can be called from within the explicit-control evaluator
     as follows:
+    </EN>
+    <JA>
+    この節で実装した
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>compile-and-go</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>compile_and_go</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    インターフェースは、コンパイラが（評価器マシンの起動時に）一度しか呼べないため不便です。明示的制御評価器の中から次のように呼べる
+    <INDEX><USE>compile_and_run</USE></INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>compile-and-run</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>compile_and_run</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    プリミティブを提供して、コンパイラ<ENDASH/>インタプリタ間のインターフェースを強化してください。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" POSTPADDING="no">
       <SCHEMEPROMPT>
 ;;; EC-Eval input:
@@ -1520,6 +2109,8 @@ EC-Eval value:
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     As an alternative to using the explicit-control evaluator<APOS/>s
     <SPLITINLINE>
       <SCHEME>
@@ -1550,10 +2141,40 @@ EC-Eval value:
     <SCHEMEINLINE>compile</SCHEMEINLINE> and
     <SCHEMEINLINE>assemble</SCHEMEINLINE> as <QUOTE>register-machine
     operations.</QUOTE>
+    </EN>
+    <JA>
+    明示的制御評価器の
+    <SPLITINLINE>
+      <SCHEME>
+	read-eval-print
+      </SCHEME>
+      <JAVASCRIPT>
+	read-evaluate-print
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    ループを使う代わりに、read-compile-execute-print ループを実行するレジスタマシンを設計してください。つまり、マシンは
+    <SPLITINLINE>
+      <SCHEME>
+	式を読み込み、
+      </SCHEME>
+      <JAVASCRIPT>
+	プログラムを読み込み、
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    コンパイルし、結果のコードをアセンブルして実行し、結果を表示するループを実行するべきです。シミュレーション環境では、
+    <SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>compile</SCHEMEINLINE> と <SCHEMEINLINE>assemble</SCHEMEINLINE> を<QUOTE>レジスタマシン操作</QUOTE>として呼び出すように手配できるため、これは簡単に実行できます。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:read-compile-execute"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Use the compiler to compile the
     <INDEX>metacircular evaluator for JavaScript<SUBINDEX>compilation of</SUBINDEX></INDEX>
     metacircular evaluator of
@@ -1571,16 +2192,35 @@ EC-Eval value:
         to use the back quotes (<JAVASCRIPTINLINE>`</JAVASCRIPTINLINE>),
         as we have done for the example inputs to
 	<JAVASCRIPTINLINE>compile_and_go</JAVASCRIPTINLINE> and
-        <JAVASCRIPTINLINE>compile_and_run</JAVASCRIPTINLINE>. 
+        <JAVASCRIPTINLINE>compile_and_run</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
     </SPLIT>
     The resulting interpreter will run very slowly because of the multiple
     levels of interpretation, but getting all the details to work is an
     instructive exercise.
+    </EN>
+    <JA>
+    コンパイラを使って<REF NAME="sec:mc-eval"/>節の
+    <INDEX>metacircular evaluator for JavaScript<SUBINDEX>compilation of</SUBINDEX></INDEX>
+    メタ循環評価器をコンパイルし、レジスタマシンシミュレータを使ってこのプログラムを実行してください。
+    <SPLIT>
+      <SCHEME>
+	      （複数の定義を一度にコンパイルするには、定義を
+	      <SCHEMEINLINE>begin</SCHEMEINLINE> でまとめることができます。）
+      </SCHEME>
+      <JAVASCRIPT>
+        パーサは文字列を入力として受け取るため、プログラムを文字列に変換する必要があります。最も簡単な方法は、<JAVASCRIPTINLINE>compile_and_go</JAVASCRIPTINLINE> や <JAVASCRIPTINLINE>compile_and_run</JAVASCRIPTINLINE> の入力例で行ったように、バッククォート（<JAVASCRIPTINLINE>`</JAVASCRIPTINLINE>）を使うことです。
+      </JAVASCRIPT>
+    </SPLIT>
+    結果のインタプリタは、解釈の多重レベルのために非常に遅く動作しますが、すべての詳細を動作させることは教育的な練習問題です。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:5_53"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Develop a rudimentary implementation of
     <SPLITINLINE>
       <SCHEME>Scheme</SCHEME>
@@ -1593,12 +2233,26 @@ EC-Eval value:
     into C.  In order to run this code you will need to also
     provide appropriate storage-allocation routines and other runtime
     support.
+    </EN>
+    <JA>
+    <REF NAME="sec:eceval"/>節の明示的制御評価器を
+    <INDEX>C<SUBINDEX>JavaScript interpreter written in</SUBINDEX></INDEX>
+    C（または任意の低レベル言語）に翻訳することで、
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    の初歩的な実装を開発してください。このコードを実行するには、適切なメモリ割り当てルーチンやその他のランタイムサポートも提供する必要があります。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:interp-in-C"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     As a counterpoint to exercise<SPACE/><REF NAME="ex:interp-in-C"/>, modify
-    the compiler so that it compiles 
+    the compiler so that it compiles
     <SPLITINLINE>
       <SCHEME>Scheme procedures</SCHEME>
       <JAVASCRIPT>JavaScript functions</JAVASCRIPT>
@@ -1612,8 +2266,27 @@ EC-Eval value:
     <SPLITINLINE>
       <SCHEME>Scheme</SCHEME>
       <JAVASCRIPT>JavaScript</JAVASCRIPT>
-    </SPLITINLINE>  
+    </SPLITINLINE>
     interpreter written in C.
+    </EN>
+    <JA>
+    練習問題<SPACE/><REF NAME="ex:interp-in-C"/>の対比として、
+    <SPLITINLINE>
+      <SCHEME>Scheme の手続き</SCHEME>
+      <JAVASCRIPT>JavaScript の関数</JAVASCRIPT>
+    </SPLITINLINE>
+    を
+    <INDEX>C<SUBINDEX>compiling JavaScript into</SUBINDEX></INDEX>
+    <INDEX>C<SUBINDEX>JavaScript interpreter written in</SUBINDEX></INDEX>
+    <INDEX>metacircular evaluator for JavaScript<SUBINDEX>compilation of</SUBINDEX></INDEX>
+    C の命令列にコンパイルするようにコンパイラを変更してください。<REF NAME="sec:mc-eval"/>節のメタ循環評価器をコンパイルして、C で書かれた
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    インタプリタを生成してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:compiler-in-C"/>
   </EXERCISE>
 
