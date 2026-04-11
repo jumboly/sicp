@@ -55,6 +55,7 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | conventional interface | 規約インターフェース | SICP 特有の用語 |
 | symbolic expression | シンボリック式 | |
 | generic operation / generic selector | ジェネリック演算 / ジェネリックセレクタ | |
+| generic function | ジェネリック関数 | |
 | data-directed programming | データ指向プログラミング | 「データ駆動」より採用 |
 | dispatching on type | 型によるディスパッチ | |
 | package | パッケージ | 表現パッケージ |
@@ -150,7 +151,6 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | weight | 重み | ノードの |
 | leaf (Huffman tree) | 葉 | ハフマン木の文脈では「葉」、一般のツリーは「リーフ」と揺れがあるので注意 |
 | alphabet | アルファベット | 符号化対象のシンボル集合 |
-| generic function | ジェネリック関数 | |
 
 ### 高階関数・抽象
 
@@ -233,7 +233,7 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | 英語 | 日本語 | 備考 |
 |------|--------|------|
 | thread | スレッド | JS 版。Scheme 版は process（プロセス） |
-| nondeterministic / nondeterminism | 非決定的 / 非決定性 | indeterminacy（不確定性）と区別 |
+| nondeterministic / nondeterminism | 非決定的 / 非決定性 | →「非決定的計算」参照。indeterminacy（不確定性）と区別 |
 | interleave / interleaving | インターリーブする / インターリーブ | |
 | serializer | シリアライザ | 「直列化器」「逐次化器」より採用 |
 | serialize / serialization | シリアル化する / シリアル化 | 「直列化」「逐次化」も候補だがカナで統一 |
@@ -263,11 +263,10 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | argument expression | 引数式 | 関数適用の引数部分の式 |
 | syntactic form | 構文形式 | 条件式やブロックなど |
 | return value | 戻り値 | 「返り値」ではない |
-| return expression | return 式 | return 文の中の式 |
 | scan out declarations / scanning out | スキャンアウト | ブロック内の宣言を事前に収集する処理 |
 | is_truthy / truthiness | is_truthy / 真理性 | 条件式の値を真偽値化する |
 | deep binding | 深い束縛（deep binding） | 環境表現の実装方式。原語を併記 |
-| lexical addressing | レキシカルアドレッシング | Section 4.1.6 で詳述。変数参照の最適化手法 |
+| lexical addressing | レキシカルアドレッシング | Section 5.5.6 で詳述。変数参照の最適化手法 |
 | derived component | 派生コンポーネント | 他のコンポーネントに変換して処理される構文形式 |
 | driver loop | ドライバループ | |
 
@@ -326,7 +325,7 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | pattern | パターン | |
 | pattern variable | パターン変数 | |
 | pattern matching | パターンマッチング | |
-| pattern matcher | パターンマッチャー | 長音あり |
+| pattern matcher | パターンマッチャー | |
 | unification | ユニフィケーション | |
 | unify | ユニファイする | |
 | unifier | ユニファイア | |
@@ -339,9 +338,7 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | resolution principle | 導出原理 | |
 | deductive | 演繹的 | |
 | instantiate | インスタンス化する | |
-| driver loop | ドライバループ | 長音なし |
 | rename | リネームする | 変数のリネーム |
-| interleave | インターリーブする | |
 
 ### レジスタマシン・コンパイラ（Chapter 5）
 
@@ -361,17 +358,19 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | data path | データパス | レジスタマシンのデータ経路 |
 | stack | スタック | |
 | subroutine | サブルーチン | |
-| tail-recursive | 末尾再帰的 | 用語集の再帰セクションにも記載 |
+| tail-recursive | 末尾再帰的 | →「再帰・反復・増加のオーダー」参照 |
 | free list | フリーリスト | メモリ管理 |
 | broken heart | ブロークンハート | GC のフォワーディングポインタ |
 | root (GC) | ルート | GC のルート集合 |
 | stop-and-copy | ストップアンドコピー | GC アルゴリズム |
 
-### その他
+### 長音表記の方針
 
 | 英語 | 日本語 | 備考 |
 |------|--------|------|
 | interpreter | インタプリタ | 長音省略形を採用（「インタープリタ」ではない） |
+| driver loop | ドライバループ | 長音なし |
+| pattern matcher | パターンマッチャー | 長音あり |
 | read-evaluate-print loop | read-evaluate-print ループ | カナにせず英語のまま |
 
 ## BILINGUAL タグ配置ルール
