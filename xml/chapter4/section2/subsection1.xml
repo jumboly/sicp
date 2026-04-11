@@ -1,14 +1,19 @@
 <SUBSECTION>
   <NAME>
-    Normal Order and Applicative Order
+    <BILINGUAL>
+    <EN>Normal Order and Applicative Order</EN>
+    <JA>正規順序と適用順序</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:evaluation-order"/>
 
   <INDEX>normal-order evaluation<SUBINDEX>applicative order vs.<OPEN/></SUBINDEX></INDEX>
   <INDEX>applicative-order evaluation<SUBINDEX>normal order vs.<OPEN/></SUBINDEX></INDEX>
-  
+
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In section<SPACE/><REF NAME="sec:elements-of-programming"/>, where we began
     our discussion of models of evaluation, we noted that
     <SPLITINLINE>
@@ -40,19 +45,64 @@
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     arguments until the last possible moment (e.g., until they are required by a
-    primitive operation) is called 
+    primitive operation) is called
     <INDEX>lazy evaluation</INDEX>
-    <EM>lazy evaluation</EM>.<FOOTNOTE>The difference between the
+    <EM>lazy evaluation</EM>.
+    </EN>
+    <JA>
+    節<SPACE/><REF NAME="sec:elements-of-programming"/>で評価モデルの議論を始めたとき、
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    は<EM>適用順序（applicative-order）</EM>の言語であること、すなわち
+    <SPLITINLINE>
+      <SCHEME>Scheme</SCHEME>
+      <JAVASCRIPT>JavaScript</JAVASCRIPT>
+    </SPLITINLINE>
+    の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>へのすべての引数は、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>が適用されるときに評価されることを述べました。これに対して、<EM>正規順序（normal-order）</EM>の言語では、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の引数の評価は、実際の引数値が必要になるまで遅延されます。<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の引数の評価を最後の瞬間まで（たとえばプリミティブな演算で必要とされるまで）遅延させることを、
+    <INDEX>lazy evaluation</INDEX>
+    <EM>遅延評価（lazy evaluation）</EM>と呼びます。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>The difference between the
     <QUOTE>lazy</QUOTE> terminology and the <QUOTE>normal-order</QUOTE>
     terminology is somewhat fuzzy.  Generally, <QUOTE>lazy</QUOTE> refers to the
     mechanisms of particular evaluators, while <QUOTE>normal-order</QUOTE>
     refers to the semantics of languages, independent of any particular
     evaluation strategy.  But this is not a hard-and-fast distinction, and the
-    two terminologies are often used interchangeably.</FOOTNOTE> Consider the
+    two terminologies are often used interchangeably.</EN>
+    <JA><QUOTE>遅延（lazy）</QUOTE>という用語と<QUOTE>正規順序（normal-order）</QUOTE>という用語の違いはやや曖昧です。一般に、<QUOTE>遅延</QUOTE>は特定の評価器のメカニズムを指し、<QUOTE>正規順序</QUOTE>は特定の評価戦略とは独立に言語の意味論を指します。しかしこれは厳密な区別ではなく、二つの用語はしばしば互換的に使われます。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    Consider the
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    次の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を考えてみましょう。
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>try_me_example</NAME>
       <JAVASCRIPT>
@@ -69,7 +119,7 @@ try_me(0, head(null));
       </SCHEME>
       <JAVASCRIPT>
 function try_me(a, b) {
-    return a === 0 ? 1 : b;	
+    return a === 0 ? 1 : b;
 }
       </JAVASCRIPT>
       <JAVASCRIPT_RUN>
@@ -77,10 +127,12 @@ function try_me(a, b) {
 // in lazy mode. Choose "Source §2" to
 // to compare with strict mode
 function try_me(a, b) {
-    return a === 0 ? 1 : b;	
+    return a === 0 ? 1 : b;
 }
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Evaluating
     <SPLITINLINE>
       <SCHEME>
@@ -108,9 +160,33 @@ function try_me(a, b) {
       <JAVASCRIPT><JAVASCRIPTINLINE>head(null)</JAVASCRIPTINLINE></JAVASCRIPT>
     </SPLITINLINE>
     would never be evaluated.
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>(try 0 (/ 1 0))</SCHEMEINLINE>
+	を評価すると、Scheme では
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>try_me(0, head(null));</JAVASCRIPTINLINE>
+	を評価すると、JavaScript では
+      </JAVASCRIPT>
+    </SPLITINLINE>エラーが発生します。しかし遅延評価では、エラーは起こりません。この<SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>文</JAVASCRIPT>
+    </SPLITINLINE>を評価すると<SPACE/>1 が返されます。なぜなら、引数
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(/ 1 0)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head(null)</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    は決して評価されないからです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     An example that exploits lazy evaluation is the
     <SPLITINLINE>
       <SCHEME>definition</SCHEME>
@@ -122,6 +198,19 @@ function try_me(a, b) {
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     <SCHEMEINLINE>unless</SCHEMEINLINE>
+    </EN>
+    <JA>
+    遅延評価を活用する例として、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>unless</SCHEMEINLINE>
+    の<SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>宣言</JAVASCRIPT>
+    </SPLITINLINE>があります。
+    </JA>
+    </BILINGUAL>
     <SNIPPET CHAP="2" VARIANT="lazy">
       <NAME>unless</NAME>
       <EXAMPLE>unless_example</EXAMPLE>
@@ -130,7 +219,7 @@ function try_me(a, b) {
   (if condition exceptional-value usual-value))
       </SCHEME>
       <JAVASCRIPT>
-function unless(condition, usual_value, exceptional_value) {      
+function unless(condition, usual_value, exceptional_value) {
     return condition ? exceptional_value : usual_value;
 }
       </JAVASCRIPT>
@@ -138,17 +227,27 @@ function unless(condition, usual_value, exceptional_value) {
 // Source Academy opens this program
 // in lazy mode. Choose "Source §2" to
 // to compare with strict mode
-function unless(condition, usual_value, exceptional_value) {      
+function unless(condition, usual_value, exceptional_value) {
     return condition ? exceptional_value : usual_value;
 }
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     that can be used in
     <SPLITINLINE>
       <SCHEME>expressions</SCHEME>
       <JAVASCRIPT>statements</JAVASCRIPT>
     </SPLITINLINE>
     such as
+    </EN>
+    <JA>
+    この関数は、次のような<SPLITINLINE>
+      <SCHEME>式</SCHEME>
+      <JAVASCRIPT>文</JAVASCRIPT>
+    </SPLITINLINE>で使用できます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>xs_is_null</NAME>
       <JAVASCRIPT>
@@ -169,6 +268,8 @@ const xs = null;
 unless(is_null(xs), head(xs), display("error: xs should not be null"));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     This won<APOS/>t work in an applicative-order language because both the
     usual value and the exceptional value will be evaluated before
     <SCHEMEINLINE>unless</SCHEMEINLINE> is called (compare
@@ -181,10 +282,23 @@ unless(is_null(xs), head(xs), display("error: xs should not be null"));
     such as <SCHEMEINLINE>unless</SCHEMEINLINE>, can do useful computation
     even if evaluation of some of their arguments would produce errors or
     would not terminate.
+    </EN>
+    <JA>
+    これは適用順序の言語ではうまくいきません。なぜなら、通常値と例外値の両方が
+    <SCHEMEINLINE>unless</SCHEMEINLINE> の呼び出し前に評価されてしまうからです
+    （練習問題<SPACE/><REF NAME="ex:new-if"/>を参照）。遅延評価の利点は、
+    <SCHEMEINLINE>unless</SCHEMEINLINE> のような一部の<SPLITINLINE>
+      <SCHEME>手続きが、</SCHEME>
+      <JAVASCRIPT>関数が、</JAVASCRIPT>
+    </SPLITINLINE>引数の一部の評価がエラーを生じたり終了しなかったりする場合でも、有用な計算を行えることです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <DO_BREAK_PAGE/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     If the body of a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -195,7 +309,7 @@ unless(is_null(xs), head(xs), display("error: xs should not be null"));
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    is 
+    is
     <INDEX>non-strict</INDEX>
     <EM>non-strict</EM> in that argument.  If the argument is evaluated before
     the body of the
@@ -208,10 +322,33 @@ unless(is_null(xs), head(xs), display("error: xs should not be null"));
       <SCHEME>procedure</SCHEME>
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
-    is 
+    is
     <INDEX>strict</INDEX>
     <EM>strict</EM> in that
-    argument.<FOOTNOTE>The <QUOTE>strict</QUOTE> versus <QUOTE>non-strict</QUOTE>
+    argument.
+    </EN>
+    <JA>
+    引数が評価される前に<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の本体に入る場合、その<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>はその引数に関して
+    <INDEX>non-strict</INDEX>
+    <EM>非正格（non-strict）</EM>であると言います。<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の本体に入る前に引数が評価される場合、その<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>はその引数に関して
+    <INDEX>strict</INDEX>
+    <EM>正格（strict）</EM>であると言います。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>The <QUOTE>strict</QUOTE> versus <QUOTE>non-strict</QUOTE>
     terminology means essentially the same as
     <QUOTE>applicative-order</QUOTE> versus <QUOTE>normal-order,</QUOTE> except
     that it refers to individual
@@ -221,14 +358,27 @@ unless(is_null(xs), head(xs), display("error: xs should not be null"));
     </SPLITINLINE>
     and arguments rather than to the language as a whole.  At a conference on
     programming languages you might hear someone say, <QUOTE>The normal-order
-    language 
+    language
     <INDEX>Hassle</INDEX>
     Hassle has certain strict primitives.  Other
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
-    take their arguments by lazy evaluation.</QUOTE></FOOTNOTE>
+    take their arguments by lazy evaluation.</QUOTE></EN>
+    <JA><QUOTE>正格（strict）</QUOTE>対<QUOTE>非正格（non-strict）</QUOTE>という用語は、本質的には<QUOTE>適用順序</QUOTE>対<QUOTE>正規順序</QUOTE>と同じ意味ですが、言語全体ではなく個々の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>と引数に対して用いられる点が異なります。プログラミング言語の学会で、<QUOTE>正規順序の言語
+    <INDEX>Hassle</INDEX>
+    Hassle には、いくつかの正格なプリミティブがあります。その他の<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は遅延評価で引数を受け取ります。</QUOTE>のような発言を耳にするかもしれません。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     In a purely applicative-order language, all
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -252,9 +402,29 @@ unless(is_null(xs), head(xs), display("error: xs should not be null"));
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     they define.
+    </EN>
+    <JA>
+    純粋な適用順序の言語では、すべての<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は各引数に関して正格です。純粋な正規順序の言語では、すべての複合<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は各引数に関して非正格であり、プリミティブ<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は正格にも非正格にもなり得ます。また、プログラマに自分が定義する<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の正格性を細かく制御できる言語もあります
+    （練習問題<SPACE/><REF NAME="ex:user-controlled-strictness"/>を参照）。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     A striking example of a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -276,11 +446,29 @@ unless(is_null(xs), head(xs), display("error: xs should not be null"));
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE> pairs.</SCHEME>
       <JAVASCRIPT>pairs.</JAVASCRIPT>
-    </SPLITINLINE>    
+    </SPLITINLINE>
+    </EN>
+    <JA>
+    非正格にすることが有用な<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>の顕著な例は、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    です（あるいは一般に、データ構造のほぼすべてのコンストラクタが該当します）。要素の値がわからなくても、要素を組み合わせてデータ構造を形成し、そのデータ構造を操作するという有用な計算を行うことができます。たとえば、リストの個々の要素の値を知らなくてもリストの長さを計算するのは完全に理にかなっています。この考え方を節<SPACE/><REF NAME="sec:lazy-cons"/>で活用して、第<SPACE/><REF NAME="chap:state"></REF>章のストリームを非正格な<SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE> ペア</SCHEME>
+      <JAVASCRIPT>ペア</JAVASCRIPT>
+    </SPLITINLINE>で形成されるリストとして実装します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
     <LABEL NAME="ex:ordinary"/>
+    <BILINGUAL>
+    <EN>
     <SPLITINLINE>
       <SCHEME>
 	Suppose that (in ordinary applicative-order Scheme) we define
@@ -292,6 +480,20 @@ unless(is_null(xs), head(xs), display("error: xs should not be null"));
     <SCHEMEINLINE>unless</SCHEMEINLINE> as shown above and then define
     <SCHEMEINLINE>factorial</SCHEMEINLINE> in terms
     of <SCHEMEINLINE>unless</SCHEMEINLINE> as
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	（通常の適用順序の Scheme で）上で示したように
+      </SCHEME>
+      <JAVASCRIPT>
+	（通常の適用順序の JavaScript で）上で示したように
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SCHEMEINLINE>unless</SCHEMEINLINE> を定義し、次に <SCHEMEINLINE>unless</SCHEMEINLINE> を使って
+    <SCHEMEINLINE>factorial</SCHEMEINLINE> を次のように定義したとします。
+    </JA>
+    </BILINGUAL>
 
     <SNIPPET CHAP="2" VARIANT="lazy">
       <NAME>factorial_lazy</NAME>
@@ -330,6 +532,8 @@ function factorial(n) {
 factorial(5);
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     What happens if we attempt to evaluate
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>(factorial 5)</SCHEMEINLINE>?</SCHEME>
@@ -342,15 +546,40 @@ factorial(5);
       <JAVASCRIPT>functions</JAVASCRIPT>
     </SPLITINLINE>
     work in a normal-order language?
+    </EN>
+    <JA>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(factorial 5)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>factorial(5)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を評価しようとすると何が起きるでしょうか？
+    この<SPLITINLINE>
+      <SCHEME>定義</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>は正規順序の言語で正しく動作するでしょうか？
+    </JA>
+    </BILINGUAL>
     <SOLUTION>
+      <BILINGUAL>
+      <EN>
       (provided by GitHub user joeng03)
-When evaluated in default (‘strict’) mode, the code undergoes applicative order reduction and runs into an infinite loop because it needs to evaluate the arguments of the unless function, but the factorial function does not have a terminating condition.
-When evaluated in lazy mode, the code undergoes normal order reduction. It produces the correct output because the unless function is applied before its arguments are evaluated.      
+When evaluated in default ('strict') mode, the code undergoes applicative order reduction and runs into an infinite loop because it needs to evaluate the arguments of the unless function, but the factorial function does not have a terminating condition.
+When evaluated in lazy mode, the code undergoes normal order reduction. It produces the correct output because the unless function is applied before its arguments are evaluated.
+      </EN>
+      <JA>
+      （GitHub ユーザー joeng03 による回答）
+デフォルトの「正格」モードで評価すると、コードは適用順序の簡約を行い、unless 関数の引数を評価する必要がありますが、factorial 関数に終了条件がないため無限ループに陥ります。
+遅延モードで評価すると、コードは正規順序の簡約を行います。unless 関数がその引数の評価より先に適用されるため、正しい出力が得られます。
+      </JA>
+      </BILINGUAL>
     </SOLUTION>
   </EXERCISE>
 
   <EXERCISE>
     <LABEL NAME="ex:unless-syntactic-form"/>
+    <BILINGUAL>
+    <EN>
     Ben Bitdiddle and Alyssa P. Hacker
     <INDEX>syntactic form<SUBINDEX><SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE> vs.</SUBINDEX></INDEX>
     <INDEX><FUNCTION/><SUBINDEX>syntactic form vs.</SUBINDEX></INDEX>
@@ -392,6 +621,36 @@ When evaluated in lazy mode, the code undergoes normal order reduction. It produ
 	rather than as a syntactic form.
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    Ben Bitdiddle と Alyssa P. Hacker は、
+    <INDEX>syntactic form<SUBINDEX><SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE> vs.</SUBINDEX></INDEX>
+    <INDEX><FUNCTION/><SUBINDEX>syntactic form vs.</SUBINDEX></INDEX>
+    <SCHEMEINLINE>unless</SCHEMEINLINE> のようなものを実装するために遅延評価がどれほど重要かについて意見が分かれています。Ben は、適用順序でも <SCHEMEINLINE>unless</SCHEMEINLINE> を<SPLITINLINE>
+      <SCHEME>特殊</SCHEME>
+      <JAVASCRIPT>構文</JAVASCRIPT>
+    </SPLITINLINE>形式として実装できると指摘します。Alyssa は、そうすると <SCHEMEINLINE>unless</SCHEMEINLINE> は単なる構文であって、高階<SPLITINLINE><SCHEME>手続き</SCHEME>
+    <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>と組み合わせて使える<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>ではなくなると反論します。両方の主張の詳細を埋めてください。
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>unless</SCHEMEINLINE> を派生式（<SCHEMEINLINE>cond</SCHEMEINLINE> や
+	<SCHEMEINLINE>let</SCHEMEINLINE> のように）として実装する方法を示し、
+	<SCHEMEINLINE>unless</SCHEMEINLINE> を特殊形式ではなく手続きとして
+	利用できると有用な状況の例を挙げてください。
+      </SCHEME>
+      <JAVASCRIPT>
+	<SCHEMEINLINE>unless</SCHEMEINLINE> を派生コンポーネント（演算子の組み合わせのように）として実装する方法を、
+	<SCHEMEINLINE>evaluate</SCHEMEINLINE> の中で関数式が名前 <SCHEMEINLINE>unless</SCHEMEINLINE> であるような関数適用を捕捉することで示してください。
+	<SCHEMEINLINE>unless</SCHEMEINLINE> を構文形式ではなく関数として
+	利用できると有用な状況の例を挙げてください。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    </JA>
+    </BILINGUAL>
   </EXERCISE>
 
   <INDEX>normal-order evaluation<SUBINDEX>applicative order vs.<CLOSE/></SUBINDEX></INDEX>

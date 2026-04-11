@@ -269,6 +269,22 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | deep binding | 深い束縛（deep binding） | 環境表現の実装方式。原語を併記 |
 | lexical addressing | レキシカルアドレッシング | Section 4.1.6 で詳述。変数参照の最適化手法 |
 | derived component | 派生コンポーネント | 他のコンポーネントに変換して処理される構文形式 |
+| driver loop | ドライバループ | |
+
+### 遅延評価（Section 4.2）
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| lazy evaluation | 遅延評価 | |
+| lazy evaluator | 遅延評価器 | |
+| thunk | サンク | 遅延された式と環境のパッケージ |
+| forcing (a thunk) | フォース（する） | サンクの値を計算すること |
+| strict (function) | 正格（strict） | 引数を適用前に評価する |
+| non-strict (function) | 非正格（non-strict） | 引数を適用前に評価しない |
+| lazy list | 遅延リスト | |
+| lazy pair | 遅延ペア | |
+| call-by-need | call-by-need | メモ化付き遅延評価。英語のまま |
+| call-by-name | call-by-name | メモ化なし遅延評価。英語のまま |
 
 ### その他
 

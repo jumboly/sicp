@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    An Interpreter with Lazy Evaluation
+    <BILINGUAL>
+      <EN>An Interpreter with Lazy Evaluation</EN>
+      <JA>遅延評価を行うインタプリタ</JA>
+    </BILINGUAL>
   </NAME>
 
   <SNIPPET PAGE="365" HIDE="yes" EVAL="no">
@@ -32,6 +35,8 @@
 
   <LONG_PAGE lines="1"/>
   <TEXT>
+    <BILINGUAL>
+      <EN>
     In this section we will implement a normal-order language that is
     the same as
     <SPLITINLINE>
@@ -56,9 +61,16 @@
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     application.
+      </EN>
+      <JA>
+    この節では、複合<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>が各引数について非正格であることを除けば<SPLITINLINE><SCHEME>Scheme</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>と同じ、正規順序の言語を実装します。プリミティブ<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>は引き続き正格です。<REF NAME="sec:core-of-evaluator"/>節の評価器を修正して、解釈する言語がこのように振る舞うようにするのは難しくありません。必要な変更のほぼすべてが<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>適用に集中しています。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The basic idea is that, when applying a
     <SPLITINLINE>
       <SCHEME>procedure,</SCHEME>
@@ -66,17 +78,30 @@
     </SPLITINLINE>
     the interpreter must determine which arguments are to be evaluated and which
     are to be delayed.  The delayed arguments are not evaluated; instead, they
-    are transformed into objects called 
+    are transformed into objects called
     <INDEX>thunk<OPEN/></INDEX>
-    <EM>thunk</EM>s.<FOOTNOTE>The word <EM>thunk</EM> was invented by an informal
+    <EM>thunk</EM>s.</EN>
+      <JA>
+    基本的な考え方は、<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を適用する際に、インタプリタがどの引数を評価し、どの引数を遅延させるかを判断しなければならないということです。遅延された引数は評価されず、代わりに
+    <INDEX>thunk<OPEN/></INDEX>
+    <EM>サンク</EM>（thunk）と呼ばれるオブジェクトに変換されます。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>The word <EM>thunk</EM> was invented by an informal
       <INDEX>thunk<SUBINDEX>origin of name</SUBINDEX></INDEX>
       working group that was discussing the implementation of call-by-name
       <INDEX>Algol<SUBINDEX>thunks</SUBINDEX></INDEX>
       in Algol 60.  They observed that most of the analysis of (<QUOTE>thinking
       about</QUOTE>) the expression could be done at compile time; thus, at run
-      time, the expression would already have been <QUOTE>thunk</QUOTE> about 
+      time, the expression would already have been <QUOTE>thunk</QUOTE> about
       <INDEX>Ingerman, Peter</INDEX>
-      (<CITATION>Ingerman et al.<SPACE/>1960</CITATION>).</FOOTNOTE>
+      (<CITATION>Ingerman et al.<SPACE/>1960</CITATION>).</EN>
+      <JA><EM>サンク</EM>（thunk）という言葉は、Algol 60 における call-by-name の実装について議論していた非公式のワーキンググループが考案しました。
+      <INDEX>thunk<SUBINDEX>origin of name</SUBINDEX></INDEX>
+      <INDEX>Algol<SUBINDEX>thunks</SUBINDEX></INDEX>
+      彼らは、式の解析（<QUOTE>考えること（thinking about）</QUOTE>）の大部分はコンパイル時に済ませられるので、実行時にはその式はすでに<QUOTE>考え済み（thunk about）</QUOTE>になっているだろうと気づいたのです
+      <INDEX>Ingerman, Peter</INDEX>
+      （<CITATION>Ingerman et al.<SPACE/>1960</CITATION>）。</JA></BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+      <EN>
     The thunk must contain the information required to produce the value
     of the argument when it is needed, as if it had been evaluated at
     the time of the application.  Thus, the thunk must contain the
@@ -87,29 +112,45 @@
       <JAVASCRIPT>function</JAVASCRIPT>
     </SPLITINLINE>
     application is being evaluated.
+      </EN>
+      <JA>
+    サンクは、引数の値が必要になったときにその値を生成するために必要な情報を保持していなければなりません。あたかも適用の時点で評価されたかのように振る舞えるようにです。したがって、サンクには引数の式と、その<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>適用が評価されている環境が含まれていなければなりません。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    The process of evaluating the expression in a thunk is called 
+    <BILINGUAL>
+      <EN>
+    The process of evaluating the expression in a thunk is called
     <INDEX>forcing<SUBINDEX><ORDER>thunk</ORDER>of thunk</SUBINDEX></INDEX>
     <INDEX>thunk<SUBINDEX>forcing</SUBINDEX></INDEX>
-    <EM>forcing</EM>.<FOOTNOTE>This is analogous to the
+    <EM>forcing</EM>.</EN>
+      <JA>
+    サンク内の式を評価するプロセスは
+    <INDEX>forcing<SUBINDEX><ORDER>thunk</ORDER>of thunk</SUBINDEX></INDEX>
+    <INDEX>thunk<SUBINDEX>forcing</SUBINDEX></INDEX>
+    <EM>フォース</EM>（forcing）と呼ばれます。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>This is analogous to the
     <SPLITINLINE>
       <SCHEME>
 	use of
 	<INDEX><USE>force</USE><SUBINDEX>forcing a thunk vs.</SUBINDEX></INDEX>
 	<SCHEMEINLINE>force</SCHEMEINLINE>
-	on 
+	on
       </SCHEME>
       <JAVASCRIPT>
-	forcing of 
+	forcing of
       </JAVASCRIPT>
     </SPLITINLINE>
     the delayed objects that were introduced in chapter<SPACE/><REF NAME="chap:state"></REF> to
     represent streams.  The critical difference between what we are
     doing here and what we did in chapter<SPACE/><REF NAME="chap:state"></REF> is that we are building
     delaying and forcing into the evaluator, and thus making this uniform
-    and automatic throughout the language.</FOOTNOTE>
+    and automatic throughout the language.</EN>
+      <JA>これは、ストリームを表現するために<REF NAME="chap:state"></REF>章で導入された遅延オブジェクトの<SPLITINLINE><SCHEME><INDEX><USE>force</USE><SUBINDEX>forcing a thunk vs.</SUBINDEX></INDEX><SCHEMEINLINE>force</SCHEMEINLINE>の使用</SCHEME><JAVASCRIPT>フォース</JAVASCRIPT></SPLITINLINE>と類似しています。ここで行っていることと<REF NAME="chap:state"></REF>章で行ったことの決定的な違いは、遅延とフォースを評価器に組み込んでいるため、言語全体にわたって統一的かつ自動的に機能するようになっていることです。</JA></BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+      <EN>
     In general, a thunk will be forced only when its value is needed:
     when it is passed to a primitive
     <SPLITINLINE>
@@ -128,7 +169,7 @@
       <SCHEME>procedure.</SCHEME>
       <JAVASCRIPT>function.</JAVASCRIPT>
       </SPLITINLINE>
-    One design choice we have available is whether or not to 
+    One design choice we have available is whether or not to
     <INDEX>memoization<SUBINDEX><ORDER>thunk</ORDER>of thunks</SUBINDEX></INDEX>
     <EM>memoize</EM> thunks, similar to the optimization for streams in
     section<SPACE/><REF NAME="sec:delayed-lists"/>.  With memoization, the first
@@ -136,11 +177,16 @@
     forcings simply return the stored value without repeating the computation.
     We<APOS/>ll make our interpreter memoize, because this is more efficient for
     many applications.  There are tricky considerations here,
-    however.<FOOTNOTE>Lazy evaluation combined with memoization is sometimes
+    however.</EN>
+      <JA>
+    一般に、サンクがフォースされるのはその値が必要になったときだけです。すなわち、サンクの値を使用するプリミティブ<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>に渡されるとき、条件式の述語の値であるとき、そして<SPLITINLINE><SCHEME>演算子</SCHEME><JAVASCRIPT>関数式</JAVASCRIPT></SPLITINLINE>の値として<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>として適用されようとしているときです。ここで利用できる設計上の選択肢の一つは、<REF NAME="sec:delayed-lists"/>節でのストリームの最適化と同様に、サンクを
+    <INDEX>memoization<SUBINDEX><ORDER>thunk</ORDER>of thunks</SUBINDEX></INDEX>
+    <EM>メモ化</EM>するかどうかです。メモ化を行うと、サンクが最初にフォースされたとき、計算された値が格納されます。以降のフォースでは、計算を繰り返すことなく格納された値がそのまま返されます。多くのアプリケーションではこの方が効率的なので、私たちのインタプリタはメモ化を行うことにします。ただし、ここには厄介な考慮事項があります。</JA>
+    </BILINGUAL><FOOTNOTE><BILINGUAL><EN>Lazy evaluation combined with memoization is sometimes
     referred to as
     <INDEX>call-by-need argument passing</INDEX>
     <EM>call-by-need</EM> argument passing, in contrast to
-    <EM>call-by-name</EM> argument passing.  
+    <EM>call-by-name</EM> argument passing.
     <INDEX>call-by-name argument passing</INDEX>
     (Call-by-name, introduced in
     <INDEX>Algol<SUBINDEX>call-by-name argument passing</SUBINDEX></INDEX>
@@ -155,17 +201,33 @@
     An excellent article by
     <INDEX>Clinger, William</INDEX>
     Clinger (1982) attempts to clarify the
-    multiple dimensions of confusion that arise here.</FOOTNOTE>
+    multiple dimensions of confusion that arise here.</EN>
+      <JA>遅延評価とメモ化を組み合わせたものは、
+    <INDEX>call-by-need argument passing</INDEX>
+    <EM>call-by-need</EM> 引数渡しと呼ばれることがあり、これは <EM>call-by-name</EM> 引数渡しとは対照的です。
+    <INDEX>call-by-name argument passing</INDEX>
+    （call-by-name は
+    <INDEX>Algol<SUBINDEX>call-by-name argument passing</SUBINDEX></INDEX>
+    Algol 60 で導入されたもので、メモ化なしの遅延評価に相当します。）言語設計者として、評価器にメモ化を組み込むか、組み込まないか、あるいはプログラマの選択に委ねるか（練習問題<SPACE/><REF NAME="ex:user-controlled-strictness"/>）を決めることができます。<REF NAME="chap:state"></REF>章から予想されるように、代入が存在する場合にはこれらの選択肢は微妙で紛らわしい問題を引き起こします。（練習問題<SPACE/><REF NAME="ex:delay-side-effects"/>および<SPACE/><REF NAME="ex:memoize-or-not"/>を参照してください。）
+    <INDEX>Clinger, William</INDEX>
+    Clinger（1982）の優れた論文は、ここで生じる混乱の多次元的な側面を明確にしようとしています。</JA></BILINGUAL></FOOTNOTE>
 
     <INDEX>thunk<CLOSE/></INDEX>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Modifying the evaluator</NAME>
+    <NAME>
+      <BILINGUAL>
+        <EN>Modifying the evaluator</EN>
+        <JA>評価器の修正</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <LONG_PAGE lines="1"/>
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The main difference between the lazy evaluator and the one in
     section<SPACE/><REF NAME="sec:mc-eval"/> is in the handling of
     <SPLITINLINE><SCHEME>procedure</SCHEME>
@@ -177,10 +239,17 @@
     </SPLITINLINE>
     and
     <SCHEMEINLINE>apply</SCHEMEINLINE>.
+      </EN>
+      <JA>
+    遅延評価器と<REF NAME="sec:mc-eval"/>節の評価器の主な違いは、<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>と<SCHEMEINLINE>apply</SCHEMEINLINE>における<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>適用の処理にあります。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
     <INDEX><USE>evaluate</USE> (lazy)</INDEX>
+    <BILINGUAL>
+      <EN>
     <SPLITINLINE>
       <SCHEME>
 	The <SCHEMEINLINE>application?</SCHEMEINLINE> clause of
@@ -194,6 +263,20 @@
 	<SCHEMEINLINE>evaluate</SCHEMEINLINE> becomes
       </JAVASCRIPT>
     </SPLITINLINE>
+      </EN>
+      <JA>
+    <SPLITINLINE>
+      <SCHEME>
+	<INDEX><USE>evaluate</USE> (lazy)</INDEX>
+	<SCHEMEINLINE>eval</SCHEMEINLINE>の<SCHEMEINLINE>application?</SCHEMEINLINE>節は次のようになります。
+      </SCHEME>
+      <JAVASCRIPT>
+	<INDEX><USE>evaluate</USE> (lazy)</INDEX>
+	<SCHEMEINLINE>evaluate</SCHEMEINLINE>の<JAVASCRIPTINLINE>is_application</JAVASCRIPTINLINE>節は次のようになります。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+      </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="365" HIDE="yes">
       <NAME>eval_lazy_example</NAME>
       <REQUIRES>functions_4_1_1_lazy</REQUIRES>
@@ -256,6 +339,8 @@ function evaluate(component, env) {
 }
       </JAVASCRIPT_RUN>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     This is almost the same as the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>application?</SCHEMEINLINE></SCHEME>
@@ -292,10 +377,18 @@ function evaluate(component, env) {
     </SPLITINLINE>
     to be applied in order to dispatch on its type (primitive versus compound)
     and apply it.
+      </EN>
+      <JA>
+    これは<REF NAME="sec:core-of-evaluator"/>節の<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>の<SPLITINLINE><SCHEME><SCHEMEINLINE>application?</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>is_application</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>節とほぼ同じです。しかし、遅延評価では、引数を評価して得た値ではなく、<SPLITINLINE><SCHEME>オペランド</SCHEME><JAVASCRIPT>引数</JAVASCRIPT></SPLITINLINE>の式をそのまま<SCHEMEINLINE>apply</SCHEMEINLINE>に渡します。引数を遅延させる場合にサンクを構成するために環境が必要になるので、環境も渡さなければなりません。<SHRINK_PARAGRAPH lines="1"/><SPLITINLINE><SCHEME>演算子</SCHEME><JAVASCRIPT>関数式</JAVASCRIPT></SPLITINLINE>は引き続き評価します。なぜなら、<SCHEMEINLINE>apply</SCHEMEINLINE>は適用する実際の<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を必要とし、その型（プリミティブか複合か）に基づいてディスパッチして適用するからです。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    Whenever we need the actual value of an expression, we use
+    <BILINGUAL>
+      <EN>Whenever we need the actual value of an expression, we use</EN>
+      <JA>式の実際の値が必要なときはいつでも、</JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>actual_value_lazy_example</NAME>
       <REQUIRES>functions_4_1_1_lazy</REQUIRES>
@@ -321,6 +414,8 @@ function actual_value(exp, env) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     instead of just
     <SPLITINLINE>
       <SCHEME>
@@ -331,9 +426,16 @@ function actual_value(exp, env) {
       </JAVASCRIPT>
     </SPLITINLINE>
     so that if the expression<APOS/>s value is a thunk, it will be forced.
+      </EN>
+      <JA>
+    単なる<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>の代わりに次の関数を使います。式の値がサンクである場合にフォースされるようにするためです。
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Our new version of <SCHEMEINLINE>apply</SCHEMEINLINE> is also almost the
     same as the version in section<SPACE/><REF NAME="sec:core-of-evaluator"/>.
     The difference is that
@@ -369,6 +471,11 @@ function actual_value(exp, env) {
     arguments before applying the
     <SPLITINLINE><SCHEME>procedure.</SCHEME>
     <JAVASCRIPT>function.</JAVASCRIPT></SPLITINLINE>
+      </EN>
+      <JA>
+    新しい<SCHEMEINLINE>apply</SCHEMEINLINE>も、<REF NAME="sec:core-of-evaluator"/>節のバージョンとほぼ同じです。違いは、<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>が未評価の<SPLITINLINE><SCHEME>オペランド</SCHEME><JAVASCRIPT>引数</JAVASCRIPT></SPLITINLINE>式を渡してくることです。プリミティブ<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>（正格）の場合は、プリミティブを適用する前にすべての引数を評価します。複合<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>（非正格）の場合は、<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を適用する前にすべての引数を遅延させます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="366" HIDE="yes">
       <NAME>apply_lazy_example</NAME>
       <REQUIRES>functions_4_1_1_lazy</REQUIRES>
@@ -425,6 +532,8 @@ function apply(fun, args, env) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     The
     <SPLITINLINE><SCHEME>procedures</SCHEME>
     <JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE>
@@ -474,6 +583,11 @@ function apply(fun, args, env) {
 	<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>:
       </JAVASCRIPT>
     </SPLITINLINE>
+      </EN>
+      <JA>
+    引数を処理する<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>は、<REF NAME="sec:core-of-evaluator"/>節の<SPLITINLINE><SCHEME><SCHEMEINLINE>list-of-values</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>list_of_values</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>とよく似ていますが、<SPLITINLINE><SCHEME><SCHEMEINLINE>list-of-delayed-args</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>list_of_delayed_args</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>は引数を評価する代わりに遅延させ、<SPLITINLINE><SCHEME><SCHEMEINLINE>list-of-arg-values</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>list_of_arg_values</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>は<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>の代わりに<SPLITINLINE><SCHEME><SCHEMEINLINE>actual-value</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>actual_value</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を使います。
+      </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>list_of_arg_values</DECLARATION></INDEX> 
       <INDEX><DECLARATION>list_of_delayed_args</DECLARATION></INDEX> 
@@ -505,6 +619,8 @@ function list_of_delayed_args(exps, env) {
   </TEXT>
   
   <TEXT>
+    <BILINGUAL>
+      <EN>
     The other place we must change the evaluator is in the handling of
     <SPLITINLINE>
       <SCHEME>
@@ -534,6 +650,11 @@ function list_of_delayed_args(exps, env) {
     </SPLITINLINE>
     to get the value of the predicate
     expression before testing whether it is true or false:
+      </EN>
+      <JA>
+    評価器を変更しなければならないもう一つの箇所は、<SPLITINLINE><SCHEME><SCHEMEINLINE>if</SCHEMEINLINE></SCHEME><JAVASCRIPT>条件式</JAVASCRIPT></SPLITINLINE>の処理です。述語式の値が真か偽かを検査する前に、<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><SCHEMEINLINE>evaluate</SCHEMEINLINE></JAVASCRIPT></SPLITINLINE>の代わりに<SPLITINLINE><SCHEME><SCHEMEINLINE>actual-value</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>actual_value</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を使わなければなりません。
+      </JA>
+    </BILINGUAL>
     <SNIPPET PAGE="367" HIDE="yes">
       <NAME>eval_if_lazy_example</NAME>
       <REQUIRES>functions_4_1_1_lazy</REQUIRES>
@@ -567,6 +688,8 @@ function eval_conditional(component, env) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Finally, we must change the
     <INDEX>driver loop<SUBINDEX><ORDER>lazy</ORDER>in lazy evaluator</SUBINDEX></INDEX>
     <SPLITINLINE>
@@ -610,6 +733,13 @@ function eval_conditional(component, env) {
     it will be forced before being printed.
     We also change the prompts to indicate that
     this is the lazy evaluator:
+      </EN>
+      <JA>
+    最後に、（<REF NAME="sec:running-eval"/>節の）
+    <INDEX>driver loop<SUBINDEX><ORDER>lazy</ORDER>in lazy evaluator</SUBINDEX></INDEX>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>driver-loop</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>driver_loop</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE><SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を変更して、<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><SCHEMEINLINE>evaluate</SCHEMEINLINE></JAVASCRIPT></SPLITINLINE>の代わりに<SPLITINLINE><SCHEME><SCHEMEINLINE>actual-value</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>actual_@value</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を使うようにしなければなりません。これにより、遅延された値が<SPLITINLINE><SCHEME>read-eval-print ループ</SCHEME><JAVASCRIPT>read-evaluate-print ループ</JAVASCRIPT></SPLITINLINE>に戻ってきた場合に、表示される前にフォースされるようになります。また、これが遅延評価器であることを示すためにプロンプトも変更します。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX>prompts<SUBINDEX>lazy evaluator</SUBINDEX></INDEX>
       <INDEX><DECLARATION>driver_loop</DECLARATION><SUBINDEX>for lazy evaluator</SUBINDEX></INDEX>
@@ -678,6 +808,8 @@ function driver_loop(env) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     With these changes made, we can start the evaluator and test it.  The
     successful evaluation of the
     <SPLITINLINE>
@@ -691,6 +823,11 @@ function driver_loop(env) {
     expression
     discussed in section<SPACE/><REF NAME="sec:evaluation-order"/> indicates
     that the interpreter is performing lazy evaluation:
+      </EN>
+      <JA>
+    これらの変更を行ったら、評価器を起動してテストすることができます。<REF NAME="sec:evaluation-order"/>節で議論した<SPLITINLINE><SCHEME><SCHEMEINLINE>try</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>try_me</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>式の評価が成功すれば、インタプリタが遅延評価を行っていることを示しています。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>driver_loop_lazy_example</NAME>
       <REQUIRES>driver_loop_lazy</REQUIRES>
@@ -760,12 +897,19 @@ L-evaluate value:
 
   <DO_BREAK_PAGE/>
   <SUBHEADING>
-    <NAME>Representing thunks</NAME>
+    <NAME>
+      <BILINGUAL>
+        <EN>Representing thunks</EN>
+        <JA>サンクの表現</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>thunk<SUBINDEX>implementation of<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Our evaluator must arrange to create thunks when
     <SPLITINLINE>
       <SCHEME>procedures</SCHEME>
@@ -795,6 +939,11 @@ L-evaluate value:
     </SPLITINLINE>
     so that in case the value of the expression is itself a thunk, we will force
     that, and so on, until we reach something that is not a thunk:
+      </EN>
+      <JA>
+    評価器は、<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>が引数に適用されるときにサンクを作成し、後でそのサンクをフォースするように手配しなければなりません。サンクは式と環境を一緒にパッケージ化しなければならず、それにより後で引数を生成できるようになります。サンクをフォースするには、サンクから式と環境を取り出して、その環境で式を評価するだけです。ここでは<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><SCHEMEINLINE>evaluate</SCHEMEINLINE></JAVASCRIPT></SPLITINLINE>ではなく<SPLITINLINE><SCHEME><SCHEMEINLINE>actual-value</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>actual_value</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を使います。これにより、式の値自体がサンクであった場合にも、サンクでないものに到達するまでフォースが繰り返されます。
+      </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>force_it</DECLARATION></INDEX> 
       <NAME>force_it_lazy_v1</NAME>
@@ -815,9 +964,16 @@ function force_it(obj) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     One easy way to package an expression with an environment is to make a list
     containing the expression and the environment. Thus, we create a thunk as
     follows:
+      </EN>
+      <JA>
+    式と環境をパッケージ化する簡単な方法は、式と環境を含むリストを作ることです。したがって、サンクは次のように作成します。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>delay_it</DECLARATION></INDEX> 
       <NAME>delay_it_lazy</NAME>
@@ -848,10 +1004,12 @@ function thunk_env(thunk) { return head(tail(tail(thunk))); }
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+      <EN>
     Actually, what we want for our interpreter is not quite this, but
     rather thunks that have been memoized.
     <!-- this was commented out in the original LaTeX SICP sources:
-	 %  Memoized thunks are created by the same method used with the 
+	 %  Memoized thunks are created by the same method used with the
 	 <SCHEMEINLINE>%memo-proc</SCHEMEINLINE>
 	 <SPLITINLINE><SCHEME>procedure</SCHEME>
 	 <JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>
@@ -860,7 +1018,16 @@ function thunk_env(thunk) { return head(tail(tail(thunk))); }
     When a thunk is forced, we will turn it into an evaluated thunk by replacing
     the stored expression with its value and changing the
     <SCHEMEINLINE>thunk</SCHEMEINLINE> tag so that it can be recognized as
-    already evaluated.<FOOTNOTE>Notice that we also erase the
+    already evaluated.
+      </EN>
+      <JA>
+    実際には、インタプリタに必要なのはこれとは少し異なり、メモ化されたサンクです。サンクがフォースされるとき、格納された式をその値で置き換え、<SCHEMEINLINE>thunk</SCHEMEINLINE>タグを変更して、すでに評価済みであると認識できるようにして、評価済みサンクに変換します。
+      </JA>
+    </BILINGUAL>
+    <FOOTNOTE>
+      <BILINGUAL>
+        <EN>
+    Notice that we also erase the
     <SCHEMEINLINE>env</SCHEMEINLINE> from the thunk once the expression<APOS/>s
     value has been computed.  This makes no difference in the values returned by
     the interpreter.  It does help save space, however, because removing the
@@ -868,10 +1035,17 @@ function thunk_env(thunk) { return head(tail(tail(thunk))); }
     no longer needed allows this structure to be
     <INDEX>garbage collection<SUBINDEX>memoization and</SUBINDEX></INDEX>
     <INDEX>memoization<SUBINDEX>garbage collection and</SUBINDEX></INDEX>
-    <EM>garbage-collected</EM> and its space 
+    <EM>garbage-collected</EM> and its space
     recycled, as we will discuss in
     section<SPACE/><REF NAME="sec:storage-allocation"/>.
+        </EN>
+        <JA>
+    式の値が計算された後、サンクから<SCHEMEINLINE>env</SCHEMEINLINE>も消去していることに注意してください。これはインタプリタが返す値には影響しません。しかし、不要になったサンクから<SCHEMEINLINE>env</SCHEMEINLINE>への参照を削除することで、この構造が<INDEX>garbage collection<SUBINDEX>memoization and</SUBINDEX></INDEX><INDEX>memoization<SUBINDEX>garbage collection and</SUBINDEX></INDEX><EM>ガベージコレクション</EM>され、そのスペースが再利用されるようになるため、メモリの節約に役立ちます。これについては<REF NAME="sec:storage-allocation"/>節で議論します。
+        </JA>
+      </BILINGUAL>
     <TEXT>
+      <BILINGUAL>
+        <EN>
       Similarly, we could have allowed unneeded environments in the memoized
       delayed objects of section<SPACE/><REF NAME="sec:delayed-lists"/>
       to be garbage-collected, by having
@@ -909,6 +1083,11 @@ function thunk_env(thunk) { return head(tail(tail(thunk))); }
       </SPLITINLINE>
       was evaluated) after storing its
       value.
+        </EN>
+        <JA>
+      同様に、<REF NAME="sec:delayed-lists"/>節のメモ化された遅延オブジェクトで不要になった環境をガベージコレクションできるようにするために、<SPLITINLINE><SCHEME><SCHEMEINLINE>memo-proc</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>memo</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>に<SPLITINLINE><SCHEME><SCHEMEINLINE>(set! proc '())</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>fun = null;</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>のようなことをさせて、値を格納した後に<SPLITINLINE><SCHEME>手続き<SCHEMEINLINE>proc</SCHEMEINLINE></SCHEME><JAVASCRIPT>関数<JAVASCRIPTINLINE>fun</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>（<SPLITINLINE><SCHEME><SCHEMEINLINE>delay</SCHEMEINLINE></SCHEME><JAVASCRIPT>ストリームの tail を構成するラムダ式</JAVASCRIPT></SPLITINLINE>が評価された環境を含む）を破棄することもできたでしょう。
+        </JA>
+      </BILINGUAL>
     </TEXT>
     </FOOTNOTE>
     <SNIPPET>
@@ -957,6 +1136,8 @@ function force_it(obj) {
 }
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     Notice that the same
     <SPLITINLINE>
       <SCHEME>
@@ -970,9 +1151,16 @@ function force_it(obj) {
     <JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE>
     works both with and
     without memoization.<INDEX>thunk<SUBINDEX>implementation of<CLOSE/></SUBINDEX></INDEX>
+      </EN>
+      <JA>
+    同じ<SPLITINLINE><SCHEME><SCHEMEINLINE>delay-it</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>delay_it</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE><SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>が、メモ化ありでもなしでも動作することに注意してください。<INDEX>thunk<SUBINDEX>implementation of<CLOSE/></SUBINDEX></INDEX>
+      </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE><LABEL NAME="ex:delay-side-effects"/>
+  <BILINGUAL>
+    <EN>
   Suppose we type in the following
   <SPLITINLINE>
     <SCHEME>
@@ -983,6 +1171,11 @@ function force_it(obj) {
     </JAVASCRIPT>
   </SPLITINLINE>
   to the lazy evaluator:
+    </EN>
+    <JA>
+  遅延評価器に以下の<SPLITINLINE><SCHEME>定義</SCHEME><JAVASCRIPT>宣言</JAVASCRIPT></SPLITINLINE>を入力するとします。
+    </JA>
+  </BILINGUAL>
   <SNIPPET>
     <NAME>exercise_4_27_a</NAME>
     <EXAMPLE>exercise_4_27</EXAMPLE>
@@ -1003,10 +1196,23 @@ function id(x) {
     <JAVASCRIPT_RUN>
     </JAVASCRIPT_RUN>
   </SNIPPET>
+  <BILINGUAL>
+    <EN>
   Give the missing values in the following sequence of interactions, and explain
-  your answers.<FOOTNOTE>This exercise demonstrates that the interaction between
+  your answers.
+    </EN>
+    <JA>
+  以下の一連のやり取りにおいて、欠けている値を答え、その理由を説明してください。
+    </JA>
+  </BILINGUAL>
+  <FOOTNOTE>
+    <BILINGUAL>
+      <EN>This exercise demonstrates that the interaction between
   lazy evaluation and side effects can be very confusing.  This is just what you
-  might expect from the discussion in chapter<SPACE/><REF NAME="chap:state"></REF>.</FOOTNOTE>
+  might expect from the discussion in chapter<SPACE/><REF NAME="chap:state"></REF>.</EN>
+      <JA>この演習は、遅延評価と副作用の相互作用が非常に混乱しやすいことを示しています。これは<REF NAME="chap:state"></REF>章の議論から予想されることでしょう。</JA>
+    </BILINGUAL>
+  </FOOTNOTE>
   <SNIPPET>
     <NAME>exercise_4_27</NAME>
     <REQUIRES>driver_loop_lazy</REQUIRES>
@@ -1105,6 +1311,8 @@ L-evaluate value:
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+      <EN>
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>Eval</SCHEMEINLINE>
@@ -1144,10 +1352,17 @@ L-evaluate value:
       <JAVASCRIPT>function expression.</JAVASCRIPT>
     </SPLITINLINE>
     Give an example that demonstrates the need for this forcing.
+      </EN>
+      <JA>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>Eval</SCHEMEINLINE></SCHEME><JAVASCRIPT>関数<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>は、<SPLITINLINE><SCHEME>演算子</SCHEME><JAVASCRIPT>関数式</JAVASCRIPT></SPLITINLINE>を<SCHEMEINLINE>apply</SCHEMEINLINE>に渡す前に評価するために、<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>ではなく<SPLITINLINE><SCHEME><SCHEMEINLINE>actual-value</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>actual_value</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を使って、<SPLITINLINE><SCHEME>演算子</SCHEME><JAVASCRIPT>関数式</JAVASCRIPT></SPLITINLINE>の値をフォースしています。このフォースが必要であることを示す例を挙げてください。
+      </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:force-operator"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+      <EN>
     Exhibit a program that you would expect to run much more slowly without
     memoization than with memoization.  Also, consider the following
     interaction, where the <SCHEMEINLINE>id</SCHEMEINLINE>
@@ -1157,6 +1372,11 @@ L-evaluate value:
     </SPLITINLINE>
     is defined as in exercise<SPACE/><REF NAME="ex:delay-side-effects"/> and
     <SCHEMEINLINE>count</SCHEMEINLINE> starts at 0:
+      </EN>
+      <JA>
+    メモ化なしの場合にメモ化ありの場合よりもはるかに遅く実行されると予想されるプログラムを示してください。また、以下のやり取りを考えてください。ここで<SCHEMEINLINE>id</SCHEMEINLINE><SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>は練習問題<REF NAME="ex:delay-side-effects"/>のように定義されており、<SCHEMEINLINE>count</SCHEMEINLINE>は0から始まります。
+      </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>exercise_4_29</NAME>
       <REQUIRES>driver_loop_lazy</REQUIRES>
@@ -1227,7 +1447,14 @@ L-evaluate value:
 <METAPHRASE>response</METAPHRASE>
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+      <EN>
     Give the responses both when the evaluator memoizes and when it does not.
+      </EN>
+      <JA>
+    評価器がメモ化する場合としない場合の両方について、応答を答えてください。
+      </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:memoize-or-not"/>
   </EXERCISE>
 
@@ -1251,6 +1478,8 @@ L-evaluate value:
 	rather than <SCHEMEINLINE>eval</SCHEMEINLINE>:
       </SCHEME>
       <JAVASCRIPT>
+        <BILINGUAL>
+          <EN>
 	Cy D. Fect, a reformed C programmer, is worried that some side effects
 	may never take place, because the lazy evaluator doesn<APOS/>t force the
 	statements in a sequence.
@@ -1267,6 +1496,11 @@ L-evaluate value:
 	<JAVASCRIPTINLINE>actual_value</JAVASCRIPTINLINE>
 	rather than
 	<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>:
+          </EN>
+          <JA>
+	元Cプログラマの Cy D. Fect は、遅延評価器がシーケンス内の文をフォースしないため、一部の副作用が実行されないのではないかと心配しています。シーケンス内の文の値は使われないかもしれません（その文は変数への代入や表示のような効果のためだけに存在するかもしれません）ので、その値がフォースされる契機（例えば、プリミティブ関数への引数として使われるなど）がないかもしれません。そのため Cy は、シーケンスを評価するときにはシーケンス内のすべての文をフォースしなければならないと考えています。彼は<REF NAME="sec:core-of-evaluator"/>節の<JAVASCRIPTINLINE>evaluate_sequence</JAVASCRIPTINLINE>を、<JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE>ではなく<JAVASCRIPTINLINE>actual_value</JAVASCRIPTINLINE>を使うように変更することを提案しています。
+          </JA>
+        </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
     <SNIPPET EVAL="no">
@@ -1297,6 +1531,8 @@ function eval_sequence(stmts, env) {
     </SNIPPET>
     <OL>
       <LI>
+        <BILINGUAL>
+          <EN>
 	Ben Bitdiddle thinks Cy is wrong. He shows Cy the
 	<SPLITINLINE>
 	  <SCHEME>
@@ -1312,6 +1548,11 @@ function eval_sequence(stmts, env) {
 	</SPLITINLINE>
 	described in exercise<SPACE/><REF NAME="ex:for-each"/>,	which gives an
 	important example of a sequence with side effects:
+          </EN>
+          <JA>
+	Ben Bitdiddle は Cy が間違っていると考えています。彼は練習問題<REF NAME="ex:for-each"/>で説明した<SPLITINLINE><SCHEME><SCHEMEINLINE>for-each</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>for_each</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE><SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を Cy に見せます。これは副作用を持つシーケンスの重要な例です。
+          </JA>
+        </BILINGUAL>
 	<SNIPPET>
 	  <INDEX><DECLARATION>for_each</DECLARATION></INDEX> 
 	  <NAME>exercise_4_30_b</NAME>
@@ -1350,6 +1591,8 @@ driver_loop(the_global_environment);
 // undefined
 	  </JAVASCRIPT_RUN>
 	</SNIPPET>
+        <BILINGUAL>
+          <EN>
 	He claims that the evaluator in the text (with the original
 	<SPLITINLINE>
 	  <SCHEME>
@@ -1360,6 +1603,11 @@ driver_loop(the_global_environment);
 	  </JAVASCRIPT>
 	</SPLITINLINE>
 	handles this correctly:
+          </EN>
+          <JA>
+	彼は、本文の評価器（元の<SPLITINLINE><SCHEME><SCHEMEINLINE>eval-sequence</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>eval_sequence</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を使用）がこれを正しく処理すると主張しています。
+          </JA>
+        </BILINGUAL>
         <SNIPPET EVAL="no">
           <SCHEMEPROMPT>
 ;;; L-Eval input:
@@ -1389,6 +1637,8 @@ L-evaluate value:
 "done"
           </JAVASCRIPT_OUTPUT>
         </SNIPPET>
+        <BILINGUAL>
+          <EN>
 	Explain why Ben is right about the behavior of
 	<SPLITINLINE>
 	  <SCHEME>
@@ -1398,8 +1648,15 @@ L-evaluate value:
 	    <JAVASCRIPTINLINE>for_each</JAVASCRIPTINLINE>.
 	  </JAVASCRIPT>
 	</SPLITINLINE>
+          </EN>
+          <JA>
+	<SPLITINLINE><SCHEME><SCHEMEINLINE>for-each</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>for_each</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>の振る舞いについて Ben が正しい理由を説明してください。
+          </JA>
+        </BILINGUAL>
       </LI>
       <LI>
+        <BILINGUAL>
+          <EN>
 	Cy agrees that Ben is right about the
 	<SPLITINLINE>
 	  <SCHEME>
@@ -1428,6 +1685,11 @@ L-evaluate value:
 	<SPLITINLINE><SCHEME>procedures</SCHEME>
 	<JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE>
 	in the lazy evaluator:
+          </EN>
+          <JA>
+	Cy は<SPLITINLINE><SCHEME><SCHEMEINLINE>for-each</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>for_each</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>の例について Ben が正しいことに同意しますが、<SPLITINLINE><SCHEME><SCHEMEINLINE>eval-sequence</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>eval_sequence</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>の変更を提案したときに考えていたのはそのようなプログラムではないと言います。彼は遅延評価器で以下の2つの<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>を<SPLITINLINE><SCHEME>定義</SCHEME><JAVASCRIPT>宣言</JAVASCRIPT></SPLITINLINE>します。
+          </JA>
+        </BILINGUAL>
 	<SNIPPET>
 	  <NAME>exercise_4_30_c</NAME>
 	  <REQUIRES>driver_loop_lazy</REQUIRES>
@@ -1457,6 +1719,8 @@ function f2(x) {
 }    
 	  </JAVASCRIPT>
 	</SNIPPET>
+        <BILINGUAL>
+          <EN>
 	What are the values of
 	<SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>(p1 1)</SCHEMEINLINE></SCHEME>
@@ -1485,8 +1749,15 @@ function f2(x) {
 	    <JAVASCRIPTINLINE>eval_sequence</JAVASCRIPTINLINE>?
 	  </JAVASCRIPT>
 	</SPLITINLINE>
+          </EN>
+          <JA>
+	元の<SPLITINLINE><SCHEME><SCHEMEINLINE>eval-sequence</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>eval_sequence</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を使った場合、<SPLITINLINE><SCHEME><SCHEMEINLINE>(p1 1)</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>f1(1)</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>と<SPLITINLINE><SCHEME><SCHEMEINLINE>(p2 1)</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>f2(1)</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>の値は何ですか？ Cy が提案した<SPLITINLINE><SCHEME><SCHEMEINLINE>eval-sequence</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>eval_sequence</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>の変更を適用した場合、値はどうなりますか？
+          </JA>
+        </BILINGUAL>
       </LI>
       <LI>
+        <BILINGUAL>
+          <EN>
 	Cy also points out that changing
 	<SPLITINLINE>
 	  <SCHEME>
@@ -1498,18 +1769,32 @@ function f2(x) {
 	</SPLITINLINE>
 	as he proposes does not affect the behavior of the example in part a.
 	Explain why this is true.
+          </EN>
+          <JA>
+	Cy はまた、彼が提案するように<SPLITINLINE><SCHEME><SCHEMEINLINE>eval-sequence</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>eval_sequence</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>を変更しても、パート a の例の振る舞いには影響しないと指摘しています。なぜそうなるのかを説明してください。
+          </JA>
+        </BILINGUAL>
       </LI>
       <LI>
+        <BILINGUAL>
+          <EN>
 	How do you think sequences
 	ought to be treated in the lazy evaluator?
 	Do you like Cy<APOS/>s approach, the approach in the text, or some other
 	approach?
+          </EN>
+          <JA>
+	遅延評価器ではシーケンスをどのように扱うべきだと思いますか？ Cy のアプローチ、本文のアプローチ、あるいは他のアプローチのどれがよいですか？
+          </JA>
+        </BILINGUAL>
       </LI>
     </OL>
   </EXERCISE>
 
   <DO_BREAK_PAGE/>
   <EXERCISE>
+    <BILINGUAL>
+      <EN>
     The approach taken in this section is somewhat unpleasant, because it
     makes an incompatible change to
     <SPLITINLINE><SCHEME>Scheme.</SCHEME>
@@ -1521,7 +1806,7 @@ function f2(x) {
       <SCHEME>Scheme</SCHEME>
       <JAVASCRIPT>JavaScript</JAVASCRIPT>
     </SPLITINLINE>
-    programs will work as before.  We can do this by 
+    programs will work as before.  We can do this by
     <SPLITINLINE>
       <SCHEME>extending the syntax of procedure</SCHEME>
       <JAVASCRIPT>introducing optional parameter declaration as a new
@@ -1538,6 +1823,11 @@ function f2(x) {
 	declaration
       </JAVASCRIPT>
     </SPLITINLINE>
+      </EN>
+      <JA>
+    この節で採ったアプローチは、<SPLITINLINE><SCHEME>Scheme</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>に対して互換性のない変更を加えるため、やや不愉快です。遅延評価を<INDEX>upward compatibility</INDEX><EM>上位互換拡張</EM>として実装する方がよいでしょう。つまり、通常の<SPLITINLINE><SCHEME>Scheme</SCHEME><JAVASCRIPT>JavaScript</JAVASCRIPT></SPLITINLINE>プログラムがこれまで通り動作するようにするのです。これは、<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>宣言に<SPLITINLINE><SCHEME>手続きの構文を拡張して</SCHEME><JAVASCRIPT>新しい構文形式としてオプションのパラメータ宣言を導入して</JAVASCRIPT></SPLITINLINE>、引数を遅延させるかどうかをユーザーが制御できるようにすることで実現できます。ついでに、メモ化ありの遅延とメモ化なしの遅延の選択もユーザーに与えましょう。例えば、以下の<SPLITINLINE><SCHEME>定義</SCHEME><JAVASCRIPT>宣言</JAVASCRIPT></SPLITINLINE>
+      </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <SCHEME>
 (define (f a (b lazy) c (d lazy-memo))
@@ -1550,6 +1840,8 @@ function f(a, b, c, d) {
 }
       </JAVASCRIPT>
   </SNIPPET>
+    <BILINGUAL>
+      <EN>
     would define <SCHEMEINLINE>f</SCHEMEINLINE> to be a
     <SPLITINLINE>
       <SCHEME>procedure</SCHEME>
@@ -1562,6 +1854,11 @@ function f(a, b, c, d) {
     </SPLITINLINE>
     is called, the second argument is delayed, and the fourth argument is both
     delayed and memoized.
+      </EN>
+      <JA>
+    は、<SCHEMEINLINE>f</SCHEMEINLINE>を4つの引数を持つ<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>として定義し、第1引数と第3引数は<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>が呼び出されるときに評価され、第2引数は遅延され、第4引数は遅延かつメモ化されます。
+      </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
 	Thus, ordinary procedure definitions will produce the same behavior as
@@ -1575,6 +1872,8 @@ function f(a, b, c, d) {
 	to handle the new syntax for <SCHEMEINLINE>define</SCHEMEINLINE>.
       </SCHEME>
       <JAVASCRIPT>
+        <BILINGUAL>
+          <EN>
 	You can assume that the parameter declaration is always
 	the first statement in the body of a function declaration,
 	and if it is omitted, all parameters are strict.
@@ -1589,8 +1888,15 @@ function f(a, b, c, d) {
 	treat parameter declarations as	function applications, so you need to
 	modify <JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE> to dispatch to your
 	implementation of the new syntactic form.
+          </EN>
+          <JA>
+	パラメータ宣言は常に関数宣言の本体の最初の文であると仮定でき、省略された場合はすべてのパラメータが正格であるとします。したがって、通常の関数宣言は通常の JavaScript と同じ振る舞いを生み出し、すべての複合関数のすべてのパラメータに<JAVASCRIPTINLINE>"lazy_memo"</JAVASCRIPTINLINE>宣言を追加すると、この節で定義した遅延評価器の振る舞いを生み出します。このような JavaScript の拡張を実現するために必要な変更を設計し実装してください。<JAVASCRIPTINLINE>parse</JAVASCRIPTINLINE>関数はパラメータ宣言を関数適用として扱うので、新しい構文形式の実装にディスパッチするように<JAVASCRIPTINLINE>apply</JAVASCRIPTINLINE>を修正する必要があります。
+          </JA>
+        </BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+      <EN>
     You must also arrange for
     <SPLITINLINE>
       <SCHEME>
@@ -1603,6 +1909,11 @@ function f(a, b, c, d) {
     or <SCHEMEINLINE>apply</SCHEMEINLINE> to determine when arguments are to be
     delayed, and to force or delay arguments accordingly, and you must arrange
     for forcing to memoize or not, as appropriate.
+      </EN>
+      <JA>
+    また、<SPLITINLINE><SCHEME><SCHEMEINLINE>eval</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>evaluate</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>または<SCHEMEINLINE>apply</SCHEMEINLINE>が引数をいつ遅延させるべきかを判定し、それに応じて引数をフォースまたは遅延させるように手配しなければなりません。さらに、フォースの際にメモ化するかしないかを適切に処理するように手配する必要があります。
+      </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:user-controlled-strictness"/>
   </EXERCISE>
 

@@ -155,7 +155,11 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 4.1.5 Data as Programs
 - [x] Section 4.1.6 Internal Declarations
 - [x] Section 4.1.7 Separating Syntactic Analysis from Execution
-- [ ] Section 4.2 以降
+- [x] Section 4.2 Lazy Evaluation (導入部)
+- [x] Section 4.2.1 Normal Order and Applicative Order
+- [x] Section 4.2.2 An Interpreter with Lazy Evaluation
+- [x] Section 4.2.3 Streams as Lazy Lists
+- [ ] Section 4.3 以降
 
 ## インライン実行
 

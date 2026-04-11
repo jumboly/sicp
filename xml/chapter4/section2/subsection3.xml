@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Streams as Lazy Lists
+    <BILINGUAL>
+    <EN>Streams as Lazy Lists</EN>
+    <JA>遅延リストとしてのストリーム</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:lazy-cons"/>
@@ -12,6 +15,8 @@
   <INDEX>pair(s)<SUBINDEX>lazy<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In section<SPACE/><REF NAME="sec:delayed-lists"/>, we showed how to
     implement streams as delayed lists.
     <SPLITINLINE>
@@ -61,12 +66,55 @@
 	We were forced to create streams as a new kind of data object similar
 	but not identical to lists, and this required us to reimplement many
 	ordinary list operations (<SCHEMEINLINE>map</SCHEMEINLINE>,
-	<SCHEMEINLINE>append</SCHEMEINLINE>, and so on) for use with streams.	
+	<SCHEMEINLINE>append</SCHEMEINLINE>, and so on) for use with streams.
       </JAVASCRIPT>
     </SPLIT>
+    </EN>
+    <JA>
+    <SPACE/><REF NAME="sec:delayed-lists"/>節では、ストリームを遅延リストとして実装する方法を示しました。
+    <SPLITINLINE>
+      <SCHEME>
+	<INDEX>special form<SUBINDEX><SPLITINLINE><SCHEME>procedure</SCHEME><JAVASCRIPT>function</JAVASCRIPT></SPLITINLINE> vs.</SUBINDEX></INDEX>
+	<INDEX><FUNCTION/><SUBINDEX><SPLITINLINE><SCHEME>special</SCHEME><JAVASCRIPT>syntactic</JAVASCRIPT></SPLITINLINE> form vs.</SUBINDEX></INDEX>
+      </SCHEME>
+      <JAVASCRIPT>
+	<INDEX>delayed expression<SUBINDEX>lazy evaluation and</SUBINDEX></INDEX>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME>
+	特殊形式 <SCHEMEINLINE>delay</SCHEMEINLINE> と
+	<SCHEMEINLINE>cons-stream</SCHEMEINLINE> を導入し、それによって
+      </SCHEME>
+      <JAVASCRIPT>
+	<INDEX>lambda expression<SUBINDEX>lazy evaluation and</SUBINDEX></INDEX>
+	ラムダ式を使って
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    ストリームの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>tail</JAVASCRIPT>
+    </SPLITINLINE>
+    を計算する
+    <INDEX>promise to evaluate<SUBINDEX>lazy evaluation and</SUBINDEX></INDEX>
+    「プロミス」を構築しましたが、そのプロミスの実行は後で必要になるまで先延ばしにしていました。
+    <SPLIT>
+      <SCHEME>
+	評価過程をより細かく制御する必要が生じるたびに特殊形式を導入するという一般的な手法を使うこともできますが、これは扱いにくいものです。一つには、特殊形式は手続きのような第一級オブジェクトではないため、高階手続きと組み合わせて使うことができません。<FOOTNOTE>これはまさに、練習問題<SPACE/><REF NAME="ex:unless-syntactic-form"/>の <SCHEMEINLINE>unless</SCHEMEINLINE> 手続きで起きる問題です。</FOOTNOTE>
+	さらに、ストリームをリストに似ているが同一ではない新しい種類のデータオブジェクトとして作成しなければならず、そのために通常のリスト操作（<SCHEMEINLINE>map</SCHEMEINLINE>、<SCHEMEINLINE>append</SCHEMEINLINE>など）の多くをストリーム用に再実装する必要がありました。
+      </SCHEME>
+      <JAVASCRIPT>
+	ストリームをリストに似ているが同一ではない新しい種類のデータオブジェクトとして作成しなければならず、そのために通常のリスト操作（<SCHEMEINLINE>map</SCHEMEINLINE>、<SCHEMEINLINE>append</SCHEMEINLINE>など）の多くをストリーム用に再実装する必要がありました。
+      </JAVASCRIPT>
+    </SPLIT>
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     With lazy evaluation, streams and lists can be identical, so there is
     no need for <SPLITINLINE><SCHEME>special forms or for</SCHEME></SPLITINLINE>
     separate list and stream operations. All we need to do is to arrange matters
@@ -91,14 +139,39 @@
     as a primitive at all.  Instead, we can represent
     <INDEX>pair(s)<SUBINDEX>functional representation of</SUBINDEX></INDEX>
     pairs as
-    <SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE>:<FOOTNOTE>This
-    is the 
+    <SPLITINLINE><SCHEME>procedures</SCHEME><JAVASCRIPT>functions</JAVASCRIPT></SPLITINLINE>:
+    </EN>
+    <JA>
+    遅延評価を使えば、ストリームとリストを同一にできるので、<SPLITINLINE><SCHEME>特殊形式も</SCHEME></SPLITINLINE>リストとストリームを別々に操作する必要もなくなります。必要なのは、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    を非正格にすることだけです。これを実現する一つの方法は、遅延評価器を拡張して非正格なプリミティブを許容し、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    をその一つとして実装することです。より簡単な方法は、（<SPACE/><REF NAME="sec:data?"/>節を思い出すと）
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    をプリミティブとして実装する根本的な必要性はないということです。代わりに、
+    <INDEX>pair(s)<SUBINDEX>functional representation of</SUBINDEX></INDEX>
+    ペアを<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>として表現できます。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>
+    This
+    is the
     <SPLITINLINE>
       <SCHEME>procedural</SCHEME>
       <JAVASCRIPT>functional</JAVASCRIPT>
     </SPLITINLINE>
     representation described in exercise<SPACE/><REF NAME="ex:lambda-cons"/>.
-    Essentially any 
+    Essentially any
     <SPLITINLINE>
       <SCHEME>procedural</SCHEME>
       <JAVASCRIPT>functional</JAVASCRIPT>
@@ -121,11 +194,36 @@
     </SPLITINLINE>
     as primitives in the global environment, they will be redefined.  (Also see
     exercises<SPACE/><REF NAME="ex:lazy-list-input"/>
-    and<SPACE/><REF NAME="ex:lazy-list-printing"/>.)</FOOTNOTE>
+    and<SPACE/><REF NAME="ex:lazy-list-printing"/>.)
+    </EN>
+    <JA>
+    これは練習問題<SPACE/><REF NAME="ex:lambda-cons"/>で説明した<SPLITINLINE>
+      <SCHEME>手続き的</SCHEME>
+      <JAVASCRIPT>関数的</JAVASCRIPT>
+    </SPLITINLINE>表現です。基本的にどのような<SPLITINLINE>
+      <SCHEME>手続き的</SCHEME>
+      <JAVASCRIPT>関数的</JAVASCRIPT>
+    </SPLITINLINE>表現（例えばメッセージパッシングによる実装）でも同様に機能します。これらの定義は、ドライバループで入力するだけで遅延評価器にインストールできることに注目してください。もともとグローバル環境に
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    がプリミティブとして含まれていた場合、それらは再定義されます。（練習問題<SPACE/><REF NAME="ex:lazy-list-input"/>と<SPACE/><REF NAME="ex:lazy-list-printing"/>も参照してください。）
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET HIDE="yes">
       <NAME>pair_lazy_header</NAME>
       <JAVASCRIPT>
-const my_pair_lazy = `	
+const my_pair_lazy = `
       </JAVASCRIPT>
     </SNIPPET>
     <SNIPPET HIDE="yes">
@@ -163,10 +261,10 @@ parse_and_evaluate(my_pair_lazy);
   (z (lambda (p q) q)))
       </SCHEME>
       <JAVASCRIPT>
-function pair(x, y) {	
+function pair(x, y) {
     return m => m(x, y);
 }
-function head(z) {    
+function head(z) {
     return z((p, q) => p);
 }
 function tail(z) {
@@ -177,21 +275,28 @@ function tail(z) {
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In terms of these basic operations, the standard definitions of the list
     operations will work with infinite lists (streams) as well as finite ones,
     and the stream operations can be implemented as list operations. Here are
     some examples:
+    </EN>
+    <JA>
+    これらの基本操作を使えば、リスト操作の標準的な定義が有限リストだけでなく無限リスト（ストリーム）でも機能し、ストリーム操作をリスト操作として実装できます。いくつかの例を示します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>list_lib_test_header</NAME>
       <JAVASCRIPT>
-const my_list_lib_test = `	
+const my_list_lib_test = `
       </JAVASCRIPT>
     </SNIPPET>
     <SNIPPET HIDE="yes">
       <NAME>list_lib_test_footer</NAME>
       <JAVASCRIPT>
 
-list_ref(integers, 17);	
+list_ref(integers, 17);
 `;
       </JAVASCRIPT>
     </SNIPPET>
@@ -209,10 +314,10 @@ parse_and_evaluate(my_list_lib_test);
       </JAVASCRIPT>
     </SNIPPET>
     <SNIPPET EVAL="no">
-      <INDEX><DECLARATION>list_ref</DECLARATION></INDEX> 
-      <INDEX><DECLARATION>map</DECLARATION></INDEX> 
-      <INDEX><DECLARATION>scale_list</DECLARATION></INDEX> 
-      <INDEX><DECLARATION>add_lists</DECLARATION></INDEX> 
+      <INDEX><DECLARATION>list_ref</DECLARATION></INDEX>
+      <INDEX><DECLARATION>map</DECLARATION></INDEX>
+      <INDEX><DECLARATION>scale_list</DECLARATION></INDEX>
+      <INDEX><DECLARATION>add_lists</DECLARATION></INDEX>
       <INDEX><DECLARATION>ones</DECLARATION> (infinite stream)<SUBINDEX>lazy-list version</SUBINDEX></INDEX>
       <INDEX><DECLARATION>integers</DECLARATION> (infinite stream)<SUBINDEX>lazy-list version</SUBINDEX></INDEX>
       <NAME>list_library_lazy</NAME>
@@ -243,12 +348,12 @@ parse_and_evaluate(my_list_lib_test);
 (define integers (cons 1 (add-lists ones integers)))
       </SCHEME>
       <JAVASCRIPT>
-function list_ref(items, n) {	
+function list_ref(items, n) {
     return n === 0
            ? head(items)
            : list_ref(tail(items), n - 1);
 }
-function map(fun, items) {	   
+function map(fun, items) {
     return is_null(items)
            ? null
            : pair(fun(head(items)),
@@ -260,7 +365,7 @@ function scale_list(items, factor) {
 function add_lists(list1, list2) {
     return is_null(list1)
            ? list2
-           : is_null(list2)    
+           : is_null(list2)
            ? list1
            : pair(head(list1) + head(list2),
                   add_lists(tail(list1), tail(list2)));
@@ -295,6 +400,8 @@ L-evaluate value:
 
   <SHORT_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Note that these lazy lists are even lazier than the streams of
     chapter<SPACE/><REF NAME="chap:state"></REF>:  The
     <SPLITINLINE>
@@ -306,7 +413,24 @@ L-evaluate value:
       <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT>tail,</JAVASCRIPT>
     </SPLITINLINE>
-    is delayed.<FOOTNOTE>This permits us to create delayed versions of more
+    is delayed.
+    </EN>
+    <JA>
+    これらの遅延リストは、第<SPACE/><REF NAME="chap:state"></REF>章のストリームよりもさらに遅延的であることに注意してください。リストの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>head</JAVASCRIPT>
+    </SPLITINLINE>
+    も
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>tail</JAVASCRIPT>
+    </SPLITINLINE>
+    も遅延されます。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>This permits us to create delayed versions of more
     general kinds of
     list structures, not just sequences.
     <INDEX>Hughes, R. J. M.</INDEX>
@@ -314,7 +438,16 @@ L-evaluate value:
     discusses some
     applications of
     <INDEX>lazy tree</INDEX><INDEX>tree<SUBINDEX>lazy</SUBINDEX></INDEX>
-    <QUOTE>lazy trees.</QUOTE></FOOTNOTE>
+    <QUOTE>lazy trees.</QUOTE></EN>
+    <JA>これにより、シーケンスだけでなく、より一般的な種類のリスト構造の遅延版を作成できます。
+    <INDEX>Hughes, R. J. M.</INDEX>
+    <CITATION>Hughes 1990</CITATION>では、
+    <INDEX>lazy tree</INDEX><INDEX>tree<SUBINDEX>lazy</SUBINDEX></INDEX>
+    「遅延ツリー」のいくつかの応用について論じています。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
+    <BILINGUAL>
+    <EN>
     In fact, even accessing the
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
@@ -328,9 +461,26 @@ L-evaluate value:
     of a lazy pair need not force the value of a list element.  The value will be
     forced only when it is really needed<EMDASH/>e.g., for use as the argument
     of a primitive, or to be printed as an answer.
+    </EN>
+    <JA>
+    実際、遅延ペアの
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    や
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    にアクセスしても、リスト要素の値を強制する必要はありません。値が強制されるのは、本当に必要になったとき<EMDASH/>例えば、プリミティブの引数として使われるときや、回答として表示されるときだけです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Lazy pairs also help with the problem that arose with streams in
     section<SPACE/><REF NAME="sec:streams-and-delayed-evaluation"/>, where we
     found that formulating stream models of systems with loops may require us to
@@ -364,10 +514,36 @@ L-evaluate value:
     </SPLITINLINE>
     to integrate lists and solve differential equations as we originally
     intended in section<SPACE/><REF NAME="sec:streams-and-delayed-evaluation"/>:
+    </EN>
+    <JA>
+    遅延ペアは、<SPACE/><REF NAME="sec:streams-and-delayed-evaluation"/>節でストリームに関して生じた問題にも役立ちます。その節では、ループを持つシステムのストリームモデルを定式化するには、プログラム中に
+    <SPLITINLINE>
+      <SCHEME>
+	<INDEX><DECLARATION>delay</DECLARATION><SUBINDEX>explicit vs.<SPACE/>automatic</SUBINDEX></INDEX>
+	<INDEX>delayed evaluation<SUBINDEX>explicit vs.<SPACE/>automatic</SUBINDEX></INDEX>
+	<SCHEMEINLINE>cons-stream</SCHEMEINLINE> が提供するもの以上の明示的な
+	<SCHEMEINLINE>delay</SCHEMEINLINE>
+	操作
+      </SCHEME>
+      <JAVASCRIPT>
+	ストリームペアを構築するために必要なもの以上の、遅延のための追加のラムダ式
+	<INDEX>delayed evaluation<SUBINDEX>explicit vs.<SPACE/>automatic</SUBINDEX></INDEX>
+	<INDEX>delayed expression<SUBINDEX>explicit vs.<SPACE/>automatic</SUBINDEX></INDEX>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を散りばめる必要があるかもしれないことがわかりました。遅延評価では、<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>へのすべての引数が一様に遅延されます。例えば、<SPACE/><REF NAME="sec:streams-and-delayed-evaluation"/>節で当初意図していたように、リストの積分や微分方程式の解法を行う<SPLITINLINE>
+      <SCHEME>手続き</SCHEME>
+      <JAVASCRIPT>関数</JAVASCRIPT>
+    </SPLITINLINE>を実装できます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET HIDE="yes">
       <NAME>lazy_integral_header</NAME>
       <JAVASCRIPT>
-const my_integral = `	
+const my_integral = `
       </JAVASCRIPT>
     </SNIPPET>
     <SNIPPET HIDE="yes">
@@ -415,9 +591,9 @@ parse_and_evaluate(my_integral);
       2.716924
       </SCHEMEOUTPUT>
       <JAVASCRIPT>
-function integral(integrand, initial_value, dt) {	
+function integral(integrand, initial_value, dt) {
     const int = pair(initial_value,
-                     add_lists(scale_list(integrand, dt), 
+                     add_lists(scale_list(integrand, dt),
                                int));
     return int;
 }
@@ -444,14 +620,28 @@ L-evaluate value:
 
   <EXERCISE>
     <LABEL NAME="ex:lazier"/>
+    <BILINGUAL>
+    <EN>
     Give some examples that illustrate the difference between the streams
     of chapter<SPACE/><REF NAME="chap:state"></REF> and the <QUOTE>lazier</QUOTE> lazy lists described in
     this section. How can you take advantage of this extra laziness?
+    </EN>
+    <JA>
+    第<SPACE/><REF NAME="chap:state"></REF>章のストリームと、本節で説明した「より遅延的な」遅延リストとの違いを示す例をいくつか挙げてください。この追加の遅延性をどのように活用できるでしょうか？
+    </JA>
+    </BILINGUAL>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Ben Bitdiddle tests the lazy list implementation given above by
     evaluating the expression
+    </EN>
+    <JA>
+    Ben Bitdiddle は、上記の遅延リストの実装を次の式を評価してテストします。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (car '(a b c))
@@ -460,6 +650,8 @@ L-evaluate value:
 head(list("a", "b", "c"));
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     To his surprise, this produces an error.  After some thought, he realizes
     that the <QUOTE>lists</QUOTE> obtained
     <SPLITINLINE>
@@ -484,10 +676,10 @@ head(list("a", "b", "c"));
       <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE>.</JAVASCRIPT>
     </SPLITINLINE>
-    Modify 
+    Modify
     <SPLITINLINE>
       <SCHEME>
-	the evaluator<APOS/>s treatment of	
+	the evaluator<APOS/>s treatment of
 	quoted expressions so that quoted lists
       </SCHEME>
       <JAVASCRIPT>
@@ -497,14 +689,59 @@ head(list("a", "b", "c"));
       </JAVASCRIPT>
     </SPLITINLINE>
     typed at the driver loop will produce true lazy lists.
+    </EN>
+    <JA>
+    驚いたことに、これはエラーが発生します。しばらく考えた後、彼は
+    <SPLITINLINE>
+      <SCHEME>
+	クォート式を読み込んで
+      </SCHEME>
+      <JAVASCRIPT>
+	プリミティブの <JAVASCRIPTINLINE>list</JAVASCRIPTINLINE> 関数から
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    得られる「リスト」は、
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cons</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>car</SCHEMEINLINE>、</SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>head</JAVASCRIPTINLINE>、</JAVASCRIPT>
+    </SPLITINLINE>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>tail</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の新しい定義で操作されるリストとは異なることに気づきます。ドライバループで入力された
+    <SPLITINLINE>
+      <SCHEME>
+	クォートされたリストが
+      </SCHEME>
+      <JAVASCRIPT>
+	プリミティブの
+	<JAVASCRIPTINLINE>list</JAVASCRIPTINLINE>
+	関数の適用が
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    真の遅延リストを生成するように、評価器を修正してください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:lazy-list-input"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Modify the driver loop for the evaluator so that lazy pairs and lists will
     print in some reasonable way.  (What are you going to do about infinite
     lists?)  You may also need to modify the representation of lazy pairs so
     that the evaluator can identify them in order to print them.
+    </EN>
+    <JA>
+    遅延ペアとリストが何らかの妥当な方法で表示されるように、評価器のドライバループを修正してください。（無限リストについてはどうしますか？）評価器が遅延ペアを識別して表示できるように、遅延ペアの表現も修正する必要があるかもしれません。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:lazy-list-printing"/>
   </EXERCISE>
 
