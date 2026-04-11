@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Deductive Information Retrieval
+    <BILINGUAL>
+    <EN>Deductive Information Retrieval</EN>
+    <JA>演繹的情報検索</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:deductive-info-retrieval"/>
@@ -8,14 +11,25 @@
   <INDEX>query language<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Logic programming excels in providing interfaces to
     <INDEX>data base<SUBINDEX>logic programming and</SUBINDEX></INDEX>
     data bases for
     information retrieval.  The query language we shall implement in this
     chapter is designed to be used in this way.
+    </EN>
+    <JA>
+    論理プログラミングは、情報検索のための
+    <INDEX>data base<SUBINDEX>logic programming and</SUBINDEX></INDEX>
+    データベースへのインターフェースを提供する点で優れています。この章で実装するクエリ言語は、まさにそのように使われることを想定して設計されています。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In order to illustrate what the query system does, we will show how it
     can be used to manage the data base of personnel records for
     <INDEX>Gargle</INDEX>
@@ -23,21 +37,37 @@
     Boston area.  The language provides pattern-directed access to
     personnel information and can also take advantage of general rules in
     order to make logical deductions.
+    </EN>
+    <JA>
+    クエリシステムが何をするものかを具体的に示すために、ボストン地域で成長中のハイテク企業
+    <INDEX>Gargle</INDEX>
+    Gargle 社の人事記録データベースを管理する例を見ていきます。このクエリ言語は、パターンに基づいて人事情報にアクセスする機能を提供するとともに、一般的なルールを活用して論理的な推論を行うこともできます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>A sample data base</NAME>
+    <NAME><BILINGUAL><EN>A sample data base</EN><JA>サンプルデータベース</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>query language<SUBINDEX>data base<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
     <INDEX>data base<SUBINDEX>Gargle personnel<OPEN/></SUBINDEX></INDEX>
+    <BILINGUAL>
+    <EN>
     The personnel data base for Gargle
     contains
     <INDEX>assertion</INDEX>
     <EM>assertions</EM> about company personnel.  Here is the
     information about Ben Bitdiddle, the resident computer wizard:
+    </EN>
+    <JA>
+    Gargle 社の人事データベースには、社員に関する
+    <INDEX>assertion</INDEX>
+    <EM>アサーション</EM>（表明）が格納されています。以下は、社内のコンピュータの達人である Ben Bitdiddle の情報です。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>sample_data_base_1</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -108,15 +138,22 @@ first_answer('salary(list("Bitdiddle", "Ben"), $x)');
 	themselves be lists.
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	Assertions look just like function applications in JavaScript, but
 	they actually represent information in the data base. The first
-	symbols<EMDASH/>here <JAVASCRIPTINLINE>address</JAVASCRIPTINLINE>, 
+	symbols<EMDASH/>here <JAVASCRIPTINLINE>address</JAVASCRIPTINLINE>,
 	<JAVASCRIPTINLINE>job</JAVASCRIPTINLINE> and
 	<JAVASCRIPTINLINE>salary</JAVASCRIPTINLINE><EMDASH/>describe the
 	<EM>kind of information</EM> contained in the respective assertion, and
 	the <QUOTE>arguments</QUOTE> are lists or primitive values such as strings
 	and numbers. The first symbols do not need to be declared, as do constants
 	or variables in JavaScript; their scope is global.
+	</EN>
+	<JA>
+	アサーションは JavaScript の関数適用と同じように見えますが、実際にはデータベース内の情報を表しています。最初のシンボル<EMDASH/>ここでは <JAVASCRIPTINLINE>address</JAVASCRIPTINLINE>、<JAVASCRIPTINLINE>job</JAVASCRIPTINLINE>、<JAVASCRIPTINLINE>salary</JAVASCRIPTINLINE><EMDASH/>は、それぞれのアサーションに含まれる<EM>情報の種類</EM>を表し、<QUOTE>引数</QUOTE>はリストや、文字列・数値などのプリミティブな値です。最初のシンボルは、JavaScript の定数や変数のように宣言する必要はなく、そのスコープはグローバルです。
+	</JA>
+	</BILINGUAL>
 	<COMMENT>
 	  We shy away from calling these symbols
 	  <QUOTE>predicate symbols</QUOTE> instead of
@@ -131,9 +168,16 @@ first_answer('salary(list("Bitdiddle", "Ben"), $x)');
   
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     As resident wizard, Ben is in charge of the company<APOS/>s computer
     division, and he supervises two programmers and one technician.  Here
     is the information about them:
+    </EN>
+    <JA>
+    社内の達人として、Ben は会社のコンピュータ部門を率いており、2人のプログラマと1人のテクニシャンを監督しています。以下が彼らの情報です。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>sample_data_base_2</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -201,7 +245,10 @@ process_query('supervisor($x, list("Bitdiddle", "Ben"))');
 first_answer('supervisor($x, list("Bitdiddle", "Ben"))');
       </JAVASCRIPT_TEST>
     </SNIPPET>
-    <PDF_ONLY>\newpage\noindent </PDF_ONLY>There is also a programmer trainee, who is supervised by Alyssa:
+    <PDF_ONLY>\newpage\noindent </PDF_ONLY><BILINGUAL>
+    <EN>There is also a programmer trainee, who is supervised by Alyssa:</EN>
+    <JA>さらに、Alyssa が監督するプログラマ見習いもいます。</JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>sample_data_base_3</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -238,6 +285,8 @@ process_query('supervisor(list("Reasoner", $x), $y)');
 first_answer('supervisor(list("Reasoner", $x), $y)');
       </JAVASCRIPT_TEST>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     All these people are in the computer division, as indicated by the
     word
     <SPLITINLINE>
@@ -250,10 +299,31 @@ first_answer('supervisor(list("Reasoner", $x), $y)');
     </SPLITINLINE>
     as the first item in their job
     descriptions.
+    </EN>
+    <JA>
+    これらの人々は全員コンピュータ部門に所属しており、それは職務記述の最初の項目が
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>computer</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>"computer"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    であることからわかります。
+    </JA>
+    </BILINGUAL>
   </TEXT>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Ben is a high-level employee.  His supervisor is the company<APOS/>s big
     wheel himself:
+    </EN>
+    <JA>
+    Ben は上級社員です。彼の上司は会社の大物そのものです。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>sample_data_base_4</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -295,9 +365,16 @@ first_answer('address($x, list("Swellesley", $y))');
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Besides the computer division supervised by Ben, the company has an
     accounting division, consisting of a chief accountant and his
     assistant:
+    </EN>
+    <JA>
+    Ben が監督するコンピュータ部門のほかに、会社には経理部門があり、主任会計士とそのアシスタントで構成されています。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>sample_data_base_5</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -350,6 +427,8 @@ first_answer('job($x, pair("accounting", $y))');
       </JAVASCRIPT_TEST>
       
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     There is also
     <SPLITINLINE>
       <SCHEME>
@@ -360,6 +439,20 @@ first_answer('job($x, pair("accounting", $y))');
       </JAVASCRIPT>
     </SPLITINLINE>
     for the big wheel:
+    </EN>
+    <JA>
+    大物のための
+    <SPLITINLINE>
+      <SCHEME>
+	秘書
+      </SCHEME>
+      <JAVASCRIPT>
+	事務アシスタント
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    もいます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>sample_data_base_6</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -398,10 +491,17 @@ first_answer('address($x, list(y, list("Onion", "Square"), $n))');
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The data base also contains assertions about which kinds of jobs can
     be done by people holding other kinds of jobs.  For instance, a
     computer wizard can do the jobs of both a computer programmer and a
     computer technician:
+    </EN>
+    <JA>
+    データベースには、ある職務の人がどのような別の職務をこなせるかについてのアサーションも含まれています。たとえば、コンピュータの達人はコンピュータプログラマとコンピュータテクニシャンの両方の仕事をこなせます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>sample_data_base_7</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -432,7 +532,10 @@ process_query('can_do_job($x, list("computer", $y))');
 first_answer('can_do_job($x, list("computer", $y))');
       </JAVASCRIPT_TEST>
     </SNIPPET>
-    A computer programmer could fill in for a trainee:
+    <BILINGUAL>
+    <EN>A computer programmer could fill in for a trainee:</EN>
+    <JA>コンピュータプログラマは見習いの代わりを務められます。</JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>sample_data_base_8</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -468,7 +571,10 @@ first_answer('can_do_job($x, pair("computer", $y))');
 	<INDEX>administrative assistant, importance of</INDEX>
       </JAVASCRIPT>
     </SPLITINLINE>
-    Also, as is well known,
+    <BILINGUAL>
+    <EN>Also, as is well known,</EN>
+    <JA>また、よく知られているように、</JA>
+    </BILINGUAL>
     <SNIPPET POSTPADDING="no">
       <NAME>sample_data_base_9</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -503,15 +609,27 @@ first_answer('can_do_job(list($x, "assistant"), $y)');
   <INDEX>query language<SUBINDEX>data base<CLOSE/></SUBINDEX></INDEX>
 
   <SUBHEADING>
-    <NAME>Simple queries</NAME>
+    <NAME>
+      <BILINGUAL>
+        <EN>Simple queries</EN>
+        <JA>単純クエリ</JA>
+      </BILINGUAL>
+    </NAME>
   </SUBHEADING>
 
   <INDEX>simple query<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The query language allows users to retrieve information from the data
     base by posing queries in response to the system<APOS/>s prompt.
     For example, to find all computer programmers one can say
+    </EN>
+    <JA>
+    クエリ言語を使うと、システムのプロンプトに対してクエリを入力することで、データベースから情報を取得できます。たとえば、すべてのコンピュータプログラマを見つけるには、次のように入力します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" HIDE="yes">
       <NAME>simple_queries_input</NAME>
       <SCHEMEOUTPUT>
@@ -545,14 +663,17 @@ first_answer('job($x, list("computer", "programmer"))');
       <JAVASCRIPT>
 process_query('job($x, list("computer", "programmer"))');
 
-// Query input:	
+// Query input:
 // job($x, list("computer", "programmer"))
 // Query results:
 // job(list("Hacker", "Alyssa", "P"), list("computer", "programmer"))
 // job(list("Fect", "Cy", "D"), list("computer", "programmer"))
       </JAVASCRIPT>
     </SNIPPET>
-    The system will respond with the following items:
+    <BILINGUAL>
+    <EN>The system will respond with the following items:</EN>
+    <JA>システムは次の項目を応答として返します。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEMEOUTPUT>
 ;;; Query results:
@@ -568,10 +689,19 @@ job(list("Fect", "Cy", "D"), list("computer", "programmer"))
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The input query specifies that we are looking for entries in the data
     base that match a certain
     <INDEX>pattern<OPEN/></INDEX>
     <EM>pattern</EM>.
+    </EN>
+    <JA>
+    入力されたクエリは、データベース内のエントリのうち、ある
+    <INDEX>pattern<OPEN/></INDEX>
+    <EM>パターン</EM>に一致するものを探すことを指定します。
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
 	In this example, the pattern
@@ -580,7 +710,7 @@ job(list("Fect", "Cy", "D"), list("computer", "programmer"))
 	anything, and the third is the literal list
 	<SCHEMEINLINE>(computer programmer)</SCHEMEINLINE>.
 	The <QUOTE>anything</QUOTE> that can be the second item in the matching
-	list is specified by a 
+	list is specified by a
 	<INDEX>pattern variable</INDEX>
 	<EM>pattern variable</EM>,
 	    <SCHEMEINLINE>?x</SCHEMEINLINE>.
@@ -591,13 +721,15 @@ job(list("Fect", "Cy", "D"), list("computer", "programmer"))
 	into patterns to represent <QUOTE>anything.</QUOTE>
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	In this example, the pattern
 	specifies <SCHEMEINLINE>job</SCHEMEINLINE> as the kind of information
 	that we are looking for. The first item can be
 	anything, and the second is the literal list
 	<JAVASCRIPTINLINE>list("computer", "programmer")</JAVASCRIPTINLINE>.
 	The <QUOTE>anything</QUOTE> that can be the first item in the matching
-	assertion is specified by a 
+	assertion is specified by a
 	<INDEX>pattern variable</INDEX>
 	<EM>pattern variable</EM>,
 	<JAVASCRIPTINLINE>$x</JAVASCRIPTINLINE>. As pattern variables, we use
@@ -608,14 +740,38 @@ job(list("Fect", "Cy", "D"), list("computer", "programmer"))
 	it is useful to specify names for pattern variables rather than just
 	putting a single symbol such as <SCHEMEINLINE>$</SCHEMEINLINE>
 	into patterns to represent <QUOTE>anything.</QUOTE>
+	</EN>
+	<JA>
+	この例では、パターンは探している情報の種類として <SCHEMEINLINE>job</SCHEMEINLINE> を指定しています。最初の項目は何でもよく、2番目はリテラルリスト
+	<JAVASCRIPTINLINE>list("computer", "programmer")</JAVASCRIPTINLINE> です。
+	一致するアサーションの最初の項目に入る「何でもよい」ものは、
+	<INDEX>pattern variable</INDEX>
+	<EM>パターン変数</EM>
+	<JAVASCRIPTINLINE>$x</JAVASCRIPTINLINE> で指定されています。パターン変数には、
+	<INDEX>naming conventions<SUBINDEX><ORDER>;x</ORDER>$\$$ for pattern variables</SUBINDEX><FRAGILE/></INDEX>
+	<INDEX><ORDER>0a4</ORDER>$\$$, pattern variables starting with<FRAGILE/></INDEX>
+	ドル記号で始まる JavaScript の名前を使います。
+	なぜパターン中に単に <SCHEMEINLINE>$</SCHEMEINLINE> のような記号を置いて「何でもよい」ことを表すのではなく、パターン変数に名前を付けるのが便利なのかは、後で説明します。
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     The system responds to a simple query by showing all entries in the data
     base that match the specified pattern.
+    </EN>
+    <JA>
+    システムは、指定されたパターンに一致するデータベース内のすべてのエントリを表示することで、単純クエリに応答します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    A pattern can have more than one variable.  For example, the query
+    <BILINGUAL>
+    <EN>A pattern can have more than one variable.  For example, the query</EN>
+    <JA>パターンには複数の変数を含めることができます。たとえば、次のクエリ</JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>simple_queries_2</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -640,25 +796,42 @@ first_answer('address($x, $y)');
       <JAVASCRIPT>
 process_query('address($x, $y)');
 
-// query input:	
+// query input:
 // address($x, $y)
 // query results:
 // all employees' addresses
       </JAVASCRIPT>
     </SNIPPET>
-    will list all the employees<APOS/> addresses.
+    <BILINGUAL>
+    <EN>will list all the employees<APOS/> addresses.</EN>
+    <JA>は、すべての従業員の住所を一覧表示します。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     A pattern can have no variables, in which case the query simply
     determines whether that pattern is an entry in the data base.  If so,
     there will be one match; if not, there will be no matches.
+    </EN>
+    <JA>
+    パターンに変数を含めないこともできます。その場合、クエリはそのパターンがデータベースのエントリに存在するかどうかを単に判定します。存在すれば一致が1つ見つかり、存在しなければ一致は見つかりません。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The same pattern variable can appear more than once in a query,
     specifying that the same <QUOTE>anything</QUOTE> must appear in each
     position. This is why variables have names.  For example,
+    </EN>
+    <JA>
+    同じパターン変数をクエリ内で複数回使うことができ、各位置に同じ「何か」が現れなければならないことを指定します。変数に名前がある理由はこのためです。たとえば、
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>simple_queries_3</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -684,18 +857,28 @@ first_answer('supervisor($x, $x)');
       <JAVASCRIPT>
 process_query('supervisor($x, $x)');
 
-// query input:	
+// query input:
 // supervisor($x, $x)
 // query results:
 // none
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     finds all people who supervise themselves (though there are no
     such assertions in our sample data base).
+    </EN>
+    <JA>
+    は、自分自身を監督している人をすべて見つけます（ただし、サンプルのデータベースにはそのようなアサーションはありません）。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    The query
+    <BILINGUAL>
+    <EN>The query</EN>
+    <JA>クエリ</JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>simple_queries_4</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -729,6 +912,8 @@ process_query('job($x, list("computer",  $type))');
 // job(list("Tweakit", "Lem", "E"), list("computer", "technician"))
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     matches all job entries whose
     <SPLITINLINE>
       <SCHEME>
@@ -748,6 +933,29 @@ process_query('job($x, list("computer",  $type))');
 	<JAVASCRIPTINLINE>"computer"</JAVASCRIPTINLINE>:
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    は、job エントリのうち、
+    <SPLITINLINE>
+      <SCHEME>
+	3番目
+      </SCHEME>
+      <JAVASCRIPT>
+	2番目
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の項目が2要素のリストで、その最初の要素が
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>computer</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>"computer"</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    であるものすべてに一致します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (job (Bitdiddle Ben) (computer wizard))
@@ -784,21 +992,37 @@ job(list("Tweakit", "Lem", "E"), list("computer", "technician"))
       </SCHEME></SPLITINLINE>
       </SCHEME>
       <JAVASCRIPT>
+	<BILINGUAL>
+	<EN>
 	This same pattern does <EM>not</EM> match
+	</EN>
+	<JA>
+	同じパターンは次のデータには一致<EM>しません</EM>。
+	</JA>
+	</BILINGUAL>
 	<SNIPPET EVAL="no">
 	  <JAVASCRIPT>
 job(list("Reasoner", "Louis"),
     list("computer", "programmer", "trainee"))
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	because the second item in the assertion is a list of three
 	elements, and the pattern<APOS/>s second item specifies that there
 	should be two elements. If we wanted to change the pattern so that the
 	second item could be any
 	list beginning with
 	<JAVASCRIPTINLINE>"computer"</JAVASCRIPTINLINE>,
-	we could 
+	we could
 	specify
+	</EN>
+	<JA>
+	なぜなら、アサーションの2番目の項目は3要素のリストですが、パターンの2番目の項目は2要素であることを指定しているからです。2番目の項目が
+	<JAVASCRIPTINLINE>"computer"</JAVASCRIPTINLINE>
+	で始まる任意のリストに一致するようにパターンを変更したい場合は、次のように指定します。
+	</JA>
+	</BILINGUAL>
 	<COMMENT>
 	  There is no need for <QUOTE>dotted-tail notation</QUOTE> in the
 	  JavaScript edition: We simply use
@@ -841,16 +1065,22 @@ process_query('job($x, pair("computer", $type))');
 // job(list("Reasoner", "Louis"), list("computer", "programmer", "trainee"))
       </JAVASCRIPT>
     </SNIPPET>
-    For example,
+    <BILINGUAL>
+    <EN>For example,</EN>
+    <JA>たとえば、</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (computer . ?type)
       </SCHEME>
       <JAVASCRIPT>
-pair("computer", $type)      
+pair("computer", $type)
       </JAVASCRIPT>
     </SNIPPET>
-    matches the data
+    <BILINGUAL>
+    <EN>matches the data</EN>
+    <JA>は、データ</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (computer programmer trainee)
@@ -859,7 +1089,10 @@ pair("computer", $type)
 list("computer", "programmer", "trainee")
       </JAVASCRIPT>
     </SNIPPET>
-    with
+    <BILINGUAL>
+    <EN>with</EN>
+    <JA>に対して</JA>
+    </BILINGUAL>
     <SPLITINLINE>
       <SCHEME>
 	<SCHEMEINLINE>?type</SCHEMEINLINE>
@@ -868,7 +1101,9 @@ list("computer", "programmer", "trainee")
 	<JAVASCRIPTINLINE>$type</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    as 
+    <BILINGUAL>
+    <EN>
+    as
     <SPLITINLINE>
       <SCHEME>the list <SCHEMEINLINE>(programmer trainee)</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT>
@@ -876,6 +1111,18 @@ list("computer", "programmer", "trainee")
       </JAVASCRIPT>
     </SPLITINLINE>
     It also matches the data
+    </EN>
+    <JA>
+    を
+    <SPLITINLINE>
+      <SCHEME>リスト <SCHEMEINLINE>(programmer trainee)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>list("programmer", "trainee")</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に束縛して一致します。また、データ
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (computer programmer)
@@ -884,6 +1131,8 @@ list("computer", "programmer", "trainee")
 list("computer", "programmer")
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     with
     <SPLITINLINE>
       <SCHEME>
@@ -892,21 +1141,42 @@ list("computer", "programmer")
       <JAVASCRIPT><JAVASCRIPTINLINE>$type</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    as 
+    as
     <SPLITINLINE>
       <SCHEME>the list <SCHEMEINLINE>(programmer)</SCHEMEINLINE>,</SCHEME>
       <JAVASCRIPT><JAVASCRIPTINLINE>list("programmer")</JAVASCRIPTINLINE>,
       </JAVASCRIPT>
     </SPLITINLINE>
     and matches the data
+    </EN>
+    <JA>
+    に対しては
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>?type</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>$type</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を
+    <SPLITINLINE>
+      <SCHEME>リスト <SCHEMEINLINE>(programmer)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>list("programmer")</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に束縛して一致し、データ
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (computer)
       </SCHEME>
       <JAVASCRIPT>
-list("computer")      
+list("computer")
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     with
     <SPLITINLINE>
       <SCHEME>
@@ -915,16 +1185,36 @@ list("computer")
       <JAVASCRIPT><JAVASCRIPTINLINE>$type</JAVASCRIPTINLINE>
       </JAVASCRIPT>
     </SPLITINLINE>
-    as the empty 
+    as the empty
     <SPLITINLINE>
       <SCHEME>list <SCHEMEINLINE>()</SCHEMEINLINE>.</SCHEME>
       <JAVASCRIPT>list, <JAVASCRIPTINLINE>null</JAVASCRIPTINLINE>.</JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    に対しては
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>?type</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>$type</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を空の
+    <SPLITINLINE>
+      <SCHEME>リスト <SCHEMEINLINE>()</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>リスト <JAVASCRIPTINLINE>null</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    に束縛して一致します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <INDEX>pattern<CLOSE/></INDEX>
   
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can describe the query language<APOS/>s processing of simple queries as
     follows:
     <UL>
@@ -933,7 +1223,7 @@ list("computer")
 	pattern that
 	<INDEX>satisfy a pattern (simple query)</INDEX>
 	<EM>satisfy</EM> the pattern<EMDASH/>that is, all sets
-	of values for the variables such that if the pattern variables are 
+	of values for the variables such that if the pattern variables are
 	<INDEX>instantiate a pattern</INDEX>
 	<EM>instantiated with</EM> (replaced by) the values, the result is
 	in the data base.
@@ -947,9 +1237,29 @@ list("computer")
     determination of whether that pattern is in the data base.  If so, the
     empty assignment, which assigns no values to variables, satisfies that
     pattern for that data base.
+    </EN>
+    <JA>
+    クエリ言語による単純クエリの処理は、次のように記述できます。
+    <UL>
+      <LI>
+	システムは、クエリパターン中の変数へのすべての代入のうち、そのパターンを
+	<INDEX>satisfy a pattern (simple query)</INDEX>
+	<EM>満たす</EM>ものを見つけます。つまり、パターン変数をその値で
+	<INDEX>instantiate a pattern</INDEX>
+	<EM>インスタンス化</EM>（置き換え）した結果がデータベースに含まれるような、変数への値の組み合わせをすべて見つけます。
+      </LI>
+      <LI>
+	システムは、パターンを満たす変数の代入でクエリパターンをインスタンス化したものをすべて列挙することで、クエリに応答します。
+      </LI>
+    </UL>
+    パターンに変数がない場合、クエリはそのパターンがデータベースに含まれるかどうかの判定に帰着します。含まれる場合、変数に何も値を代入しない空の代入が、そのデータベースに対してそのパターンを満たします。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Give simple queries that retrieve the following information from the
     data base:
     <OL>
@@ -960,22 +1270,40 @@ list("computer")
 	the names and jobs of all people in the accounting division;
       </LI>
       <LI>
-	the names and addresses of all people who live 
+	the names and addresses of all people who live
 	in Slumerville.
       </LI>
     </OL>
+    </EN>
+    <JA>
+    次の情報をデータベースから取得する単純クエリを書きなさい。
+    <OL>
+      <LI>
+	Ben Bitdiddle が監督しているすべての人
+      </LI>
+      <LI>
+	経理部門のすべての人の名前と職種
+      </LI>
+      <LI>
+	Slumerville に住んでいるすべての人の名前と住所
+      </LI>
+    </OL>
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:4_53"/>
   </EXERCISE>
 
   <INDEX>simple query<CLOSE/></INDEX>
 
   <SUBHEADING>
-    <NAME>Compound queries</NAME>
+    <NAME><BILINGUAL><EN>Compound queries</EN><JA>複合クエリ</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>compound query<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Simple queries form the primitive operations of the query language.
     In order to form compound operations, the query language provides
     means of combination.  One thing that makes the query language a logic
@@ -990,13 +1318,26 @@ list("computer")
 	rather operations built into the query language.)
       </SCHEME>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    単純クエリはクエリ言語のプリミティブな演算を構成します。複合的な演算を形成するために、クエリ言語は組み合わせの手段を提供します。クエリ言語を論理プログラミング言語たらしめているのは、その組み合わせの手段が論理式の組み合わせの手段を反映していることです。すなわち、<SCHEMEINLINE>and</SCHEMEINLINE>、<SCHEMEINLINE>or</SCHEMEINLINE>、<SCHEMEINLINE>not</SCHEMEINLINE> です。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can use
     <INDEX><USE>and</USE> (query language)</INDEX>
     <SCHEMEINLINE>and</SCHEMEINLINE> as follows to find the addresses
     of all the computer programmers:
+    </EN>
+    <JA>
+    <INDEX><USE>and</USE> (query language)</INDEX>
+    <SCHEMEINLINE>and</SCHEMEINLINE> を次のように使うと、すべてのコンピュータプログラマの住所を検索できます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>compound_queries_1</NAME>
       <REQUIRES>query_driver_loop</REQUIRES>
@@ -1032,7 +1373,10 @@ process_query('and(job($person, list("computer", "programmer")), address($person
 //    address(list("Fect", "Cy", "D"), list("Cambridge", list("Ames", "Street"), 3)))
       </JAVASCRIPT>
     </SNIPPET>
-    The resulting output is
+    <BILINGUAL>
+    <EN>The resulting output is</EN>
+    <JA>結果の出力は次の通りです。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (and (job (Hacker Alyssa P) (computer programmer))
@@ -1066,32 +1410,61 @@ and(job(list("Fect", "Cy", "D"), list("computer", "programmer")),
 	<LATEXINLINE>$\langle\textit{query}_{1}\rangle\ldots \langle\textit{query}_{n}\rangle$</LATEXINLINE>.
       </SCHEME>
       <JAVASCRIPT>
-	In general,
+	<BILINGUAL>
+	<EN>In general,</EN>
+	<JA>一般に、</JA>
+	</BILINGUAL>
 	<SNIPPET LATEX="yes">
 	  <JAVASCRIPT>
 and(<META>query</META>$_{1}$, <META>query</META>$_{2}$, $\ldots$, <META>query</META>$_{n})$
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	is
 	<INDEX>satisfy a compound query<OPEN/></INDEX>
 	satisfied by all sets of values for the pattern variables that
 	simultaneously satisfy
 	<META>query</META><LATEXINLINE>$_{1}, \ldots,$</LATEXINLINE> <META>query</META><LATEXINLINE>$_{n}$</LATEXINLINE>.
+	</EN>
+	<JA>
+	は、
+	<INDEX>satisfy a compound query<OPEN/></INDEX>
+	<META>query</META><LATEXINLINE>$_{1}, \ldots,$</LATEXINLINE> <META>query</META><LATEXINLINE>$_{n}$</LATEXINLINE>
+	をすべて同時に満たすパターン変数への値の組み合わせによって満たされます。
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
     </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     As for simple queries, the system processes a compound query by
     finding all assignments to the pattern variables that satisfy the
     query, then displaying instantiations of the query with those values.
+    </EN>
+    <JA>
+    単純クエリの場合と同様に、システムは複合クエリを処理する際、クエリを満たすパターン変数へのすべての代入を見つけ、それらの値でクエリをインスタンス化したものを表示します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <LONG_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Another means of constructing compound queries is through
     <INDEX><USE>or</USE> (query language)</INDEX>
     <SCHEMEINLINE>or</SCHEMEINLINE>. For example,
+    </EN>
+    <JA>
+    複合クエリを構成するもうひとつの手段は
+    <INDEX><USE>or</USE> (query language)</INDEX>
+    <SCHEMEINLINE>or</SCHEMEINLINE> です。たとえば、
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>compound_queries_2</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -1131,8 +1504,15 @@ process_query('or(supervisor($x, list("Bitdiddle", "Ben")), supervisor($x, list(
 //    supervisor(list("Reasoner", "Louis"), list("Hacker", "Alyssa", "P")))
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     will find all employees supervised by Ben Bitdiddle or Alyssa P.
     Hacker:
+    </EN>
+    <JA>
+    は、Ben Bitdiddle または Alyssa P. Hacker が監督しているすべての従業員を検索します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (or (supervisor (Hacker Alyssa P) (Bitdiddle Ben))
@@ -1182,24 +1562,44 @@ or(supervisor(list("Reasoner", "Louis"),
 	<LATEXINLINE>$\langle \textit{query}_{1}\rangle \ldots \langle \textit{query}_{n}\rangle$</LATEXINLINE>.
       </SCHEME>
       <JAVASCRIPT>
-	In general,
+	<BILINGUAL>
+	<EN>In general,</EN>
+	<JA>一般に、</JA>
+	</BILINGUAL>
 	<SNIPPET LATEX="yes">
 	  <JAVASCRIPT>
 or(<META>query</META>$_{1}$, <META>query</META>$_{2}$, $\ldots$, <META>query</META>$_{n}$)
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	is satisfied by all sets of values for the pattern variables that
 	satisfy at least one of
 	<META>query</META><LATEXINLINE>$_{1} \ldots$</LATEXINLINE> <META>query</META><LATEXINLINE>$_{n}$</LATEXINLINE>.
+	</EN>
+	<JA>
+	は、<META>query</META><LATEXINLINE>$_{1} \ldots$</LATEXINLINE> <META>query</META><LATEXINLINE>$_{n}$</LATEXINLINE> のうち少なくとも1つを満たすパターン変数への値の組み合わせによって満たされます。
+	</JA>
+	</BILINGUAL>
       </JAVASCRIPT>
     </SPLIT>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Compound queries can also be formed with
     <INDEX><USE>not</USE> (query language)</INDEX>
     <SCHEMEINLINE>not</SCHEMEINLINE>.
     For example,
+    </EN>
+    <JA>
+    複合クエリは
+    <INDEX><USE>not</USE> (query language)</INDEX>
+    <SCHEMEINLINE>not</SCHEMEINLINE>
+    でも構成できます。たとえば、
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>compound_queries_3</NAME>      
       <REQUIRES>process_query</REQUIRES>
@@ -1232,8 +1632,15 @@ process_query('and(supervisor($x, list("Bitdiddle", "Ben")), not(job($x, list("c
 // all people supervised by Ben Bitdiddle who are not computer programmers
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     finds all people supervised by Ben Bitdiddle who are not computer
     programmers.  In general,
+    </EN>
+    <JA>
+    は、Ben Bitdiddle が監督している人のうち、コンピュータプログラマでない人をすべて検索します。一般に、
+    </JA>
+    </BILINGUAL>
     <SPLIT>
       <SCHEME>
 	<SNIPPET EVAL="no" LATEX="yes">
@@ -1250,14 +1657,27 @@ not(<META>query</META>$_{1}$)
 	</SNIPPET>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     is satisfied by all assignments to the pattern variables that do not
     satisfy
-    <SPLITINLINE><SCHEME><LATEXINLINE>$\langle \textit{query}_{1} \rangle$</LATEXINLINE></SCHEME><JAVASCRIPT><META>query</META><LATEXINLINE>$_{1}$</LATEXINLINE></JAVASCRIPT></SPLITINLINE>.<FOOTNOTE>Actually, this description of
+    <SPLITINLINE><SCHEME><LATEXINLINE>$\langle \textit{query}_{1} \rangle$</LATEXINLINE></SCHEME><JAVASCRIPT><META>query</META><LATEXINLINE>$_{1}$</LATEXINLINE></JAVASCRIPT></SPLITINLINE>.
+    </EN>
+    <JA>
+    は、<SPLITINLINE><SCHEME><LATEXINLINE>$\langle \textit{query}_{1} \rangle$</LATEXINLINE></SCHEME><JAVASCRIPT><META>query</META><LATEXINLINE>$_{1}$</LATEXINLINE></JAVASCRIPT></SPLITINLINE> を満たさないパターン変数へのすべての代入によって満たされます。
+    </JA>
+    </BILINGUAL>
+    <FOOTNOTE>
+    <BILINGUAL>
+    <EN>Actually, this description of
     <SCHEMEINLINE>not</SCHEMEINLINE> is valid only for simple cases. The real
     behavior of <SCHEMEINLINE>not</SCHEMEINLINE> is more complex.  We will
     examine <SCHEMEINLINE>not</SCHEMEINLINE><APOS/>s  peculiarities
     in sections<SPACE/><REF NAME="sec:how-query-works"/>
-    and<SPACE/><REF NAME="sec:math-logic"/>.</FOOTNOTE>
+    and<SPACE/><REF NAME="sec:math-logic"/>.</EN>
+    <JA>実際のところ、<SCHEMEINLINE>not</SCHEMEINLINE> に関するこの説明は単純なケースにしか当てはまりません。<SCHEMEINLINE>not</SCHEMEINLINE> の実際の動作はもっと複雑です。<SCHEMEINLINE>not</SCHEMEINLINE> の特殊な振る舞いについては、節<SPACE/><REF NAME="sec:how-query-works"/>と節<SPACE/><REF NAME="sec:math-logic"/>で検討します。</JA>
+    </BILINGUAL>
+    </FOOTNOTE>
   </TEXT>
 
   <SPLIT>
@@ -1300,21 +1720,39 @@ not(<META>query</META>$_{1}$)
     </SCHEME>
     <JAVASCRIPT>
       <TEXT>
+	<BILINGUAL>
+	<EN>
 	The final combining form starts with
 	<INDEX><USE>javascript_predicate</USE> (query language)</INDEX>
 	<JAVASCRIPTINLINE>javascript_predicate</JAVASCRIPTINLINE> and
 	contains a JavaScript predicate. In general,
+	</EN>
+	<JA>
+	最後の組み合わせ形式は
+	<INDEX><USE>javascript_predicate</USE> (query language)</INDEX>
+	<JAVASCRIPTINLINE>javascript_predicate</JAVASCRIPTINLINE> で始まり、JavaScript の述語を含みます。一般に、
+	</JA>
+	</BILINGUAL>
 	<SNIPPET EVAL="no" LATEX="yes">
 	  <JAVASCRIPT>
 javascript_predicate(<META>predicate</META>)
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	will be satisfied by assignments to the pattern variables
 	in the <META>predicate</META> for which the
-	instantiated 
+	instantiated
 	<META>predicate</META> is true.
 	For example, to find all people whose salary is greater than
-	<DOLLAR/>50,000 we could write<FOOTNOTE>
+	<DOLLAR/>50,000 we could write
+	</EN>
+	<JA>
+	は、<META>predicate</META> 中のパターン変数への代入のうち、インスタンス化された <META>predicate</META> が真となるものによって満たされます。たとえば、給与が50,000ドルを超えるすべての人を検索するには、次のように書きます。
+	</JA>
+	</BILINGUAL><FOOTNOTE>
+	<BILINGUAL>
+	<EN>
 	A query should use
 	<JAVASCRIPTINLINE>javascript_predicate</JAVASCRIPTINLINE>
 	only to perform an operation not
@@ -1325,7 +1763,15 @@ javascript_predicate(<META>predicate</META>)
 	test equality (since that is what the matching in the
 	query language is designed to do) or inequality (since that can
 	be done with the <SCHEMEINLINE>same</SCHEMEINLINE> rule shown
-	below).</FOOTNOTE>
+	below).
+	</EN>
+	<JA>
+	クエリで <JAVASCRIPTINLINE>javascript_predicate</JAVASCRIPTINLINE> を使うのは、クエリ言語に用意されていない演算を行う場合に限るべきです。特に、
+	<INDEX>query language<SUBINDEX>equality testing in</SUBINDEX></INDEX>
+	等値性のテスト（それはクエリ言語のパターンマッチングが行うように設計されているため）や不等性のテスト（それは以下に示す <SCHEMEINLINE>same</SCHEMEINLINE> ルールで行えるため）には使うべきではありません。
+	</JA>
+	</BILINGUAL>
+	</FOOTNOTE>
 	<SNIPPET POSTPADDING="no">
 	  <NAME>compound_queries_4</NAME>      
 	  <REQUIRES>process_query</REQUIRES>
@@ -1358,6 +1804,8 @@ process_query('and(salary($person, $amount), javascript_predicate($amount &gt; 5
     </JAVASCRIPT>
   </SPLIT>
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Formulate compound queries that retrieve the following information:
     <OL>
       <LI>
@@ -1373,6 +1821,22 @@ process_query('and(salary($person, $amount), javascript_predicate($amount &gt; 5
 	division, together with the supervisor<APOS/>s name and job.
       </LI>
     </OL>
+    </EN>
+    <JA>
+    次の情報を取得する複合クエリを作成しなさい。
+    <OL>
+      <LI>
+	Ben Bitdiddle が監督しているすべての人の名前と住所
+      </LI>
+      <LI>
+	給与が Ben Bitdiddle より低いすべての人と、その人の給与および Ben Bitdiddle の給与
+      </LI>
+      <LI>
+	コンピュータ部門に属さない人物に監督されているすべての人と、その監督者の名前と職種
+      </LI>
+    </OL>
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:4_54"/>
   </EXERCISE>
 
@@ -1380,17 +1844,26 @@ process_query('and(salary($person, $amount), javascript_predicate($amount &gt; 5
 
   <DO_BREAK_PAGE/>
   <SUBHEADING>
-    <NAME>Rules</NAME>
+    <NAME><BILINGUAL><EN>Rules</EN><JA>ルール</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>rule (query language)<OPEN/></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     In addition to primitive queries and compound queries, the query
     language provides means for
     <INDEX>query language<SUBINDEX>abstraction in</SUBINDEX></INDEX>
     abstracting queries.  These are given by
     <EM>rules</EM>.  The rule
+    </EN>
+    <JA>
+    プリミティブなクエリと複合クエリに加えて、クエリ言語はクエリを
+    <INDEX>query language<SUBINDEX>abstraction in</SUBINDEX></INDEX>
+    抽象化する手段を提供します。それは<EM>ルール</EM>によって実現されます。次のルール
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>lives_near</DECLARATION> (rule)</INDEX>
       <NAME>rules_1</NAME>      
@@ -1428,11 +1901,20 @@ first_answer('lives_near(list("Reasoner", "Louis"), $who)');
 process_query('lives_near(list("Reasoner", "Louis"), $who)');
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     specifies that two people live near each other if they live in the
     same town.  The final <SCHEMEINLINE>not</SCHEMEINLINE> clause prevents the
     rule from saying that all people live near themselves.  The
     <SCHEMEINLINE>same</SCHEMEINLINE> relation is defined by a very simple
-    rule:<FOOTNOTE>Notice that we do not need <SCHEMEINLINE>same</SCHEMEINLINE>
+    rule:
+    </EN>
+    <JA>
+    は、2人が同じ町に住んでいれば近くに住んでいることを指定します。最後の <SCHEMEINLINE>not</SCHEMEINLINE> 節は、すべての人が自分自身の近くに住んでいると言ってしまうのを防ぎます。<SCHEMEINLINE>same</SCHEMEINLINE> 関係は非常に単純なルールで定義されます。
+    </JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>Notice that we do not need <SCHEMEINLINE>same</SCHEMEINLINE>
     in order to make two things be the same: We just use the same pattern
     variable for each<EMDASH/>in effect, we have one thing instead of two things
     in the first place.  For example, see
@@ -1505,7 +1987,12 @@ process_query('lives_near(list("Reasoner", "Louis"), $who)');
     parts of a query forces the same value to appear in both places, using
     different pattern variables does not force different values to appear.
     (The values assigned to different pattern variables may be the same or
-    different.)</FOOTNOTE>
+    different.)
+    </EN>
+    <JA>2つのものを同じにするために <SCHEMEINLINE>same</SCHEMEINLINE> が必要なわけではないことに注意してください。同じパターン変数を使えばよいのです。つまり、最初から2つではなく1つのものを持つということです。たとえば、<SPLITINLINE><SCHEME><SCHEMEINLINE>lives-near</SCHEMEINLINE></SCHEME><JAVASCRIPT><SCHEMEINLINE>lives_near</SCHEMEINLINE></JAVASCRIPT></SPLITINLINE> ルールの <SPLITINLINE><SCHEME><SCHEMEINLINE>?town</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>$town</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> や、後述する <SCHEMEINLINE>wheel</SCHEMEINLINE> ルールの <SPLITINLINE><SCHEME><SCHEMEINLINE>?middle-manager</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>$middle_manager</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> を見てください。<SPLITINLINE><SCHEME><SCHEMEINLINE>Same</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>same</JAVASCRIPTINLINE> 関係</JAVASCRIPT></SPLITINLINE>が役に立つのは、<SPLITINLINE><SCHEME><SCHEMEINLINE>lives-near</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>lives_near</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> ルールの <SPLITINLINE><SCHEME><SCHEMEINLINE>?person-1</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>$person_1</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> と <SPLITINLINE><SCHEME><SCHEMEINLINE>?person-2</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>$person_2</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> のように、2つのものを異なるものに強制したい場合です。クエリの2か所で同じパターン変数を使うと両方の場所に同じ値が現れることが強制されますが、異なるパターン変数を使っても異なる値が現れることは強制されません（異なるパターン変数に代入される値は同じであっても異なっていてもかまいません）。
+    </JA>
+    </BILINGUAL>
+    </FOOTNOTE>
     <SNIPPET>
       <INDEX><DECLARATION>same</DECLARATION> (rule)</INDEX>
       <NAME>rule_same</NAME>      
@@ -1537,8 +2024,15 @@ process_query('same(list("Reasoner", $first_name), list($surname, "Louis"))');
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The following rule declares that a person is a <QUOTE>wheel</QUOTE> in an
     organization if he supervises someone who is in turn a supervisor:
+    </EN>
+    <JA>
+    次のルールは、ある人がさらに誰かを監督している人を監督している場合、その人は組織の<QUOTE>大物（wheel）</QUOTE>であると宣言しています。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>wheel</DECLARATION> (rule)</INDEX>
       <NAME>rules_2</NAME>
@@ -1594,22 +2088,41 @@ process_query('wheel($who)');
 	variables.</FOOTNOTE>
       </SCHEME>
       <JAVASCRIPT>
-	The general form of a rule is
+	<BILINGUAL>
+	<EN>The general form of a rule is</EN>
+	<JA>ルールの一般的な形式は次の通りです。</JA>
+	</BILINGUAL>
 	<SNIPPET LATEX="yes">
 	  <JAVASCRIPT>
 rule(<META>conclusion</META>, <META>body</META>)
 	  </JAVASCRIPT>
 	</SNIPPET>
+	<BILINGUAL>
+	<EN>
 	where <META>conclusion</META> is a pattern and
-	<META>body</META> is any query.<FOOTNOTE>We will
+	<META>body</META> is any query.
+	</EN>
+	<JA>
+	ここで <META>conclusion</META> はパターン、<META>body</META> は任意のクエリです。
+	</JA>
+	</BILINGUAL>
+	<FOOTNOTE>
+	<BILINGUAL>
+	<EN>We will
 	also allow
 	<INDEX>rule (query language)<SUBINDEX>without body</SUBINDEX></INDEX>
 	rules without bodies, as in
 	<SCHEMEINLINE>same</SCHEMEINLINE>, and we will interpret such a rule to
 	mean that the rule conclusion is satisfied by any values of the
-	variables.</FOOTNOTE>
+	variables.</EN>
+	<JA><INDEX>rule (query language)<SUBINDEX>without body</SUBINDEX></INDEX>
+	<SCHEMEINLINE>same</SCHEMEINLINE> のように本体のないルールも許容し、そのようなルールは変数のどんな値でもルールの結論が満たされることを意味すると解釈します。</JA>
+	</BILINGUAL>
+	</FOOTNOTE>
       </JAVASCRIPT>
     </SPLIT>
+    <BILINGUAL>
+    <EN>
     We can think of a rule as representing a large (even
     infinite) set of assertions, namely all instantiations of the rule conclusion
     with variable assignments that satisfy the rule body.  When we described
@@ -1620,6 +2133,13 @@ rule(<META>conclusion</META>, <META>body</META>)
     <INDEX>assertion<SUBINDEX>implicit</SUBINDEX></INDEX>
     implicit assertion implied by a rule.  For example, the
     query<DO_BREAK_PAGE/>
+    </EN>
+    <JA>
+    ルールは、ルール本体を満たす変数の代入でルールの結論をインスタンス化したものの、大きな（場合によっては無限の）アサーションの集合を表していると考えることができます。単純クエリ（パターン）について説明したとき、インスタンス化されたパターンがデータベースに含まれていれば、変数への代入がパターンを満たすと述べました。しかし、パターンがアサーションとしてデータベースに明示的に含まれている必要はありません。ルールによって暗示される
+    <INDEX>assertion<SUBINDEX>implicit</SUBINDEX></INDEX>
+    暗黙のアサーションであってもかまいません。たとえば、クエリ<DO_BREAK_PAGE/>
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>rules_3</NAME>
       <REQUIRES>query_driver_loop</REQUIRES>
@@ -1646,7 +2166,10 @@ process_query('lives_near($x, list("Bitdiddle", "Ben"))');
 // lives_near(list("Aull", "DeWitt"), list("Bitdiddle", "Ben"))
       </JAVASCRIPT_RUN>
     </SNIPPET>
-    results in
+    <BILINGUAL>
+    <EN>results in</EN>
+    <JA>の結果は次の通りです。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (lives-near (Reasoner Louis) (Bitdiddle Ben))
@@ -1657,8 +2180,15 @@ lives_near(list("Reasoner", "Louis"), list("Bitdiddle", "Ben"))
 lives_near(list("Aull", "DeWitt"), list("Bitdiddle", "Ben"))            
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     To find all computer programmers who live near Ben Bitdiddle, we can
     ask
+    </EN>
+    <JA>
+    Ben Bitdiddle の近くに住んでいるすべてのコンピュータプログラマを見つけるには、次のように尋ねます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>rules_4</NAME>
       <REQUIRES>query_driver_loop</REQUIRES>
@@ -1688,6 +2218,8 @@ process_query('and(job($x, list("computer", "programmer")), lives_near($x, list(
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     As in the case of compound
     <SPLITINLINE>
       <SCHEME>procedures,</SCHEME>
@@ -1702,6 +2234,13 @@ process_query('and(job($x, list("computer", "programmer")), lives_near($x, list(
     rule above) or even be defined
     <INDEX>recursion<SUBINDEX><ORDER>rules</ORDER>in rules</SUBINDEX></INDEX>
     recursively.  For instance, the rule
+    </EN>
+    <JA>
+    複合<SPLITINLINE><SCHEME>手続き</SCHEME><JAVASCRIPT>関数</JAVASCRIPT></SPLITINLINE>の場合と同様に、ルールは他のルールの一部として使うことができ（上の <SPLITINLINE><SCHEME><SCHEMEINLINE>lives-near</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>lives_near</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> ルールで見た通り）、
+    <INDEX>recursion<SUBINDEX><ORDER>rules</ORDER>in rules</SUBINDEX></INDEX>
+    再帰的に定義することもできます。たとえば、次のルール
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>outranked_by</DECLARATION> (rule)</INDEX>
       <NAME>rules_5</NAME>
@@ -1750,13 +2289,23 @@ process_query('outranked_by(list($who, "Ben"), $the_boss)');
 // outranked_by(list("Bitdiddle", "Ben"), list("Warbucks", "Oliver"))
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     says that a staff person is outranked by a boss in the organization if
     the boss is the person<APOS/>s supervisor or (recursively) if the
     <SHRINK_PARAGRAPH lines="1"/>
     person<APOS/>s supervisor is outranked by the boss.
+    </EN>
+    <JA>
+    は、ある上司がその人の直属の監督者であるか、または（再帰的に）その人の監督者がその上司より下位にある場合に、スタッフがその上司より下位にあると述べています。
+    <SHRINK_PARAGRAPH lines="1"/>
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Define a rule that says that person 1 can replace person 2 if either
     person 1 does the same job as person 2 or someone who does person 1<APOS/>s
     job can also do person<SPACE/>2<APOS/>s job, and if person 1 and person 2
@@ -1771,23 +2320,50 @@ process_query('outranked_by(list($who, "Ben"), $the_boss)');
 	are, together with the two salaries.
       </LI>
     </OL>
+    </EN>
+    <JA>
+    人物1が人物2と同じ仕事をしているか、人物1の仕事ができる人が人物2の仕事もできる場合、かつ人物1と人物2が同一人物でない場合に、人物1が人物2の代わりになれることを表すルールを定義しなさい。そのルールを使って、次のことを調べるクエリを書きなさい。
+    <OL>
+      <LI>
+	Cy D. Fect の代わりになれるすべての人
+      </LI>
+      <LI>
+	自分より高い給与をもらっている人の代わりになれるすべての人と、双方の給与
+      </LI>
+    </OL>
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:4_55"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Define a rule that says that a person is a <QUOTE>big shot</QUOTE> in a
     division if the person works in the division but does not have a supervisor
     who works in the division.
+    </EN>
+    <JA>
+    ある部門で働いているが、同じ部門に属する監督者がいない場合に、その人がその部門の<QUOTE>大物（big shot）</QUOTE>であることを表すルールを定義しなさい。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:4_56"/>
   </EXERCISE>
 
 <!-- %Exercise source: Spring '84 Final - -&gt; manual M4.28 - - &gt; here-->
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Ben Bitdiddle has missed one meeting too many. Fearing that his habit of
     forgetting meetings could cost him his job, Ben decides to do something about
     it.  He adds all the weekly meetings of the firm to the Gargle data base
     by asserting the following:
+    </EN>
+    <JA>
+    Ben Bitdiddle はまた会議をすっぽかしてしまいました。会議を忘れる癖が仕事に響くことを恐れた Ben は、対策を講じることにしました。会社の毎週の会議をすべて Gargle データベースに次のようにアサートして追加します。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (meeting accounting (Monday 9am))
@@ -1802,9 +2378,13 @@ meeting("computer", list("Wednesday", "3pm"))
 meeting("administration", list("Friday", "1pm"))
     </JAVASCRIPT>
     </SNIPPET>
-      <LONG_PAGE lines="1"/>Each of the above assertions is for a meeting of an entire division.
+      <LONG_PAGE lines="1"/>
+    <BILINGUAL>
+    <EN>Each of the above assertions is for a meeting of an entire division.
     Ben also adds an entry for the company-wide meeting that spans all the
-    divisions.  All of the company<APOS/>s employees attend this meeting.
+    divisions.  All of the company<APOS/>s employees attend this meeting.</EN>
+    <JA>上記のアサーションはそれぞれ部門全体の会議を表しています。Ben はさらに、全部門にまたがる全社会議のエントリも追加します。会社の全従業員がこの会議に出席します。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (meeting whole-company (Wednesday 4pm))
@@ -1813,6 +2393,8 @@ meeting("administration", list("Friday", "1pm"))
 meeting("whole-company", list("Wednesday", "4pm"))
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     <OL>
       <LI>
 	On Friday morning, Ben wants to query the data base for all the meetings
@@ -1857,11 +2439,51 @@ rule(meeting_time($\texttt{\$}$person, $\texttt{\$}$day_and_time),
 	she make to find this out?
       </LI>
     </OL>
+    </EN>
+    <JA>
+    <OL>
+      <LI>
+	金曜日の朝、Ben はその日に開催されるすべての会議をデータベースに問い合わせたいと思います。どんなクエリを使うべきですか？
+      </LI>
+      <LI>
+	Alyssa P. Hacker は感心しません。自分の名前を指定して会議を問い合わせられるほうがずっと便利だと考えます。そこで彼女は、ある人の会議には <SPLITINLINE><SCHEME><SCHEMEINLINE>whole-company</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>"whole-company"</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> の会議に加え、その人が所属する部門のすべての会議が含まれるというルールを設計します。Alyssa のルールの本体を埋めなさい。
+	<SPLIT>
+	  <SCHEME>
+	    <SNIPPET EVAL="no" LATEX="yes">
+              <SCHEME>
+(rule (meeting-time ?person ?day-and-time)
+      rule-body)
+              </SCHEME>
+	    </SNIPPET>
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    <SNIPPET EVAL="no" LATEX="yes">
+	      <JAVASCRIPT>
+rule(meeting_time($\texttt{\$}$person, $\texttt{\$}$day_and_time),
+     $rule$-$body$)
+	      </JAVASCRIPT>
+	    </SNIPPET>
+	  </JAVASCRIPT>
+	</SPLIT>
+      </LI>
+      <LI>
+	水曜日の朝に出社した Alyssa は、その日に出席すべき会議を知りたいと思います。上のルールを定義済みとして、それを調べるにはどんなクエリを使えばよいですか？
+      </LI>
+    </OL>
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:4_57"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     By giving the query
+    </EN>
+    <JA>
+    次のクエリを与えることで、
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><USE>lives_near</USE> (rule)</INDEX>
       <SCHEME>
@@ -1871,9 +2493,16 @@ rule(meeting_time($\texttt{\$}$person, $\texttt{\$}$day_and_time),
 lives_near($person, list("Hacker", "Alyssa", "P"))
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Alyssa P. Hacker is able to find people who live near her, with whom
     she can ride to work.  On the other hand, when she tries to find all
     pairs of people who live near each other by querying
+    </EN>
+    <JA>
+    Alyssa P. Hacker は自分の近くに住んでいて一緒に通勤できる人を見つけることができます。一方、次のクエリで互いに近くに住んでいるすべてのペアを見つけようとすると、
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (lives-near ?person-1 ?person-2)
@@ -1882,8 +2511,15 @@ lives_near($person, list("Hacker", "Alyssa", "P"))
 lives_near($person_1, $person_2)
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     she notices that each pair of people who live near each other is
     listed twice; for example,
+    </EN>
+    <JA>
+    近くに住んでいる各ペアが2回ずつリストされることに気づきます。たとえば、
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (lives-near (Hacker Alyssa P) (Fect Cy D))
@@ -1894,19 +2530,28 @@ lives_near(list("Hacker", "Alyssa", "P"), list("Fect", "Cy", "D"))
 lives_near(list("Fect", "Cy", "D"), list("Hacker", "Alyssa", "P"))
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Why does this happen?
     Is there a way to find a list of people who live near each other, in
     which each pair appears only once?  Explain.
+    </EN>
+    <JA>
+    なぜこうなるのでしょうか？ 各ペアが1回だけ現れるように、互いに近くに住んでいる人のリストを見つける方法はありますか？ 説明しなさい。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:lives-near"/>
   </EXERCISE>
 
   <SUBHEADING>
-    <NAME>Logic as programs</NAME>
+    <NAME><BILINGUAL><EN>Logic as programs</EN><JA>プログラムとしてのロジック</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>query language<SUBINDEX>logical deductions<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     We can regard a rule as a kind of logical implication: <EM>If</EM> an
     assignment of values to pattern variables satisfies the body, <EM>
     then</EM> it satisfies the conclusion.  Consequently, we can regard the
@@ -1942,10 +2587,26 @@ lives_near(list("Fect", "Cy", "D"), list("Hacker", "Alyssa", "P"))
 	<SCHEMEINLINE>z</SCHEMEINLINE>.
       </LI>
     </UL>
+    </EN>
+    <JA>
+    ルールは一種の論理的含意と見なすことができます。パターン変数への値の代入が本体を満たす<EM>なら</EM>、それは結論を満たし<EM>ます</EM>。したがって、クエリ言語はルールに基づいて<EM>論理的推論</EM>を行う能力を持っていると見なせます。例として、節<SPACE/><REF NAME="sec:logic-programming"/>の冒頭で説明した <SCHEMEINLINE>append</SCHEMEINLINE> 演算を考えましょう。前述のように、<SCHEMEINLINE>append</SCHEMEINLINE> は次の2つのルールで特徴付けられます。
+    <UL>
+      <LI>
+	任意のリスト <SCHEMEINLINE>y</SCHEMEINLINE> に対して、空リストと <SCHEMEINLINE>y</SCHEMEINLINE> を <SCHEMEINLINE>append</SCHEMEINLINE> すると <SCHEMEINLINE>y</SCHEMEINLINE> になる。
+      </LI>
+      <LI>
+	任意の <SCHEMEINLINE>u</SCHEMEINLINE>、<SCHEMEINLINE>v</SCHEMEINLINE>、<SCHEMEINLINE>y</SCHEMEINLINE>、<SCHEMEINLINE>z</SCHEMEINLINE> に対して、<SCHEMEINLINE>v</SCHEMEINLINE> と <SCHEMEINLINE>y</SCHEMEINLINE> を <SCHEMEINLINE>append</SCHEMEINLINE> すると <SCHEMEINLINE>z</SCHEMEINLINE> になるなら、<SPLITINLINE><SCHEME><SCHEMEINLINE>(cons u v)</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>pair(u, v)</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> と <SCHEMEINLINE>y</SCHEMEINLINE> を <SCHEMEINLINE>append</SCHEMEINLINE> すると <SPLITINLINE><SCHEME><SCHEMEINLINE>(cons<SPACE/>u<SPACE/>z)</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>pair(u, z)</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> になる。
+      </LI>
+    </UL>
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
-    To express this in our query language, we define two rules for a relation
+    <BILINGUAL>
+    <EN>To express this in our query language, we define two rules for a relation</EN>
+    <JA>これをクエリ言語で表現するために、次の関係を表す2つのルールを定義します。</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (append-to-form x y z)
@@ -1954,9 +2615,16 @@ lives_near(list("Fect", "Cy", "D"), list("Hacker", "Alyssa", "P"))
 append_to_form(x, y, z)      
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     which we can interpret to mean <QUOTE><SCHEMEINLINE>x</SCHEMEINLINE> and
     <SCHEMEINLINE>y</SCHEMEINLINE> <SCHEMEINLINE>append</SCHEMEINLINE> to
     form <SCHEMEINLINE>z</SCHEMEINLINE></QUOTE>:
+    </EN>
+    <JA>
+    これは<QUOTE><SCHEMEINLINE>x</SCHEMEINLINE> と <SCHEMEINLINE>y</SCHEMEINLINE> を <SCHEMEINLINE>append</SCHEMEINLINE> すると <SCHEMEINLINE>z</SCHEMEINLINE> になる</QUOTE>と解釈できます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <INDEX><DECLARATION>append_to_form</DECLARATION> (rules)</INDEX>
       <NAME>append_to_form</NAME>
@@ -2007,6 +2675,8 @@ process_query('append_to_form(list(1, 2), list(3, 4), $xs)');
 // append_to_form(list(1, 2), list(3, 4), list(1, 2, 3, 4))
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     The first rule has
     <INDEX>rule (query language)<SUBINDEX>without body</SUBINDEX></INDEX>
     no body, which means that the conclusion holds for
@@ -2035,11 +2705,25 @@ process_query('append_to_form(list(1, 2), list(3, 4), $xs)');
       <JAVASCRIPT>tail</JAVASCRIPT>
     </SPLITINLINE>
     of a list.
+    </EN>
+    <JA>
+    最初のルールには
+    <INDEX>rule (query language)<SUBINDEX>without body</SUBINDEX></INDEX>
+    本体がなく、<SPLITINLINE><SCHEME><SCHEMEINLINE>?y</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>$y</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> のどんな値に対しても結論が成り立つことを意味します。2番目のルールが、リストの <SPLITINLINE><SCHEME><SCHEMEINLINE>car</SCHEMEINLINE></SCHEME><JAVASCRIPT>head</JAVASCRIPT></SPLITINLINE> と <SPLITINLINE><SCHEME><SCHEMEINLINE>cdr</SCHEMEINLINE></SCHEME><JAVASCRIPT>tail</JAVASCRIPT></SPLITINLINE> を指定するために <SPLITINLINE><SCHEME><INDEX>dotted-tail notation<SUBINDEX><ORDER>query</ORDER>in query-language rule</SUBINDEX></INDEX>ドット末尾記法</SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>pair</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> をどのように使っているかに注目してください。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Given these two rules, we can formulate queries that compute the
     <SCHEMEINLINE>append</SCHEMEINLINE> of two lists:
+    </EN>
+    <JA>
+    これら2つのルールがあれば、2つのリストの <SCHEMEINLINE>append</SCHEMEINLINE> を計算するクエリを作成できます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>append_to_form_example_2</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -2077,6 +2761,8 @@ Query results:
 append_to_form(list("a", "b"), list("c", "d"), list("a", "b", "c", "d"))
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     What is more striking, we can use the same rules to ask the question
     <SPLITINLINE>
       <SCHEME>
@@ -2093,6 +2779,11 @@ append_to_form(list("a", "b"), list("c", "d"), list("a", "b", "c", "d"))
       </JAVASCRIPT>
     </SPLITINLINE>
     This is done as follows:
+    </EN>
+    <JA>
+    さらに驚くべきことに、同じルールを使って<SPLITINLINE><SCHEME><QUOTE><SCHEMEINLINE>(a b)</SCHEMEINLINE> に <SCHEMEINLINE>append</SCHEMEINLINE> すると <SCHEMEINLINE>(a b c d)</SCHEMEINLINE> になるリストはどれか？</QUOTE></SCHEME><JAVASCRIPT><QUOTE><JAVASCRIPTINLINE>list("a", "b")</JAVASCRIPTINLINE> に <SCHEMEINLINE>append</SCHEMEINLINE> すると <JAVASCRIPTINLINE>list("a", "b", "c", "d")</JAVASCRIPTINLINE> になるリストはどれか？</QUOTE></JAVASCRIPT></SPLITINLINE>という質問もできます。次のようにします。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>append_to_form_example_3</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -2130,6 +2821,8 @@ Query results:
 append_to_form(list("a", "b"), list("c", "d"), list("a", "b", "c", "d"))
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     We can
     <SPLITINLINE>
       <SCHEME>
@@ -2143,6 +2836,11 @@ append_to_form(list("a", "b"), list("c", "d"), list("a", "b", "c", "d"))
       <JAVASCRIPT><JAVASCRIPTINLINE>list("a", "b", "c", "d")</JAVASCRIPTINLINE>:
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    <SCHEMEINLINE>append</SCHEMEINLINE> すると <SPLITINLINE><SCHEME><SCHEMEINLINE>(a b c d)</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>list("a", "b", "c", "d")</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> になるすべてのリストのペアを問い合わせることもできます。
+    </JA>
+    </BILINGUAL>
     <SNIPPET>
       <NAME>append_to_form_example_4</NAME>
       <REQUIRES>process_query</REQUIRES>
@@ -2195,6 +2893,8 @@ append_to_form(list("a", "b", "c", "d"), null, list("a", "b", "c", "d"))
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The query system may seem to exhibit quite a bit of intelligence in
     using the rules to deduce the answers to the queries above.  Actually,
     as we will see in the next section, the system is following a
@@ -2203,11 +2903,18 @@ append_to_form(list("a", "b", "c", "d"), null, list("a", "b", "c", "d"))
     <SCHEMEINLINE>append</SCHEMEINLINE> case, the general methods may break down
     in more complex cases, as we will see
     in section<SPACE/><REF NAME="sec:math-logic"/>.
+    </EN>
+    <JA>
+    クエリシステムは、上記のクエリに対する答えを導き出すためにルールを使いこなしており、かなりの知性を発揮しているように見えるかもしれません。しかし実際には、次の節で見るように、システムはルールを解きほぐすための明確に定まったアルゴリズムに従っているのです。残念ながら、<SCHEMEINLINE>append</SCHEMEINLINE> の場合にはシステムは見事に動作しますが、より複雑なケースでは一般的な手法がうまくいかなくなることがあります。これについては節<SPACE/><REF NAME="sec:math-logic"/>で見ていきます。
+    </JA>
+    </BILINGUAL>
   </TEXT>
     
   <!-- %Exercise source: Manual p.147 &amp;&amp; ex M4.30-->
   <EXERCISE>
     <LABEL NAME="ex:next-to"/>
+    <BILINGUAL>
+    <EN>
     The following rules implement a
     <SPLITINLINE>
       <SCHEME>
@@ -2218,6 +2925,11 @@ append_to_form(list("a", "b", "c", "d"), null, list("a", "b", "c", "d"))
       </JAVASCRIPT>
     </SPLITINLINE>
     relation that finds adjacent elements of a list:
+    </EN>
+    <JA>
+    次のルールは、リストの隣接する要素を見つける <SPLITINLINE><SCHEME><SCHEMEINLINE>next-to</SCHEMEINLINE></SCHEME><JAVASCRIPT><SCHEMEINLINE>next_to_in</SCHEMEINLINE></JAVASCRIPT></SPLITINLINE> 関係を実装しています。
+    </JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX><DECLARATION>next_to_in</DECLARATION> (rules)</INDEX>
       <SCHEME>
@@ -2233,7 +2945,11 @@ rule(next_to_in($x, $y, pair($v, $z)),
      next_to_in($x, $y, $z))
       </JAVASCRIPT>
     </SNIPPET>
-    <PDF_ONLY>\newpage\noindent </PDF_ONLY>What will the response be to the following queries?
+    <PDF_ONLY>\newpage\noindent </PDF_ONLY>
+    <BILINGUAL>
+    <EN>What will the response be to the following queries?</EN>
+    <JA>次のクエリに対する応答はどうなりますか？</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" POSTPADDING="no">
       <SCHEME>
 (?x next-to ?y in (1 (2 3) 4))
@@ -2249,6 +2965,8 @@ next_to_in($x, 1, list(2, 1, 3, 1))
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Define rules to implement the
     <INDEX><USE>last_pair</USE><SUBINDEX>rules</SUBINDEX></INDEX>
     <SPLITINLINE>
@@ -2285,14 +3003,44 @@ next_to_in($x, 1, list(2, 1, 3, 1))
       <JAVASCRIPT><JAVASCRIPTINLINE>last_pair($x, list(3))</JAVASCRIPTINLINE>?
       </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    練習問題<SPACE/><REF NAME="ex:last"/>の
+    <INDEX><USE>last_pair</USE><SUBINDEX>rules</SUBINDEX></INDEX>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>last-pair</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>last_pair</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>
+    演算を実装するルールを定義しなさい。この演算は空でないリストの最後の要素を含むリストを返します。次のクエリでルールを確認しなさい。
+    <SPLIT>
+      <SCHEME>
+	<SCHEMEINLINE>(last-pair (3) ?x)</SCHEMEINLINE>、<SCHEMEINLINE>(last-pair (1 2 3) ?x)</SCHEMEINLINE>、<SCHEMEINLINE>(last-pair (2 ?x) (3))</SCHEMEINLINE> のようなクエリで確認しなさい。
+      </SCHEME>
+      <JAVASCRIPT>
+	<UL>
+	  <LI> <JAVASCRIPTINLINE>last_pair(list(3), $x)</JAVASCRIPTINLINE></LI>
+	  <LI> <JAVASCRIPTINLINE>last_pair(list(1, 2, 3), $x)</JAVASCRIPTINLINE></LI>
+	  <LI> <JAVASCRIPTINLINE>last_pair(list(2, $x), list(3))</JAVASCRIPTINLINE></LI>
+	</UL>
+      </JAVASCRIPT>
+    </SPLIT>
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>(last-pair ?x (3))</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>last_pair($x, list(3))</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> のようなクエリでもルールは正しく動作しますか？
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:last-pair-rules"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     The following data base (see Genesis 4) traces the genealogy of the
     descendants of
     <INDEX>Ada</INDEX><INDEX>Genesis</INDEX>
     Ada back to Adam, by way of Cain:
+    </EN>
+    <JA>
+    次のデータベース（創世記4章参照）は、
+    <INDEX>Ada</INDEX><INDEX>Genesis</INDEX>
+    Ada の子孫から Cain を経て Adam までの系譜をたどっています。
+    </JA>
+    </BILINGUAL>
 
     <SNIPPET EVAL="no">
       <SCHEME>
@@ -2318,6 +3066,8 @@ son("Ada", "Jabal")
 son("Ada", "Jubal")
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Formulate rules such as <QUOTE>If <EM>S</EM> is the son of <EM>F</EM>, and
     <EM>F</EM> is the son of <EM>G</EM>, then <EM>S</EM> is the grandson of
     <EM>G</EM></QUOTE> and <QUOTE>If <EM>W</EM> is the wife of <EM>M</EM>, and
@@ -2335,6 +3085,11 @@ son("Ada", "Jubal")
       </JAVASCRIPT>
     </SPLITINLINE>
     for some rules to deduce more complicated relationships.)
+    </EN>
+    <JA>
+    <QUOTE><EM>S</EM> が <EM>F</EM> の息子であり、<EM>F</EM> が <EM>G</EM> の息子であるなら、<EM>S</EM> は <EM>G</EM> の孫である</QUOTE>や、<QUOTE><EM>W</EM> が <EM>M</EM> の妻であり、<EM>S</EM> が <EM>W</EM> の息子であるなら、<EM>S</EM> は <EM>M</EM> の息子である</QUOTE>（これは今日よりも聖書の時代に当てはまったとされています）のようなルールを作成し、クエリシステムが Cain の孫、Lamech の息子たち、Methushael の孫たちを見つけられるようにしなさい。（より複雑な関係を推論するルールについては、練習問題<SPACE/><SPLITINLINE><SCHEME><REF NAME="ex:great-grandson_scheme"/></SCHEME><JAVASCRIPT><REF NAME="ex:great-grandson"/></JAVASCRIPT></SPLITINLINE>を参照してください。）
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:genesis"/>
   </EXERCISE>
 

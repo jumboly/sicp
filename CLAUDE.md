@@ -163,7 +163,12 @@ PDF ビルドは日本語 CJK 対応が未了のためスキップしている�
 - [x] Section 4.3.1 Search and amb
 - [x] Section 4.3.2 Examples of Nondeterministic Programs
 - [x] Section 4.3.3 Implementing the Amb Evaluator
-- [ ] Section 4.4 以降
+- [x] Section 4.4 Logic Programming (導入部)
+- [x] Section 4.4.1 Deductive Information Retrieval
+- [x] Section 4.4.2 How the Query System Works
+- [x] Section 4.4.3 Is Logic Programming Mathematical Logic?
+- [x] Section 4.4.4 Implementing the Query System
+- [ ] Chapter 5 以降
 
 ## インライン実行
 

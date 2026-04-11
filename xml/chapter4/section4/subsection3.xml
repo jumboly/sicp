@@ -1,6 +1,9 @@
 <SUBSECTION>
   <NAME>
-    Is Logic Programming Mathematical Logic?
+    <BILINGUAL>
+      <EN>Is Logic Programming Mathematical Logic?</EN>
+      <JA>論理プログラミングは数学的論理学なのか？</JA>
+    </BILINGUAL>
   </NAME>
 
   <LABEL NAME="sec:math-logic"/>
@@ -9,28 +12,58 @@
   <INDEX>logic programming<SUBINDEX>mathematical logic vs.<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The means of combination used in the query language may at first seem
     identical to the operations <SCHEMEINLINE>and</SCHEMEINLINE>,
     <SCHEMEINLINE>or</SCHEMEINLINE>, and <SCHEMEINLINE>not</SCHEMEINLINE> of
     mathematical logic, and the application of query-language rules is in
     fact accomplished through a legitimate method of
     <INDEX>inference, method of</INDEX>
-    inference.<FOOTNOTE>That a particular method of inference is
+    inference.</EN>
+    <JA>
+    クエリ言語で使われる結合の手段は、一見すると数学的論理学の演算
+    <SCHEMEINLINE>and</SCHEMEINLINE>、<SCHEMEINLINE>or</SCHEMEINLINE>、
+    <SCHEMEINLINE>not</SCHEMEINLINE> と同一に見えるかもしれません。そして実際、
+    クエリ言語のルール適用は正当な
+    <INDEX>inference, method of</INDEX>
+    推論の方法によって行われています。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>That a particular method of inference is
     legitimate is not a trivial assertion.  One must prove that if one
     starts with true premises, only true conclusions can be derived.  The
-    method of inference represented by rule applications is 
+    method of inference represented by rule applications is
     <INDEX><ORDER>modus</ORDER><EM>modus ponens</EM></INDEX>
     <EM>modus ponens</EM>,
     the familiar method of inference that says that if <EM>A</EM> is
     true and <EM>A implies B</EM> is true, then we may conclude that <EM>B</EM>
-    is true.</FOOTNOTE> This identification of the query language with
+    is true.</EN>
+    <JA>特定の推論方法が正当であるということは自明ではありません。真の前提から出発すれば
+    真の結論のみが導き出されることを証明しなければなりません。ルール適用によって
+    表現される推論の方法は
+    <INDEX><ORDER>modus</ORDER><EM>modus ponens</EM></INDEX>
+    <EM>modus ponens</EM>
+    です。これは、<EM>A</EM> が真であり
+    <EM>A ならば B</EM> が真であるならば、<EM>B</EM> が真であると結論できるという
+    よく知られた推論方法です。</JA>
+    </BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+    <EN> This identification of the query language with
     mathematical logic is not really valid, though, because the query language
-    provides a 
+    provides a
     <INDEX>control structure</INDEX>
     <EM>control structure</EM> that interprets the logical statements
     procedurally.  We can often take advantage of this control structure.
     For example, to find all of the supervisors of programmers we could
-    formulate a query in either of two logically equivalent forms:
+    formulate a query in either of two logically equivalent forms:</EN>
+    <JA> しかし、クエリ言語を数学的論理学と同一視するのは実際には正しくありません。
+    なぜなら、クエリ言語は論理的文を手続き的に解釈する
+    <INDEX>control structure</INDEX>
+    <EM>制御構造</EM>を提供するからです。この制御構造を活用できることは
+    よくあります。例えば、プログラマ全員の上司を見つけるために、
+    論理的に等価な2つの形式のいずれかでクエリを定式化できます：</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (and (job ?x (computer programmer))
@@ -41,7 +74,10 @@ and(job($x, list("computer", "programmer")),
     supervisor($x, $y))
       </JAVASCRIPT>
     </SNIPPET>
-    or
+    <BILINGUAL>
+    <EN>or</EN>
+    <JA>あるいは</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (and (supervisor ?x ?y)
@@ -52,16 +88,26 @@ and(supervisor($x, $y),
     job($x, list("computer", "programmer")))
       </JAVASCRIPT>
     </SNIPPET>
-    If a company has
+    <BILINGUAL>
+    <EN>If a company has
     <INDEX>bureaucracy</INDEX>
     many more supervisors than programmers,
     it is better to use the first form rather than the second,
     because the data base must be scanned for each intermediate result
-    (frame) produced by the first clause of the <SCHEMEINLINE>and</SCHEMEINLINE>.
+    (frame) produced by the first clause of the <SCHEMEINLINE>and</SCHEMEINLINE>.</EN>
+    <JA>もし会社に
+    <INDEX>bureaucracy</INDEX>
+    プログラマよりもはるかに多くの上司がいる場合、
+    2番目の形式よりも1番目の形式を使う方がよいでしょう。
+    なぜなら、<SCHEMEINLINE>and</SCHEMEINLINE> の最初の節が生成する中間結果（フレーム）
+    ごとにデータベースをスキャンしなければならないからです。</JA>
+    </BILINGUAL>
   </TEXT>
 
   <SHORT_PAGE lines="2"/>
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The aim of logic programming is to provide the programmer with
     techniques for decomposing a computational problem into two separate
     problems:
@@ -81,9 +127,30 @@ and(supervisor($x, $y),
     At the same time, we should be able to view the result of the
     computation (<QUOTE>what</QUOTE> to compute) as a simple consequence of the
     laws of logic.
+    </EN>
+    <JA>
+    論理プログラミングの目的は、計算問題を2つの別々の問題に分解する技法を
+    プログラマに提供することです：
+    <INDEX>declarative vs.<SPACE/>imperative knowledge<SUBINDEX>logic programming and</SUBINDEX></INDEX>
+    <INDEX>imperative vs.<SPACE/>declarative knowledge<SUBINDEX>logic programming and</SUBINDEX></INDEX>
+    <QUOTE>何を</QUOTE>計算するかと、<QUOTE>どのように</QUOTE>
+    計算するかです。これは、数学的論理学の文のうち、
+    計算したいものは何でも記述できるほど強力でありながら、
+    制御可能な手続き的解釈を持てるほど弱い部分集合を選ぶことで達成されます。
+    ここでの意図は、一方で、論理プログラミング言語で記述されたプログラムが
+    コンピュータで実行できる有効なプログラムであるべきだということです。
+    制御（<QUOTE>どのように</QUOTE>計算するか）は言語の評価順序を使って実現されます。
+    節の順序と各節内のサブゴールの順序を適切に配置して、
+    効果的かつ効率的な順序で計算が行われるようにできるべきです。
+    同時に、計算結果（<QUOTE>何を</QUOTE>計算するか）を
+    論理法則の単なる帰結として見ることもできるべきです。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Our query language can be regarded as just such a procedurally
     interpretable subset of mathematical logic.  An assertion represents a
     simple fact (an atomic proposition).  A rule represents the
@@ -94,7 +161,20 @@ and(supervisor($x, $y),
     also be regarded as statements of mathematical logic, we can justify any
     <QUOTE>inference</QUOTE> accomplished by a logic program by asserting that
     the same result could be obtained by working entirely within
-    mathematical logic.<FOOTNOTE>We must qualify this statement by
+    mathematical logic.</EN>
+    <JA>
+    私たちのクエリ言語は、まさにそのような手続き的に解釈可能な
+    数学的論理学の部分集合と見なすことができます。アサーションは
+    単純な事実（原子命題）を表します。ルールは、ルール本体が成り立つ場合に
+    ルールの結論が成り立つという含意を表します。ルールには自然な手続き的解釈があります：
+    ルールの結論を確立するには、ルールの本体を確立します。
+    したがって、ルールは計算を指定します。しかし、ルールは
+    数学的論理学の文とも見なせるので、論理プログラムによって達成される
+    あらゆる<QUOTE>推論</QUOTE>は、数学的論理学の中だけで作業しても
+    同じ結果が得られると主張することで正当化できます。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>We must qualify this statement by
     agreeing that, in speaking of the <QUOTE>inference</QUOTE> accomplished
     by a logic program, we assume that the computation terminates.
     Unfortunately, even this qualified statement is false for our
@@ -136,22 +216,72 @@ and(supervisor($x, $y),
     However, this would greatly restrict the expressive power of the language.
     One of the major concerns of research in logic programming was to find ways
     to achieve more consistency with mathematical logic without unduly
-    sacrificing expressive power.</FOOTNOTE>
+    sacrificing expressive power.</EN>
+    <JA>この記述には条件を付ける必要があります。論理プログラムによって達成される
+    <QUOTE>推論</QUOTE>について語るとき、計算が終了することを仮定しています。
+    残念ながら、この条件付きの記述でさえ、私たちのクエリ言語の実装
+    （および Prolog やその他の現在のほとんどの論理プログラミング言語のプログラム）
+    では誤りです。<SCHEMEINLINE>not</SCHEMEINLINE> と
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>lisp-value</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>javascript_predicate</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を使用しているからです。
+    以下で説明するように、クエリ言語で実装されている <SCHEMEINLINE>not</SCHEMEINLINE> は
+    数学的論理学の <SCHEMEINLINE>not</SCHEMEINLINE> と必ずしも一致せず、
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>lisp-value</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>javascript_predicate</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    はさらなる複雑さをもたらします。<SCHEMEINLINE>not</SCHEMEINLINE> と
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>lisp-value</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>javascript_predicate</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を言語から単に取り除き、単純なクエリ、<SCHEMEINLINE>and</SCHEMEINLINE>、
+    <SCHEMEINLINE>or</SCHEMEINLINE> だけを使ってプログラムを書くことに同意すれば、
+    数学的論理学と一致する言語を実装できるでしょう。
+    しかし、これは言語の表現力を大幅に制限することになります。
+    論理プログラミングの研究における主要な関心事の一つは、
+    表現力を過度に犠牲にすることなく、数学的論理学との一致度を
+    高める方法を見つけることでした。</JA>
+    </BILINGUAL></FOOTNOTE>
   </TEXT>
 
   <SUBHEADING>
-    <NAME>Infinite loops</NAME>
+    <NAME><BILINGUAL><EN>Infinite loops</EN><JA>無限ループ</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>query interpreter<SUBINDEX>infinite loops<OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     A consequence of the procedural interpretation of logic programs is
     that it is possible to construct hopelessly inefficient programs for
     solving certain problems.  An extreme case of inefficiency occurs when
     the system falls into infinite loops in making deductions.  As a
     simple example, suppose we are setting up a data base of famous
-    marriages, including
+    marriages, including</EN>
+    <JA>
+    論理プログラムの手続き的解釈の帰結として、
+    特定の問題を解くために絶望的に非効率なプログラムを構築してしまう可能性があります。
+    非効率性の極端な例は、推論中にシステムが無限ループに陥る場合です。
+    簡単な例として、有名な結婚のデータベースを構築しているとしましょう。
+    次のようなデータが含まれています：</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <INDEX>Mouse, Minnie and Mickey</INDEX>
       <SCHEME>
@@ -161,7 +291,10 @@ and(supervisor($x, $y),
 assert(married("Minnie", "Mickey"))
       </JAVASCRIPT>
     </SNIPPET>
-    If we now ask
+    <BILINGUAL>
+    <EN>If we now ask</EN>
+    <JA>ここで次のように問い合わせると</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (married Mickey ?who)
@@ -170,10 +303,16 @@ assert(married("Minnie", "Mickey"))
 married("Mickey", $who)
       </JAVASCRIPT>
     </SNIPPET>
-    we will get no response, because the system doesn<APOS/>t know that if
+    <BILINGUAL>
+    <EN>we will get no response, because the system doesn<APOS/>t know that if
     <LATEXINLINE>$A$</LATEXINLINE> is married to <LATEXINLINE>$B$</LATEXINLINE>,
     then <LATEXINLINE>$B$</LATEXINLINE> is married to
-    <LATEXINLINE>$A$</LATEXINLINE>.  So we assert the rule
+    <LATEXINLINE>$A$</LATEXINLINE>.  So we assert the rule</EN>
+    <JA>応答は得られません。システムは、<LATEXINLINE>$A$</LATEXINLINE> が
+    <LATEXINLINE>$B$</LATEXINLINE> と結婚しているなら
+    <LATEXINLINE>$B$</LATEXINLINE> は <LATEXINLINE>$A$</LATEXINLINE> と
+    結婚しているということを知らないからです。そこで次のルールをアサートします：</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (assert! (rule (married ?x ?y)
@@ -184,7 +323,10 @@ assert(rule(married($x, $y),
             married($y, $x)))
       </JAVASCRIPT>
     </SNIPPET>
-    and again query
+    <BILINGUAL>
+    <EN>and again query</EN>
+    <JA>そして再び次のように問い合わせます：</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (married Mickey ?who)
@@ -193,6 +335,8 @@ assert(rule(married($x, $y),
 married("Mickey", $who)
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     Unfortunately, this will drive the system into an infinite loop, as
     follows:
     <UL>
@@ -228,7 +372,7 @@ married("Mickey", $who)
 	<SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>?y</SCHEMEINLINE></SCHEME>
 	  <JAVASCRIPT><JAVASCRIPTINLINE>$y</JAVASCRIPTINLINE></JAVASCRIPT>
-	</SPLITINLINE>      
+	</SPLITINLINE>
 	is bound to
 	<SPLITINLINE>
 	  <SCHEME><SCHEMEINLINE>?who</SCHEMEINLINE>.</SCHEME>
@@ -275,6 +419,90 @@ married("Mickey", $who)
 	</SPLITINLINE>
       </LI>
     </UL>
+    </EN>
+    <JA>
+    残念ながら、これによりシステムは次のような無限ループに陥ります：
+    <UL>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME>
+	    システムは <SCHEMEINLINE>married</SCHEMEINLINE> ルールが適用可能であることを見つけます。
+	    つまり、ルールの結論 <SCHEMEINLINE>(married ?x ?y)</SCHEMEINLINE> が
+	    クエリパターン <SCHEMEINLINE>(married Mickey ?who)</SCHEMEINLINE> と
+	    ユニフィケーションに成功し、
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    システムは <SCHEMEINLINE>married</SCHEMEINLINE> ルールが適用可能であることを見つけます。
+	    つまり、ルールの結論 <JAVASCRIPTINLINE>married($x, $y)</JAVASCRIPTINLINE> が
+	    クエリパターン <JAVASCRIPTINLINE>married("Mickey", $who)</JAVASCRIPTINLINE> と
+	    ユニファイされ、
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>?x</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>$x</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>
+	が
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>Mickey</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>"Mickey"</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>
+	に束縛され、
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>?y</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>$y</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>
+	が
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>?who</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT><JAVASCRIPTINLINE>$who</JAVASCRIPTINLINE></JAVASCRIPT>
+	</SPLITINLINE>
+	に束縛されるフレームが生成されます。
+	そしてインタプリタはこのフレームでルール本体
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(married ?y ?x)</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>married($y, $x)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	の評価に進みます<EMDASH/>事実上、クエリ
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(married ?who Mickey)</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>married($who, "Mickey")</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	を処理することになります。
+      </LI>
+      <LI>
+	<SPLITINLINE>
+	  <SCHEME>
+	    一つの答え <SCHEMEINLINE>(married Minnie Mickey)</SCHEMEINLINE> が
+	    データベースにアサーションとして直接見つかります。
+	  </SCHEME>
+	  <JAVASCRIPT>
+	    一つの答え
+	    <JAVASCRIPTINLINE>married("Minnie", "Mickey")</JAVASCRIPTINLINE>
+	    がデータベースにアサーションとして直接見つかります。
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+      </LI>
+      <LI>
+	<SCHEMEINLINE>married</SCHEMEINLINE> ルールも適用可能なので、
+	インタプリタは再びルール本体を評価します。今度は
+	<SPLITINLINE>
+	  <SCHEME><SCHEMEINLINE>(married Mickey ?who)</SCHEMEINLINE></SCHEME>
+	  <JAVASCRIPT>
+	    <JAVASCRIPTINLINE>married("Mickey", $who)</JAVASCRIPTINLINE>
+	  </JAVASCRIPT>
+	</SPLITINLINE>
+	と等価になります。
+      </LI>
+    </UL>
+    </JA>
+    </BILINGUAL>
+    <BILINGUAL>
+    <EN>
     The system is now in an infinite loop.  Indeed, whether the system
     will find the simple answer
     <SPLITINLINE>
@@ -290,7 +518,25 @@ married("Mickey", $who)
     the appearance of a loop can depend on the order of clauses in an
     <SCHEMEINLINE>and</SCHEMEINLINE> (see
     exercise<SPACE/><REF NAME="ex:query-simple-loop"/>) or on low-level details
-    concerning the order in which the system processes queries.<FOOTNOTE>This is
+    concerning the order in which the system processes queries.</EN>
+    <JA>
+    これでシステムは無限ループに陥ります。実際、ループに入る前にシステムが
+    単純な答え
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(married Minnie Mickey)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>married("Minnie", "Mickey")</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を見つけるかどうかは、システムがデータベース内の項目をチェックする順序に関する
+    実装の詳細に依存します。これは発生しうるループの非常に単純な例です。
+    相互に関連するルールの集まりは、予測がはるかに困難なループにつながる可能性があり、
+    ループの発生は <SCHEMEINLINE>and</SCHEMEINLINE> 内の節の順序
+    （練習問題<SPACE/><REF NAME="ex:query-simple-loop"/> を参照）や、
+    システムがクエリを処理する順序に関する低レベルの詳細に依存することがあります。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>This is
     not a problem of the logic but one of the procedural interpretation of the
     logic provided by our interpreter. We could write an interpreter that would
     not fall into a loop here. For example, we could enumerate all the proofs
@@ -299,7 +545,7 @@ married("Mickey", $who)
     advantage of the order of deductions in our programs.  One attempt to
     build sophisticated control into such a program is described in
     <INDEX>de Kleer, Johan</INDEX>
-    <CITATION>de Kleer et al.<SPACE/>1977</CITATION>.  
+    <CITATION>de Kleer et al.<SPACE/>1977</CITATION>.
     Another technique, which does not lead to such serious control problems, is
     to put in special knowledge, such as detectors for particular kinds of loops
     (exercise<SPACE/><REF NAME="ex:query-loop-detector"/>).  However, there can
@@ -307,24 +553,51 @@ married("Mickey", $who)
     infinite paths in performing deductions.  Imagine a diabolical rule of
     the form <QUOTE>To show <LATEXINLINE>$P(x)$</LATEXINLINE> is true, show that
     <LATEXINLINE>$P(f(x))$</LATEXINLINE> is true,</QUOTE> for some suitably
-    chosen function <LATEXINLINE>$f$</LATEXINLINE>.</FOOTNOTE>
+    chosen function <LATEXINLINE>$f$</LATEXINLINE>.</EN>
+    <JA>これは論理の問題ではなく、インタプリタが提供する論理の手続き的解釈の問題です。
+    ここでループに陥らないインタプリタを書くことは可能です。例えば、
+    アサーションとルールから導出できるすべての証明を、深さ優先ではなく
+    幅優先の順序で列挙することができます。しかし、そのようなシステムでは
+    プログラム内の推論の順序を活用することが難しくなります。
+    そのようなプログラムに洗練された制御を組み込む試みの一つが
+    <INDEX>de Kleer, Johan</INDEX>
+    <CITATION>de Kleer et al.<SPACE/>1977</CITATION>
+    に記述されています。
+    それほど深刻な制御の問題を引き起こさない別の技法は、
+    特定の種類のループの検出器のような特殊な知識を組み込むことです
+    （練習問題<SPACE/><REF NAME="ex:query-loop-detector"/>）。
+    しかし、推論の実行中にシステムが無限の経路をたどるのを確実に防ぐ
+    一般的な方法は存在しません。適切に選ばれた関数 <LATEXINLINE>$f$</LATEXINLINE>
+    に対して、<QUOTE><LATEXINLINE>$P(x)$</LATEXINLINE> が真であることを示すには、
+    <LATEXINLINE>$P(f(x))$</LATEXINLINE> が真であることを示せ</QUOTE>
+    という形式の悪魔的なルールを想像してみてください。</JA>
+    </BILINGUAL></FOOTNOTE>
   </TEXT>
 
   <INDEX>query interpreter<SUBINDEX>infinite loops<CLOSE/></SUBINDEX></INDEX>
   
   <SUBHEADING>
-    <NAME>Problems with <SCHEMEINLINE>not</SCHEMEINLINE></NAME>
+    <NAME><BILINGUAL><EN>Problems with <SCHEMEINLINE>not</SCHEMEINLINE></EN><JA><SCHEMEINLINE>not</SCHEMEINLINE> の問題点</JA></BILINGUAL></NAME>
   </SUBHEADING>
 
   <INDEX>query interpreter<SUBINDEX>problems with <SCHEMEINLINE>not</SCHEMEINLINE> and <SCHEMEINLINE>javascript_predicate</SCHEMEINLINE><OPEN/></SUBINDEX></INDEX>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     Another quirk in the query system concerns
     <INDEX><USE>not</USE> (query language)</INDEX>
     <SCHEMEINLINE>not</SCHEMEINLINE>.
     Given the data base of
     section<SPACE/><REF NAME="sec:deductive-info-retrieval"/>, consider the
-    following two queries:
+    following two queries:</EN>
+    <JA>
+    クエリシステムのもう一つの問題点は
+    <INDEX><USE>not</USE> (query language)</INDEX>
+    <SCHEMEINLINE>not</SCHEMEINLINE> に関するものです。
+    <REF NAME="sec:deductive-info-retrieval"/> 節のデータベースが与えられているとして、
+    次の2つのクエリを考えてみましょう：</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (and (supervisor ?x ?y)
@@ -341,6 +614,8 @@ and(not(job($x, list("computer", "programmer"))),
     supervisor($x, $y))
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     These two queries do not produce the same result.  The first query
     begins by finding all entries in the data base that match
     <SPLITINLINE>
@@ -363,7 +638,7 @@ and(not(job($x, list("computer", "programmer"))),
   <JAVASCRIPTINLINE>job($x,@list("computer", "programmer"))</JAVASCRIPTINLINE>.
       </JAVASCRIPT>
     </SPLITINLINE>
-    The second query begins by filtering the 
+    The second query begins by filtering the
     incoming frames to remove those that can satisfy
     <SPLITINLINE>
       <SCHEME>
@@ -376,7 +651,7 @@ and(not(job($x, list("computer", "programmer"))),
     Since the only incoming frame is empty, it checks the data base
     <SPLITINLINE>
       <SCHEME>
-        to see if there are any 
+        to see if there are any
       </SCHEME>
       <JAVASCRIPT>
         for
@@ -395,9 +670,61 @@ and(not(job($x, list("computer", "programmer"))),
     <SCHEMEINLINE>not</SCHEMEINLINE> clause filters out the empty frame and
     returns an empty stream of frames.  Consequently, the entire compound query
     returns an empty stream.
+    </EN>
+    <JA>
+    この2つのクエリは同じ結果を生成しません。最初のクエリは、
+    データベース内で
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(supervisor ?x ?y)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>supervisor($x, $y)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に一致するすべてのエントリを見つけることから始め、
+    次に
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>?x</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>$x</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    の値が
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>(job ?x (computer programmer))</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+  <JAVASCRIPTINLINE>job($x,@list("computer", "programmer"))</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を満たすフレームを取り除くことで結果のフレームをフィルタリングします。
+    2番目のクエリは、入力フレームのうち
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>(job ?x (computer programmer))</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+        <JAVASCRIPTINLINE>job($x, list("computer",@"programmer"))</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を満たすものを取り除くフィルタリングから始めます。
+    入力フレームは空のフレームだけなので、データベースで
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>(job ?x (computer programmer))</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+        <JAVASCRIPTINLINE>job($x, list("computer", "programmer"))</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を満たすパターンがあるかどうかをチェックします。
+    一般にこの形式のエントリは存在するので、<SCHEMEINLINE>not</SCHEMEINLINE> 節は
+    空のフレームをフィルタリングで除外し、空のフレームストリームを返します。
+    その結果、複合クエリ全体が空のストリームを返します。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     The trouble is that our implementation of <SCHEMEINLINE>not</SCHEMEINLINE>
     really is meant to serve as a filter on values for the variables.  If a
     <SCHEMEINLINE>not</SCHEMEINLINE> clause is processed with a frame in which
@@ -426,9 +753,43 @@ and(not(job($x, list("computer", "programmer"))),
       </JAVASCRIPT>
     </SPLITINLINE>
     See exercise<SPACE/><REF NAME="ex:not-query-filter"/>.
+    </EN>
+    <JA>
+    問題は、<SCHEMEINLINE>not</SCHEMEINLINE> の実装が本来、
+    変数の値に対するフィルタとして機能することを意図している点です。
+    <SCHEMEINLINE>not</SCHEMEINLINE> 節が、一部の変数がまだ未束縛のままの
+    フレームで処理されると（上の例の
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>?x</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>$x</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    のように）、システムは予期しない結果を生成します。同様の問題は
+    <INDEX><USE>javascript_predicate</USE> (query language)</INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>lisp-value</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>javascript_@predicate</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    の使用でも発生します<EMDASH/>
+    <SPLITINLINE>
+      <SCHEME>
+	Lisp
+	の述語は引数の一部が未束縛だと機能しません。
+      </SCHEME>
+      <JAVASCRIPT>
+	JavaScript
+	の述語は変数の一部が未束縛だと機能しません。
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    練習問題<SPACE/><REF NAME="ex:not-query-filter"/> を参照してください。
+    </JA>
+    </BILINGUAL>
   </TEXT>
 
   <TEXT>
+    <BILINGUAL>
+    <EN>
     There is also a much more serious way in which the
     <SCHEMEINLINE>not</SCHEMEINLINE> of the query language differs from the
     <SCHEMEINLINE>not</SCHEMEINLINE> of mathematical logic.  In logic, we
@@ -441,7 +802,21 @@ and(not(job($x, list("computer", "programmer"))),
     happily deduce all sorts of <SCHEMEINLINE>not</SCHEMEINLINE> statements,
     such as that Ben Bitdiddle is not a baseball fan, that it is not raining
     outside, and that <LATEXINLINE>$2 + 2$</LATEXINLINE>
-    is not 4.<FOOTNOTE>Consider the query
+    is not 4.</EN>
+    <JA>
+    クエリ言語の <SCHEMEINLINE>not</SCHEMEINLINE> が
+    数学的論理学の <SCHEMEINLINE>not</SCHEMEINLINE> と異なる、さらに深刻な点もあります。
+    論理学では、<QUOTE>not<SPACE/><LATEXINLINE>$P$</LATEXINLINE></QUOTE> という文は
+    <LATEXINLINE>$P$</LATEXINLINE> が真ではないことを意味すると解釈します。
+    しかしクエリシステムでは、<QUOTE>not <LATEXINLINE>$P$</LATEXINLINE></QUOTE> は
+    <LATEXINLINE>$P$</LATEXINLINE> がデータベース内の知識からは演繹できないことを意味します。
+    例えば、<REF NAME="sec:deductive-info-retrieval"/> 節の人事データベースが与えられると、
+    システムは Ben Bitdiddle は野球ファンではない、外は雨が降っていない、
+    <LATEXINLINE>$2 + 2$</LATEXINLINE> は 4 ではない、
+    といったあらゆる種類の <SCHEMEINLINE>not</SCHEMEINLINE> 文を喜んで演繹してしまいます。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>Consider the query
     <SPLITINLINE>
       <SCHEME><SCHEMEINLINE>(not (baseball-fan (Bitdiddle Ben)))</SCHEMEINLINE>.
       </SCHEME>
@@ -462,21 +837,60 @@ and(not(job($x, list("computer", "programmer"))),
     is not filtered out of the initial stream of frames.  The result of the
     query is thus the empty frame, which is used to instantiate the input query
     to produce
-    <SPLITINLINE><SCHEME><SCHEMEINLINE>(not (baseball-fan (Bitdiddle Ben)))</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>not(baseball_fan(list("Bitdiddle", "Ben")))</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>.</FOOTNOTE> In other
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>(not (baseball-fan (Bitdiddle Ben)))</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>not(baseball_fan(list("Bitdiddle", "Ben")))</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>.</EN>
+    <JA>クエリ
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(not (baseball-fan (Bitdiddle Ben)))</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>not(baseball_fan(list("Bitdiddle", "Ben")))</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を考えてみましょう。
+    システムは
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>(baseball-fan (Bitdiddle Ben))</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>baseball_fan(list("Bitdiddle", "Ben"))</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    がデータベースにないことを見つけるので、空のフレームはパターンを満たさず、
+    フレームの初期ストリームからフィルタリングで除外されません。クエリの結果は
+    したがって空のフレームとなり、入力クエリをインスタンス化して
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>(not (baseball-fan (Bitdiddle Ben)))</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>not(baseball_fan(list("Bitdiddle", "Ben")))</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE> を生成するために使われます。</JA>
+    </BILINGUAL></FOOTNOTE>
+    <BILINGUAL>
+    <EN> In other
     words, the <SCHEMEINLINE>not</SCHEMEINLINE> of logic programming languages
-    reflects the so-called 
+    reflects the so-called
     <INDEX>closed world assumption</INDEX>
     <EM>closed world assumption</EM> that all relevant information has been
-    included in the data base.<FOOTNOTE>A discussion and justification of this
+    included in the data base.</EN>
+    <JA> つまり、論理プログラミング言語の <SCHEMEINLINE>not</SCHEMEINLINE> は、
+    すべての関連情報がデータベースに含まれているという、いわゆる
+    <INDEX>closed world assumption</INDEX>
+    <EM>閉世界仮定</EM>を反映しています。</JA>
+    </BILINGUAL><FOOTNOTE>
+    <BILINGUAL>
+    <EN>A discussion and justification of this
     treatment of <SCHEMEINLINE>not</SCHEMEINLINE> can be found in the article
     <INDEX>negation as failure</INDEX>
     <QUOTE>Negation as Failure</QUOTE> by
     <INDEX>Clark, Keith L.</INDEX>
-    Clark (1978).</FOOTNOTE>
+    Clark (1978).</EN>
+    <JA><SCHEMEINLINE>not</SCHEMEINLINE> のこの扱いについての議論と正当化は、
+    <INDEX>negation as failure</INDEX>
+    <INDEX>Clark, Keith L.</INDEX>
+    Clark (1978) による論文 <QUOTE>Negation as Failure</QUOTE> に見ることができます。</JA>
+    </BILINGUAL></FOOTNOTE>
   </TEXT>
   <INDEX>query interpreter<SUBINDEX>problems with <SCHEMEINLINE>not</SCHEMEINLINE> and <SCHEMEINLINE>javascript_predicate</SCHEMEINLINE><CLOSE/></SUBINDEX></INDEX>
   
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Louis Reasoner mistakenly deletes the
     <INDEX><USE>outranked_by</USE> (rule)</INDEX>
     <SPLITINLINE>
@@ -485,7 +899,18 @@ and(not(job($x, list("computer", "programmer"))),
     </SPLITINLINE>
     rule (section<SPACE/><REF NAME="sec:deductive-info-retrieval"/>) from the
     data base.  When he realizes this, he quickly reinstalls it.  Unfortunately,
-    he makes a slight change in the rule, and types it in as
+    he makes a slight change in the rule, and types it in as</EN>
+    <JA>
+    Louis Reasoner は誤って
+    <INDEX><USE>outranked_by</USE> (rule)</INDEX>
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>outranked-by</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>outranked_by</JAVASCRIPTINLINE></JAVASCRIPT>
+    </SPLITINLINE>
+    ルール（<REF NAME="sec:deductive-info-retrieval"/> 節）を
+    データベースから削除してしまいました。それに気づいて急いで再インストールしましたが、
+    残念ながら、ルールに少し変更を加えてしまい、次のように入力しました：</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (rule (outranked-by ?staff-person ?boss)
@@ -500,9 +925,14 @@ rule(outranked_by($staff_person, $boss),
             supervisor($staff_person, $middle_manager))))
       </JAVASCRIPT>
     </SNIPPET>
-    Just after Louis types this information into the system, DeWitt
+    <BILINGUAL>
+    <EN>Just after Louis types this information into the system, DeWitt
     Aull comes by to find out who outranks Ben Bitdiddle. He issues
-    the query
+    the query</EN>
+    <JA>Louis がこの情報をシステムに入力した直後、DeWitt Aull が
+    Ben Bitdiddle より上位の人物を調べにやってきました。
+    彼は次のクエリを発行します：</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (outranked-by (Bitdiddle Ben) ?who)
@@ -512,16 +942,27 @@ outanked_by(list("Bitdiddle", "Ben"), $who)
       </JAVASCRIPT>
     </SNIPPET>
 
-    After answering, the system goes into an infinite loop.  Explain why.
+    <BILINGUAL>
+    <EN>After answering, the system goes into an infinite loop.  Explain why.</EN>
+    <JA>回答した後、システムは無限ループに陥ります。その理由を説明してください。</JA>
+    </BILINGUAL>
     <LABEL NAME="ex:query-simple-loop"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Cy D. Fect, looking forward to the day when he will rise in the
     organization, gives a query to find all the wheels (using the
     <INDEX><USE>wheel</USE> (rule)</INDEX>
     <SCHEMEINLINE>wheel</SCHEMEINLINE> rule of
-    section<SPACE/><REF NAME="sec:deductive-info-retrieval"/>):
+    section<SPACE/><REF NAME="sec:deductive-info-retrieval"/>):</EN>
+    <JA>
+    Cy D. Fect は組織で出世する日を楽しみにしながら、すべての重役を見つける
+    クエリを発行します（<REF NAME="sec:deductive-info-retrieval"/> 節の
+    <INDEX><USE>wheel</USE> (rule)</INDEX>
+    <SCHEMEINLINE>wheel</SCHEMEINLINE> ルールを使って）：</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (wheel ?who)
@@ -530,7 +971,10 @@ outanked_by(list("Bitdiddle", "Ben"), $who)
 wheel($who)
       </JAVASCRIPT>
     </SNIPPET>
-    To his surprise, the system responds
+    <BILINGUAL>
+    <EN>To his surprise, the system responds</EN>
+    <JA>驚いたことに、システムは次のように応答します：</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEMEOUTPUT>
 ;;; Query results:
@@ -549,16 +993,28 @@ wheel(list("Warbucks", "Oliver"))
 wheel(list("Warbucks", "Oliver"))
       </JAVASCRIPT_OUTPUT>
     </SNIPPET>
-    Why is Oliver Warbucks listed four times?
+    <BILINGUAL>
+    <EN>Why is Oliver Warbucks listed four times?</EN>
+    <JA>なぜ Oliver Warbucks が4回リストされているのでしょうか？</JA>
+    </BILINGUAL>
     <LABEL NAME="ex:multiple-query"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Ben has been
     <INDEX>query language<SUBINDEX>extensions to</SUBINDEX></INDEX>
     generalizing the query system to provide statistics about the
     company.  For example, to find the total salaries of all the computer
-    programmers one will be able to say
+    programmers one will be able to say</EN>
+    <JA>
+    Ben は
+    <INDEX>query language<SUBINDEX>extensions to</SUBINDEX></INDEX>
+    会社についての統計情報を提供するためにクエリシステムを一般化しています。
+    例えば、すべてのコンピュータプログラマの給与合計を求めるには
+    次のように書けるようになります：</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no">
       <SCHEME>
 (sum ?amount
@@ -571,7 +1027,10 @@ sum($amount,
         salary($x, $amount)))
       </JAVASCRIPT>
     </SNIPPET>
-    In general, Ben<APOS/>s new system allows expressions of the form
+    <BILINGUAL>
+    <EN>In general, Ben<APOS/>s new system allows expressions of the form</EN>
+    <JA>一般に、Ben の新しいシステムでは次の形式の式が使えます：</JA>
+    </BILINGUAL>
     <SNIPPET EVAL="no" LATEX="yes">
       <SCHEME>
 (accumulation-function variable
@@ -582,6 +1041,8 @@ accumulation_function($variable$,
                       $query$-$pattern$)
       </JAVASCRIPT>
     </SNIPPET>
+    <BILINGUAL>
+    <EN>
     where
     <SPLITINLINE>
       <SCHEME>
@@ -613,10 +1074,44 @@ accumulation_function($variable$,
     <P/>
     What has Ben just realized?  Outline a method he can use to salvage the
     situation.
+    </EN>
+    <JA>
+    ここで
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>accumulation-function</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>accumulation_function</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    は <SCHEMEINLINE>sum</SCHEMEINLINE>、<SCHEMEINLINE>average</SCHEMEINLINE>、
+    <SCHEMEINLINE>maximum</SCHEMEINLINE> などです。
+    Ben はこれを実装するのは簡単だと考えます。クエリパターンを
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>qeval</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT><JAVASCRIPTINLINE>evaluate_query</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    に渡すだけです。
+    これによりフレームのストリームが生成されます。次にこのストリームを
+    マッピング関数に通して各フレームから指定された変数の値を取り出し、
+    得られた値のストリームを累積関数に渡します。Ben が実装を完成させて
+    試そうとしたちょうどその時、Cy が通りかかりました。彼はまだ
+    練習問題<SPACE/><REF NAME="ex:multiple-query"/> の
+    <SCHEMEINLINE>wheel</SCHEMEINLINE> クエリの結果に困惑しています。
+    Cy がシステムの応答を Ben に見せると、Ben はうめきました。
+    <QUOTE>ああ、ダメだ。僕の単純な累積方式ではうまくいかない！</QUOTE>
+    <P/>
+    Ben は何に気づいたのでしょうか？状況を救うために使える方法の概要を述べてください。
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:4_64"/>
   </EXERCISE>
 
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Devise a
     <INDEX>query interpreter<SUBINDEX>improvements to</SUBINDEX></INDEX>
     <INDEX>query interpreter<SUBINDEX>infinite loops</SUBINDEX></INDEX>
@@ -630,11 +1125,27 @@ accumulation_function($variable$,
     you study the details of the query-system implementation in
     section<SPACE/><REF NAME="sec:implementing-the-query-system"/>, you may
     want to modify the system to include your loop detector.)
+    </EN>
+    <JA>
+    本文と練習問題<SPACE/><REF NAME="ex:query-simple-loop"/> で示されたような
+    単純なループを回避するために、クエリシステムにループ検出器をインストールする方法を
+    <INDEX>query interpreter<SUBINDEX>improvements to</SUBINDEX></INDEX>
+    <INDEX>query interpreter<SUBINDEX>infinite loops</SUBINDEX></INDEX>
+    考案してください。基本的なアイデアは、システムが現在の推論チェーンの
+    何らかの履歴を維持し、すでに処理中のクエリの処理を新たに開始しないようにすることです。
+    この履歴にどのような情報（パターンとフレーム）が含まれるか、
+    またチェックをどのように行うべきかを説明してください。
+    （<REF NAME="sec:implementing-the-query-system"/> 節でクエリシステムの
+    実装の詳細を学んだ後で、ループ検出器を含むようにシステムを修正するとよいでしょう。）
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:query-loop-detector"/>
   </EXERCISE>
 
   <DO_BREAK_PAGE/>
   <EXERCISE>
+    <BILINGUAL>
+    <EN>
     Define rules to implement the
     <INDEX><USE>reverse</USE><SUBINDEX>rules</SUBINDEX></INDEX>
     <SCHEMEINLINE>reverse</SCHEMEINLINE> operation
@@ -662,6 +1173,37 @@ accumulation_function($variable$,
     <JAVASCRIPT>the query <JAVASCRIPTINLINE>reverse($x, list(1, 2, 3))</JAVASCRIPTINLINE>?
     </JAVASCRIPT>
     </SPLITINLINE>
+    </EN>
+    <JA>
+    練習問題<SPACE/><REF NAME="ex:reverse"/> の
+    <INDEX><USE>reverse</USE><SUBINDEX>rules</SUBINDEX></INDEX>
+    <SCHEMEINLINE>reverse</SCHEMEINLINE> 操作を実装するルールを定義してください。
+    この操作は、与えられたリストと同じ要素を逆順に含むリストを返します。
+    （ヒント：
+    <SPLITINLINE>
+      <SCHEME>
+	<SCHEMEINLINE>append-to-form</SCHEMEINLINE>
+      </SCHEME>
+      <JAVASCRIPT>
+	<JAVASCRIPTINLINE>append_to_form</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    を使ってください。）
+    あなたのルールは
+    <SPLITINLINE>
+      <SCHEME><SCHEMEINLINE>(reverse (1 2 3) ?x)</SCHEMEINLINE></SCHEME>
+      <JAVASCRIPT>クエリ
+	<JAVASCRIPTINLINE>reverse(list(1, 2, 3), $x)</JAVASCRIPTINLINE>
+      </JAVASCRIPT>
+    </SPLITINLINE>
+    と <SPLITINLINE>
+    <SCHEME><SCHEMEINLINE>(reverse ?x (1 2 3))</SCHEMEINLINE></SCHEME>
+    <JAVASCRIPT>クエリ <JAVASCRIPTINLINE>reverse($x, list(1, 2, 3))</JAVASCRIPTINLINE>
+    </JAVASCRIPT>
+    </SPLITINLINE>
+    の両方に答えられますか？
+    </JA>
+    </BILINGUAL>
     <LABEL NAME="ex:4_66"/>
   </EXERCISE>
 
@@ -689,8 +1231,10 @@ accumulation_function($variable$,
     <JAVASCRIPT>
       <EXERCISE>
 	<LABEL NAME="ex:great-grandson"/>
+	<BILINGUAL>
+	<EN>
 	Let us modify the data base and the rules of
-	exercise<SPACE/><REF NAME="ex:genesis"/> to add 
+	exercise<SPACE/><REF NAME="ex:genesis"/> to add
 	<QUOTE>great</QUOTE> to a grandson relationship. This should enable the
 	system to deduce that Irad is the great-grandson of Adam, or that Jabal
 	and Jubal are the great-great-great-great-great-grandsons of Adam.
@@ -731,6 +1275,51 @@ list(pair("great", $rel), $x, $y)
 	    <JAVASCRIPTINLINE>related($relationship, "Adam", "Irad")</JAVASCRIPTINLINE>.
 	  </LI>
 	</OL>
+	</EN>
+	<JA>
+	練習問題<SPACE/><REF NAME="ex:genesis"/> のデータベースとルールを修正して、
+	grandson（孫）の関係に <QUOTE>great</QUOTE> を追加できるようにしましょう。
+	これにより、Irad が Adam の great-grandson（曾孫）であることや、
+	Jabal と Jubal が Adam の great-great-great-great-great-grandson であることを
+	システムが演繹できるようになるべきです。
+	<OL>
+	  <LI>
+	    データベース内のアサーションを変更して、関係の情報が
+	    <JAVASCRIPTINLINE>related</JAVASCRIPTINLINE> の1種類だけになるようにしてください。
+	    最初の項目が関係を記述します。つまり、
+	    <JAVASCRIPTINLINE>son("Adam", "Cain")</JAVASCRIPTINLINE> の代わりに
+	    <JAVASCRIPTINLINE>related("son", "Adam", "Cain")</JAVASCRIPTINLINE>
+	    と書きます。例えば Irad についての事実は次のように表現します：
+	    <SNIPPET EVAL="no">
+	      <JAVASCRIPT>
+related(list("great", "grandson"), "Adam", "Irad")
+	      </JAVASCRIPT>
+	    </SNIPPET>
+	  </LI>
+	  <LI>
+	    リストが <JAVASCRIPTINLINE>"grandson"</JAVASCRIPTINLINE> という語で
+	    終わるかどうかを判定するルールを書いてください。
+	  </LI>
+	  <LI>
+	    これを使って、次の関係を導出できるルールを表現してください：
+	    <SNIPPET EVAL="no">
+	      <JAVASCRIPT>
+list(pair("great", $rel), $x, $y)
+	      </JAVASCRIPT>
+	    </SNIPPET>
+	    ここで <JAVASCRIPTINLINE>$rel</JAVASCRIPTINLINE> は
+	    <JAVASCRIPTINLINE>"grandson"</JAVASCRIPTINLINE> で終わるリストです。
+	  </LI>
+	  <LI>
+	    クエリ
+	    <JAVASCRIPTINLINE>related(list("great", "grandson"), $g, $ggs)</JAVASCRIPTINLINE>
+	    と
+	    <JAVASCRIPTINLINE>related($relationship, "Adam", "Irad")</JAVASCRIPTINLINE>
+	    でルールをチェックしてください。
+	  </LI>
+	</OL>
+	</JA>
+	</BILINGUAL>
 	<COMMENT>
 	  This exercise is a bit more verbose than the original, because of the
 	  choice of using explicit predicate symbols rather than general lists,

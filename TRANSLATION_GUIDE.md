@@ -310,6 +310,39 @@ SICP JavaScript Edition 日本語翻訳の用語集・文体・タグ配置ル�
 | automagically | 自動魔法的に（automagically） | ジャーゴン。原語を併記 |
 | natural language parsing | 自然言語の構文解析 | |
 
+### 論理プログラミング・クエリ言語（Section 4.4）
+
+| 英語 | 日本語 | 備考 |
+|------|--------|------|
+| logic programming | 論理プログラミング | |
+| query language | クエリ言語 | |
+| query | クエリ | |
+| query system | クエリシステム | |
+| query interpreter | クエリインタプリタ | |
+| query evaluator | クエリ評価器 | |
+| simple query | 単純クエリ | |
+| compound query | 複合クエリ | |
+| assertion | アサーション | データベースに格納された事実 |
+| pattern | パターン | |
+| pattern variable | パターン変数 | |
+| pattern matching | パターンマッチング | |
+| pattern matcher | パターンマッチャー | 長音あり |
+| unification | ユニフィケーション | |
+| unify | ユニファイする | |
+| unifier | ユニファイア | |
+| rule (query language) | ルール | |
+| conclusion (of rule) | 結論 | ルールの結論部 |
+| body (of rule) | 本体 | ルールの本体部 |
+| closed world assumption | 閉世界仮定 | |
+| negation as failure | 失敗としての否定 | |
+| Horn clause | ホーン節 | |
+| resolution principle | 導出原理 | |
+| deductive | 演繹的 | |
+| instantiate | インスタンス化する | |
+| driver loop | ドライバループ | 長音なし |
+| rename | リネームする | 変数のリネーム |
+| interleave | インターリーブする | |
+
 ### その他
 
 | 英語 | 日本語 | 備考 |
