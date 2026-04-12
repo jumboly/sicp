@@ -25,7 +25,7 @@
     stream-processing point of view.
       </EN>
       <JA>
-    セクション<SPACE/><REF NAME="sec:benefits-of-assignment"/>で見たように、代入の導入がもたらす主要な利点の一つは、大きなシステムの状態の一部をローカル変数内にカプセル化（あるいは<QUOTE>隠蔽</QUOTE>）することで、システムのモジュール性を高められる点でした。ストリームモデルは、代入を使わずに同等のモジュール性を提供できます。その例として、セクション<SPACE/><REF NAME="sec:benefits-of-assignment"/>で扱った<LATEXINLINE>$\pi$</LATEXINLINE>のモンテカルロ推定を、ストリーム処理の観点から再実装してみましょう。
+    <REF NAME="sec:benefits-of-assignment"/>節で見たように、代入の導入がもたらす主要な利点の一つは、大きなシステムの状態の一部をローカル変数内にカプセル化（あるいは<QUOTE>隠蔽</QUOTE>）することで、システムのモジュール性を高められる点でした。ストリームモデルは、代入を使わずに同等のモジュール性を提供できます。その例として、<REF NAME="sec:benefits-of-assignment"/>節で扱った<LATEXINLINE>$\pi$</LATEXINLINE>のモンテカルロ推定を、ストリーム処理の観点から再実装してみましょう。
       </JA>
     </BILINGUAL>
   </TEXT>
@@ -395,7 +395,7 @@ stream_ref(pi, 100);
     simplified version of such a processor:
       </EN>
       <JA>
-    モデル化に対するこれら2つのアプローチを対比するため、銀行口座の残高を監視する<QUOTE>引き出しプロセッサ</QUOTE>の実装を再考してみましょう。セクション<SPACE/><REF NAME="sec:costs-of-assignment"/>では、このようなプロセッサの簡略版を実装しました。
+    モデル化に対するこれら2つのアプローチを対比するため、銀行口座の残高を監視する<QUOTE>引き出しプロセッサ</QUOTE>の実装を再考してみましょう。<REF NAME="sec:costs-of-assignment"/>節では、このようなプロセッサの簡略版を実装しました。
       </JA>
     </BILINGUAL>
     <SNIPPET EVAL="no">
@@ -527,7 +527,7 @@ stream_ref(my_account_stream, 2);
     has state!
       </EN>
       <JA>
-    <SPLITINLINE><SCHEME><SCHEMEINLINE>Stream-withdraw</SCHEMEINLINE></SCHEME><JAVASCRIPT>関数<JAVASCRIPTINLINE>stream_withdraw</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>は、出力が入力によって完全に決定される、定義の明確な数学関数を実装しています。しかし、入力<SPLITINLINE><SCHEME><SCHEMEINLINE>amount-stream</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>amount_stream</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>がユーザーがタイプした連続した値のストリームであり、結果として得られる残高のストリームが表示されるとしましょう。すると、値を入力して結果を見るユーザーの観点からは、このストリームプロセスは<SPLITINLINE><SCHEME><SCHEMEINLINE>make-simplified-withdraw</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>make_simplified_withdraw</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>によって作られたオブジェクトと同じふるまいをします。しかし、ストリーム版では代入もローカル状態変数もなく、その結果としてセクション<SPACE/><REF NAME="sec:costs-of-assignment"/>で遭遇した理論的な困難もまったくありません。それでもシステムは状態を持つのです！
+    <SPLITINLINE><SCHEME><SCHEMEINLINE>Stream-withdraw</SCHEMEINLINE></SCHEME><JAVASCRIPT>関数<JAVASCRIPTINLINE>stream_withdraw</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>は、出力が入力によって完全に決定される、定義の明確な数学関数を実装しています。しかし、入力<SPLITINLINE><SCHEME><SCHEMEINLINE>amount-stream</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>amount_stream</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>がユーザーがタイプした連続した値のストリームであり、結果として得られる残高のストリームが表示されるとしましょう。すると、値を入力して結果を見るユーザーの観点からは、このストリームプロセスは<SPLITINLINE><SCHEME><SCHEMEINLINE>make-simplified-withdraw</SCHEMEINLINE></SCHEME><JAVASCRIPT><JAVASCRIPTINLINE>make_simplified_withdraw</JAVASCRIPTINLINE></JAVASCRIPT></SPLITINLINE>によって作られたオブジェクトと同じふるまいをします。しかし、ストリーム版では代入もローカル状態変数もなく、その結果として<REF NAME="sec:costs-of-assignment"/>節で遭遇した理論的な困難もまったくありません。それでもシステムは状態を持つのです！
       </JA>
     </BILINGUAL>
   </TEXT>
@@ -671,7 +671,7 @@ stream_ref(my_account_stream, 2);
     with Paul<APOS/>s stream of requests and feeding the result to the
     bank-account stream process, as shown in
     figure<SPACE/><REF NAME="fig:joint-account-stream"/>.</EN>
-    <JA>一方で、注意深く見ると、関数型のモデルにも時間に関係する問題が忍び込んでくるのがわかります。特に厄介な領域が現れるのは、対話的システム、とりわけ独立したエンティティ同士の相互作用をモデル化するシステムを設計したいときです。たとえば、共同銀行口座を許可する銀行システムの実装を改めて考えてみましょう。代入とオブジェクトを使う従来のシステムでは、セクション<SPACE/><REF NAME="sec:costs-of-assignment"/>で見たように、Peter と Paul が口座を共有している事実を、Peter と Paul の両方が同じ銀行口座オブジェクトに取引リクエストを送ることでモデル化します。ストリームの観点からは、<QUOTE>オブジェクト</QUOTE><EM>そのもの</EM>というものはありませんが、銀行口座は取引リクエストのストリームに対して動作して応答のストリームを生成するプロセスとしてモデル化できることをすでに示しました。これに応じて、Peter と Paul が共同銀行口座を持っている事実は、図<SPACE/><REF NAME="fig:joint-account-stream"/>に示すように、Peter の取引リクエストのストリームと Paul のリクエストのストリームをマージし、その結果を銀行口座ストリームプロセスに渡すことでモデル化できます。</JA>
+    <JA>一方で、注意深く見ると、関数型のモデルにも時間に関係する問題が忍び込んでくるのがわかります。特に厄介な領域が現れるのは、対話的システム、とりわけ独立したエンティティ同士の相互作用をモデル化するシステムを設計したいときです。たとえば、共同銀行口座を許可する銀行システムの実装を改めて考えてみましょう。代入とオブジェクトを使う従来のシステムでは、<REF NAME="sec:costs-of-assignment"/>節で見たように、Peter と Paul が口座を共有している事実を、Peter と Paul の両方が同じ銀行口座オブジェクトに取引リクエストを送ることでモデル化します。ストリームの観点からは、<QUOTE>オブジェクト</QUOTE><EM>そのもの</EM>というものはありませんが、銀行口座は取引リクエストのストリームに対して動作して応答のストリームを生成するプロセスとしてモデル化できることをすでに示しました。これに応じて、Peter と Paul が共同銀行口座を持っている事実は、図<SPACE/><REF NAME="fig:joint-account-stream"/>に示すように、Peter の取引リクエストのストリームと Paul のリクエストのストリームをマージし、その結果を銀行口座ストリームプロセスに渡すことでモデル化できます。</JA>
     </BILINGUAL>
     <FIGURE>
       <FIGURE split_scale="0.5" web_scale="0.7" scale="0.59" src="img_original/ch3-Z-G-60.svg"></FIGURE>
@@ -738,7 +738,7 @@ stream_ref(my_account_stream, 2);
     並行性を扱う際には非決定性が本質的であることは
     すでに（脚注<SPACE/><REF NAME="foot:nondeterministic"/>で）述べました。
     マージ関係は、関数型の観点から見て、同じ本質的な非決定性を例示しています。
-    セクション<SPACE/><REF NAME="sec:nondeterministic-evaluation"/>では、
+    <REF NAME="sec:nondeterministic-evaluation"/>節では、
     非決定性をさらに別の観点から見ていきます。</JA></BILINGUAL></FOOTNOTE>
     <BILINGUAL>
       <EN>
@@ -751,7 +751,7 @@ stream_ref(my_account_stream, 2);
         was meant to eliminate.
       </EN>
       <JA>
-        これはまさに、セクション<SPACE/><REF NAME="sec:nature-of-time"/>で扱わざるを
+        これはまさに、<REF NAME="sec:nature-of-time"/>節で扱わざるを
         得なかったのと同じ制約です。そこでは、状態を持つオブジェクトの並行処理
         においてイベントの<QUOTE>正しい</QUOTE>順序を保証するために、明示的な
         同期を導入する必要があることを見ました。このように、関数型のスタイルを

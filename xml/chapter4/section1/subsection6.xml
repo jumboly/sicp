@@ -195,7 +195,7 @@
 	in the body of a function<SPACE/><JAVASCRIPTINLINE>f</JAVASCRIPTINLINE>.
 	</EN>
 	<JA>
-	セクション<SPACE/><REF NAME="sec:env-internal-def"/>で取り上げた、相互再帰的な関数
+	<REF NAME="sec:env-internal-def"/>節で取り上げた、相互再帰的な関数
 	<JAVASCRIPTINLINE>is_even</JAVASCRIPTINLINE> と
 	<JAVASCRIPTINLINE>is_odd</JAVASCRIPTINLINE> のペアを、関数<SPACE/><JAVASCRIPTINLINE>f</JAVASCRIPTINLINE> の本体にローカルに宣言された形で再び見てみましょう。
 	</JA>
@@ -281,7 +281,7 @@ function f(x) {
 	value.
 	</EN>
 	<JA>
-	セクション<SPACE/><REF NAME="sec:core-of-evaluator"/>のメタ循環評価器におけるブロックの評価は、
+	<REF NAME="sec:core-of-evaluator"/>節のメタ循環評価器におけるブロックの評価は、
         <INDEX>scanning out declarations<SUBINDEX>in metacircular evaluator</SUBINDEX></INDEX>
 	<INDEX>internal declaration<SUBINDEX>scanning out</SUBINDEX></INDEX>
 	ブロック内の宣言をスキャンアウトし、宣言を評価する前にすべての宣言された名前の束縛を含むフレームで現在の環境を拡張することで、ローカルな名前の同時スコープを実現しています。したがって、ブロック本体が評価される新しい環境には、<JAVASCRIPTINLINE>is_even</JAVASCRIPTINLINE> と <JAVASCRIPTINLINE>is_odd</JAVASCRIPTINLINE> の束縛がすでに含まれており、これらの名前のどの出現も正しい束縛を参照します。宣言が評価されると、これらの名前は宣言された値、すなわち拡張された環境を環境部分として持つ関数オブジェクトに束縛されます。したがって、例えば <JAVASCRIPTINLINE>f</JAVASCRIPTINLINE> の本体で <JAVASCRIPTINLINE>is_even</JAVASCRIPTINLINE> が適用される時点で、その環境にはシンボル <JAVASCRIPTINLINE>is_odd</JAVASCRIPTINLINE> の正しい束縛がすでに含まれており、<JAVASCRIPTINLINE>is_even</JAVASCRIPTINLINE> の本体における名前 <JAVASCRIPTINLINE>is_odd</JAVASCRIPTINLINE> の評価は正しい値を取得します。
@@ -295,7 +295,7 @@ function f(x) {
 	of section<SPACE/><REF NAME="sec:lambda"/>:
 	</EN>
 	<JA>
-	セクション<SPACE/><REF NAME="sec:lambda"/>の関数 <JAVASCRIPTINLINE>f_3</JAVASCRIPTINLINE> について考えてみましょう。
+	<REF NAME="sec:lambda"/>節の関数 <JAVASCRIPTINLINE>f_3</JAVASCRIPTINLINE> について考えてみましょう。
 	</JA>
 	</BILINGUAL>
         <SNIPPET PAGE="64" EVAL="no">
@@ -667,7 +667,7 @@ function f(x) {
 	<JAVASCRIPTINLINE>eval_block</JAVASCRIPTINLINE>:
 	</EN>
 	<JA>
-	セクション<SPACE/><REF NAME="sec:core-of-evaluator"/>の評価器の設計は、ブロックの評価に実行時の負担を課しています。ブロックの本体をスキャンしてローカルに宣言された名前を見つけ、それらの名前を束縛する新しいフレームで現在の環境を拡張し、この拡張された環境でブロック本体を評価する必要があるからです。別の方法として、ブロックの評価は現在の環境を空のフレームで拡張することもできます。ブロック本体内の各宣言の評価が、そのフレームに新しい束縛を追加することになります。この設計を実装するために、まず
+	<REF NAME="sec:core-of-evaluator"/>節の評価器の設計は、ブロックの評価に実行時の負担を課しています。ブロックの本体をスキャンしてローカルに宣言された名前を見つけ、それらの名前を束縛する新しいフレームで現在の環境を拡張し、この拡張された環境でブロック本体を評価する必要があるからです。別の方法として、ブロックの評価は現在の環境を空のフレームで拡張することもできます。ブロック本体内の各宣言の評価が、そのフレームに新しい束縛を追加することになります。この設計を実装するために、まず
 	<JAVASCRIPTINLINE>eval_block</JAVASCRIPTINLINE> を簡略化します。
 	</JA>
 	</BILINGUAL>
@@ -887,7 +887,7 @@ function add_binding_to_frame(symbol, value, frame) {
 	<JA>
 	逐次的な宣言の処理では、宣言のスコープはもはや宣言を直接囲むブロック全体ではなく、宣言が現れる位置から始まるブロックの一部分だけになります。同時スコープはなくなりますが、逐次的な宣言の処理でも、この節の冒頭にある関数 <SCHEMEINLINE>f</SCHEMEINLINE> の呼び出しは正しく評価されます。ただし、それは<QUOTE>偶然の</QUOTE>理由によるものです。内部関数の宣言が先に来るため、すべての宣言が終わるまでこれらの関数への呼び出しは評価されません。したがって、<JAVASCRIPTINLINE>is_even</JAVASCRIPTINLINE> が実行される時点では <JAVASCRIPTINLINE>is_odd</JAVASCRIPTINLINE> はすでに宣言されています。実際、逐次的な宣言の処理は、
 	<INDEX>internal declaration<SUBINDEX>restrictions on</SUBINDEX></INDEX>
-	内部宣言が本体の先頭に来ていて、宣言された名前の値式の評価が宣言された名前をどれも実際には使わないような関数に対しては、セクション<SPACE/><REF NAME="sec:core-of-evaluator"/>の宣言スキャンアウト評価器と同じ結果を与えます。演習問題<SPACE/><REF NAME="ex:simultaneous-def"/>は、これらの制約に従わない関数の例を示しており、その場合この代替評価器は宣言スキャンアウト評価器と同等ではなくなります。
+	内部宣言が本体の先頭に来ていて、宣言された名前の値式の評価が宣言された名前をどれも実際には使わないような関数に対しては、<REF NAME="sec:core-of-evaluator"/>節の宣言スキャンアウト評価器と同じ結果を与えます。演習問題<SPACE/><REF NAME="ex:simultaneous-def"/>は、これらの制約に従わない関数の例を示しており、その場合この代替評価器は宣言スキャンアウト評価器と同等ではなくなります。
 	</JA>
 	</BILINGUAL>
       </TEXT>
@@ -958,7 +958,7 @@ f(10);
 	prefers?
 	</EN>
 	<JA>
-	Ben は、宣言の逐次的な処理を使って結果が得られるべきだと主張します。<SCHEMEINLINE>b</SCHEMEINLINE> は 11 と宣言され、次に <SCHEMEINLINE>a</SCHEMEINLINE> が 5 と宣言されるので、結果は 16 です。Alyssa は、相互再帰には内部関数宣言の同時スコープ規則が必要であり、関数名を他の名前と異なる扱いにするのは不合理だと反論します。そこで彼女は、セクション<SPACE/><REF NAME="sec:core-of-evaluator"/>で実装されたメカニズムを支持します。これだと、<SCHEMEINLINE>b</SCHEMEINLINE> の値を計算する時点で <SCHEMEINLINE>a</SCHEMEINLINE> は未代入になります。したがって、Alyssa の考えでは関数はエラーを生成するべきです。Eva は第三の意見を持っています。彼女は、<SCHEMEINLINE>a</SCHEMEINLINE> と <SCHEMEINLINE>b</SCHEMEINLINE> の宣言が本当に同時であることを意図しているなら、<SCHEMEINLINE>b</SCHEMEINLINE> の評価には <SCHEMEINLINE>a</SCHEMEINLINE> の値 5 が使われるべきだと言います。したがって、Eva の考えでは <SCHEMEINLINE>a</SCHEMEINLINE> は 5、<SCHEMEINLINE>b</SCHEMEINLINE> は 15 になり、結果は 20 です。これらの見解のうち、あなたはどれを（もしあれば）支持しますか？ Eva が好む動作をするように内部宣言を実装する方法を考案できますか？
+	Ben は、宣言の逐次的な処理を使って結果が得られるべきだと主張します。<SCHEMEINLINE>b</SCHEMEINLINE> は 11 と宣言され、次に <SCHEMEINLINE>a</SCHEMEINLINE> が 5 と宣言されるので、結果は 16 です。Alyssa は、相互再帰には内部関数宣言の同時スコープ規則が必要であり、関数名を他の名前と異なる扱いにするのは不合理だと反論します。そこで彼女は、<REF NAME="sec:core-of-evaluator"/>節で実装されたメカニズムを支持します。これだと、<SCHEMEINLINE>b</SCHEMEINLINE> の値を計算する時点で <SCHEMEINLINE>a</SCHEMEINLINE> は未代入になります。したがって、Alyssa の考えでは関数はエラーを生成するべきです。Eva は第三の意見を持っています。彼女は、<SCHEMEINLINE>a</SCHEMEINLINE> と <SCHEMEINLINE>b</SCHEMEINLINE> の宣言が本当に同時であることを意図しているなら、<SCHEMEINLINE>b</SCHEMEINLINE> の評価には <SCHEMEINLINE>a</SCHEMEINLINE> の値 5 が使われるべきだと言います。したがって、Eva の考えでは <SCHEMEINLINE>a</SCHEMEINLINE> は 5、<SCHEMEINLINE>b</SCHEMEINLINE> は 15 になり、結果は 20 です。これらの見解のうち、あなたはどれを（もしあれば）支持しますか？ Eva が好む動作をするように内部宣言を実装する方法を考案できますか？
 	</JA>
 	</BILINGUAL><FOOTNOTE>
 	<BILINGUAL>
