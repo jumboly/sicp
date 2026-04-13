@@ -75,6 +75,7 @@ const HtmlHeadPart2: FC<HtmlHeadPart2Props> = ({ toIndexFolder }) => {
     </script> -->
     <script src="${toIndexFolder}assets/application.js?v=${buildHash}"></script>
     <script src="${toIndexFolder}assets/lang-toggle.js?v=${buildHash}"></script>
+    <script src="${toIndexFolder}assets/bookmark.js?v=${buildHash}"></script>
     <script src="${toIndexFolder}assets/snippet-runner.js?v=${buildHash}"></script>
 
     <!-- Rendering inline LaTeX -->

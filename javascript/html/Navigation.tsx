@@ -87,8 +87,31 @@ const Navigation: FC<{
       <div
         class="btn-group btn-group-sm"
         role="group"
-        style="margin-left: auto;"
+        style="margin-left: auto; margin-right: 8px;"
       >
+        <button
+          id="bookmark-save"
+          class="btn btn-sm btn-outline-light"
+          onclick="saveBookmarkHere()"
+          title="現在位置をしおりに保存"
+          style="font-size: 0.9rem; padding: 2px 8px;"
+          aria-label="しおりを保存"
+        >
+          ☆
+        </button>
+        <button
+          id="bookmark-jump"
+          class="btn btn-sm btn-outline-light bookmark-empty"
+          onclick="jumpToBookmark()"
+          disabled
+          title="しおり未保存"
+          style="font-size: 0.9rem; padding: 2px 8px;"
+          aria-label="しおりへジャンプ"
+        >
+          ↩
+        </button>
+      </div>
+      <div class="btn-group btn-group-sm" role="group">
         <button
           id="lang-en"
           class="btn btn-sm btn-outline-light"
