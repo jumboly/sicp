@@ -1,0 +1,5557 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="4.4.2 How the Query System Works - SICP Comparison Edition"/><title>4.4.2 How the Query System Works - SICP Comparison Edition</title><meta name="csrf-param" content="authenticity_token" />
+    <meta
+      name="csrf-token"
+      content="EMTEijVc2kiiKUH4nYH0lQG3pLPfMowQ/Stg//t6DCo0e5pWMQwamnTvIdmVZqY/MqSx2IYYE+2bpNV6UNSMwQ=="
+    />
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Inconsolata&display?swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Droid+Sans|Droid+Serif"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      media="all"
+      href="../assets/stylesheet.css?v=mnwty5q1"
+    />
+
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="../assets/sourcepower.ico"
+    />
+
+    <!--    <link rel="shortcut icon" type="image/png" href="../images/lambda.png" /> -->
+
+    <!-- for support of progressive web app, see github README, DISABLED!
+    <link rel="manifest" href="../static/manifest.json">
+    -->
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+      integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+      integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script> -->
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML-full"
+    ></script>
+    <!--  <script type="text/javascript"
+      src="../MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full">
+    </script> -->
+    <script src="../assets/application.js?v=mnwty5q1"></script>
+    <script src="../assets/lang-toggle.js?v=mnwty5q1"></script>
+    <script src="../assets/bookmark.js?v=mnwty5q1"></script>
+    <script src="../assets/snippet-runner.js?v=mnwty5q1"></script>
+
+    <!-- Rendering inline LaTeX -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true,
+          jax: ["input/TeX","output/HTML-CSS"]
+        }
+      });
+    </script>
+    <!--<script src="/mathjax/MathJax.js?config=TeX-AMS_HTML-full.js" type="text/javascript"></script>-->
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"
+        type="text/javascript"
+      ></script>
+    <![endif]--> </head><body><!-- support for progressive web app, see README, DISABLED -->
+    <!-- <script>
+      if ("serviceWorker" in navigator && !navigator.serviceWorker.controller) {
+        navigator.serviceWorker.register("../sw.js").then(function (reg) {
+          console.log(
+            "Service worker has been registered for scope: " + reg.scope
+          );
+        });
+      }
+    </script> -->
+    <nav
+      class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top justify-content-between"
+    >
+      <button
+        id="btn"
+        class="navbar-toggler collapsed"
+        type="button"
+        data-toggle="collapse"
+        data-target="#nav-sidebar"
+        aria-controls="nav-sidebar"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        title="navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <span class="navbar-brand-short"
+        ><a
+          title="Go back to front page"
+          href="../index.html"
+          class="gray"
+          >SICP &mdash; JS</a
+        ></span
+      >
+      <span class="navbar-brand-long"
+        ><a
+          title="Go back to front page"
+          href="../index.html"
+          class="gray"
+          >Structure and Interpretation of Computer Programs &mdash; Comparison Edition</a
+        ></span
+      >
+      <span class="toolt"
+        >Legend<span class="toolttext">
+          <div class="title-text-ALSO">
+      <span class="title-text-ALSO">Color highlighting:</span><br />
+    </div>
+    <div class="title-text-OTHEREDITIONS">
+      <span class="title-text-OTHEREDITIONS">
+        <span style="color:black">Unchanged █</span>
+      </span>
+    </div>
+    <div class="title-text-OTHEREDITIONS">
+      <span class="title-text-OTHEREDITIONS">
+        <span style="color:green">Scheme █</span>
+      </span>
+    </div>
+    <div class="title-text-OTHEREDITIONS">
+      <span class="title-text-OTHEREDITIONS">
+        <span style="color:blue">Javascript █</span>
+      </span>
+    </div>
+    <div class="title-text-OTHEREDITIONS">
+      <span class="title-text-OTHEREDITIONS">
+        <span style="color:grey">Explanation █</span>
+      </span>
+    </div>
+    <div class="title-text-OTHEREDITIONS">
+      <span class="title-text-OTHEREDITIONS">
+        <span style="color:red">Web-only █</span>
+      </span>
+    </div>
+        </span></span
+      >
+      <div
+        class="btn-group btn-group-sm"
+        role="group"
+        style="margin-left: auto; margin-right: 8px;"
+      >
+        <button
+          id="bookmark-save"
+          class="btn btn-sm btn-outline-light"
+          onclick="saveBookmarkHere()"
+          title="現在位置をしおりに保存"
+          style="font-size: 0.9rem; padding: 2px 8px;"
+          aria-label="しおりを保存"
+        >
+          ☆
+        </button>
+        <button
+          id="bookmark-jump"
+          class="btn btn-sm btn-outline-light bookmark-empty"
+          onclick="jumpToBookmark()"
+          disabled
+          title="しおり未保存"
+          style="font-size: 0.9rem; padding: 2px 8px;"
+          aria-label="しおりへジャンプ"
+        >
+          ↩
+        </button>
+      </div>
+      <div class="btn-group btn-group-sm" role="group">
+        <button
+          id="lang-en"
+          class="btn btn-sm btn-outline-light"
+          onclick="setLang('en')"
+          style="font-size: 0.8rem; padding: 2px 8px;"
+        >
+          EN
+        </button>
+        <button
+          id="lang-ja"
+          class="btn btn-sm btn-light"
+          onclick="setLang('ja')"
+          style="font-size: 0.8rem; padding: 2px 8px;"
+        >
+          JA
+        </button>
+        <button
+          id="lang-both"
+          class="btn btn-sm btn-outline-light"
+          onclick="setLang('both')"
+          style="font-size: 0.8rem; padding: 2px 8px;"
+        >
+          EN/JA
+        </button>
+      </div>
+    </nav><div class="container scroll">
+        <div class="collapse" id="nav-sidebar" role="tablist" aria-multiselectable="true">
+        <!-- insert a dummy entry, to give one extra line of space -->
+        <a class="navbar-brand" href="index.html">&nbsp;</a>
+    
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-1">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-1"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-1"
+              >
+                <a href="./foreword02.html">
+                  
+        <div class="lang-en">Foreword</div><div class="lang-ja" style="display:none">序文</div>
+    </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-2">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-2"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-2"
+              >
+                <a href="./foreword84.html">
+                  <div class="lang-en">Foreword to Structure and Interpretation of Computer Programs, 1984</div><div class="lang-ja" style="display:none">「計算機プログラムの構造と解釈」への序文、1984年</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-3">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-3"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-3"
+              >
+                <a href="./prefaces03.html">
+                  
+    <div class="lang-en">Preface</div><div class="lang-ja" style="display:none">まえがき</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-4">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-4"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-4"
+              >
+                <a href="./prefaces96.html">
+                  
+    <div class="lang-en">
+    Prefaces
+    
+      
+	to Structure and Interpretation of Computer Programs, 1996 & 1984
+      
+    
+    </div><div class="lang-ja" style="display:none">
+    
+      
+	「計算機プログラムの構造と解釈」へのまえがき、1996年 & 1984年
+      
+    
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-5">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-5"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-5"
+              >
+                <a href="./acknowledgements.html">
+                  <div class="lang-en">Acknowledgments</div><div class="lang-ja" style="display:none">謝辞</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-6">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-6"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-6"
+              >
+                <a href="./see.html">
+                  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-7">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-7"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-7"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-7"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-7"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./1.html"
+        >1 <div class="lang-en">Building Abstractions with Functions</div><div class="lang-ja" style="display:none">関数による抽象の構築</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-7" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-8">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-8"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-8"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-8"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-8"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./1.1.html"
+        >1.1 <div class="lang-en">The Elements of Programming</div><div class="lang-ja" style="display:none">プログラミングの要素</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-8" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-9">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-9"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-9"
+              >
+                <a href="./1.1.1.html">
+                  1.1.1 <div class="lang-en">Expressions</div><div class="lang-ja" style="display:none">式</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-10">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-10"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-10"
+              >
+                <a href="./1.1.2.html">
+                  1.1.2 <div class="lang-en">Naming and the Environment</div><div class="lang-ja" style="display:none">名前付けと環境</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-11">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-11"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-11"
+              >
+                <a href="./1.1.3.html">
+                  1.1.3 
+    <div class="lang-en">Evaluating
+    
+      
+      Operator Combinations
+    </div><div class="lang-ja" style="display:none">
+      
+      演算子の組み合わせ
+    の評価</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-12">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-12"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-12"
+              >
+                <a href="./1.1.4.html">
+                  1.1.4 
+    <div class="lang-en">Compound 
+    Functions</div><div class="lang-ja" style="display:none">複合
+    関数</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-13">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-13"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-13"
+              >
+                <a href="./1.1.5.html">
+                  1.1.5 
+    <div class="lang-en">
+    The Substitution Model for
+    
+      
+      
+        Function
+      
+    
+    Application
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      
+        関数
+      
+    適用の置換モデル
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-14">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-14"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-14"
+              >
+                <a href="./1.1.6.html">
+                  1.1.6 
+    <div class="lang-en">Conditional Expressions and Predicates</div><div class="lang-ja" style="display:none">条件式と述語</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-15">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-15"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-15"
+              >
+                <a href="./1.1.7.html">
+                  1.1.7 <div class="lang-en">Example: Square Roots by Newton's Method</div><div class="lang-ja" style="display:none">例：ニュートン法による平方根</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-16">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-16"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-16"
+              >
+                <a href="./1.1.8.html">
+                  1.1.8 
+    <div class="lang-en">
+    
+      
+      
+        Functions
+      
+    
+    as Black-Box Abstractions
+    </div><div class="lang-ja" style="display:none">
+    ブラックボックス抽象化としての
+      
+      
+        関数
+      
+    
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-17">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-17"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-17"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-17"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-17"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./1.2.html"
+        >1.2 
+    <div class="lang-en">
+      
+      Functions
+    
+    and the Processes They Generate</div><div class="lang-ja" style="display:none">
+      
+      関数
+    とそれが生成するプロセス</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-17" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-18">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-18"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-18"
+              >
+                <a href="./1.2.1.html">
+                  1.2.1 <div class="lang-en">Linear Recursion and Iteration</div><div class="lang-ja" style="display:none">線形再帰と反復</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-19">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-19"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-19"
+              >
+                <a href="./1.2.2.html">
+                  1.2.2 <div class="lang-en">Tree Recursion</div><div class="lang-ja" style="display:none">ツリー再帰</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-20">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-20"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-20"
+              >
+                <a href="./1.2.3.html">
+                  1.2.3 <div class="lang-en">Orders of Growth</div><div class="lang-ja" style="display:none">増加のオーダー</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-21">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-21"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-21"
+              >
+                <a href="./1.2.4.html">
+                  1.2.4 <div class="lang-en">Exponentiation</div><div class="lang-ja" style="display:none">べき乗</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-22">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-22"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-22"
+              >
+                <a href="./1.2.5.html">
+                  1.2.5 <div class="lang-en">Greatest Common Divisors</div><div class="lang-ja" style="display:none">最大公約数</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-23">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-23"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-23"
+              >
+                <a href="./1.2.6.html">
+                  1.2.6 <div class="lang-en">Example: Testing for Primality</div><div class="lang-ja" style="display:none">例：素数性のテスト</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-24">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-24"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-24"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-24"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-24"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./1.3.html"
+        >1.3 
+        <div class="lang-en">
+        Formulating Abstractions with Higher-Order
+        
+	  
+	  Functions
+	
+        </div><div class="lang-ja" style="display:none">
+        高階
+	  
+	  関数
+	による抽象の定式化
+        </div>
+      </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-24" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-25">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-25"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-25"
+              >
+                <a href="./1.3.1.html">
+                  1.3.1 
+    <div class="lang-en">
+    
+      
+      Functions
+    
+    as Arguments
+    </div><div class="lang-ja" style="display:none">
+    引数としての
+      
+      関数
+    
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-26">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-26"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-26"
+              >
+                <a href="./1.3.2.html">
+                  1.3.2 
+    <div class="lang-en">
+    
+      
+      Constructing Functions using Lambda Expressions
+      
+    
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      ラムダ式を使った関数の構築
+    
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-27">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-27"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-27"
+              >
+                <a href="./1.3.3.html">
+                  1.3.3 
+    <div class="lang-en">
+      
+    Functions
+    as General Methods</div><div class="lang-ja" style="display:none">一般的な方法としての
+      
+    関数</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-28">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-28"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-28"
+              >
+                <a href="./1.3.4.html">
+                  1.3.4 
+    <div class="lang-en">
+      
+      Functions
+    
+    as Returned Values</div><div class="lang-ja" style="display:none">戻り値としての
+      
+      関数
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-29">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-29"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-29"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-29"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-29"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./2.html"
+        >2 <div class="lang-en">Building Abstractions with Data</div><div class="lang-ja" style="display:none">データによる抽象の構築</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-29" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-30">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-30"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-30"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-30"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-30"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./2.1.html"
+        >2.1 <div class="lang-en">Introduction to Data Abstraction</div><div class="lang-ja" style="display:none">データ抽象入門</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-30" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-31">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-31"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-31"
+              >
+                <a href="./2.1.1.html">
+                  2.1.1 
+    <div class="lang-en">Example: Arithmetic Operations for Rational Numbers</div><div class="lang-ja" style="display:none">例：有理数の算術演算</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-32">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-32"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-32"
+              >
+                <a href="./2.1.2.html">
+                  2.1.2 
+    <div class="lang-en">Abstraction Barriers</div><div class="lang-ja" style="display:none">抽象バリア</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-33">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-33"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-33"
+              >
+                <a href="./2.1.3.html">
+                  2.1.3 
+    <div class="lang-en">What Is Meant by Data?</div><div class="lang-ja" style="display:none">データとは何か？</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-34">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-34"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-34"
+              >
+                <a href="./2.1.4.html">
+                  2.1.4 
+    <div class="lang-en">Extended Exercise: Interval Arithmetic</div><div class="lang-ja" style="display:none">拡張演習：区間算術</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-35">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-35"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-35"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-35"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-35"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./2.2.html"
+        >2.2 
+  <div class="lang-en">Hierarchical Data and the Closure Property</div><div class="lang-ja" style="display:none">階層的データと閉包性</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-35" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-36">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-36"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-36"
+              >
+                <a href="./2.2.1.html">
+                  2.2.1 
+    <div class="lang-en">Representing Sequences</div><div class="lang-ja" style="display:none">シーケンスの表現</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-37">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-37"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-37"
+              >
+                <a href="./2.2.2.html">
+                  2.2.2 
+    <div class="lang-en">Hierarchical Structures</div><div class="lang-ja" style="display:none">階層的構造</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-38">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-38"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-38"
+              >
+                <a href="./2.2.3.html">
+                  2.2.3 
+    <div class="lang-en">Sequences as Conventional Interfaces</div><div class="lang-ja" style="display:none">規約インターフェースとしてのシーケンス</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-39">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-39"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-39"
+              >
+                <a href="./2.2.4.html">
+                  2.2.4 
+    <div class="lang-en">Example: A Picture Language</div><div class="lang-ja" style="display:none">例：ピクチャー言語</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-40">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-40"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-40"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-40"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-40"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./2.3.html"
+        >2.3 
+    <div class="lang-en">Symbolic Data</div><div class="lang-ja" style="display:none">シンボリックデータ</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-40" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-41">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-41"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-41"
+              >
+                <a href="./2.3.1.html">
+                  2.3.1 
+    
+      
+      
+        <div class="lang-en">Strings</div><div class="lang-ja" style="display:none">文字列</div>
+      
+    
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-42">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-42"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-42"
+              >
+                <a href="./2.3.2.html">
+                  2.3.2 
+    <div class="lang-en">Example: Symbolic Differentiation</div><div class="lang-ja" style="display:none">例：シンボリック微分</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-43">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-43"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-43"
+              >
+                <a href="./2.3.3.html">
+                  2.3.3 
+    <div class="lang-en">Example: Representing Sets</div><div class="lang-ja" style="display:none">例：集合の表現</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-44">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-44"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-44"
+              >
+                <a href="./2.3.4.html">
+                  2.3.4 
+    <div class="lang-en">Example: Huffman Encoding Trees</div><div class="lang-ja" style="display:none">例：ハフマン符号化木</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-45">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-45"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-45"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-45"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-45"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./2.4.html"
+        >2.4 
+    <div class="lang-en">Multiple Representations for Abstract Data</div><div class="lang-ja" style="display:none">抽象データの多重表現</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-45" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-46">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-46"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-46"
+              >
+                <a href="./2.4.1.html">
+                  2.4.1 
+    <div class="lang-en">Representations for Complex Numbers</div><div class="lang-ja" style="display:none">複素数の表現</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-47">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-47"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-47"
+              >
+                <a href="./2.4.2.html">
+                  2.4.2 
+    <div class="lang-en">Tagged data</div><div class="lang-ja" style="display:none">タグ付きデータ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-48">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-48"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-48"
+              >
+                <a href="./2.4.3.html">
+                  2.4.3 
+    <div class="lang-en">Data-Directed Programming and Additivity</div><div class="lang-ja" style="display:none">データ指向プログラミングと加法性</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-49">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-49"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-49"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-49"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-49"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./2.5.html"
+        >2.5 
+    <div class="lang-en">Systems with Generic Operations</div><div class="lang-ja" style="display:none">ジェネリック演算を持つシステム</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-49" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-50">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-50"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-50"
+              >
+                <a href="./2.5.1.html">
+                  2.5.1 
+    <div class="lang-en">Generic Arithmetic Operations</div><div class="lang-ja" style="display:none">ジェネリック算術演算</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-51">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-51"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-51"
+              >
+                <a href="./2.5.2.html">
+                  2.5.2 
+    <div class="lang-en">Combining Data of Different Types</div><div class="lang-ja" style="display:none">異なる型のデータの組み合わせ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-52">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-52"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-52"
+              >
+                <a href="./2.5.3.html">
+                  2.5.3 
+    <div class="lang-en">Example: Symbolic Algebra</div><div class="lang-ja" style="display:none">例：シンボリック代数</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-53">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-53"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-53"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-53"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-53"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./3.html"
+        >3 <div class="lang-en">Modularity, Objects, and State</div><div class="lang-ja" style="display:none">モジュール性、オブジェクト、状態</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-53" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-54">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-54"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-54"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-54"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-54"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./3.1.html"
+        >3.1 
+      <div class="lang-en">Assignment and Local State</div><div class="lang-ja" style="display:none">代入とローカル状態</div>
+    </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-54" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-55">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-55"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-55"
+              >
+                <a href="./3.1.1.html">
+                  3.1.1 
+    <div class="lang-en">Local State Variables</div><div class="lang-ja" style="display:none">ローカル状態変数</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-56">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-56"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-56"
+              >
+                <a href="./3.1.2.html">
+                  3.1.2 
+    <div class="lang-en">The Benefits of Introducing Assignment</div><div class="lang-ja" style="display:none">代入を導入する利点</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-57">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-57"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-57"
+              >
+                <a href="./3.1.3.html">
+                  3.1.3 
+    <div class="lang-en">The Costs of Introducing Assignment</div><div class="lang-ja" style="display:none">代入を導入するコスト</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-58">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-58"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-58"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-58"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-58"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./3.2.html"
+        >3.2 <div class="lang-en">The Environment Model of Evaluation</div><div class="lang-ja" style="display:none">評価の環境モデル</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-58" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-59">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-59"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-59"
+              >
+                <a href="./3.2.1.html">
+                  3.2.1 
+    <div class="lang-en">The Rules for Evaluation</div><div class="lang-ja" style="display:none">評価のルール</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-60">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-60"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-60"
+              >
+                <a href="./3.2.2.html">
+                  3.2.2 
+    <div class="lang-en">
+    Applying Simple
+    
+      
+      Functions
+    
+    </div><div class="lang-ja" style="display:none">
+    単純な
+      
+      関数
+    の適用
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-61">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-61"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-61"
+              >
+                <a href="./3.2.3.html">
+                  3.2.3 
+    <div class="lang-en">Frames as the Repository of Local State</div><div class="lang-ja" style="display:none">ローカル状態の保管場所としてのフレーム</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-62">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-62"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-62"
+              >
+                <a href="./3.2.4.html">
+                  3.2.4 
+    <div class="lang-en">
+    Internal
+    
+      
+      Declarations
+    
+    </div><div class="lang-ja" style="display:none">
+    内部
+      
+      宣言
+    
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-63">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-63"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-63"
+              >
+                <a href="./3.2.5.html">
+                  3.2.5 
+    CSE Machine
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-64">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-64"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-64"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-64"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-64"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./3.3.html"
+        >3.3 
+    <div class="lang-en">Modeling with Mutable Data</div><div class="lang-ja" style="display:none">ミュータブルなデータによるモデル化</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-64" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-65">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-65"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-65"
+              >
+                <a href="./3.3.1.html">
+                  3.3.1 
+    <div class="lang-en">Mutable List Structure</div><div class="lang-ja" style="display:none">ミュータブルなリスト構造</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-66">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-66"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-66"
+              >
+                <a href="./3.3.2.html">
+                  3.3.2 
+    <div class="lang-en">Representing Queues</div><div class="lang-ja" style="display:none">キューの表現</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-67">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-67"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-67"
+              >
+                <a href="./3.3.3.html">
+                  3.3.3 
+    <div class="lang-en">Representing Tables</div><div class="lang-ja" style="display:none">テーブルの表現</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-68">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-68"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-68"
+              >
+                <a href="./3.3.4.html">
+                  3.3.4 
+    <div class="lang-en">A Simulator for Digital Circuits</div><div class="lang-ja" style="display:none">デジタル回路のシミュレータ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-69">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-69"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-69"
+              >
+                <a href="./3.3.5.html">
+                  3.3.5 
+    <div class="lang-en">Propagation of Constraints</div><div class="lang-ja" style="display:none">制約の伝播</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-70">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-70"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-70"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-70"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-70"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./3.4.html"
+        >3.4 <div class="lang-en">Concurrency: Time Is of the Essence</div><div class="lang-ja" style="display:none">並行性 ― 時間が本質</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-70" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-71">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-71"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-71"
+              >
+                <a href="./3.4.1.html">
+                  3.4.1 
+    <div class="lang-en">The Nature of Time in Concurrent Systems</div><div class="lang-ja" style="display:none">並行システムにおける時間の本質</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-72">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-72"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-72"
+              >
+                <a href="./3.4.2.html">
+                  3.4.2 
+    <div class="lang-en">Mechanisms for Controlling Concurrency</div><div class="lang-ja" style="display:none">並行性を制御する仕組み</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-73">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-73"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-73"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-73"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-73"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./3.5.html"
+        >3.5 <div class="lang-en">Streams</div><div class="lang-ja" style="display:none">ストリーム</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-73" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-74">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-74"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-74"
+              >
+                <a href="./3.5.1.html">
+                  3.5.1 <div class="lang-en">Streams Are Delayed Lists</div><div class="lang-ja" style="display:none">ストリームは遅延リスト</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-75">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-75"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-75"
+              >
+                <a href="./3.5.2.html">
+                  3.5.2 
+    <div class="lang-en">Infinite Streams</div><div class="lang-ja" style="display:none">無限ストリーム</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-76">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-76"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-76"
+              >
+                <a href="./3.5.3.html">
+                  3.5.3 
+    <div class="lang-en">Exploiting the Stream Paradigm</div><div class="lang-ja" style="display:none">ストリームパラダイムを活かす</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-77">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-77"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-77"
+              >
+                <a href="./3.5.4.html">
+                  3.5.4 
+    <div class="lang-en">Streams and Delayed Evaluation</div><div class="lang-ja" style="display:none">ストリームと遅延評価</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-78">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-78"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-78"
+              >
+                <a href="./3.5.5.html">
+                  3.5.5 
+    <div class="lang-en">Modularity of Functional Programs and Modularity of Objects</div><div class="lang-ja" style="display:none">関数型プログラムのモジュール性とオブジェクトのモジュール性</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-79">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-79"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-79"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-79"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-79"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./4.html"
+        >4 <div class="lang-en">Metalinguistic Abstraction</div><div class="lang-ja" style="display:none">メタ言語的抽象化</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-79" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-80">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-80"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-80"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-80"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-80"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./4.1.html"
+        >4.1 <div class="lang-en">The Metacircular Evaluator</div><div class="lang-ja" style="display:none">メタ循環評価器</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-80" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-81">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-81"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-81"
+              >
+                <a href="./4.1.1.html">
+                  4.1.1 
+    <div class="lang-en">The Core of the Evaluator</div><div class="lang-ja" style="display:none">評価器の中核</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-82">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-82"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-82"
+              >
+                <a href="./4.1.2.html">
+                  4.1.2 
+    <div class="lang-en">
+    Representing
+    
+      
+      Components
+    
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      コンポーネント
+    の表現
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-83">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-83"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-83"
+              >
+                <a href="./4.1.3.html">
+                  4.1.3 
+    <div class="lang-en">Evaluator Data Structures</div><div class="lang-ja" style="display:none">評価器のデータ構造</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-84">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-84"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-84"
+              >
+                <a href="./4.1.4.html">
+                  4.1.4 
+    <div class="lang-en">Running the Evaluator as a Program</div><div class="lang-ja" style="display:none">評価器をプログラムとして実行する</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-85">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-85"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-85"
+              >
+                <a href="./4.1.5.html">
+                  4.1.5 
+    <div class="lang-en">Data as Programs</div><div class="lang-ja" style="display:none">プログラムとしてのデータ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-86">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-86"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-86"
+              >
+                <a href="./4.1.6.html">
+                  4.1.6 
+    <div class="lang-en">
+    Internal
+    
+      
+      Declarations
+    
+    </div><div class="lang-ja" style="display:none">
+    内部
+      
+      宣言
+    
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-87">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-87"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-87"
+              >
+                <a href="./4.1.7.html">
+                  4.1.7 
+    <div class="lang-en">Separating Syntactic Analysis from Execution</div><div class="lang-ja" style="display:none">構文解析と実行の分離</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-88">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-88"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-88"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-88"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-88"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./4.2.html"
+        >4.2 
+    
+      
+    
+    <div class="lang-en">Lazy Evaluation</div><div class="lang-ja" style="display:none">遅延評価</div>
+</a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-88" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-89">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-89"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-89"
+              >
+                <a href="./4.2.1.html">
+                  4.2.1 
+    <div class="lang-en">Normal Order and Applicative Order</div><div class="lang-ja" style="display:none">正規順序と適用順序</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-90">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-90"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-90"
+              >
+                <a href="./4.2.2.html">
+                  4.2.2 
+    <div class="lang-en">An Interpreter with Lazy Evaluation</div><div class="lang-ja" style="display:none">遅延評価を行うインタプリタ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-91">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-91"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-91"
+              >
+                <a href="./4.2.3.html">
+                  4.2.3 
+    <div class="lang-en">Streams as Lazy Lists</div><div class="lang-ja" style="display:none">遅延リストとしてのストリーム</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-92">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-92"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-92"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-92"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-92"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./4.3.html"
+        >4.3 
+    
+      
+    
+    <div class="lang-en">Nondeterministic Computing</div><div class="lang-ja" style="display:none">非決定的計算</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-92" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-93">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-93"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-93"
+              >
+                <a href="./4.3.1.html">
+                  4.3.1 
+    
+      
+      <div class="lang-en">Search and amb</div><div class="lang-ja" style="display:none">探索とamb</div>
+    
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-94">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-94"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-94"
+              >
+                <a href="./4.3.2.html">
+                  4.3.2 
+    <div class="lang-en">Examples of Nondeterministic Programs</div><div class="lang-ja" style="display:none">非決定的プログラムの例</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-95">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-95"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-95"
+              >
+                <a href="./4.3.3.html">
+                  4.3.3 
+    <div class="lang-en">
+    Implementing the
+    
+      
+      amb
+    
+    Evaluator
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      amb
+    
+    評価器の実装
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-96">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-96"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-96"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-96"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-96"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./4.4.html"
+        >4.4 
+    <div class="lang-en">Logic Programming</div><div class="lang-ja" style="display:none">論理プログラミング</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-96" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-97">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-97"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-97"
+              >
+                <a href="./4.4.1.html">
+                  4.4.1 
+    <div class="lang-en">Deductive Information Retrieval</div><div class="lang-ja" style="display:none">演繹的情報検索</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-98">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-98"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-98"
+              >
+                <a href="./4.4.2.html">
+                  4.4.2 
+    <div class="lang-en">How the Query System Works</div><div class="lang-ja" style="display:none">クエリシステムの仕組み</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-99">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-99"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-99"
+              >
+                <a href="./4.4.3.html">
+                  4.4.3 
+    <div class="lang-en">Is Logic Programming Mathematical Logic?</div><div class="lang-ja" style="display:none">論理プログラミングは数学的論理学なのか？</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-100">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-100"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-100"
+              >
+                <a href="./4.4.4.html">
+                  4.4.4 
+    <div class="lang-en">Implementing the Query System</div><div class="lang-ja" style="display:none">クエリシステムの実装</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-101">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-101"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-101"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-101"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-101"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./5.html"
+        >5 <div class="lang-en">Computing with Register Machines</div><div class="lang-ja" style="display:none">レジスタマシンによる計算</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-101" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-102">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-102"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-102"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-102"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-102"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./5.1.html"
+        >5.1 
+    <div class="lang-en">Designing Register Machines</div><div class="lang-ja" style="display:none">レジスタマシンの設計</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-102" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-103">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-103"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-103"
+              >
+                <a href="./5.1.1.html">
+                  5.1.1 
+    <div class="lang-en">A Language for Describing Register Machines</div><div class="lang-ja" style="display:none">レジスタマシンを記述する言語</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-104">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-104"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-104"
+              >
+                <a href="./5.1.2.html">
+                  5.1.2 
+    <div class="lang-en">Abstraction in Machine Design</div><div class="lang-ja" style="display:none">マシン設計における抽象化</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-105">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-105"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-105"
+              >
+                <a href="./5.1.3.html">
+                  5.1.3 
+    <div class="lang-en">Subroutines</div><div class="lang-ja" style="display:none">サブルーチン</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-106">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-106"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-106"
+              >
+                <a href="./5.1.4.html">
+                  5.1.4 
+    <div class="lang-en">Using a Stack to Implement Recursion</div><div class="lang-ja" style="display:none">スタックを使った再帰の実装</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-107">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-107"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-107"
+              >
+                <a href="./5.1.5.html">
+                  5.1.5 
+    <div class="lang-en">Instruction Summary</div><div class="lang-ja" style="display:none">命令のまとめ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-108">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-108"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-108"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-108"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-108"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./5.2.html"
+        >5.2 <div class="lang-en">A Register-Machine Simulator</div><div class="lang-ja" style="display:none">レジスタマシンシミュレータ</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-108" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-109">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-109"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-109"
+              >
+                <a href="./5.2.1.html">
+                  5.2.1 
+    <div class="lang-en">The Machine Model</div><div class="lang-ja" style="display:none">マシンモデル</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-110">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-110"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-110"
+              >
+                <a href="./5.2.2.html">
+                  5.2.2 
+    <div class="lang-en">The Assembler</div><div class="lang-ja" style="display:none">アセンブラ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-111">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-111"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-111"
+              >
+                <a href="./5.2.3.html">
+                  5.2.3 
+    
+      
+      
+        <div class="lang-en">Instructions and Their Execution Functions</div><div class="lang-ja" style="display:none">命令とその実行関数</div>
+      
+    
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-112">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-112"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-112"
+              >
+                <a href="./5.2.4.html">
+                  5.2.4 
+    <div class="lang-en">Monitoring Machine Performance</div><div class="lang-ja" style="display:none">マシン性能のモニタリング</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-113">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-113"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-113"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-113"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-113"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./5.3.html"
+        >5.3 
+    <div class="lang-en">Storage Allocation and Garbage Collection</div><div class="lang-ja" style="display:none">記憶領域の割り当てとガベージコレクション</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-113" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-114">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-114"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-114"
+              >
+                <a href="./5.3.1.html">
+                  5.3.1 
+    <div class="lang-en">Memory as Vectors</div><div class="lang-ja" style="display:none">ベクトルとしてのメモリ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-115">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-115"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-115"
+              >
+                <a href="./5.3.2.html">
+                  5.3.2 
+    <div class="lang-en">Maintaining the Illusion of Infinite Memory</div><div class="lang-ja" style="display:none">無限メモリの幻想を維持する</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-116">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-116"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-116"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-116"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-116"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./5.4.html"
+        >5.4 
+    <div class="lang-en">The Explicit-Control Evaluator</div><div class="lang-ja" style="display:none">明示的制御評価器</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-116" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-117">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-117"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-117"
+              >
+                <a href="./5.4.1.html">
+                  5.4.1 
+    
+      
+      <div class="lang-en">The Dispatcher and Basic Evaluation</div><div class="lang-ja" style="display:none">ディスパッチャーと基本的な評価</div>
+    
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-118">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-118"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-118"
+              >
+                <a href="./5.4.2.html">
+                  5.4.2 
+    
+      
+      
+        <div class="lang-en">Evaluating Function Applications</div><div class="lang-ja" style="display:none">関数適用の評価</div>
+      
+    
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-119">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-119"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-119"
+              >
+                <a href="./5.4.3.html">
+                  5.4.3 
+    
+      
+      
+        <div class="lang-en">Blocks, Assignments, and Declarations</div><div class="lang-ja" style="display:none">ブロック、代入、宣言</div>
+      
+    
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-120">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-120"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-120"
+              >
+                <a href="./5.4.4.html">
+                  5.4.4 
+    <div class="lang-en">Running the Evaluator</div><div class="lang-ja" style="display:none">評価器の実行</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-121">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-121"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-121"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-121"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-121"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./5.5.html"
+        >5.5 <div class="lang-en">Compilation</div><div class="lang-ja" style="display:none">コンパイル</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-121" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-122">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-122"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-122"
+              >
+                <a href="./5.5.1.html">
+                  5.5.1 
+    <div class="lang-en">Structure of the Compiler</div><div class="lang-ja" style="display:none">コンパイラの構造</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-123">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-123"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-123"
+              >
+                <a href="./5.5.2.html">
+                  5.5.2 
+    <div class="lang-en">Compiling
+    
+      
+      Components
+    </div><div class="lang-ja" style="display:none">
+      
+      コンポーネント
+    のコンパイル</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-124">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-124"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-124"
+              >
+                <a href="./5.5.3.html">
+                  5.5.3 
+    <div class="lang-en">
+    Compiling
+    
+      
+      
+	Applications and Return Statements
+      
+    
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      
+	関数適用と return 文
+      
+    のコンパイル
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-125">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-125"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-125"
+              >
+                <a href="./5.5.4.html">
+                  5.5.4 
+    <div class="lang-en">Combining Instruction Sequences</div><div class="lang-ja" style="display:none">命令列の結合</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-126">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-126"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-126"
+              >
+                <a href="./5.5.5.html">
+                  5.5.5 
+    <div class="lang-en">An Example of Compiled Code</div><div class="lang-ja" style="display:none">コンパイル済みコードの例</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-127">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-127"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-127"
+              >
+                <a href="./5.5.6.html">
+                  5.5.6 
+    <div class="lang-en">Lexical Addressing</div><div class="lang-ja" style="display:none">レキシカルアドレッシング</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-128">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-128"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-128"
+              >
+                <a href="./5.5.7.html">
+                  5.5.7 
+    <div class="lang-en">Interfacing Compiled Code to the Evaluator</div><div class="lang-ja" style="display:none">コンパイル済みコードと評価器のインターフェース</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+                </div>
+              </div>
+            </div>
+        
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-129">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-129"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-129"
+              >
+                <a href="./references.html">
+                  References</a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-130">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-130"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-130"
+              >
+                <a href="./making-of.html">
+                  <div class="lang-en">About the SICP JS Project</div><div class="lang-ja" style="display:none">SICP JSプロジェクトについて</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      </div>
+<div id='permalink-msg'>
+<div class='screen'>
+  <div class='alert alert-success'>
+    <strong>Permalink copied!</strong>
+  </div>
+</div>
+</div>
+<div class='chapter-content'>
+
+      <div class='chapter-title'>
+        <div class='permalink'>
+        <a name='top' class='permalink'>
+    4.4.2&nbsp;&nbsp;
+    <div class="lang-en">How the Query System Works</div><div class="lang-ja" style="display:none">クエリシステムの仕組み</div>
+  
+        </a>
+        </div>
+      </div>
+      <div class='chapter-text'>
+        <div class='SECTION'>
+    
+
+  
+
+  
+
+  <div class='permalink'>
+<a name='p1' class='permalink'></a><p>
+    <div class="lang-en">
+    In section&nbsp;<REF NAME="sec:implementing-the-query-system"><a class="superscript" id="4.4.2-sec-link-4.4.4" href="./4.4.4.html">4.4.4</a></REF> we will
+    present an implementation of the query interpreter as a collection of
+    
+      
+      functions.
+    
+    In this section we give an overview that explains the general
+    structure of the system independent of low-level implementation
+    details.  After describing the implementation of the interpreter, we
+    will be in a position to understand some of its limitations and some
+    of the subtle ways in which the query language's logical operations
+    differ from the operations of mathematical logic.
+    </div><div class="lang-ja" style="display:none">
+    <REF NAME="sec:implementing-the-query-system"><a class="superscript" id="4.4.2-sec-link-4.4.4" href="./4.4.4.html">4.4.4</a></REF>節では、クエリインタプリタの実装を
+      
+      関数
+    の集まりとして提示します。この節では、低レベルの実装の詳細とは独立した、システムの一般的な構造を説明する概要を示します。インタプリタの実装を説明した後で、その限界のいくつかと、クエリ言語の論理演算が数理論理学の演算とどのような微妙な違いがあるかを理解できるようになります。
+    </div>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p2' class='permalink'></a><p>
+    <div class="lang-en">
+    It should be apparent that the query evaluator must perform some kind
+    of search in order to match queries against facts and rules in the
+    data base.  One way to do this would be to implement the query system
+    as a nondeterministic program, using the <kbd>amb</kbd>
+    evaluator of section&nbsp;<REF NAME="sec:nondeterministic-evaluation"><a class="superscript" id="4.4.2-sec-link-4.3" href="./4.3.html">4.3</a></REF>
+    (see exercise&nbsp;<REF NAME="ex:query-lang-amb"><a class="superscript" id="4.4.2-ex-link-4.75" href="./4.4.4.html#ex_4.75">4.75</a></REF>).  Another possibility
+    is to manage the search with the aid of streams.  Our implementation follows
+    this second approach.
+    </div><div class="lang-ja" style="display:none">
+    クエリ評価器がデータベース内の事実やルールとクエリを照合するために、何らかの探索を行わなければならないことは明らかでしょう。その一つの方法は、<REF NAME="sec:nondeterministic-evaluation"><a class="superscript" id="4.4.2-sec-link-4.3" href="./4.3.html">4.3</a></REF>節の<kbd>amb</kbd>評価器を使って、クエリシステムを非決定的プログラムとして実装することです（練習問題&nbsp;<REF NAME="ex:query-lang-amb"><a class="superscript" id="4.4.2-ex-link-4.75" href="./4.4.4.html#ex_4.75">4.75</a></REF>を参照）。もう一つの可能性は、ストリームを使って探索を管理することです。私たちの実装はこの2番目のアプローチに従います。
+    </div>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p3' class='permalink'></a><p>
+    <div class="lang-en">
+    The query system is organized around two central operations, called
+    <EM>pattern matching</EM> and <EM>unification</EM>.  We first describe
+    pattern matching and explain how this operation, together with the
+    organization of information in terms of streams of frames, enables us
+    to implement both simple and compound queries.  We next discuss
+    unification, a generalization of pattern matching needed to implement
+    rules.  Finally, we show how the entire query interpreter fits
+    together through a
+    
+      
+      function
+    
+    that classifies
+    
+      
+      queries
+    
+    in a manner analogous to the way
+    
+      
+      
+	<kbd>evaluate</kbd>
+      
+    
+    classifies expressions for the interpreter described in
+    section&nbsp;<REF NAME="sec:mc-eval"><a class="superscript" id="4.4.2-sec-link-4.1" href="./4.1.html">4.1</a></REF>.
+    </div><div class="lang-ja" style="display:none">
+    クエリシステムは、<EM>パターンマッチング</EM>と<EM>ユニフィケーション</EM>と呼ばれる2つの中心的な操作を軸に構成されています。まずパターンマッチングについて説明し、この操作がフレームのストリームという形で情報を整理することと合わせて、単純クエリと複合クエリの両方をどのように実装できるかを説明します。次に、ルールの実装に必要なパターンマッチングの一般化であるユニフィケーションについて議論します。最後に、<REF NAME="sec:mc-eval"><a class="superscript" id="4.4.2-sec-link-4.1" href="./4.1.html">4.1</a></REF>節で説明したインタプリタにおける
+      
+      
+	<kbd>evaluate</kbd>
+      
+    が式を分類するのと類似の方法で、
+      
+      クエリ
+    を分類する
+      
+      関数
+    を通じて、クエリインタプリタ全体がどのように組み合わさっているかを示します。
+    </div>
+  </p></div>
+
+  
+      <div class='permalink'>
+        <a name='h1' class='permalink'></a><h2>
+    
+    <div class="lang-en">Pattern matching</div><div class="lang-ja" style="display:none">パターンマッチング</div>
+  </h2></div>
+
+  
+  
+
+  <div class='permalink'>
+<a name='p4' class='permalink'></a><p>
+    <div class="lang-en">
+    A <EM>pattern matcher</EM> is a program that tests whether some datum
+    fits a specified pattern.  For example, the
+    
+      
+      
+	datum
+	<kbd>list(list("a", "b"), "c", list("a", "b"))</kbd>
+      
+    
+    matches the pattern
+    
+      
+      <kbd>list($x, "c", $x)</kbd>
+      
+    
+    with the pattern variable
+    
+      
+      <kbd>$x</kbd>
+    
+    bound to
+    
+      
+      <kbd>list("a", "b")</kbd>.
+    
+    The same
+    
+      
+      
+	data list
+      
+    
+    matches the pattern
+    
+      
+      <kbd>list($x, $y, $z)</kbd>
+      
+    
+    with
+    
+      
+      <kbd>$x</kbd>
+    
+    and
+    
+      
+      <kbd>$z</kbd>
+    
+    both bound to
+    
+      
+      <kbd>list("a", "b")</kbd>
+      
+    
+    and
+    
+      
+      <kbd>$y</kbd>
+    
+    bound to
+    
+      
+      <kbd>"c"</kbd>.
+    
+    It also matches the pattern
+    
+      
+      
+	<kbd>list(list($x, $y), "c", list($x, $y))</kbd>
+      
+    
+    with
+    
+      
+      <kbd>$x</kbd>
+    
+    bound to
+    
+      
+      <kbd>"a"</kbd>
+    
+    and
+    
+      
+      <kbd>$y</kbd>
+    
+    bound to
+    
+      
+      <kbd>"b"</kbd>.
+    
+    However, it does not match the pattern
+    
+      
+      <kbd>list($x, "a", $y)</kbd>,
+      
+    since that pattern specifies a list whose second element is the
+    
+      
+      string <kbd>"a"</kbd>.
+    
+    </div><div class="lang-ja" style="display:none">
+    <EM>パターンマッチャー</EM>とは、あるデータが指定されたパターンに適合するかどうかをテストするプログラムです。たとえば、
+      
+      
+	データ
+	<kbd>list(list("a", "b"), "c", list("a", "b"))</kbd>
+      
+    は、パターン
+      
+      <kbd>list($x, "c", $x)</kbd>
+      
+    に対して、パターン変数
+      
+      <kbd>$x</kbd>
+    が
+      
+      <kbd>list("a", "b")</kbd>
+    に束縛された状態でマッチします。同じ
+      
+      
+	データリスト
+      
+    は、パターン
+      
+      <kbd>list($x, $y, $z)</kbd>
+      
+    に対して、
+      
+      <kbd>$x</kbd>
+    と
+      
+      <kbd>$z</kbd>
+    がともに
+      
+      <kbd>list("a", "b")</kbd>
+      
+    に束縛され、
+      
+      <kbd>$y</kbd>
+    が
+      
+      <kbd>"c"</kbd>
+    に束縛された状態でマッチします。また、パターン
+      
+      
+	<kbd>list(list($x, $y), "c", list($x, $y))</kbd>
+      
+    に対しても、
+      
+      <kbd>$x</kbd>
+    が
+      
+      <kbd>"a"</kbd>
+    に束縛され、
+      
+      <kbd>$y</kbd>
+    が
+      
+      <kbd>"b"</kbd>
+    に束縛された状態でマッチします。しかし、パターン
+      
+      <kbd>list($x, "a", $y)</kbd>
+      にはマッチしません。なぜなら、このパターンは第2要素が
+      
+      文字列<kbd>"a"</kbd>
+    であるリストを指定しているからです。
+    </div>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p5' class='permalink'></a><p>
+    <div class="lang-en">
+    The pattern matcher used by the query system takes as inputs a
+    pattern, a datum, and a
+    
+    
+    <EM>frame</EM> that specifies bindings for
+    various pattern variables.  It checks whether the datum matches the
+    pattern in a way that is consistent with the bindings already in the
+    frame.  If so, it returns the given frame augmented by any bindings
+    that may have been determined by the match.  Otherwise, it indicates
+    that the match has failed.
+    </div><div class="lang-ja" style="display:none">
+    クエリシステムで使われるパターンマッチャーは、入力としてパターン、データ、そしてさまざまなパターン変数の束縛を指定する<EM>フレーム</EM>を受け取ります。データがフレーム内の既存の束縛と矛盾しない形でパターンにマッチするかどうかを確認します。マッチする場合は、マッチによって決定された束縛を追加した元のフレームを返します。マッチしない場合は、マッチが失敗したことを示します。
+    </div>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p6' class='permalink'></a><p>
+    <div class="lang-en">
+    
+      
+      
+	Using the pattern
+      
+    
+    
+      
+      <kbd>list($x, $y, $x)</kbd>
+      
+    
+    to match
+    
+      
+      <kbd>list("a", "b", "a")</kbd>
+      
+    
+    
+      
+      
+	given an empty frame, for example,
+      
+    
+    will return a frame specifying that
+    
+      
+      <kbd>$x</kbd>
+    
+    is bound to
+    
+      
+      <kbd>"a"</kbd>
+    
+    and
+    
+      
+      <kbd>$y</kbd>
+    
+    is bound to
+    
+      
+      <kbd>"b"</kbd>.
+    
+    Trying the match with the same pattern, the same datum, and a frame
+    specifying that
+    
+      
+      <kbd>$y</kbd>
+    
+    is bound to
+    
+      
+      <kbd>"a"</kbd>
+    
+    will fail.  Trying the match with the same pattern, the same datum, and a
+    frame in which
+    
+      
+      <kbd>$y</kbd>
+    
+    is bound to
+    
+      
+      <kbd>"b"</kbd>
+    
+    and
+    
+      
+      <kbd>$x</kbd>
+    
+    is unbound will return the given frame augmented by a binding of
+    
+      
+      <kbd>$x</kbd>
+    
+    to&nbsp;<kbd>"a"</kbd>.
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      
+	パターン
+      
+    
+      
+      <kbd>list($x, $y, $x)</kbd>
+      
+    を使って
+      
+      <kbd>list("a", "b", "a")</kbd>
+      
+    と
+      
+      
+	たとえば空のフレームで
+      
+    照合すると、
+      
+      <kbd>$x</kbd>
+    が
+      
+      <kbd>"a"</kbd>
+    に束縛され、
+      
+      <kbd>$y</kbd>
+    が
+      
+      <kbd>"b"</kbd>
+    に束縛されたフレームが返されます。同じパターン、同じデータ、そして
+      
+      <kbd>$y</kbd>
+    が
+      
+      <kbd>"a"</kbd>
+    に束縛されたフレームで照合を試みると、失敗します。同じパターン、同じデータ、そして
+      
+      <kbd>$y</kbd>
+    が
+      
+      <kbd>"b"</kbd>
+    に束縛され
+      
+      <kbd>$x</kbd>
+    が未束縛のフレームで照合を試みると、
+      
+      <kbd>$x</kbd>
+    を&nbsp;<kbd>"a"</kbd>に束縛する束縛が追加された元のフレームが返されます。
+    </div>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p7' class='permalink'></a><p>
+    <div class="lang-en">
+    The pattern matcher is all the mechanism that is needed to process
+    
+    simple
+    queries that don't involve rules.  For instance, to process the query
+    </div><div class="lang-ja" style="display:none">
+    パターンマッチャーは、ルールを含まない単純クエリを処理するために必要なメカニズムのすべてです。たとえば、クエリ
+    </div>
+    <div class='snippet' id='javascript_97_1_div'><div class='pre-prettyprint'><pre class='prettyprint no-eval'>
+job($x, list("computer", "programmer"))</pre></div></div>
+    <div class="lang-en">
+    we scan through all assertions in the data base and select those that
+    match the pattern with respect to an initially empty frame.  For each
+    match we find, we use the frame returned by the match to instantiate
+    the pattern with a value for
+    
+      
+      <kbd>$x</kbd>.
+    
+    </div><div class="lang-ja" style="display:none">
+    を処理するには、データベース内のすべてのアサーションをスキャンし、最初は空のフレームに対してパターンにマッチするものを選択します。マッチが見つかるたびに、マッチによって返されたフレームを使って、
+      
+      <kbd>$x</kbd>
+    の値でパターンをインスタンス化します。
+    </div>
+  </p></div>
+
+  
+  
+
+  
+      <div class='permalink'>
+        <a name='h2' class='permalink'></a><h2>
+    
+    <div class="lang-en">Streams of frames</div><div class="lang-ja" style="display:none">フレームのストリーム</div>
+  </h2></div>
+
+  <div class='permalink'>
+<a name='p8' class='permalink'></a><p>
+    <div class="lang-en">
+    The testing of patterns against frames is organized through the use of
+    
+    
+    streams.  Given a single frame, the matching process runs through the
+    data-base entries one by one.  For each data-base entry, the matcher
+    generates either a special symbol indicating that the match has failed
+    or an extension to the frame.  The results for all the data-base
+    entries are collected into a stream, which is passed through a filter
+    to weed out the failures.  The result is a stream of all the frames
+    that extend the given frame via a match to some assertion in the data
+    base.
+    </div><div class="lang-ja" style="display:none">
+    パターンとフレームの照合は、ストリームを使って構成されます。単一のフレームが与えられると、マッチングプロセスはデータベースのエントリを1つずつ調べていきます。各データベースエントリに対して、マッチャはマッチが失敗したことを示す特別なシンボルか、フレームの拡張のいずれかを生成します。すべてのデータベースエントリに対する結果はストリームに集められ、失敗を取り除くフィルタを通されます。結果は、データベース内の何らかのアサーションとのマッチによって与えられたフレームを拡張する、すべてのフレームのストリームです。
+    </div>
+    <a class='superscript' id='footnote-link-1' href='#footnote-1'>[1]</a>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p9' class='permalink'></a><p>
+    <div class="lang-en">
+    In our system, a query takes an input stream of frames and performs
+    the above matching operation for every frame in the stream, as
+    indicated in
+    
+      
+      
+	figure&nbsp;<REF NAME="fig:query-stream"><a class="superscript" id="4.4.2-fig-link-4.8" href="./4.4.2.html#fig_4.8">4.8</a></REF>.
+      
+    
+    That is, for
+    each frame in the input stream, the query generates a new stream consisting
+    of all extensions to that frame by matches to assertions in the data base.
+    All these streams are then combined to form one huge stream, which contains
+    all possible extensions of every frame in the input stream. This stream is
+    the output of the query.
+    </div><div class="lang-ja" style="display:none">
+    私たちのシステムでは、クエリはフレームの入力ストリームを受け取り、
+      
+      
+	figure&nbsp;<REF NAME="fig:query-stream"><a class="superscript" id="4.4.2-fig-link-4.8" href="./4.4.2.html#fig_4.8">4.8</a></REF>
+      
+    に示すように、ストリーム内のすべてのフレームに対して上記のマッチング操作を行います。つまり、入力ストリームの各フレームに対して、クエリはデータベース内のアサーションとのマッチによるそのフレームのすべての拡張からなる新しいストリームを生成します。これらのストリームはすべて結合されて1つの巨大なストリームになり、入力ストリームのすべてのフレームのすべての可能な拡張が含まれます。このストリームがクエリの出力です。
+    </div>
+    
+      
+      
+	<FIGURE>
+      <img style="width: 100%" id="fig_4.8" src="../img_javascript/Fig4.4a.std.svg">
+      <div class="chapter-text-CAPTION">
+      <b><a class="caption" href="./4.4.2.html#fig_4.8">Figure 4.8 </a></b>A query processes a stream of frames.</div></FIGURE>
+      
+    
+  </p></div>
+
+  <div class='permalink'>
+<a name='p10' class='permalink'></a><p>
+    <div class="lang-en">
+    To answer a
+    
+    simple query, we use the query with an input stream
+    consisting of a single empty frame.  The resulting output stream
+    contains all extensions to the empty frame (that is, all answers to
+    our query).  This stream of frames is then used to generate a stream
+    of copies of the original query pattern with the variables
+    instantiated by the values in each frame, and this is the stream that
+    is finally printed.
+    </div><div class="lang-ja" style="display:none">
+    単純クエリに答えるには、単一の空フレームからなる入力ストリームでクエリを使用します。結果の出力ストリームには、空フレームのすべての拡張（つまり、クエリに対するすべての回答）が含まれます。このフレームのストリームは、各フレームの値で変数をインスタンス化した元のクエリパターンのコピーのストリームを生成するために使われ、このストリームが最終的に表示されます。
+    </div>
+  </p></div>
+
+  
+      <div class='permalink'>
+        <a name='h3' class='permalink'></a><h2>
+    
+    <div class="lang-en">Compound queries</div><div class="lang-ja" style="display:none">複合クエリ</div>
+  </h2></div>
+
+  
+
+  <div class='permalink'>
+<a name='p11' class='permalink'></a><p>
+    <div class="lang-en">
+    The real elegance of the stream-of-frames implementation is evident
+    when we deal with compound queries.  The processing of compound
+    queries makes use of the ability of our matcher to demand that a match
+    be consistent with a specified frame.  For example, to handle the
+    
+    <kbd>and</kbd> of two queries, such as
+    </div><div class="lang-ja" style="display:none">
+    フレームのストリームによる実装の真のエレガンスは、複合クエリを扱うときに明らかになります。複合クエリの処理は、マッチが指定されたフレームと矛盾しないことを要求できるマッチャの能力を利用します。たとえば、次のような2つのクエリの<kbd>and</kbd>を処理するには、
+    </div>
+    <div class='snippet' id='javascript_97_2_div'><div class='pre-prettyprint'><pre class='prettyprint no-eval'>
+and(can_do_job($x, list("computer", "programmer", "trainee")),
+    job($person, $x))</pre></div></div>
+    <div class="lang-en">
+    (informally, <QUOTE>Find all people who can do the job of a computer
+    programmer trainee</QUOTE>), we first find all entries that match the
+    pattern
+    </div><div class="lang-ja" style="display:none">
+    （非公式には「コンピュータプログラマ研修生の仕事ができるすべての人を見つけよ」）、まずパターン
+    </div>
+    <div class='snippet' id='javascript_97_3_div'><div class='pre-prettyprint'><pre class='prettyprint no-eval'>
+can_do_job($x, list("computer", "programmer", "trainee"))</pre></div></div>
+    <div class="lang-en">
+    This produces a stream of frames, each of which contains a binding for
+    
+      
+      <kbd>$x</kbd>.
+    
+    Then for each frame in the stream we find all entries that
+    match
+    </div><div class="lang-ja" style="display:none">
+    にマッチするすべてのエントリを見つけます。これにより、それぞれが
+      
+      <kbd>$x</kbd>
+    の束縛を含むフレームのストリームが生成されます。次に、ストリーム内の各フレームに対して、
+    </div>
+    <div class='snippet' id='javascript_97_4_div'><div class='pre-prettyprint'><pre class='prettyprint no-eval'>
+job($person, $x)</pre></div></div>
+    <div class="lang-en">
+    in a way that is consistent with the given binding for
+    
+      
+      <kbd>$x</kbd>.
+    
+    Each such match will produce a frame containing bindings for
+    
+      
+      <kbd>$x</kbd>
+    
+    and
+    
+      
+      <kbd>$person</kbd>.
+    
+    The <kbd>and</kbd> of two queries can be viewed as a series
+    combination of the two component queries, as shown in
+    
+      
+      
+	figure&nbsp;<REF NAME="fig:query-and"><a class="superscript" id="4.4.2-fig-link-4.10" href="./4.4.2.html#fig_4.10">4.10</a></REF>.
+      
+    
+    </div><div class="lang-ja" style="display:none">
+    に与えられた
+      
+      <kbd>$x</kbd>
+    の束縛と矛盾しない形でマッチするすべてのエントリを見つけます。そのような各マッチは、
+      
+      <kbd>$x</kbd>
+    と
+      
+      <kbd>$person</kbd>
+    の束縛を含むフレームを生成します。2つのクエリの<kbd>and</kbd>は、
+      
+      
+	figure&nbsp;<REF NAME="fig:query-and"><a class="superscript" id="4.4.2-fig-link-4.10" href="./4.4.2.html#fig_4.10">4.10</a></REF>
+      
+    に示すように、2つの構成クエリの直列結合と見なすことができます。
+    </div>
+    <div class="lang-en">
+    The frames that pass through the
+    first query filter are filtered and further extended by the second query.
+    </div><div class="lang-ja" style="display:none">
+    最初のクエリフィルタを通過したフレームは、2番目のクエリによってさらにフィルタリングされ、拡張されます。
+    </div>
+    
+      
+      
+	<FIGURE>
+      <img style="width: 100%" id="fig_4.10" src="../img_javascript/Fig4.5a.std.svg">
+      <div class="chapter-text-CAPTION">
+      <b><a class="caption" href="./4.4.2.html#fig_4.10">Figure 4.10 </a></b>
+	    The <kbd>and</kbd> combination of two queries is
+            produced by operating on the stream of frames in series.
+	  </div></FIGURE>
+      
+    
+    
+  </p></div>
+
+  <div class='permalink'>
+<a name='p12' class='permalink'></a><p>
+    <div class="lang-en">
+    
+      
+      
+    Figure&nbsp;<REF NAME="fig:query-or"><a class="superscript" id="4.4.2-fig-link-4.12" href="./4.4.2.html#fig_4.12">4.12</a></REF>
+      
+    
+    shows the analogous method for
+    computing the
+    
+    <kbd>or</kbd> of two queries as a parallel
+    combination of the two component queries.  The input stream of frames is
+    extended separately by each query.  The two resulting streams are then
+    merged to produce the final output stream.
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      
+    Figure&nbsp;<REF NAME="fig:query-or"><a class="superscript" id="4.4.2-fig-link-4.12" href="./4.4.2.html#fig_4.12">4.12</a></REF>
+      
+    は、2つのクエリの
+    
+    <kbd>or</kbd>を、2つの構成クエリの並列結合として計算する類似の方法を示しています。入力フレームのストリームは、各クエリによって個別に拡張されます。その後、2つの結果のストリームがマージされて最終的な出力ストリームが生成されます。
+    </div>
+
+    
+      
+      
+	<FIGURE>
+      <img style="width: 100%" id="fig_4.12" src="../img_javascript/Fig4.6a.std.svg">
+      <div class="chapter-text-CAPTION">
+      <b><a class="caption" href="./4.4.2.html#fig_4.12">Figure 4.12 </a></b>
+	    The <kbd>or</kbd> combination of two
+	    queries is produced by operating on the stream of frames in parallel
+	    and merging the results.
+	  </div></FIGURE>
+      
+    
+
+  </p></div>
+
+  
+  <div class='permalink'>
+<a name='p13' class='permalink'></a><p>
+    <div class="lang-en">
+    Even from this high-level description, it is apparent that the
+    processing of compound queries can be slow.
+    
+    For example, since a query may produce more than one output frame for each
+    input frame, and each query in an <kbd>and</kbd> gets its
+    input frames from the previous query, an <kbd>and</kbd>
+    query could, in the worst case, have to perform a number of matches that is
+    exponential in the number of queries (see
+    exercise&nbsp;<REF NAME="ex:q-exponential-and"><a class="superscript" id="4.4.2-ex-link-4.73" href="./4.4.4.html#ex_4.73">4.73</a></REF>).
+    </div><div class="lang-ja" style="display:none">
+    この高レベルの説明からでも、複合クエリの処理が遅くなりうることは明らかです。
+    
+    例えば、各入力フレームに対してクエリが複数の出力フレームを生成する可能性があり、<kbd>and</kbd>内の各クエリは前のクエリから入力フレームを受け取るため、<kbd>and</kbd>クエリは最悪の場合、クエリの数に対して指数的な数のマッチを実行しなければならない可能性があります（練習問題&nbsp;<REF NAME="ex:q-exponential-and"><a class="superscript" id="4.4.2-ex-link-4.73" href="./4.4.4.html#ex_4.73">4.73</a></REF>を参照）。
+    </div><a class='superscript' id='footnote-link-2' href='#footnote-2'>[2]</a>
+    <div class="lang-en">
+    Though systems for handling only simple queries are quite practical, dealing
+    with complex queries is extremely difficult.
+    </div><div class="lang-ja" style="display:none">
+    単純なクエリのみを扱うシステムは非常に実用的ですが、複雑なクエリを扱うことは極めて困難です。
+    </div><a class='superscript' id='footnote-link-3' href='#footnote-3'>[3]</a>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p14' class='permalink'></a><p>
+    <div class="lang-en">
+    From the stream-of-frames viewpoint, the
+    
+    <kbd>not</kbd> of
+    some query acts as a filter that removes all frames for which the query can
+    be satisfied.  For instance, given the pattern
+    </div><div class="lang-ja" style="display:none">
+    フレームのストリームの観点から見ると、あるクエリの
+    
+    <kbd>not</kbd>は、そのクエリが満たされるすべてのフレームを除去するフィルタとして動作します。例えば、パターン
+    </div>
+    <div class='snippet' id='javascript_97_5_div'><div class='pre-prettyprint'><pre class='prettyprint no-eval'>
+not(job($x, list("computer", "programmer")))</pre></div></div>
+    <div class="lang-en">
+    we attempt, for each frame in the input stream, to produce extension
+    frames that satisfy
+    
+      
+      
+	<kbd>job($x, list("computer", "programmer"))</kbd>.
+      
+    
+    We remove from the input stream all frames for which such extensions exist.
+    The result is a stream consisting of only those frames in which the binding
+    for
+    
+      
+      <kbd>$x</kbd>
+    
+    does not satisfy
+    
+      
+      
+	<kbd>job($x, list("computer", "programmer"))</kbd>.
+      
+    
+    For example, in processing the query
+    </div><div class="lang-ja" style="display:none">
+    が与えられた場合、入力ストリーム内の各フレームに対して、
+      
+      
+	<kbd>job($x, list("computer", "programmer"))</kbd>
+      
+    を満たす拡張フレームを生成しようと試みます。そのような拡張が存在するすべてのフレームを入力ストリームから除去します。結果は、
+      
+      <kbd>$x</kbd>
+    の束縛が
+      
+      
+	<kbd>job($x, list("computer", "programmer"))</kbd>
+      
+    を満たさないフレームのみからなるストリームです。例えば、クエリ
+    </div>
+    <div class='snippet' id='javascript_97_6_div'><div class='pre-prettyprint'><pre class='prettyprint no-eval'>
+and(supervisor($x, $y),
+    not(job($x, list("computer", "programmer"))))</pre></div></div>
+    <div class="lang-en">
+    the first clause will generate frames with bindings for
+    
+      
+      <kbd>$x</kbd>
+    
+    and
+    
+      
+      <kbd>$y</kbd>.
+    
+    The <kbd>not</kbd> clause will then filter these by
+    removing all frames in which the binding for
+    
+      
+      <kbd>$x</kbd>
+    
+    satisfies the restriction that
+    
+      
+      <kbd>$x</kbd>
+    
+    is a computer programmer.
+    </div><div class="lang-ja" style="display:none">
+    を処理する際、最初の節は
+      
+      <kbd>$x</kbd>
+    と
+      
+      <kbd>$y</kbd>
+    の束縛を持つフレームを生成します。次に<kbd>not</kbd>節が、
+      
+      <kbd>$x</kbd>
+    の束縛が
+      
+      <kbd>$x</kbd>
+    がコンピュータプログラマであるという制約を満たすすべてのフレームを除去することで、これらをフィルタリングします。
+    </div><a class='superscript' id='footnote-link-4' href='#footnote-4'>[4]</a>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p15' class='permalink'></a><p>
+    <div class="lang-en">
+    The
+    
+    
+      
+      
+	<kbd>javascript_predicate</kbd>
+	syntactic form
+      
+    
+    is implemented as a similar filter on frame streams.  We use each frame in
+    the stream to instantiate any variables in the pattern, then apply the
+    
+      
+      JavaScript
+    
+    predicate.  We remove from the input stream all frames for which the
+    predicate fails.
+    </div><div class="lang-ja" style="display:none">
+    
+    
+      
+      
+	<kbd>javascript_predicate</kbd>
+	構文形式
+      
+    は、フレームストリームに対する同様のフィルタとして実装されています。ストリーム内の各フレームを使ってパターン内の変数をインスタンス化し、次に
+      
+      JavaScript
+    の述語を適用します。述語が失敗するすべてのフレームを入力ストリームから除去します。
+    </div>
+  </p></div>
+
+  
+  
+  
+      <div class='permalink'>
+        <a name='h4' class='permalink'></a><h2>
+    
+    <div class="lang-en">Unification</div><div class="lang-ja" style="display:none">ユニフィケーション</div>
+  </h2></div>
+
+  
+  
+
+  <div class='permalink'>
+<a name='p16' class='permalink'></a><p>
+    <div class="lang-en">
+    In order to handle rules in the query language, we must be able to
+    find the rules whose conclusions match a given query pattern.  Rule
+    conclusions are like assertions except that they can contain
+    variables, so we will need a generalization of pattern
+    matching—called <EM>unification</EM>—in which both the
+    <QUOTE>pattern</QUOTE> and the <QUOTE>datum</QUOTE> may contain variables.
+    </div><div class="lang-ja" style="display:none">
+    クエリ言語でルールを扱うためには、与えられたクエリパターンにマッチする結論を持つルールを見つけることができなければなりません。ルールの結論は、変数を含むことができるという点を除けばアサーションと同様です。そのため、<QUOTE>パターン</QUOTE>と<QUOTE>データ</QUOTE>の両方が変数を含むことができるパターンマッチングの一般化—<EM>ユニフィケーション</EM>と呼ばれるもの—が必要になります。
+    </div>
+  </p></div>
+
+  
+  <div class='permalink'>
+<a name='p17' class='permalink'></a><p>
+    <div class="lang-en">
+    A unifier takes two patterns, each containing constants and variables,
+    and determines whether it is possible to assign values to the
+    variables that will make the two patterns equal.  If so, it returns a
+    frame containing these bindings.  For example, unifying
+    
+      
+      <kbd>list($x, "a", $y)</kbd>
+      
+    
+    and
+    
+      
+      <kbd>list($y, $z, "a")</kbd>
+      
+    
+    will specify a frame in which
+    
+      
+      <kbd>$x</kbd>,
+    
+    
+      
+      <kbd>$y</kbd>,
+    
+    and
+    
+      
+      <kbd>$z</kbd>
+    
+    must all be bound to
+    
+      
+      <kbd>"a"</kbd>.
+    
+    On the other hand, unifying
+    
+      
+      <kbd>list($x, $y, "a")</kbd>
+      
+    
+    and
+    
+      
+      <kbd>list($x, "b", $y)</kbd>
+      
+    
+    will fail, because there is no value for
+    
+      
+      <kbd>$y</kbd>
+    
+    that can make the two patterns equal. (For the second elements of the
+    patterns to be equal,
+    
+      
+      <kbd>$y</kbd>
+    
+    would have to be
+    
+      
+      <kbd>"b"</kbd>;
+    
+    however, for the third elements to be equal,
+    
+      
+      <kbd>$y</kbd>
+    
+    would have to be
+    
+    <kbd>"a"</kbd>.)
+    
+    The unifier used in the query system, like the pattern matcher, takes a
+    frame as input and performs unifications that are consistent with this frame.
+    </div><div class="lang-ja" style="display:none">
+    ユニファイアは、それぞれ定数と変数を含む2つのパターンを受け取り、2つのパターンを等しくするような値を変数に割り当てることが可能かどうかを判定します。可能であれば、それらの束縛を含むフレームを返します。例えば、
+      
+      <kbd>list($x, "a", $y)</kbd>
+      
+    と
+      
+      <kbd>list($y, $z, "a")</kbd>
+      
+    をユニファイすると、
+      
+      <kbd>$x</kbd>、
+    
+      
+      <kbd>$y</kbd>、
+    および
+      
+      <kbd>$z</kbd>
+    がすべて
+      
+      <kbd>"a"</kbd>
+    に束縛されなければならないフレームが指定されます。一方、
+      
+      <kbd>list($x, $y, "a")</kbd>
+      
+    と
+      
+      <kbd>list($x, "b", $y)</kbd>
+      
+    のユニフィケーションは失敗します。2つのパターンを等しくする
+      
+      <kbd>$y</kbd>
+    の値が存在しないからです。（パターンの2番目の要素が等しくなるためには、
+      
+      <kbd>$y</kbd>
+    は
+      
+      <kbd>"b"</kbd>
+    でなければなりませんが、3番目の要素が等しくなるためには、
+      
+      <kbd>$y</kbd>
+    は
+    <kbd>"a"</kbd>
+    でなければなりません。）クエリシステムで使われるユニファイアは、パターンマッチャーと同様に、フレームを入力として受け取り、そのフレームと矛盾しないユニフィケーションを実行します。
+    </div>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p18' class='permalink'></a><p>
+    <div class="lang-en">
+    The unification algorithm is the most technically difficult part of
+    the query system.  With complex patterns, performing unification may
+    seem to require deduction.
+    To unify
+    
+      
+      <kbd>list($x, $x)</kbd>
+    
+    and
+    
+      
+      <kbd>list(list("a", $y, "c"), list("a", "b", $z))</kbd>,
+      
+    
+    for example,
+    the algorithm must infer that
+    
+      
+      <kbd>$x</kbd>
+    
+    should be
+    
+      
+      <kbd>list("a", "b", "c")</kbd>,
+      
+    
+    
+      
+      <kbd>$y</kbd>
+    
+    should be
+    
+      
+      <kbd>"b"</kbd>,
+    
+    and
+    
+      
+      <kbd>$z</kbd>
+    
+    should be
+    
+      
+      <kbd>"c"</kbd>.
+    
+    We may think of this process as solving a set of equations among the pattern
+    components.  In general, these are simultaneous equations, which may require
+    substantial manipulation to solve.
+    </div><div class="lang-ja" style="display:none">
+    ユニフィケーションアルゴリズムは、クエリシステムの中で技術的に最も難しい部分です。複雑なパターンでは、ユニフィケーションの実行に推論が必要なように思えるかもしれません。例えば、
+      
+      <kbd>list($x, $x)</kbd>
+    と
+      
+      <kbd>list(list("a", $y, "c"), list("a", "b", $z))</kbd>
+      
+    をユニファイするには、アルゴリズムは
+      
+      <kbd>$x</kbd>
+    が
+      
+      <kbd>list("a", "b", "c")</kbd>、
+      
+    
+      
+      <kbd>$y</kbd>
+    が
+      
+      <kbd>"b"</kbd>、
+    そして
+      
+      <kbd>$z</kbd>
+    が
+      
+      <kbd>"c"</kbd>
+    であるべきことを推論しなければなりません。このプロセスは、パターンの構成要素間の方程式の集合を解くことと考えることができます。一般に、これらは連立方程式であり、解くためにかなりの操作が必要になることがあります。
+    </div><a class='superscript' id='footnote-link-5' href='#footnote-5'>[5]</a>
+    <div class="lang-en">
+    For example,
+    unifying
+    
+      
+      <kbd>list($x, $x)</kbd>
+    
+    and
+    
+      
+      
+	<kbd>list(list("a", $y, "c"), list("a", "b", $z))</kbd>
+      
+    
+    may be thought of as specifying the simultaneous equations
+    </div><div class="lang-ja" style="display:none">
+    例えば、
+      
+      <kbd>list($x, $x)</kbd>
+    と
+      
+      
+	<kbd>list(list("a", $y, "c"), list("a", "b", $z))</kbd>
+      
+    のユニフィケーションは、次の連立方程式を指定するものと考えることができます。
+    </div>
+    
+      
+      
+	
+	  \[\begin{array}{lll}
+	  \texttt{\$x} & = & \texttt{list("a", \$y, "c")} \\
+	  \texttt{\$x} & = & \texttt{list("a", "b", \$z)} \\
+	  \end{array}\]
+	
+      
+    
+    <div class="lang-en">These equations imply that</div><div class="lang-ja" style="display:none">これらの方程式は次を意味します。</div>
+    
+      
+      
+	
+	  \[\begin{array}{lll}
+	  \texttt{list("a", \$y, "c")} & = &  \texttt{list("a", "b", \$z)}
+	  \end{array}\]
+	
+      
+    
+    <div class="lang-en">which in turn implies that</div><div class="lang-ja" style="display:none">これはさらに次を意味し、</div>
+    
+      
+      
+	
+	  \[\begin{array}{lllllll}
+	  \texttt{"a"} & = & \texttt{"a"},\qquad
+             \texttt{\$y} & = & \texttt{"b"},\qquad
+             \texttt{"c"} & = & \texttt{\$z}
+	     \end{array}\]
+	
+      
+    
+    <div class="lang-en">and hence that</div><div class="lang-ja" style="display:none">したがって次が得られます。</div>
+    
+      
+      
+	
+	  \[\begin{array}{lll}
+	  \texttt{\$x} & = & \texttt{list("a", "b", "c")}
+	  \end{array}\]
+	
+      
+    
+  </p></div>
+
+  <div class='permalink'>
+<a name='p19' class='permalink'></a><p>
+    <div class="lang-en">
+    In a successful pattern match, all pattern variables become bound, and
+    the values to which they are bound contain only constants.  This is
+    also true of all the examples of unification we have seen so far.
+    
+    
+    In general, however, a successful unification may not completely
+    determine the variable values; some variables may remain unbound and
+    others may be bound to values that contain variables.
+    </div><div class="lang-ja" style="display:none">
+    パターンマッチングが成功すると、すべてのパターン変数が束縛され、束縛された値は定数のみを含みます。これは、これまで見てきたユニフィケーションのすべての例でも同様です。
+    
+    
+    しかし、一般にはユニフィケーションが成功しても変数の値が完全に決まるとは限りません。一部の変数が未束縛のまま残ったり、変数を含む値に束縛されたりすることがあります。
+    </div>
+  </p></div>
+
+  
+  <div class='permalink'>
+<a name='p20' class='permalink'></a><p>
+    <div class="lang-en">
+    Consider the unification of
+    
+      
+      <kbd>list($x, "a")</kbd>
+    
+    and
+    
+      
+      <kbd>list(list("b", $y), $z)</kbd>.
+    
+    We can deduce that
+    
+      
+      <kbd>$x</kbd>
+    
+    $=$
+    
+      
+      <kbd>list("b", $y)</kbd>
+    
+    and
+    
+      
+      <kbd>"a"</kbd>
+    
+    $=$
+    
+      
+      <kbd>$z</kbd>,
+    
+    but we cannot further solve for
+    
+      
+      <kbd>$x</kbd>
+    
+    or
+    
+      
+      <kbd>$y</kbd>.
+    
+    The unification doesn't fail, since it is certainly possible to make
+    the two patterns equal by assigning values to
+    
+      
+      <kbd>$x</kbd>
+    
+    and
+    
+      
+      <kbd>$y</kbd>.
+    
+    Since this match in no way restricts the values
+    
+      
+      <kbd>$y</kbd>
+    
+    can take on, no binding for
+    
+      
+      <kbd>$y</kbd>
+    
+    is put into the result frame. The match does, however, restrict the value of
+    
+      
+      <kbd>$x</kbd>.
+    
+    Whatever value
+    
+      
+      <kbd>$y</kbd>
+    
+    has,
+    
+      
+      <kbd>$x</kbd>
+    
+    must be
+    
+      
+      <kbd>list("b", $y)</kbd>.
+      
+    
+    A binding of
+    
+      
+      <kbd>$x</kbd>
+    
+    to the pattern
+    
+      
+      <kbd>list("b", $y)</kbd>
+    
+    is thus put into the frame.  If a value for
+    
+      
+      <kbd>$y</kbd>
+    
+    is later determined and added to the frame (by a pattern match or
+    unification that is required to be consistent with this frame), the
+    previously bound
+    
+      
+      <kbd>$x</kbd>
+    
+    will refer to this value.
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      <kbd>list($x, "a")</kbd>
+    と
+      
+      <kbd>list(list("b", $y), $z)</kbd>
+    のユニフィケーションを考えてみましょう。
+      
+      <kbd>$x</kbd>
+     $=$ 
+      
+      <kbd>list("b", $y)</kbd>
+    および
+      
+      <kbd>"a"</kbd>
+     $=$ 
+      
+      <kbd>$z</kbd>
+    は推論できますが、
+      
+      <kbd>$x</kbd>
+    や
+      
+      <kbd>$y</kbd>
+    についてこれ以上解くことはできません。このユニフィケーションは失敗しません。
+      
+      <kbd>$x</kbd>
+    と
+      
+      <kbd>$y</kbd>
+    に値を割り当てることで2つのパターンを等しくすることは確かに可能だからです。このマッチは
+      
+      <kbd>$y</kbd>
+    が取りうる値を一切制限しないため、
+      
+      <kbd>$y</kbd>
+    の束縛は結果のフレームに入れられません。しかし、このマッチは
+      
+      <kbd>$x</kbd>
+    の値を制限します。
+      
+      <kbd>$y</kbd>
+    がどんな値を持っていても、
+      
+      <kbd>$x</kbd>
+    は
+      
+      <kbd>list("b", $y)</kbd>
+      
+    でなければなりません。したがって、
+      
+      <kbd>$x</kbd>
+    からパターン
+      
+      <kbd>list("b", $y)</kbd>
+    への束縛がフレームに入れられます。もし
+      
+      <kbd>$y</kbd>
+    の値が後から（このフレームと矛盾しないことが要求されるパターンマッチまたはユニフィケーションによって）決定されフレームに追加された場合、以前に束縛された
+      
+      <kbd>$x</kbd>
+    はその値を参照します。
+    </div><a class='superscript' id='footnote-link-6' href='#footnote-6'>[6]</a>
+  </p></div>
+
+  
+  
+  
+  
+      <div class='permalink'>
+        <a name='h5' class='permalink'></a><h2>
+    
+    <div class="lang-en">Applying rules</div><div class="lang-ja" style="display:none">ルールの適用</div>
+  </h2></div>
+
+  
+
+  <div class='permalink'>
+<a name='p21' class='permalink'></a><p>
+    <div class="lang-en">
+    Unification is the key to the component of the query system that makes
+    inferences from rules. To see how this is accomplished, consider
+    processing a query that involves applying a rule, such as
+    </div><div class="lang-ja" style="display:none">
+    ユニフィケーションは、クエリシステムにおいてルールから推論を行うコンポーネントの鍵です。これがどのように実現されるかを見るために、ルールの適用を伴うクエリの処理を考えてみましょう。例えば次のようなものです。
+    </div>
+    <div class='snippet' id='javascript_97_7_div'><div class='pre-prettyprint'><pre class='prettyprint no-eval'>
+lives_near($x, list("Hacker", "Alyssa", "P"))</pre></div></div>
+    <div class="lang-en">
+    To process this query, we first use the ordinary pattern-match
+    
+      
+      function
+    
+    described above to see if there are any assertions in the data base that
+    match this pattern.  (There will not be any in this case, since our data
+    base includes no direct assertions about who lives near whom.)  The next
+    step is to attempt to unify the query pattern with the conclusion of each
+    rule.  We find that the pattern unifies with the conclusion of the rule
+    </div><div class="lang-ja" style="display:none">
+    このクエリを処理するには、まず上で説明した通常のパターンマッチ
+      
+      関数
+    を使って、このパターンにマッチするアサーションがデータベースにあるかどうかを調べます。（この場合、誰が誰の近くに住んでいるかについての直接的なアサーションはデータベースに含まれていないため、見つかりません。）次のステップは、クエリパターンを各ルールの結論とユニファイしようと試みることです。パターンは次のルールの結論とユニファイできることが分かります。
+    </div>
+    <div class='snippet' id='javascript_97_8_div'><div class='pre-prettyprint'><pre class='prettyprint no-eval'>
+rule(lives_near($person_1, $person_2),
+     and(address($person_1, pair($town, $rest_1)),
+         address($person_2, list($town, $rest_2)),
+         not(same($person_1, $person_2))))</pre></div></div>
+    <div class="lang-en">
+    resulting in a frame specifying that
+    
+      
+      
+	<kbd>$x</kbd>
+	should be bound to (have the same value as)
+	<kbd>$person_1</kbd>
+	and that
+	<kbd>$person_2</kbd>
+	is bound to
+	<kbd>list("Hacker", "Alyssa", "P")</kbd>.
+      
+    
+    Now, relative to this frame, we evaluate the compound query given by the body
+    of the rule.  Successful matches will extend this frame by providing a
+    binding for
+    
+      
+      <kbd>$person_1</kbd>,
+    
+    and consequently a value for
+    
+      
+      <kbd>$x</kbd>,
+    
+    which we can use to instantiate the original query pattern.
+    </div><div class="lang-ja" style="display:none">
+    その結果、
+      
+      
+	<kbd>$x</kbd>が<kbd>$person_1</kbd>に束縛される（同じ値を持つ）べきであり、<kbd>$person_2</kbd>が<kbd>list("Hacker", "Alyssa", "P")</kbd>に束縛される
+      
+    ことを指定するフレームが得られます。次に、このフレームを基準として、ルールの本体で与えられた複合クエリを評価します。マッチが成功すると、
+      
+      <kbd>$person_1</kbd>
+    の束縛を提供することでこのフレームを拡張し、その結果
+      
+      <kbd>$x</kbd>
+    の値が得られ、これを使って元のクエリパターンをインスタンス化できます。
+    </div>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p22' class='permalink'></a><p>
+    <div class="lang-en">
+    In general, the query evaluator uses the following method to apply a
+    rule when trying to establish a query pattern in a frame that
+    specifies bindings for some of the pattern variables:
+
+    <UL>
+      <LI>
+	Unify the query with the conclusion of the rule to form, if
+	successful, an extension of the original frame.
+      </LI>
+      <LI>
+	Relative to the extended frame, evaluate the query formed by
+	the body of the rule.
+      </LI>
+    </UL>
+    </div><div class="lang-ja" style="display:none">
+    一般に、クエリ評価器は、パターン変数の一部に束縛を指定するフレーム内でクエリパターンを確立しようとする際に、次の方法でルールを適用します。
+
+    <UL>
+      <LI>
+	クエリをルールの結論とユニファイし、成功すれば元のフレームの拡張を形成します。
+      </LI>
+      <LI>
+	拡張されたフレームを基準として、ルールの本体によって形成されるクエリを評価します。
+      </LI>
+    </UL>
+    </div>
+  </p></div>
+
+  
+  <div class='permalink'>
+<a name='p23' class='permalink'></a><p>
+    <div class="lang-en">
+    Notice how similar this is to the method for applying a
+    
+      
+      function
+    
+    in the
+    
+    
+      
+      <kbd>evaluate</kbd>/<kbd>apply</kbd>
+      
+    
+    evaluator for
+    
+      
+      JavaScript:
+    
+    <UL>
+      <LI>
+	Bind the
+	
+	  
+	  function's
+	
+	parameters to its arguments to form a frame that extends the original
+	
+	  
+	  function
+	
+	environment.
+      </LI>
+      <LI>
+	Relative to the extended environment, evaluate the expression
+	formed by the body of the
+	
+	  
+	  function.
+	
+      </LI>
+    </UL>
+    The similarity between the two evaluators should come as no surprise.
+    Just as
+    
+      
+      function
+    
+    definitions are the means of abstraction in
+    
+      
+      JavaScript,
+    
+    rule definitions are the means of abstraction in the query language.
+    In each case, we unwind the abstraction by creating appropriate
+    bindings and evaluating the rule or
+    
+      
+      function
+    
+    body relative to these.
+    </div><div class="lang-ja" style="display:none">
+    これが、
+      
+      <kbd>evaluate</kbd>/<kbd>apply</kbd>
+      
+    の
+      
+      JavaScript
+    評価器における
+      
+      関数
+    の適用方法とどれほど似ているかに注目してください。
+    <UL>
+      <LI>
+	
+	  
+	  関数
+	のパラメータをその引数に束縛して、元の
+	  
+	  関数
+	の環境を拡張するフレームを形成します。
+      </LI>
+      <LI>
+	拡張された環境を基準として、
+	  
+	  関数
+	の本体によって形成される式を評価します。
+      </LI>
+    </UL>
+    2つの評価器の類似性は驚くべきことではありません。
+      
+      JavaScript
+    において
+      
+      関数
+    の定義が抽象化の手段であるのと同様に、クエリ言語においてはルールの定義が抽象化の手段です。いずれの場合も、適切な束縛を作成し、それらを基準としてルールまたは
+      
+      関数
+    の本体を評価することで、抽象を展開します。
+    </div>
+  </p></div>
+
+  
+  
+  
+      <div class='permalink'>
+        <a name='h6' class='permalink'></a><h2>
+    
+    <div class="lang-en">Simple queries</div><div class="lang-ja" style="display:none">単純クエリ</div>
+  </h2></div>
+
+  
+
+  <div class='permalink'>
+<a name='p24' class='permalink'></a><p>
+    <div class="lang-en">
+    We saw earlier in this section how to evaluate simple queries in the
+    absence of rules.  Now that we have seen how to apply rules, we can
+    describe how to evaluate simple queries by using both rules and
+    assertions.
+    </div><div class="lang-ja" style="display:none">
+    この節の前半で、ルールがない場合に単純クエリをどのように評価するかを見ました。ルールの適用方法が分かったので、ルールとアサーションの両方を使って単純クエリを評価する方法を説明できます。
+    </div>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p25' class='permalink'></a><p>
+    <div class="lang-en">
+    Given the query pattern and a stream of frames, we produce, for each
+    frame in the input stream, two streams:
+    <UL>
+      <LI>a stream of extended frames obtained by matching the pattern
+      against all assertions in the data base (using the pattern matcher),
+      and
+
+      </LI>
+      <LI>a stream of extended frames obtained by applying all
+      possible rules (using the unifier).
+      </LI>
+    </UL>
+    Appending these two streams produces a stream that consists of all the
+    ways that the given pattern can be satisfied consistent with the
+    original frame.  These streams (one for each frame in the input
+    stream) are now all combined to form one large stream, which therefore
+    consists of all the ways that any of the frames in the original input
+    stream can be extended to produce a match with the given pattern.
+    </div><div class="lang-ja" style="display:none">
+    クエリパターンとフレームのストリームが与えられると、入力ストリーム内の各フレームに対して、2つのストリームを生成します。
+    <UL>
+      <LI>パターンをデータベース内のすべてのアサーションに対してマッチさせる（パターンマッチャーを使う）ことで得られる拡張フレームのストリーム
+
+      </LI>
+      <LI>適用可能なすべてのルールを適用する（ユニファイアを使う）ことで得られる拡張フレームのストリーム
+      </LI>
+    </UL>
+    これらの2つのストリームを結合すると、与えられたパターンが元のフレームと矛盾なく満たされるすべての方法からなるストリームが得られます。これらのストリーム（入力ストリーム内の各フレームに1つ）はすべて結合されて1つの大きなストリームを形成し、そのストリームは元の入力ストリーム内の任意のフレームを拡張して与えられたパターンとのマッチを生成できるすべての方法からなります。
+    </div><a class='superscript' id='footnote-link-7' href='#footnote-7'>[7]</a>
+  </p></div>
+
+  
+  
+  
+      <div class='permalink'>
+        <a name='h7' class='permalink'></a><h2>
+    
+    <div class="lang-en">The query evaluator and the driver loop</div><div class="lang-ja" style="display:none">クエリ評価器とドライバループ</div>
+  </h2></div>
+
+  <div class='permalink'>
+<a name='p26' class='permalink'></a><p>
+    <div class="lang-en">
+    Despite the complexity of the underlying matching operations, the
+    system is organized much like an
+    
+    
+    evaluator for any language.  The
+    
+      
+      function
+    
+    that coordinates the matching operations is called
+    
+    
+      
+      <kbd>evaluate_query</kbd>,
+      
+    
+    and it plays a role analogous to that of the
+    
+      
+      <kbd>evaluate</kbd>
+    
+    
+      
+      function
+    
+    for
+    
+      
+      JavaScript.
+    
+    
+      
+      The function
+      <kbd>evaluate_query</kbd>
+      
+    
+    takes as inputs a query and a stream of frames.  Its output is a stream of
+    frames, corresponding to successful matches to the query pattern, that
+    extend some frame in the input stream, as indicated in
+    
+      
+      
+	figure&nbsp;<REF NAME="fig:query-stream"><a class="superscript" id="4.4.2-fig-link-4.8" href="./4.4.2.html#fig_4.8">4.8</a></REF>.
+      
+    
+    Like
+    
+      
+      <kbd>evaluate</kbd>,
+    
+    
+      
+      <kbd>evaluate_query</kbd>
+      
+    
+    classifies the different types of expressions (queries) and dispatches to an
+    appropriate
+    
+      
+      function
+    
+    for each.  There is a
+    
+      
+      function
+    
+    for each
+    
+      
+      syntactic
+    
+    form
+    (<kbd>and</kbd>, <kbd>or</kbd>,
+    <kbd>not</kbd>, and
+    
+      
+      
+	<kbd>javascript_predicate</kbd>)
+      
+    
+    and one for simple queries.
+    </div><div class="lang-ja" style="display:none">
+    基盤となるマッチング操作の複雑さにもかかわらず、システムは他の言語の
+    
+    
+    評価器と同じように構成されています。マッチング操作を統括する
+      
+      関数
+    は
+    
+    
+      
+      <kbd>evaluate_query</kbd>
+      
+    と呼ばれ、
+      
+      JavaScript
+    の
+      
+      <kbd>evaluate</kbd>
+    
+      
+      関数
+    と同様の役割を果たします。
+      
+      関数<kbd>evaluate_query</kbd>
+      
+    はクエリとフレームのストリームを入力として受け取ります。その出力は、
+      
+      
+	figure&nbsp;<REF NAME="fig:query-stream"><a class="superscript" id="4.4.2-fig-link-4.8" href="./4.4.2.html#fig_4.8">4.8</a></REF>
+      
+    に示すように、入力ストリーム内のあるフレームを拡張する、クエリパターンへの成功したマッチに対応するフレームのストリームです。
+      
+      <kbd>evaluate</kbd>
+    と同様に、
+      
+      <kbd>evaluate_query</kbd>
+      
+    は異なる種類の式（クエリ）を分類し、それぞれに対して適切な
+      
+      関数
+    にディスパッチします。各
+      
+      構文
+    形式（<kbd>and</kbd>、<kbd>or</kbd>、<kbd>not</kbd>、および
+      
+      
+	<kbd>javascript_predicate</kbd>）
+      
+    に対する
+      
+      関数
+    と、単純クエリ用の
+      
+      関数
+    が1つあります。
+    </div>
+    
+  </p></div>
+
+  <div class='permalink'>
+<a name='p27' class='permalink'></a><p>
+    <div class="lang-en">
+    The
+    
+    
+    driver loop, which is analogous to the
+    
+      
+      
+	<kbd>driver_loop</kbd>
+      
+    
+    
+      
+      function
+    
+    for the other evaluators in this chapter, reads queries
+    
+      
+      typed by the user.
+    
+    For each query, it calls
+    
+      
+      <kbd>evaluate_query</kbd>
+      
+    
+    with the query and a stream that consists of a single empty frame.  This
+    will produce the stream of all possible matches (all possible extensions to
+    the empty frame).  For each frame in the resulting stream, it instantiates
+    the original query using the values of the variables found in the frame.
+    This stream of instantiated queries is then printed.
+    </div><div class="lang-ja" style="display:none">
+    
+    
+    ドライバループは、この章の他の評価器における
+      
+      
+	<kbd>driver_loop</kbd>
+      
+    
+      
+      関数
+    に類似しており、
+      
+      ユーザーが入力した
+    クエリを読み取ります。各クエリに対して、クエリと単一の空フレームからなるストリームを引数として
+      
+      <kbd>evaluate_query</kbd>
+      
+    を呼び出します。これにより、すべての可能なマッチ（空フレームのすべての可能な拡張）のストリームが生成されます。結果のストリーム内の各フレームに対して、フレーム内で見つかった変数の値を使って元のクエリをインスタンス化します。このインスタンス化されたクエリのストリームが表示されます。
+    </div><a class='superscript' id='footnote-link-8' href='#footnote-8'>[8]</a>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p28' class='permalink'></a><p>
+    <div class="lang-en">
+    The driver also checks for the special command
+    
+    
+    
+      
+      <kbd>assert</kbd>,
+    
+    which signals that the input is not a query but rather an assertion or rule
+    to be added to the data base.  For instance,
+    </div><div class="lang-ja" style="display:none">
+    ドライバは特別なコマンド
+    
+    
+    
+      
+      <kbd>assert</kbd>
+    もチェックします。これは、入力がクエリではなくデータベースに追加されるアサーションまたはルールであることを示します。例えば次のようになります。
+    </div>
+    <div class='snippet' id='javascript_97_9_div'><div class='pre-prettyprint'><pre class='prettyprint no-eval'>
+assert(job(list("Bitdiddle", "Ben"), list("computer", "wizard")))
+
+assert(rule(wheel($person),
+            and(supervisor($middle_manager, $person),
+                supervisor($x, $middle_manager))))</pre></div></div>
+  </p></div>
+
+
+<hr>
+
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-1' href='#footnote-link-1'>[1] </a>
+    <FOOTNOTE>
+    
+    <div class="lang-en">
+    Because matching is generally very
+    
+    expensive, we would
+    like to avoid applying the full matcher to every element of the data
+    base.  This is usually arranged by breaking up the process into a
+    fast, coarse match and the final match.  The coarse match filters the
+    data base to produce a small set of candidates for the final match.
+    With care, we can arrange our data base so that some of the work of
+    coarse matching can be done when the data base is constructed rather
+    then when we want to select the candidates.  This is called
+    
+    
+    <EM>indexing</EM> the data base.  There is a vast technology built around
+    data-base-indexing schemes.  Our implementation, described in
+    section&nbsp;<REF NAME="sec:implementing-the-query-system"><a class="superscript" id="4.4.2-sec-link-4.4.4" href="./4.4.4.html">4.4.4</a></REF>, contains a
+    simpleminded form of such an optimization.
+    </div><div class="lang-ja" style="display:none">
+    マッチングは一般に非常にコストが高いため、データベースのすべての要素に完全なマッチャを適用することは避けたいものです。これは通常、プロセスを高速で粗いマッチと最終的なマッチに分割することで対処します。粗いマッチはデータベースをフィルタして、最終マッチの候補となる小さな集合を生成します。注意深く設計すれば、粗いマッチの作業の一部を、候補を選択する時点ではなくデータベースの構築時に行うようにできます。これはデータベースの<EM>インデックス付け</EM>と呼ばれます。データベースのインデックス付けスキームに関しては膨大な技術が構築されています。<REF NAME="sec:implementing-the-query-system"><a class="superscript" id="4.4.2-sec-link-4.4.4" href="./4.4.4.html">4.4.4</a></REF>節で説明する私たちの実装には、このような最適化の単純な形が含まれています。
+    </div>
+    
+    </FOOTNOTE></div>
+
+    
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-2' href='#footnote-link-2'>[2] </a>
+    <FOOTNOTE>
+    <div class="lang-en">But this kind
+    of exponential explosion is not common in <kbd>and</kbd>
+    queries because the added conditions tend to reduce rather than expand
+    the number of frames produced.</div><div class="lang-ja" style="display:none">しかし、この種の指数的爆発は<kbd>and</kbd>クエリでは一般的ではありません。追加された条件は、生成されるフレームの数を増やすのではなく減らす傾向があるからです。</div>
+    </FOOTNOTE></div>
+
+    
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-3' href='#footnote-link-3'>[3] </a>
+    <FOOTNOTE>
+    <div class="lang-en">There is a large
+    literature on data-base-management systems that is concerned with how to
+    handle complex queries efficiently.</div><div class="lang-ja" style="display:none">複雑なクエリを効率的に処理する方法に関するデータベース管理システムの文献は膨大です。</div>
+    </FOOTNOTE></div>
+
+    
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-4' href='#footnote-link-4'>[4] </a>
+    <FOOTNOTE>
+    <div class="lang-en">There is a subtle difference between this
+    filter implementation of <kbd>not</kbd> and the usual
+    meaning of <kbd>not</kbd> in mathematical logic.  See
+    section&nbsp;<REF NAME="sec:math-logic"><a class="superscript" id="4.4.2-sec-link-4.4.3" href="./4.4.3.html">4.4.3</a></REF>.</div><div class="lang-ja" style="display:none">この<kbd>not</kbd>のフィルタ実装と、数学的論理学における<kbd>not</kbd>の通常の意味との間には微妙な違いがあります。節&nbsp;<REF NAME="sec:math-logic"><a class="superscript" id="4.4.2-sec-link-4.4.3" href="./4.4.3.html">4.4.3</a></REF>を参照してください。</div>
+    </FOOTNOTE></div>
+
+    
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-5' href='#footnote-link-5'>[5] </a>
+    <FOOTNOTE>
+    <div class="lang-en">In one-sided pattern matching,
+    all the equations that contain pattern variables are explicit and already
+    solved for the unknown (the pattern variable).</div><div class="lang-ja" style="display:none">片側パターンマッチングでは、パターン変数を含む方程式はすべて明示的であり、未知数（パターン変数）について既に解かれています。</div>
+    </FOOTNOTE></div>
+
+    
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-6' href='#footnote-link-6'>[6] </a>
+    <FOOTNOTE>
+    <div class="lang-en">Another way to think of unification is
+    that it generates the most general pattern that is a specialization of the
+    two input patterns.
+    
+      
+      
+	This means that the unification of
+	<kbd>list($x, "a")</kbd>
+      
+    
+    and
+    
+      
+      
+	<kbd>list(list("b", $y), $z)</kbd>
+      
+    
+    is
+    
+      
+      <kbd>list(list("b", $y), "a")</kbd>
+      
+    
+    and
+    
+      
+	that
+      
+    
+    the unification of
+    
+      
+      <kbd>list($x, "a", $y)</kbd>
+      
+    
+    and
+    
+      
+      <kbd>list($y, $z, "a")</kbd>,
+      
+    
+    discussed above, is
+    
+      
+      <kbd>list("a", "a", "a")</kbd>.
+      
+    
+    For our implementation, it is more convenient to think of the result
+    of unification as a frame rather than a pattern.</div><div class="lang-ja" style="display:none">ユニフィケーションについて別の考え方をすると、2つの入力パターンの特殊化である最も一般的なパターンを生成するものと言えます。
+    
+      
+      
+	つまり、
+	<kbd>list($x, "a")</kbd>
+      
+    と
+      
+      
+	<kbd>list(list("b", $y), $z)</kbd>
+      
+    のユニフィケーションは
+      
+      <kbd>list(list("b", $y), "a")</kbd>
+      
+    であり、
+      
+	また
+      
+    上で議論した
+      
+      <kbd>list($x, "a", $y)</kbd>
+      
+    と
+      
+      <kbd>list($y, $z, "a")</kbd>
+      
+    のユニフィケーションは
+      
+      <kbd>list("a", "a", "a")</kbd>
+      
+    です。私たちの実装では、ユニフィケーションの結果をパターンではなくフレームとして考える方が便利です。</div>
+    </FOOTNOTE></div>
+
+    
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-7' href='#footnote-link-7'>[7] </a>
+    <FOOTNOTE>
+    <div class="lang-en">Since unification is a
+      
+      
+      generalization of matching, we could simplify the system by using the
+      unifier to produce both streams.  Treating the easy case with the
+      simple matcher, however, illustrates how matching (as opposed to
+      full-blown unification) can be useful in its own right.</div><div class="lang-ja" style="display:none">ユニフィケーションはマッチングの一般化であるため、
+      
+      
+      ユニファイアを使って両方のストリームを生成することでシステムを簡略化できます。しかし、簡単なケースを単純なマッチャで扱うことは、（本格的なユニフィケーションに対して）マッチングがそれ自体で有用であることを示しています。</div>
+    </FOOTNOTE></div>
+
+    
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-8' href='#footnote-link-8'>[8] </a>
+    <FOOTNOTE>
+    <div class="lang-en">The reason we
+    use
+    
+    
+    streams (rather than lists) of frames is that the
+    recursive application of rules can generate infinite numbers of values that
+    satisfy a query.  The delayed evaluation embodied in streams is crucial
+    here: The system will print responses one by one as they are generated,
+    regardless of whether there are a finite or infinite number of
+    responses.</div><div class="lang-ja" style="display:none">フレームに（リストではなく）
+    
+    
+    ストリームを使う理由は、ルールの再帰的な適用がクエリを満たす無限個の値を生成しうるからです。ストリームに組み込まれた遅延評価がここでは重要です。応答が有限個か無限個かにかかわらず、システムは応答が生成されるたびに1つずつ表示します。</div>
+    </FOOTNOTE></div>
+
+    
+</div></div>
+
+    <div class='nav'>
+  
+        <a class='btn btn-secondary btn-nav' href='./4.4.1.html'>&lt; Previous</a>
+    
+    <div style='flex-grow: 1;'></div>
+  
+        <a class='btn btn-secondary btn-nav' id='99' href='./4.4.3.html'>Next &gt;</a>
+      </div>
+    <div class='chapter_sign'>
+      4.4.2&nbsp;&nbsp;
+    <div class="lang-en">How the Query System Works</div><div class="lang-ja" style="display:none">クエリシステムの仕組み</div>
+  
+    </div>
+    <script> var chapter_id = 98; </script>
+    <script> var chapter_path = "chapters/4.4.2.html"; </script>
+    <div class='next-page'></div>
+    </div>
+    </div> <!-- /.container -->
+    </body></html>

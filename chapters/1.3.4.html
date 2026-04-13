@@ -1,0 +1,5432 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="1.3.4 Functions as Returned Values - SICP Comparison Edition"/><title>1.3.4 Functions as Returned Values - SICP Comparison Edition</title><meta name="csrf-param" content="authenticity_token" />
+    <meta
+      name="csrf-token"
+      content="EMTEijVc2kiiKUH4nYH0lQG3pLPfMowQ/Stg//t6DCo0e5pWMQwamnTvIdmVZqY/MqSx2IYYE+2bpNV6UNSMwQ=="
+    />
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Inconsolata&display?swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Droid+Sans|Droid+Serif"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      media="all"
+      href="../assets/stylesheet.css?v=mnwty5q1"
+    />
+
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="../assets/sourcepower.ico"
+    />
+
+    <!--    <link rel="shortcut icon" type="image/png" href="../images/lambda.png" /> -->
+
+    <!-- for support of progressive web app, see github README, DISABLED!
+    <link rel="manifest" href="../static/manifest.json">
+    -->
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+      integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+      integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script> -->
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML-full"
+    ></script>
+    <!--  <script type="text/javascript"
+      src="../MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full">
+    </script> -->
+    <script src="../assets/application.js?v=mnwty5q1"></script>
+    <script src="../assets/lang-toggle.js?v=mnwty5q1"></script>
+    <script src="../assets/bookmark.js?v=mnwty5q1"></script>
+    <script src="../assets/snippet-runner.js?v=mnwty5q1"></script>
+
+    <!-- Rendering inline LaTeX -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true,
+          jax: ["input/TeX","output/HTML-CSS"]
+        }
+      });
+    </script>
+    <!--<script src="/mathjax/MathJax.js?config=TeX-AMS_HTML-full.js" type="text/javascript"></script>-->
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"
+        type="text/javascript"
+      ></script>
+    <![endif]--> </head><body><!-- support for progressive web app, see README, DISABLED -->
+    <!-- <script>
+      if ("serviceWorker" in navigator && !navigator.serviceWorker.controller) {
+        navigator.serviceWorker.register("../sw.js").then(function (reg) {
+          console.log(
+            "Service worker has been registered for scope: " + reg.scope
+          );
+        });
+      }
+    </script> -->
+    <nav
+      class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top justify-content-between"
+    >
+      <button
+        id="btn"
+        class="navbar-toggler collapsed"
+        type="button"
+        data-toggle="collapse"
+        data-target="#nav-sidebar"
+        aria-controls="nav-sidebar"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        title="navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <span class="navbar-brand-short"
+        ><a
+          title="Go back to front page"
+          href="../index.html"
+          class="gray"
+          >SICP &mdash; JS</a
+        ></span
+      >
+      <span class="navbar-brand-long"
+        ><a
+          title="Go back to front page"
+          href="../index.html"
+          class="gray"
+          >Structure and Interpretation of Computer Programs &mdash; Comparison Edition</a
+        ></span
+      >
+      <span class="toolt"
+        >Legend<span class="toolttext">
+          <div class="title-text-ALSO">
+      <span class="title-text-ALSO">Color highlighting:</span><br />
+    </div>
+    <div class="title-text-OTHEREDITIONS">
+      <span class="title-text-OTHEREDITIONS">
+        <span style="color:black">Unchanged █</span>
+      </span>
+    </div>
+    <div class="title-text-OTHEREDITIONS">
+      <span class="title-text-OTHEREDITIONS">
+        <span style="color:green">Scheme █</span>
+      </span>
+    </div>
+    <div class="title-text-OTHEREDITIONS">
+      <span class="title-text-OTHEREDITIONS">
+        <span style="color:blue">Javascript █</span>
+      </span>
+    </div>
+    <div class="title-text-OTHEREDITIONS">
+      <span class="title-text-OTHEREDITIONS">
+        <span style="color:grey">Explanation █</span>
+      </span>
+    </div>
+    <div class="title-text-OTHEREDITIONS">
+      <span class="title-text-OTHEREDITIONS">
+        <span style="color:red">Web-only █</span>
+      </span>
+    </div>
+        </span></span
+      >
+      <div
+        class="btn-group btn-group-sm"
+        role="group"
+        style="margin-left: auto; margin-right: 8px;"
+      >
+        <button
+          id="bookmark-save"
+          class="btn btn-sm btn-outline-light"
+          onclick="saveBookmarkHere()"
+          title="現在位置をしおりに保存"
+          style="font-size: 0.9rem; padding: 2px 8px;"
+          aria-label="しおりを保存"
+        >
+          ☆
+        </button>
+        <button
+          id="bookmark-jump"
+          class="btn btn-sm btn-outline-light bookmark-empty"
+          onclick="jumpToBookmark()"
+          disabled
+          title="しおり未保存"
+          style="font-size: 0.9rem; padding: 2px 8px;"
+          aria-label="しおりへジャンプ"
+        >
+          ↩
+        </button>
+      </div>
+      <div class="btn-group btn-group-sm" role="group">
+        <button
+          id="lang-en"
+          class="btn btn-sm btn-outline-light"
+          onclick="setLang('en')"
+          style="font-size: 0.8rem; padding: 2px 8px;"
+        >
+          EN
+        </button>
+        <button
+          id="lang-ja"
+          class="btn btn-sm btn-light"
+          onclick="setLang('ja')"
+          style="font-size: 0.8rem; padding: 2px 8px;"
+        >
+          JA
+        </button>
+        <button
+          id="lang-both"
+          class="btn btn-sm btn-outline-light"
+          onclick="setLang('both')"
+          style="font-size: 0.8rem; padding: 2px 8px;"
+        >
+          EN/JA
+        </button>
+      </div>
+    </nav><div class="container scroll">
+        <div class="collapse" id="nav-sidebar" role="tablist" aria-multiselectable="true">
+        <!-- insert a dummy entry, to give one extra line of space -->
+        <a class="navbar-brand" href="index.html">&nbsp;</a>
+    
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-1">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-1"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-1"
+              >
+                <a href="./foreword02.html">
+                  
+        <div class="lang-en">Foreword</div><div class="lang-ja" style="display:none">序文</div>
+    </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-2">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-2"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-2"
+              >
+                <a href="./foreword84.html">
+                  <div class="lang-en">Foreword to Structure and Interpretation of Computer Programs, 1984</div><div class="lang-ja" style="display:none">「計算機プログラムの構造と解釈」への序文、1984年</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-3">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-3"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-3"
+              >
+                <a href="./prefaces03.html">
+                  
+    <div class="lang-en">Preface</div><div class="lang-ja" style="display:none">まえがき</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-4">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-4"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-4"
+              >
+                <a href="./prefaces96.html">
+                  
+    <div class="lang-en">
+    Prefaces
+    
+      
+	to Structure and Interpretation of Computer Programs, 1996 & 1984
+      
+    
+    </div><div class="lang-ja" style="display:none">
+    
+      
+	「計算機プログラムの構造と解釈」へのまえがき、1996年 & 1984年
+      
+    
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-5">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-5"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-5"
+              >
+                <a href="./acknowledgements.html">
+                  <div class="lang-en">Acknowledgments</div><div class="lang-ja" style="display:none">謝辞</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-6">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-6"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-6"
+              >
+                <a href="./see.html">
+                  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-7">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-7"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-7"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-7"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-7"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./1.html"
+        >1 <div class="lang-en">Building Abstractions with Functions</div><div class="lang-ja" style="display:none">関数による抽象の構築</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-7" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-8">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-8"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-8"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-8"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-8"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./1.1.html"
+        >1.1 <div class="lang-en">The Elements of Programming</div><div class="lang-ja" style="display:none">プログラミングの要素</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-8" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-9">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-9"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-9"
+              >
+                <a href="./1.1.1.html">
+                  1.1.1 <div class="lang-en">Expressions</div><div class="lang-ja" style="display:none">式</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-10">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-10"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-10"
+              >
+                <a href="./1.1.2.html">
+                  1.1.2 <div class="lang-en">Naming and the Environment</div><div class="lang-ja" style="display:none">名前付けと環境</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-11">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-11"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-11"
+              >
+                <a href="./1.1.3.html">
+                  1.1.3 
+    <div class="lang-en">Evaluating
+    
+      
+      Operator Combinations
+    </div><div class="lang-ja" style="display:none">
+      
+      演算子の組み合わせ
+    の評価</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-12">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-12"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-12"
+              >
+                <a href="./1.1.4.html">
+                  1.1.4 
+    <div class="lang-en">Compound 
+    Functions</div><div class="lang-ja" style="display:none">複合
+    関数</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-13">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-13"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-13"
+              >
+                <a href="./1.1.5.html">
+                  1.1.5 
+    <div class="lang-en">
+    The Substitution Model for
+    
+      
+      
+        Function
+      
+    
+    Application
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      
+        関数
+      
+    適用の置換モデル
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-14">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-14"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-14"
+              >
+                <a href="./1.1.6.html">
+                  1.1.6 
+    <div class="lang-en">Conditional Expressions and Predicates</div><div class="lang-ja" style="display:none">条件式と述語</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-15">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-15"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-15"
+              >
+                <a href="./1.1.7.html">
+                  1.1.7 <div class="lang-en">Example: Square Roots by Newton's Method</div><div class="lang-ja" style="display:none">例：ニュートン法による平方根</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-16">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-16"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-16"
+              >
+                <a href="./1.1.8.html">
+                  1.1.8 
+    <div class="lang-en">
+    
+      
+      
+        Functions
+      
+    
+    as Black-Box Abstractions
+    </div><div class="lang-ja" style="display:none">
+    ブラックボックス抽象化としての
+      
+      
+        関数
+      
+    
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-17">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-17"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-17"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-17"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-17"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./1.2.html"
+        >1.2 
+    <div class="lang-en">
+      
+      Functions
+    
+    and the Processes They Generate</div><div class="lang-ja" style="display:none">
+      
+      関数
+    とそれが生成するプロセス</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-17" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-18">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-18"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-18"
+              >
+                <a href="./1.2.1.html">
+                  1.2.1 <div class="lang-en">Linear Recursion and Iteration</div><div class="lang-ja" style="display:none">線形再帰と反復</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-19">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-19"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-19"
+              >
+                <a href="./1.2.2.html">
+                  1.2.2 <div class="lang-en">Tree Recursion</div><div class="lang-ja" style="display:none">ツリー再帰</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-20">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-20"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-20"
+              >
+                <a href="./1.2.3.html">
+                  1.2.3 <div class="lang-en">Orders of Growth</div><div class="lang-ja" style="display:none">増加のオーダー</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-21">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-21"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-21"
+              >
+                <a href="./1.2.4.html">
+                  1.2.4 <div class="lang-en">Exponentiation</div><div class="lang-ja" style="display:none">べき乗</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-22">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-22"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-22"
+              >
+                <a href="./1.2.5.html">
+                  1.2.5 <div class="lang-en">Greatest Common Divisors</div><div class="lang-ja" style="display:none">最大公約数</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-23">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-23"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-23"
+              >
+                <a href="./1.2.6.html">
+                  1.2.6 <div class="lang-en">Example: Testing for Primality</div><div class="lang-ja" style="display:none">例：素数性のテスト</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-24">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-24"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-24"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-24"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-24"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./1.3.html"
+        >1.3 
+        <div class="lang-en">
+        Formulating Abstractions with Higher-Order
+        
+	  
+	  Functions
+	
+        </div><div class="lang-ja" style="display:none">
+        高階
+	  
+	  関数
+	による抽象の定式化
+        </div>
+      </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-24" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-25">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-25"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-25"
+              >
+                <a href="./1.3.1.html">
+                  1.3.1 
+    <div class="lang-en">
+    
+      
+      Functions
+    
+    as Arguments
+    </div><div class="lang-ja" style="display:none">
+    引数としての
+      
+      関数
+    
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-26">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-26"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-26"
+              >
+                <a href="./1.3.2.html">
+                  1.3.2 
+    <div class="lang-en">
+    
+      
+      Constructing Functions using Lambda Expressions
+      
+    
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      ラムダ式を使った関数の構築
+    
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-27">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-27"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-27"
+              >
+                <a href="./1.3.3.html">
+                  1.3.3 
+    <div class="lang-en">
+      
+    Functions
+    as General Methods</div><div class="lang-ja" style="display:none">一般的な方法としての
+      
+    関数</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-28">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-28"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-28"
+              >
+                <a href="./1.3.4.html">
+                  1.3.4 
+    <div class="lang-en">
+      
+      Functions
+    
+    as Returned Values</div><div class="lang-ja" style="display:none">戻り値としての
+      
+      関数
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-29">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-29"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-29"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-29"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-29"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./2.html"
+        >2 <div class="lang-en">Building Abstractions with Data</div><div class="lang-ja" style="display:none">データによる抽象の構築</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-29" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-30">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-30"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-30"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-30"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-30"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./2.1.html"
+        >2.1 <div class="lang-en">Introduction to Data Abstraction</div><div class="lang-ja" style="display:none">データ抽象入門</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-30" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-31">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-31"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-31"
+              >
+                <a href="./2.1.1.html">
+                  2.1.1 
+    <div class="lang-en">Example: Arithmetic Operations for Rational Numbers</div><div class="lang-ja" style="display:none">例：有理数の算術演算</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-32">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-32"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-32"
+              >
+                <a href="./2.1.2.html">
+                  2.1.2 
+    <div class="lang-en">Abstraction Barriers</div><div class="lang-ja" style="display:none">抽象バリア</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-33">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-33"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-33"
+              >
+                <a href="./2.1.3.html">
+                  2.1.3 
+    <div class="lang-en">What Is Meant by Data?</div><div class="lang-ja" style="display:none">データとは何か？</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-34">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-34"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-34"
+              >
+                <a href="./2.1.4.html">
+                  2.1.4 
+    <div class="lang-en">Extended Exercise: Interval Arithmetic</div><div class="lang-ja" style="display:none">拡張演習：区間算術</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-35">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-35"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-35"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-35"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-35"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./2.2.html"
+        >2.2 
+  <div class="lang-en">Hierarchical Data and the Closure Property</div><div class="lang-ja" style="display:none">階層的データと閉包性</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-35" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-36">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-36"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-36"
+              >
+                <a href="./2.2.1.html">
+                  2.2.1 
+    <div class="lang-en">Representing Sequences</div><div class="lang-ja" style="display:none">シーケンスの表現</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-37">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-37"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-37"
+              >
+                <a href="./2.2.2.html">
+                  2.2.2 
+    <div class="lang-en">Hierarchical Structures</div><div class="lang-ja" style="display:none">階層的構造</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-38">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-38"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-38"
+              >
+                <a href="./2.2.3.html">
+                  2.2.3 
+    <div class="lang-en">Sequences as Conventional Interfaces</div><div class="lang-ja" style="display:none">規約インターフェースとしてのシーケンス</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-39">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-39"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-39"
+              >
+                <a href="./2.2.4.html">
+                  2.2.4 
+    <div class="lang-en">Example: A Picture Language</div><div class="lang-ja" style="display:none">例：ピクチャー言語</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-40">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-40"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-40"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-40"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-40"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./2.3.html"
+        >2.3 
+    <div class="lang-en">Symbolic Data</div><div class="lang-ja" style="display:none">シンボリックデータ</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-40" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-41">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-41"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-41"
+              >
+                <a href="./2.3.1.html">
+                  2.3.1 
+    
+      
+      
+        <div class="lang-en">Strings</div><div class="lang-ja" style="display:none">文字列</div>
+      
+    
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-42">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-42"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-42"
+              >
+                <a href="./2.3.2.html">
+                  2.3.2 
+    <div class="lang-en">Example: Symbolic Differentiation</div><div class="lang-ja" style="display:none">例：シンボリック微分</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-43">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-43"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-43"
+              >
+                <a href="./2.3.3.html">
+                  2.3.3 
+    <div class="lang-en">Example: Representing Sets</div><div class="lang-ja" style="display:none">例：集合の表現</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-44">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-44"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-44"
+              >
+                <a href="./2.3.4.html">
+                  2.3.4 
+    <div class="lang-en">Example: Huffman Encoding Trees</div><div class="lang-ja" style="display:none">例：ハフマン符号化木</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-45">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-45"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-45"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-45"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-45"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./2.4.html"
+        >2.4 
+    <div class="lang-en">Multiple Representations for Abstract Data</div><div class="lang-ja" style="display:none">抽象データの多重表現</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-45" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-46">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-46"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-46"
+              >
+                <a href="./2.4.1.html">
+                  2.4.1 
+    <div class="lang-en">Representations for Complex Numbers</div><div class="lang-ja" style="display:none">複素数の表現</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-47">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-47"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-47"
+              >
+                <a href="./2.4.2.html">
+                  2.4.2 
+    <div class="lang-en">Tagged data</div><div class="lang-ja" style="display:none">タグ付きデータ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-48">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-48"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-48"
+              >
+                <a href="./2.4.3.html">
+                  2.4.3 
+    <div class="lang-en">Data-Directed Programming and Additivity</div><div class="lang-ja" style="display:none">データ指向プログラミングと加法性</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-49">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-49"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-49"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-49"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-49"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./2.5.html"
+        >2.5 
+    <div class="lang-en">Systems with Generic Operations</div><div class="lang-ja" style="display:none">ジェネリック演算を持つシステム</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-49" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-50">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-50"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-50"
+              >
+                <a href="./2.5.1.html">
+                  2.5.1 
+    <div class="lang-en">Generic Arithmetic Operations</div><div class="lang-ja" style="display:none">ジェネリック算術演算</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-51">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-51"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-51"
+              >
+                <a href="./2.5.2.html">
+                  2.5.2 
+    <div class="lang-en">Combining Data of Different Types</div><div class="lang-ja" style="display:none">異なる型のデータの組み合わせ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-52">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-52"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-52"
+              >
+                <a href="./2.5.3.html">
+                  2.5.3 
+    <div class="lang-en">Example: Symbolic Algebra</div><div class="lang-ja" style="display:none">例：シンボリック代数</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-53">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-53"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-53"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-53"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-53"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./3.html"
+        >3 <div class="lang-en">Modularity, Objects, and State</div><div class="lang-ja" style="display:none">モジュール性、オブジェクト、状態</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-53" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-54">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-54"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-54"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-54"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-54"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./3.1.html"
+        >3.1 
+      <div class="lang-en">Assignment and Local State</div><div class="lang-ja" style="display:none">代入とローカル状態</div>
+    </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-54" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-55">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-55"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-55"
+              >
+                <a href="./3.1.1.html">
+                  3.1.1 
+    <div class="lang-en">Local State Variables</div><div class="lang-ja" style="display:none">ローカル状態変数</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-56">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-56"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-56"
+              >
+                <a href="./3.1.2.html">
+                  3.1.2 
+    <div class="lang-en">The Benefits of Introducing Assignment</div><div class="lang-ja" style="display:none">代入を導入する利点</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-57">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-57"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-57"
+              >
+                <a href="./3.1.3.html">
+                  3.1.3 
+    <div class="lang-en">The Costs of Introducing Assignment</div><div class="lang-ja" style="display:none">代入を導入するコスト</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-58">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-58"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-58"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-58"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-58"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./3.2.html"
+        >3.2 <div class="lang-en">The Environment Model of Evaluation</div><div class="lang-ja" style="display:none">評価の環境モデル</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-58" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-59">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-59"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-59"
+              >
+                <a href="./3.2.1.html">
+                  3.2.1 
+    <div class="lang-en">The Rules for Evaluation</div><div class="lang-ja" style="display:none">評価のルール</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-60">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-60"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-60"
+              >
+                <a href="./3.2.2.html">
+                  3.2.2 
+    <div class="lang-en">
+    Applying Simple
+    
+      
+      Functions
+    
+    </div><div class="lang-ja" style="display:none">
+    単純な
+      
+      関数
+    の適用
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-61">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-61"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-61"
+              >
+                <a href="./3.2.3.html">
+                  3.2.3 
+    <div class="lang-en">Frames as the Repository of Local State</div><div class="lang-ja" style="display:none">ローカル状態の保管場所としてのフレーム</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-62">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-62"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-62"
+              >
+                <a href="./3.2.4.html">
+                  3.2.4 
+    <div class="lang-en">
+    Internal
+    
+      
+      Declarations
+    
+    </div><div class="lang-ja" style="display:none">
+    内部
+      
+      宣言
+    
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-63">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-63"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-63"
+              >
+                <a href="./3.2.5.html">
+                  3.2.5 
+    CSE Machine
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-64">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-64"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-64"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-64"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-64"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./3.3.html"
+        >3.3 
+    <div class="lang-en">Modeling with Mutable Data</div><div class="lang-ja" style="display:none">ミュータブルなデータによるモデル化</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-64" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-65">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-65"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-65"
+              >
+                <a href="./3.3.1.html">
+                  3.3.1 
+    <div class="lang-en">Mutable List Structure</div><div class="lang-ja" style="display:none">ミュータブルなリスト構造</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-66">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-66"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-66"
+              >
+                <a href="./3.3.2.html">
+                  3.3.2 
+    <div class="lang-en">Representing Queues</div><div class="lang-ja" style="display:none">キューの表現</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-67">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-67"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-67"
+              >
+                <a href="./3.3.3.html">
+                  3.3.3 
+    <div class="lang-en">Representing Tables</div><div class="lang-ja" style="display:none">テーブルの表現</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-68">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-68"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-68"
+              >
+                <a href="./3.3.4.html">
+                  3.3.4 
+    <div class="lang-en">A Simulator for Digital Circuits</div><div class="lang-ja" style="display:none">デジタル回路のシミュレータ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-69">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-69"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-69"
+              >
+                <a href="./3.3.5.html">
+                  3.3.5 
+    <div class="lang-en">Propagation of Constraints</div><div class="lang-ja" style="display:none">制約の伝播</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-70">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-70"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-70"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-70"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-70"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./3.4.html"
+        >3.4 <div class="lang-en">Concurrency: Time Is of the Essence</div><div class="lang-ja" style="display:none">並行性 ― 時間が本質</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-70" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-71">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-71"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-71"
+              >
+                <a href="./3.4.1.html">
+                  3.4.1 
+    <div class="lang-en">The Nature of Time in Concurrent Systems</div><div class="lang-ja" style="display:none">並行システムにおける時間の本質</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-72">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-72"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-72"
+              >
+                <a href="./3.4.2.html">
+                  3.4.2 
+    <div class="lang-en">Mechanisms for Controlling Concurrency</div><div class="lang-ja" style="display:none">並行性を制御する仕組み</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-73">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-73"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-73"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-73"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-73"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./3.5.html"
+        >3.5 <div class="lang-en">Streams</div><div class="lang-ja" style="display:none">ストリーム</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-73" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-74">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-74"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-74"
+              >
+                <a href="./3.5.1.html">
+                  3.5.1 <div class="lang-en">Streams Are Delayed Lists</div><div class="lang-ja" style="display:none">ストリームは遅延リスト</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-75">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-75"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-75"
+              >
+                <a href="./3.5.2.html">
+                  3.5.2 
+    <div class="lang-en">Infinite Streams</div><div class="lang-ja" style="display:none">無限ストリーム</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-76">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-76"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-76"
+              >
+                <a href="./3.5.3.html">
+                  3.5.3 
+    <div class="lang-en">Exploiting the Stream Paradigm</div><div class="lang-ja" style="display:none">ストリームパラダイムを活かす</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-77">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-77"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-77"
+              >
+                <a href="./3.5.4.html">
+                  3.5.4 
+    <div class="lang-en">Streams and Delayed Evaluation</div><div class="lang-ja" style="display:none">ストリームと遅延評価</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-78">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-78"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-78"
+              >
+                <a href="./3.5.5.html">
+                  3.5.5 
+    <div class="lang-en">Modularity of Functional Programs and Modularity of Objects</div><div class="lang-ja" style="display:none">関数型プログラムのモジュール性とオブジェクトのモジュール性</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-79">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-79"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-79"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-79"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-79"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./4.html"
+        >4 <div class="lang-en">Metalinguistic Abstraction</div><div class="lang-ja" style="display:none">メタ言語的抽象化</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-79" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-80">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-80"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-80"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-80"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-80"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./4.1.html"
+        >4.1 <div class="lang-en">The Metacircular Evaluator</div><div class="lang-ja" style="display:none">メタ循環評価器</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-80" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-81">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-81"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-81"
+              >
+                <a href="./4.1.1.html">
+                  4.1.1 
+    <div class="lang-en">The Core of the Evaluator</div><div class="lang-ja" style="display:none">評価器の中核</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-82">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-82"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-82"
+              >
+                <a href="./4.1.2.html">
+                  4.1.2 
+    <div class="lang-en">
+    Representing
+    
+      
+      Components
+    
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      コンポーネント
+    の表現
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-83">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-83"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-83"
+              >
+                <a href="./4.1.3.html">
+                  4.1.3 
+    <div class="lang-en">Evaluator Data Structures</div><div class="lang-ja" style="display:none">評価器のデータ構造</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-84">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-84"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-84"
+              >
+                <a href="./4.1.4.html">
+                  4.1.4 
+    <div class="lang-en">Running the Evaluator as a Program</div><div class="lang-ja" style="display:none">評価器をプログラムとして実行する</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-85">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-85"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-85"
+              >
+                <a href="./4.1.5.html">
+                  4.1.5 
+    <div class="lang-en">Data as Programs</div><div class="lang-ja" style="display:none">プログラムとしてのデータ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-86">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-86"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-86"
+              >
+                <a href="./4.1.6.html">
+                  4.1.6 
+    <div class="lang-en">
+    Internal
+    
+      
+      Declarations
+    
+    </div><div class="lang-ja" style="display:none">
+    内部
+      
+      宣言
+    
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-87">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-87"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-87"
+              >
+                <a href="./4.1.7.html">
+                  4.1.7 
+    <div class="lang-en">Separating Syntactic Analysis from Execution</div><div class="lang-ja" style="display:none">構文解析と実行の分離</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-88">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-88"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-88"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-88"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-88"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./4.2.html"
+        >4.2 
+    
+      
+    
+    <div class="lang-en">Lazy Evaluation</div><div class="lang-ja" style="display:none">遅延評価</div>
+</a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-88" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-89">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-89"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-89"
+              >
+                <a href="./4.2.1.html">
+                  4.2.1 
+    <div class="lang-en">Normal Order and Applicative Order</div><div class="lang-ja" style="display:none">正規順序と適用順序</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-90">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-90"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-90"
+              >
+                <a href="./4.2.2.html">
+                  4.2.2 
+    <div class="lang-en">An Interpreter with Lazy Evaluation</div><div class="lang-ja" style="display:none">遅延評価を行うインタプリタ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-91">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-91"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-91"
+              >
+                <a href="./4.2.3.html">
+                  4.2.3 
+    <div class="lang-en">Streams as Lazy Lists</div><div class="lang-ja" style="display:none">遅延リストとしてのストリーム</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-92">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-92"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-92"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-92"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-92"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./4.3.html"
+        >4.3 
+    
+      
+    
+    <div class="lang-en">Nondeterministic Computing</div><div class="lang-ja" style="display:none">非決定的計算</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-92" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-93">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-93"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-93"
+              >
+                <a href="./4.3.1.html">
+                  4.3.1 
+    
+      
+      <div class="lang-en">Search and amb</div><div class="lang-ja" style="display:none">探索とamb</div>
+    
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-94">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-94"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-94"
+              >
+                <a href="./4.3.2.html">
+                  4.3.2 
+    <div class="lang-en">Examples of Nondeterministic Programs</div><div class="lang-ja" style="display:none">非決定的プログラムの例</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-95">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-95"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-95"
+              >
+                <a href="./4.3.3.html">
+                  4.3.3 
+    <div class="lang-en">
+    Implementing the
+    
+      
+      amb
+    
+    Evaluator
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      amb
+    
+    評価器の実装
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-96">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-96"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-96"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-96"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-96"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./4.4.html"
+        >4.4 
+    <div class="lang-en">Logic Programming</div><div class="lang-ja" style="display:none">論理プログラミング</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-96" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-97">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-97"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-97"
+              >
+                <a href="./4.4.1.html">
+                  4.4.1 
+    <div class="lang-en">Deductive Information Retrieval</div><div class="lang-ja" style="display:none">演繹的情報検索</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-98">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-98"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-98"
+              >
+                <a href="./4.4.2.html">
+                  4.4.2 
+    <div class="lang-en">How the Query System Works</div><div class="lang-ja" style="display:none">クエリシステムの仕組み</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-99">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-99"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-99"
+              >
+                <a href="./4.4.3.html">
+                  4.4.3 
+    <div class="lang-en">Is Logic Programming Mathematical Logic?</div><div class="lang-ja" style="display:none">論理プログラミングは数学的論理学なのか？</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-100">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-100"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-100"
+              >
+                <a href="./4.4.4.html">
+                  4.4.4 
+    <div class="lang-en">Implementing the Query System</div><div class="lang-ja" style="display:none">クエリシステムの実装</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-101">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-101"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-101"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-101"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-101"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./5.html"
+        >5 <div class="lang-en">Computing with Register Machines</div><div class="lang-ja" style="display:none">レジスタマシンによる計算</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-101" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-102">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-102"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-102"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-102"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-102"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./5.1.html"
+        >5.1 
+    <div class="lang-en">Designing Register Machines</div><div class="lang-ja" style="display:none">レジスタマシンの設計</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-102" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-103">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-103"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-103"
+              >
+                <a href="./5.1.1.html">
+                  5.1.1 
+    <div class="lang-en">A Language for Describing Register Machines</div><div class="lang-ja" style="display:none">レジスタマシンを記述する言語</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-104">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-104"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-104"
+              >
+                <a href="./5.1.2.html">
+                  5.1.2 
+    <div class="lang-en">Abstraction in Machine Design</div><div class="lang-ja" style="display:none">マシン設計における抽象化</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-105">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-105"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-105"
+              >
+                <a href="./5.1.3.html">
+                  5.1.3 
+    <div class="lang-en">Subroutines</div><div class="lang-ja" style="display:none">サブルーチン</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-106">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-106"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-106"
+              >
+                <a href="./5.1.4.html">
+                  5.1.4 
+    <div class="lang-en">Using a Stack to Implement Recursion</div><div class="lang-ja" style="display:none">スタックを使った再帰の実装</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-107">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-107"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-107"
+              >
+                <a href="./5.1.5.html">
+                  5.1.5 
+    <div class="lang-en">Instruction Summary</div><div class="lang-ja" style="display:none">命令のまとめ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-108">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-108"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-108"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-108"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-108"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./5.2.html"
+        >5.2 <div class="lang-en">A Register-Machine Simulator</div><div class="lang-ja" style="display:none">レジスタマシンシミュレータ</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-108" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-109">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-109"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-109"
+              >
+                <a href="./5.2.1.html">
+                  5.2.1 
+    <div class="lang-en">The Machine Model</div><div class="lang-ja" style="display:none">マシンモデル</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-110">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-110"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-110"
+              >
+                <a href="./5.2.2.html">
+                  5.2.2 
+    <div class="lang-en">The Assembler</div><div class="lang-ja" style="display:none">アセンブラ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-111">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-111"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-111"
+              >
+                <a href="./5.2.3.html">
+                  5.2.3 
+    
+      
+      
+        <div class="lang-en">Instructions and Their Execution Functions</div><div class="lang-ja" style="display:none">命令とその実行関数</div>
+      
+    
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-112">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-112"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-112"
+              >
+                <a href="./5.2.4.html">
+                  5.2.4 
+    <div class="lang-en">Monitoring Machine Performance</div><div class="lang-ja" style="display:none">マシン性能のモニタリング</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-113">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-113"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-113"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-113"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-113"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./5.3.html"
+        >5.3 
+    <div class="lang-en">Storage Allocation and Garbage Collection</div><div class="lang-ja" style="display:none">記憶領域の割り当てとガベージコレクション</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-113" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-114">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-114"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-114"
+              >
+                <a href="./5.3.1.html">
+                  5.3.1 
+    <div class="lang-en">Memory as Vectors</div><div class="lang-ja" style="display:none">ベクトルとしてのメモリ</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-115">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-115"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-115"
+              >
+                <a href="./5.3.2.html">
+                  5.3.2 
+    <div class="lang-en">Maintaining the Illusion of Infinite Memory</div><div class="lang-ja" style="display:none">無限メモリの幻想を維持する</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-116">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-116"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-116"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-116"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-116"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./5.4.html"
+        >5.4 
+    <div class="lang-en">The Explicit-Control Evaluator</div><div class="lang-ja" style="display:none">明示的制御評価器</div>
+  </a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-116" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-117">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-117"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-117"
+              >
+                <a href="./5.4.1.html">
+                  5.4.1 
+    
+      
+      <div class="lang-en">The Dispatcher and Basic Evaluation</div><div class="lang-ja" style="display:none">ディスパッチャーと基本的な評価</div>
+    
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-118">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-118"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-118"
+              >
+                <a href="./5.4.2.html">
+                  5.4.2 
+    
+      
+      
+        <div class="lang-en">Evaluating Function Applications</div><div class="lang-ja" style="display:none">関数適用の評価</div>
+      
+    
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-119">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-119"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-119"
+              >
+                <a href="./5.4.3.html">
+                  5.4.3 
+    
+      
+      
+        <div class="lang-en">Blocks, Assignments, and Declarations</div><div class="lang-ja" style="display:none">ブロック、代入、宣言</div>
+      
+    
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-120">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-120"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-120"
+              >
+                <a href="./5.4.4.html">
+                  5.4.4 
+    <div class="lang-en">Running the Evaluator</div><div class="lang-ja" style="display:none">評価器の実行</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+            <div class="card card-inverse">
+            <div class="card-header" role="tab" id="sidebar-121">
+    <h5 class="mb-0">
+      <a
+        class="sidebar-show collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-121"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-121"
+      >
+        &#10148;
+        <!-- ➤ (because this one is rendered blue on mobile: ▶  -->
+      </a>
+      <a
+        class="sidebar-hide collapsed"
+        data-toggle="collapse"
+        href="#sidebar-collapse-121"
+        aria-expanded="true"
+        aria-controls="sidebar-collapse-121"
+      >
+        &#x25BC;
+        <!-- ▼ (because the corresponding one is not rendered) -->
+      </a>
+      <a href="./5.5.html"
+        >5.5 <div class="lang-en">Compilation</div><div class="lang-ja" style="display:none">コンパイル</div></a
+      >
+    </h5>
+  </div>
+
+              <div id="sidebar-collapse-121" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+            
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-122">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-122"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-122"
+              >
+                <a href="./5.5.1.html">
+                  5.5.1 
+    <div class="lang-en">Structure of the Compiler</div><div class="lang-ja" style="display:none">コンパイラの構造</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-123">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-123"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-123"
+              >
+                <a href="./5.5.2.html">
+                  5.5.2 
+    <div class="lang-en">Compiling
+    
+      
+      Components
+    </div><div class="lang-ja" style="display:none">
+      
+      コンポーネント
+    のコンパイル</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-124">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-124"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-124"
+              >
+                <a href="./5.5.3.html">
+                  5.5.3 
+    <div class="lang-en">
+    Compiling
+    
+      
+      
+	Applications and Return Statements
+      
+    
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      
+	関数適用と return 文
+      
+    のコンパイル
+    </div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-125">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-125"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-125"
+              >
+                <a href="./5.5.4.html">
+                  5.5.4 
+    <div class="lang-en">Combining Instruction Sequences</div><div class="lang-ja" style="display:none">命令列の結合</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-126">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-126"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-126"
+              >
+                <a href="./5.5.5.html">
+                  5.5.5 
+    <div class="lang-en">An Example of Compiled Code</div><div class="lang-ja" style="display:none">コンパイル済みコードの例</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-127">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-127"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-127"
+              >
+                <a href="./5.5.6.html">
+                  5.5.6 
+    <div class="lang-en">Lexical Addressing</div><div class="lang-ja" style="display:none">レキシカルアドレッシング</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-128">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-128"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-128"
+              >
+                <a href="./5.5.7.html">
+                  5.5.7 
+    <div class="lang-en">Interfacing Compiled Code to the Evaluator</div><div class="lang-ja" style="display:none">コンパイル済みコードと評価器のインターフェース</div>
+  </a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+                </div>
+              </div>
+            </div>
+        
+                </div>
+              </div>
+            </div>
+        
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-129">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-129"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-129"
+              >
+                <a href="./references.html">
+                  References</a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      
+        <div class="card card-inverse">
+          <div class="card-header" role="tab" id="sidebar-130">
+            <h5 class="mb-0">
+              <span
+                class="collapsed"
+                data-toggle="collapse"
+                href="#sidebar-collapse-130"
+                aria-expanded="false"
+                aria-controls="sidebar-collapse-130"
+              >
+                <a href="./making-of.html">
+                  <div class="lang-en">About the SICP JS Project</div><div class="lang-ja" style="display:none">SICP JSプロジェクトについて</div></a
+                >
+              </span>
+            </h5>
+          </div>
+        </div>
+      </div>
+<div id='permalink-msg'>
+<div class='screen'>
+  <div class='alert alert-success'>
+    <strong>Permalink copied!</strong>
+  </div>
+</div>
+</div>
+<div class='chapter-content'>
+
+      <div class='chapter-title'>
+        <div class='permalink'>
+        <a name='top' class='permalink'>
+    1.3.4&nbsp;&nbsp;
+    <div class="lang-en">
+      
+      Functions
+    
+    as Returned Values</div><div class="lang-ja" style="display:none">戻り値としての
+      
+      関数
+    </div>
+  
+        </a>
+        </div>
+      </div>
+      <div class='chapter-text'>
+        <div class='SECTION'>
+    
+
+  
+
+  
+  
+  
+  <div class='permalink'>
+<a name='p1' class='permalink'></a><p>
+    <div class="lang-en">
+    The above examples demonstrate how the ability to pass
+    
+      
+      functions
+    
+    as arguments significantly enhances the expressive power of our programming
+    language.  We can achieve even more expressive power by creating
+    
+      
+      functions
+    
+    whose returned values are themselves
+    
+      
+      functions.
+    
+    </div><div class="lang-ja" style="display:none">
+    上の例は、
+      
+      関数
+    を引数として渡す能力がプログラミング言語の表現力をいかに大幅に高めるかを示しています。戻り値自体が
+      
+      関数
+    であるような
+      
+      関数
+    を作ることで、さらに大きな表現力を実現できます。
+    </div>
+  </p></div>
+  <div class='permalink'>
+<a name='p2' class='permalink'></a><p>
+    <div class="lang-en">
+    We can illustrate this idea by looking again at the fixed-point example
+    described at the end of
+    section&nbsp;<REF NAME="sec:proc-general-methods"><a class="superscript" id="1.3.4-sec-link-1.3.3" href="./1.3.3.html">1.3.3</a></REF>.  We formulated a new
+    version of the square-root
+    
+      
+      function
+    
+    as a fixed-point search, starting with the observation that
+    $\sqrt{x}$ is a fixed-point of the function
+    $y\mapsto x/y$.  Then we used average damping to
+    make the approximations converge.  Average damping is a useful general
+    technique in itself.  Namely, given a
+    function&nbsp;$f$, we consider the function
+    whose value at $x$ is equal to the average of
+    $x$ and $f(x)$.
+    </div><div class="lang-ja" style="display:none">
+    このアイデアは、&nbsp;<REF NAME="sec:proc-general-methods"><a class="superscript" id="1.3.4-sec-link-1.3.3" href="./1.3.3.html">1.3.3</a></REF>節の最後で説明した不動点の例をもう一度見ることで説明できます。$\sqrt{x}$ が関数 $y\mapsto x/y$ の不動点であるという観察から出発して、平方根
+      
+      関数
+    の新しいバージョンを不動点探索として定式化しました。そして、近似を収束させるために平均減衰を使いました。平均減衰はそれ自体が有用な一般的テクニックです。すなわち、関数 $f$ が与えられたとき、$x$ での値が $x$ と $f(x)$ の平均に等しい関数を考えます。
+    </div>
+  </p></div>
+  <div class='permalink'>
+<a name='p3' class='permalink'></a><p>
+    <div class="lang-en">We can express the idea of average damping by means of the following
+    
+      
+      function:
+    </div><div class="lang-ja" style="display:none">平均減衰のアイデアを次の
+      
+      関数
+    で表現できます：</div>
+    <div class='snippet' id='javascript_27_1_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function average(x, y) {
+    return (x + y) / 2;
+}
+
+function square(x) {
+    return x * x;
+}
+
+average_damp(square)(10);" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0AQwDcBTAJwYHMWAKADwA0oAJ4BKUAG9coGaDYsKRNvX6gA1CPFgATAG5cAX3zFy1OqADOARyIN5-cVNlyFS+n1AAqUH31HCpJS09MzsXCwA+gAmDAC2AA48BI7SsvKKyj6gALwAfIysHNz8QgQOon74oUWRMQk81rbyojwoAAwVQA">function average_damp(f) {
+    return x => average(x, f(x));
+}
+</pre></div></div>
+    <div class="lang-en">
+    
+      
+      
+        The function
+        <kbd>average_damp</kbd>
+      
+    
+    takes as its argument a
+    
+      
+      function
+    
+    <kbd>f</kbd> and returns as its value a
+    
+      
+      function
+    
+    
+      
+      (produced by the lambda expression)
+    
+    that, when applied to a number&nbsp;<kbd>x</kbd>, produces the
+    average of <kbd>x</kbd> and
+    
+      
+      <kbd>f(x)</kbd>.
+    
+    For example, applying
+    
+      
+      
+        <kbd>average_damp</kbd>
+      
+    
+    to the <kbd>square</kbd>
+    
+      
+      function
+    
+    produces a
+    
+      
+      function
+    
+    whose value at some number $x$ is the average of
+    $x$ and $x^2$.
+    Applying this resulting
+    
+      
+      function
+    
+    to 10 returns the average of 10 and 100, or 55:
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      関数 <kbd>average_damp</kbd> は
+    引数として
+      
+      関数
+     <kbd>f</kbd> を取り、値として、数 <kbd>x</kbd> に適用されると <kbd>x</kbd> と 
+      
+      <kbd>f(x)</kbd>
+     の平均を生成する
+      
+      関数（ラムダ式によって生成）
+    を返します。例えば、
+      
+      <kbd>average_damp</kbd>
+     を <kbd>square</kbd> 
+      
+      関数
+    に適用すると、ある数 $x$ での値が $x$ と $x^2$ の平均である
+      
+      関数
+    が生成されます。この結果の
+      
+      関数
+    を10に適用すると、10と100の平均、つまり55が返されます：
+    </div><a class='superscript' id='footnote-link-1' href='#footnote-1'>[1]</a>
+    <div class='snippet' id='javascript_27_2_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function average(x, y) {
+    return (x + y) / 2;
+}
+
+function average_damp(f) {
+    return x =&gt; average(x, f(x));
+}
+
+function square(x) {
+    return x * x;
+}" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0AQwDcBTAJwYHMWAKADwA0oAJ4BKUAG9coGaDYsKRNvX6gA1CPFgATAG5cAX3zFy1Oo1YduAfQAmDALYAHHgXFTZchUvp9QAXgA+C3YuXkFQAn5RUX0jQlJKWnoAZwBHIgZ5aMlpWXlFZVA-ACpiuPxmUJt7Zx50zPlRHhQABligA">average_damp(square)(10);
+</pre><pre class='prettyprintoutput'>
+55</pre></div></div>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p4' class='permalink'></a><p>
+    <div class="lang-en">Using
+    
+      
+      <kbd>average_damp</kbd>,
+    
+    we can reformulate the
+    
+    square-root
+    
+      
+      function
+    
+    as follows:</div><div class="lang-ja" style="display:none">
+      
+      <kbd>average_damp</kbd>
+     を使えば、
+    
+    平方根
+      
+      関数
+    を次のように再定式化できます：</div>
+    <div class='snippet' id='javascript_27_3_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function average(x, y) {
+    return (x + y) / 2;
+}
+
+function average_damp(f) {
+    return x =&gt; average(x, f(x));
+}
+
+function abs(x) {
+    return x &gt;= 0 ? x : - x;
+}
+
+const tolerance = 0.00001;
+function fixed_point(f, first_guess) {
+    function close_enough(x, y) {
+        return abs(x - y) &lt; tolerance;
+    }
+    function try_with(guess) {
+        const next = f(guess);
+        return close_enough(guess, next)
+               ? next
+               : try_with(next);
+    }
+    return try_with(first_guess);
+}
+
+sqrt(6);" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0AQwDcBTAJwYHMWAKADwA0oAJ4BKUAG9coGaDYsKRNvX6gA1CPFgATAG5cAX3zFy1Oo1YduAfQAmDALYAHHgXFTZchUvp9QAXgA+C3YuXkFQAn5RUX0jQlJKWnoGACMAZ2jJaVl5RWVQP0D-UAAGUAB+QtAALlAAWkK4-DI6dIpQChoAG1DyFgCytFKR0pR9EyTzAio+FltrJxoqEgpXIRm2dutOIhZ09PccmUmzejJumnSWaxYSGiJOAAt+ITFsz088n0YM1Ub3gAeTo9PpkFj6TxGTynZKdNjCawAdyoFBeu32hw+nxkrRI7VAJBYfA6JSiGIOsWOn2+BQuVxudwezx4FPSQiJJNE1JxnyqnIoPN5sjqFARyNRLwFVKh1Np9DFiJRaNcVC2FB2e0pzQSpjh6QAjmw1nwjl9vAUZnMFksVmtmKEbPZnDxhAFgn4wGIhCgqfFDcaeAA2WJAA">function sqrt(x) {
+    return fixed_point(average_damp(y => x / y), 1);
+}
+</pre></div></div>
+    
+    <div class="lang-en">
+    Notice how this formulation makes explicit the three ideas in the method:
+    fixed-point search, average damping, and the function
+    $y\mapsto x/y$.  It is instructive to compare
+    this formulation of the square-root method with the original version given
+    in section&nbsp;<REF NAME="sec:sqrt"><a class="superscript" id="1.3.4-sec-link-1.1.7" href="./1.1.7.html">1.1.7</a></REF>.  Bear in mind that these
+    
+      
+      functions
+    
+    express the same process, and notice how much clearer the idea becomes when
+    we express the process in terms of these abstractions.  In general, there
+    are many ways to formulate a process as a
+    
+      
+      function.
+    
+    Experienced programmers know how to choose
+    
+      
+      process
+    
+    formulations that are particularly perspicuous, and where useful elements of
+    the process are exposed as separate entities that can be reused in other
+    applications. As a simple example of reuse, notice that the cube root of
+    $x$ is a fixed point of the function
+    $y\mapsto x/y^2$, so we can immediately
+    generalize our square-root
+    
+      
+      function
+    
+    to one that extracts
+    
+    
+    cube roots:
+    </div><div class="lang-ja" style="display:none">
+    この定式化が、この方法の3つのアイデア——不動点探索、平均減衰、関数 $y\mapsto x/y$——をいかに明確にしているかに注目してください。平方根法のこの定式化を、&nbsp;<REF NAME="sec:sqrt"><a class="superscript" id="1.3.4-sec-link-1.1.7" href="./1.1.7.html">1.1.7</a></REF>節で示した元のバージョンと比較してみると有益です。これらの
+      
+      関数
+    は同じプロセスを表現しているということを念頭に置き、これらの抽象でプロセスを表現するとアイデアがどれほど明確になるかに注目してください。一般に、プロセスを
+      
+      関数
+    として定式化する方法は多数あります。経験豊富なプログラマは、特に見通しが良く、プロセスの有用な要素が他の応用で再利用可能な別個のエンティティとして公開されるような定式化を選ぶ方法を知っています。再利用の簡単な例として、$x$ の立方根は関数 $y\mapsto x/y^2$ の不動点なので、平方根
+      
+      関数
+    を
+    
+    
+    立方根を求めるものに直ちに一般化できます：
+    </div><a class='superscript' id='footnote-link-2' href='#footnote-2'>[2]</a>
+    
+    <div class='snippet' id='javascript_27_4_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function average(x, y) {
+    return (x + y) / 2;
+}
+
+function average_damp(f) {
+    return x =&gt; average(x, f(x));
+}
+
+function abs(x) {
+    return x &gt;= 0 ? x : - x;
+}
+
+const tolerance = 0.00001;
+function fixed_point(f, first_guess) {
+    function close_enough(x, y) {
+        return abs(x - y) &lt; tolerance;
+    }
+    function try_with(guess) {
+        const next = f(guess);
+        return close_enough(guess, next)
+               ? next
+               : try_with(next);
+    }
+    return try_with(first_guess);
+}
+
+function square(x) {
+    return x * x;
+}
+
+cube_root(27);" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0AQwDcBTAJwYHMWAKADwA0oAJ4BKUAG9coGaDYsKRNvX6gA1CPFgATAG5cAX3zFy1Oo1YduAfQAmDALYAHHgXFTZchUvp9QAXgA+C3YuXkFQAn5RUX0jQlJKWnoGACMAZ2jJaVl5RWVQP0D-UAAGUAB+QtAALlAAWkK4-DI6dIpQChoAG1DyFgCytFKR0pR9EyTzAio+FltrJxoqEgpXIRm2dutOIhZ09PccmUmzejJumnSWaxYSGiJOAAt+ITFsz088n0YM1Ub3gAeTo9PpkFj6TxGTynZKdNjCawAdyoFBeu32hw+nxkrRI7VAJBYfA6JSiGIOsWOn2+BQuVxudwezx4FPSQiJJNE1JxnyqnIoPN5sjqFARyNRLwFVKh1Np9DFiJRaNcVC2FB2e0pzQSpjh6QAjkQGPIsh5ct4Cn4AFRNQzGRJnUBkIipG5sGg0NZ8I5fS30GZzBZLFZrZihGz2Zw8YQBYJ+MCG42msSiIQoKnxF1u6wer08bQAdliQA">function cube_root(x) {
+    return fixed_point(average_damp(y => x / square(y)), 1);
+}
+</pre></div></div>
+    
+  </p></div>
+
+  
+      <div class='permalink'>
+        <a name='h1' class='permalink'></a><h2>
+    
+    <div class="lang-en">Newton's method</div><div class="lang-ja" style="display:none">ニュートン法</div>
+  </h2></div>
+
+  <div class='permalink'>
+<a name='p5' class='permalink'></a><p>
+    <div class="lang-en">
+    When we first introduced the square-root
+    
+      
+      function,
+    
+    in section&nbsp;<REF NAME="sec:sqrt"><a class="superscript" id="1.3.4-sec-link-1.1.7" href="./1.1.7.html">1.1.7</a></REF>, we mentioned that this was a
+    special case of
+    
+    <EM>Newton's method</EM>. If
+    $x\mapsto g(x)$ is a differentiable function,
+    then a solution of the equation $g(x)=0$ is a
+    fixed point of the function $x\mapsto f(x)$ where
+    </div><div class="lang-ja" style="display:none">
+    &nbsp;<REF NAME="sec:sqrt"><a class="superscript" id="1.3.4-sec-link-1.1.7" href="./1.1.7.html">1.1.7</a></REF>節で平方根
+      
+      関数
+    を最初に導入したとき、これが
+    
+    <EM>ニュートン法</EM>の特殊ケースであることに触れました。$x\mapsto g(x)$ が微分可能な関数である場合、方程式 $g(x)=0$ の解は、次の関数 $x\mapsto f(x)$ の不動点です。
+    </div>
+    
+      \[
+      \begin{array}{lll}
+      f(x) & = & x - \dfrac{g(x)}{Dg(x)}
+      \end{array}
+      \]
+    
+    <div class="lang-en">
+    and $Dg(x)$ is the derivative of
+    $g$ evaluated at $x$.
+    
+    Newton's method is the use of the fixed-point method we saw above to
+    approximate a solution of the equation by finding a fixed point of the
+    function $f$.
+    For many functions $g$ and for sufficiently good
+    initial guesses for $x$, Newton's method
+    converges very rapidly to a solution of
+    $g(x)=0$.
+    </div><div class="lang-ja" style="display:none">
+    ここで $Dg(x)$ は $g$ の $x$ における導関数です。
+    
+    ニュートン法は、上で見た不動点法を使って、関数 $f$ の不動点を見つけることで方程式の解を近似する方法です。多くの関数 $g$ と、$x$ の十分に良い初期推測に対して、ニュートン法は $g(x)=0$ の解に非常に速く収束します。
+    </div><a class='superscript' id='footnote-link-3' href='#footnote-3'>[3]</a><a class='superscript' id='footnote-link-4' href='#footnote-4'>[4]</a>
+  </p></div>
+
+  
+  <div class='permalink'>
+<a name='p6' class='permalink'></a><p>
+    <div class="lang-en">
+    In order to implement Newton's method as a
+    
+      
+      function,
+    
+    we must first express the idea of
+    
+    
+    
+    derivative.  Note that
+    <QUOTE>derivative,</QUOTE> like average damping, is something that
+    transforms a function into another function.  For instance, the derivative
+    of the function $x\mapsto x^3$ is the function
+    $x \mapsto 3x^2$.  In general, if
+    $g$ is a function and
+    $dx$ is a small number, then the derivative
+    $Dg$ of $g$ is the
+    function whose value at any number&nbsp;$x$ is given
+    (in the limit of small $dx$) by
+    </div><div class="lang-ja" style="display:none">
+    ニュートン法を
+      
+      関数
+    として実装するには、まず
+    
+    
+    
+    導関数のアイデアを表現する必要があります。<QUOTE>導関数</QUOTE>は、平均減衰と同様に、関数を別の関数に変換するものであることに注意してください。例えば、関数 $x\mapsto x^3$ の導関数は関数 $x \mapsto 3x^2$ です。一般に、$g$ が関数で $dx$ が小さい数であるとき、$g$ の導関数 $Dg$ は、任意の数 $x$ での値が（$dx$ が小さいという極限において）次の式で与えられる関数です。
+    </div>
+    
+      \[
+      \begin{array}{lll}
+      Dg(x) & = & \dfrac {g(x+dx) - g(x)}{dx}
+      \end{array}
+      \]
+    
+    <div class="lang-en">Thus, we can express the idea of derivative (taking
+    $dx$ to be, say, 0.00001) as the
+    
+      
+      function
+    </div><div class="lang-ja" style="display:none">したがって、導関数のアイデアを（$dx$ を例えば 0.00001 として）次の
+      
+      関数
+    で表現できます。</div>
+    <div class='snippet' id='javascript_27_5_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+const dx = 0.00001;
+
+function cube(x) { return x * x * x; }
+
+deriv(cube)(5);" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuBjAewDsBnAF1ABMAPUAXlAAY1n3mUBufAMwFcSBCgEtSNAKYAnEQDcAFAHMAlKADeuUFtBSJFflJKh6DAHygl8+gGoatVQFpQiq8tVg6PAL59BwsUYE-ABGEq7qOnoGRvQAVMag8bRcoD641NJy8kGhyvIArMpcQA">function deriv(g) {
+    return x => (g(x + dx) - g(x)) / dx;
+}
+</pre></div></div>
+    <div class="lang-en">along with the
+    
+      
+      declaration
+    </div><div class="lang-ja" style="display:none">および次の
+      
+      宣言
+    を組み合わせます。</div>
+    <div class='snippet' id='javascript_27_6_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuBjAewDsBnAF1ABMAPUAXlAAY1n3mUBuIA">const dx = 0.00001;
+</pre></div></div>
+  </p></div>
+  <div class='permalink'>
+<a name='p7' class='permalink'></a><p>
+    <div class="lang-en">Like
+
+    
+      
+      <kbd>average_damp</kbd>,
+    
+    
+    <kbd>deriv</kbd> is a
+    
+      
+      function
+    
+    that takes a
+    
+      
+      function
+    
+    as argument and returns a
+    
+      
+      function
+    
+    as value.  For example, to approximate the derivative of
+    $x \mapsto x^3$ at 5 (whose exact value is 75)
+    we can evaluate</div><div class="lang-ja" style="display:none">
+
+    
+      
+      <kbd>average_damp</kbd>
+     と同様に、
+    
+    <kbd>deriv</kbd> は
+      
+      関数
+    を引数として取り、
+      
+      関数
+    を値として返す
+      
+      関数
+    です。例えば、$x \mapsto x^3$ の5での導関数（正確な値は75）を近似するには、次のように評価します。</div>
+    <div class='snippet' id='javascript_27_7_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+const dx = 0.00001;
+
+function deriv(g) {
+    return x =&gt; (g(x + dx) - g(x)) / dx;
+}" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuBjAewDsBnAF1ABMAPUAXlAAY1n3mUBufAMwFcSBCgEtSNAKYAnEQDcAFAHMAlKADeuUFtBSJFflJKh6DAHygl8+gGoatVQFpQiq8tVg6PAL59BwsUYE-ABGEq7qOnoGRvQAVMag8bRcoD641NJy8kGhyvIArMpcQA">function cube(x) { return x * x * x; }
+
+deriv(cube)(5);
+</pre><pre class='prettyprintoutput'>
+75.00014999664018</pre></div></div>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p8' class='permalink'></a><p>
+    <div class="lang-en">With the aid of <kbd>deriv</kbd>, we can express
+    Newton's method as a fixed-point process:</div><div class="lang-ja" style="display:none"><kbd>deriv</kbd> を使えば、ニュートン法を不動点プロセスとして表現できます：</div>
+
+    <div class='snippet' id='javascript_27_8_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function abs(x) {
+    return x &gt;= 0 ? x : - x;
+}
+
+const tolerance = 0.00001;
+function fixed_point(f, first_guess) {
+    function close_enough(x, y) {
+        return abs(x - y) &lt; tolerance;
+    }
+    function try_with(guess) {
+        const next = f(guess);
+        return close_enough(guess, next)
+               ? next
+               : try_with(next);
+    }
+    return try_with(first_guess);
+}
+
+const dx = 0.00001;
+
+function deriv(g) {
+    return x =&gt; (g(x + dx) - g(x)) / dx;
+}
+
+function square(x) {
+    return x * x;
+}
+
+function sqrt(x) {
+    return newtons_method(y =&gt; square(y) - x, 1);
+}
+
+sqrt(6);" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0AQwCMBnACgA8BKUAb11CDQAJwCmFIsPodQAPgC8oAAygA-KBkAuUAFoNAblwBffGTosKoCjQA2o4Q3KjQipWiUelKQ8XLU6oARUHKIAJgD6AA40VCQUbAQANIFUwhbhAOZEoiwsPPxCgaSUtPRkNjQsouGiJDREGQAWnMkAnvkChUJiElKMrJy6oO2gADxWtvaOZKKGhSaFviUBFMKt4QDuVBTNWTl5fJ1doGYkFqAkohyWigRse7lcc8ci4pJlFVU1dQ272bnJS7XLhHF5ddRAiigsFCbSrdZbHZsSFPUELbpvPrwzbbZpBNIUTL-PKGEy4U7nUIyVzuTzefBLfz0UL2KgAN3uHUKPXeGhcslA90GAGpQFSeHoMpwuDwwFTSQzikzQCwAI5EBhiaWHbmY6SgABUBmMir8pRVquE8W4OoxvXolw21jO4QAtuJGjRQmxWvyLRqtSM9BxkihUWTGebHc7wqtHCwCDRhK7ObbBDy+tSBTJJdq5ayORkuNKFZGAtHzG6PV77skHgcCnbeUEQhForF4hWSLGHGdE8nOXXieH8GqrWwAGxPIA">function newton_transform(g) {
+    return x => x - g(x) / deriv(g)(x);
+}
+function newtons_method(g, guess) {
+    return fixed_point(newton_transform(g), guess);
+}
+</pre></div></div>
+    <div class="lang-en">
+    The
+    
+      
+      <kbd>newton_transform</kbd>
+      
+    
+    
+      
+      function
+    
+    expresses the formula at the beginning of this section, and
+    
+      
+      <kbd>newtons_method</kbd>
+      
+    
+    is readily defined in terms of this.  It takes as arguments a
+    
+      
+      function
+    
+    that computes the function for which we want to find a zero, together with
+    an initial guess.  For instance, to find the
+    square root of $x$, we can use
+    
+    Newton's
+    method to find a zero of the function
+    $y\mapsto y^2-x$ starting with an initial guess
+    of 1.
+    This provides yet another form of the square-root
+    
+      
+      function:
+    
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      <kbd>newton_transform</kbd>
+     
+      
+      関数
+    はこのセクションの冒頭の公式を表現し、
+      
+      <kbd>newtons_method</kbd>
+     はこれを使って容易に定義できます。零点を見つけたい関数を計算する
+      
+      関数
+    と初期推測を引数として取ります。例えば、$x$ の平方根を求めるには、
+    
+    ニュートン法を使って関数 $y\mapsto y^2-x$ の零点を初期推測1から探せます。これにより、平方根
+      
+      関数
+    のまた別の形が得られます：
+    </div><a class='superscript' id='footnote-link-5' href='#footnote-5'>[5]</a>
+    <div class='snippet' id='javascript_27_9_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function abs(x) {
+    return x &gt;= 0 ? x : - x;
+}
+
+const tolerance = 0.00001;
+function fixed_point(f, first_guess) {
+    function close_enough(x, y) {
+        return abs(x - y) &lt; tolerance;
+    }
+    function try_with(guess) {
+        const next = f(guess);
+        return close_enough(guess, next)
+               ? next
+               : try_with(next);
+    }
+    return try_with(first_guess);
+}
+
+const dx = 0.00001;
+
+function deriv(g) {
+    return x =&gt; (g(x + dx) - g(x)) / dx;
+}
+
+function newton_transform(g) {
+    return x =&gt; x - g(x) / deriv(g)(x);
+}
+function newtons_method(g, guess) {
+    return fixed_point(newton_transform(g), guess);
+}
+
+function square(x) {
+    return x * x;
+}
+
+sqrt(6);" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0AQwCMBnACgA8BKUAb11CDQAJwCmFIsPodQAPgC8oAAygA-KBkAuUAFoNAblwBffGTosKoCjQA2o4Q3KjQipWiUelKQ8XLU6oARUHKIAJgD6AA40VCQUbAQANIFUwhbhAOZEoiwsPPxCgaSUtPRkNjQsouGiJDREGQAWnMkAnvkChUJiElKMrJy6oO2gADxWtvaOZKKGhSaFviUBFMKt4QDuVBTNWTl5fJ1doGYkFqAkohyWigRse7lcc8ci4pJlFVU1dQ272bnJS7XLhHF5ddRAiigsFCbSrdZbHZsSFPUELbpvPrwzbbZpBNIUTL-PKGEy4U7nUIyVzuTzefBLfz0UL2KgAN3uHUKPXeGhcslA90GAGpQFSeHoMpwuDwwFTSQzikyLqINtYSOFVo4WAQaMIALacw7czHSfl8yXS0By1kcjJcaUKxmlFVq8zhfXiRo0UL3ZIPA4FDG9ehBEIRaKxeKXN0arVnXUGzn+4mosnOgIsACORAYYitQcEPL6MgAVAZjIq-C7s8J4txjcHeTH1SwPV6fWxWubs7n8yM9Bxkig0-ha-EAGxPIA">function sqrt(x) {
+    return newtons_method(y => square(y) - x, 1);
+}
+</pre></div></div>
+    
+    
+  </p></div>
+
+  
+      <div class='permalink'>
+        <a name='h2' class='permalink'></a><h2>
+    
+    <div class="lang-en">Abstractions and first-class
+      
+	
+	functions
+      </div><div class="lang-ja" style="display:none">抽象と第一級
+	
+	関数
+      </div>
+  </h2></div>
+
+  <div class='permalink'>
+<a name='p9' class='permalink'></a><p>
+    <div class="lang-en">We've seen two ways to express the square-root computation as an
+    instance of a more general method, once as a fixed-point search and once
+    using Newton's method.  Since Newton's method was itself
+    expressed as a fixed-point process, we actually saw two ways to compute
+    square roots as fixed points. Each method begins with a function and finds a
+    
+    fixed point of some transformation of the function.  We can express this
+    general idea itself as a
+    
+      
+      function:
+    </div><div class="lang-ja" style="display:none">平方根の計算を、より一般的な方法のインスタンスとして表現する2つの方法を見てきました。一つは不動点探索として、もう一つはニュートン法を使って。ニュートン法自体が不動点プロセスとして表現されたので、実際には平方根を不動点として計算する2つの方法を見たことになります。各方法は関数から始めて、関数のある変換の
+    
+    不動点を見つけます。この一般的なアイデア自体を
+      
+      関数
+    として表現できます：</div>
+    <div class='snippet' id='javascript_27_10_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function abs(x) {
+    return x &gt;= 0 ? x : - x;
+}
+
+const tolerance = 0.00001;
+function fixed_point(f, first_guess) {
+    function close_enough(x, y) {
+        return abs(x - y) &lt; tolerance;
+    }
+    function try_with(guess) {
+        const next = f(guess);
+        return close_enough(guess, next)
+               ? next
+               : try_with(next);
+    }
+    return try_with(first_guess);
+}
+
+function average(x, y) {
+    return (x + y) / 2;
+}
+
+function average_damp(f) {
+    return x =&gt; average(x, f(x));
+}
+
+function sqrt(x) {
+    return fixed_point_of_transform(
+               y =&gt; x / y,
+               average_damp,
+               1);
+}
+
+sqrt(6);" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0AQwCMBnACgA8BKUAb11CDQAJwCmFIsPodQAPgC8oAAygA-KBkAuUAFoNAblwBffGTosKoCjQA2o4Q3KjQipWiUelKQ8XLU6oARUHKIAJgD6AA40VCQUbAQANIFUwhbhAOZEoiwsPPxCgaSUtPRkNjQsouGiJDREGQAWnMkAnvkChUJiElKMrJy6oO2gADxWtvaOZKKGhSaFviUBFMKt4QDuVBTNWTl5fJ1doGYkFqAkohyWigRse7lcc8ci4pJlFVU1dQ272bnJS7XLhHF5ddRAiigsFCbSrdZbHZsSFPUELbpvPrwzbbZpBNIUTL-PKGEyEYr+egMABuUwyohaww6hR671AgwA1EzQGAAEyk-BLSmMWkOenhUIMAC2kQSzIxvWkLlkIrpDI4yTu3FRZKFpVALAAjsJ4txDizMfQgiEItFYoSaARwqtHCwCDRhFK2NCYcNlRoecNEj6YTS1RLpZFg76uigdYKKfrrWEojE4uFHc6HGd3Z77skXTmPVLkg8DgUFWzk7a0-FC27i-cuKXifHcEaTWwAGxPIA">function fixed_point_of_transform(g, transform, guess) {
+    return fixed_point(transform(g), guess);
+}
+</pre></div></div>
+    <div class="lang-en">This very general
+    
+      
+      function
+    
+    takes as its arguments a
+    
+      
+      function
+    
+    <kbd>g</kbd>
+    that computes some function, a
+    
+      
+      function
+    
+    that transforms <kbd>g</kbd>, and an initial guess.
+    The returned result is a fixed point of the transformed function.</div><div class="lang-ja" style="display:none">この非常に一般的な
+      
+      関数
+    は、ある関数を計算する
+      
+      関数
+     <kbd>g</kbd>、<kbd>g</kbd> を変換する
+      
+      関数
+    、そして初期推測を引数として取ります。返される結果は、変換された関数の不動点です。</div>
+  </p></div>
+
+  <div class='permalink'>
+<a name='p10' class='permalink'></a><p>
+    <div class="lang-en">Using this abstraction, we can recast the first square-root computation
+    
+    from this section (where we look for a fixed point of the average-damped
+    version of $y \mapsto x/y$) as an instance of
+    this general method:</div><div class="lang-ja" style="display:none">この抽象を使えば、このセクションの最初の平方根計算（$y \mapsto x/y$ の平均減衰版の不動点を探す）を、この一般的な方法のインスタンスとして書き直せます：
+    </div>
+    <div class='snippet' id='javascript_27_11_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function abs(x) {
+    return x &gt;= 0 ? x : - x;
+}
+
+const tolerance = 0.00001;
+function fixed_point(f, first_guess) {
+    function close_enough(x, y) {
+        return abs(x - y) &lt; tolerance;
+    }
+    function try_with(guess) {
+        const next = f(guess);
+        return close_enough(guess, next)
+               ? next
+               : try_with(next);
+    }
+    return try_with(first_guess);
+}
+
+function fixed_point_of_transform(g, transform, guess) {
+    return fixed_point(transform(g), guess);
+}
+
+function average(x, y) {
+    return (x + y) / 2;
+}
+
+function average_damp(f) {
+    return x =&gt; average(x, f(x));
+}
+
+sqrt(6);" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0AQwCMBnACgA8BKUAb11CDQAJwCmFIsPodQAPgC8oAAygA-KBkAuUAFoNAblwBffGTosKoCjQA2o4Q3KjQipWiUelKQ8XLU6oARUHKIAJgD6AA40VCQUbAQANIFUwhbhAOZEoiwsPPxCgaSUtPRkNjQsouGiJDREGQAWnMkAnvkChUJiElKMrJy6oO2gADxWtvaOZKKGhSaFviUBFMKt4QDuVBTNWTl5fJ1doGYkFqAkohyWigRse7lcc8ci4pJlFVU1dQ272bnJS7XLhHF5ddRAiigsFCbSrdZbHZsSFPUELbpvPrwzbbZpBNIUTL-PKGEyEYr+ehBEIRaKxQk0AjhVaOFgEGjCAC292SLLO7K5yQeBwKGN6VOCYSiMTibD5bI53IyXCFxNRZKWlMYADcphlRC1hh1Cj13qBBgBqI2gMAAJlJ+E1pR1euqoQYnMiCWNYrNMnkshdDn1hru3HVjopzpYAEdhPFuIcTZiJTTpfTwozmQ5+Yq2NCYcMXIGZGBWokCzCGLrg26PZEK4WuigI7hY-G2AA2J5AA">function sqrt(x) {
+    return fixed_point_of_transform(
+               y => x / y,
+               average_damp,
+               1);
+}
+</pre></div></div>
+    
+    <div class="lang-en">Similarly, we can express the second square-root computation from this
+    section (an instance of
+    
+    Newton's method that finds a fixed point of
+    the Newton transform of $y\mapsto y^2-x$) as</div><div class="lang-ja" style="display:none">同様に、このセクションの2番目の平方根計算（$y\mapsto y^2-x$ のニュートン変換の不動点を見つける
+    
+    ニュートン法のインスタンス）を次のように表現できます。</div>
+    <div class='snippet' id='javascript_27_12_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function abs(x) {
+    return x &gt;= 0 ? x : - x;
+}
+
+const tolerance = 0.00001;
+function fixed_point(f, first_guess) {
+    function close_enough(x, y) {
+        return abs(x - y) &lt; tolerance;
+    }
+    function try_with(guess) {
+        const next = f(guess);
+        return close_enough(guess, next)
+               ? next
+               : try_with(next);
+    }
+    return try_with(first_guess);
+}
+
+function fixed_point_of_transform(g, transform, guess) {
+    return fixed_point(transform(g), guess);
+}
+
+function square(x) {
+    return x * x;
+}
+
+const dx = 0.00001;
+
+function deriv(g) {
+    return x =&gt; (g(x + dx) - g(x)) / dx;
+}
+
+function newton_transform(g) {
+    return x =&gt; x - g(x) / deriv(g)(x);
+}
+function newtons_method(g, guess) {
+    return fixed_point(newton_transform(g), guess);
+}
+
+sqrt(6);" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0AQwCMBnACgA8BKUAb11CDQAJwCmFIsPodQAPgC8oAAygA-KBkAuUAFoNAblwBffGTosKoCjQA2o4Q3KjQipWiUelKQ8XLU6oARUHKIAJgD6AA40VCQUbAQANIFUwhbhAOZEoiwsPPxCgaSUtPRkNjQsouGiJDREGQAWnMkAnvkChUJiElKMrJy6oO2gADxWtvaOZKKGhSaFviUBFMKt4QDuVBTNWTl5fJ1doGYkFqAkohyWigRse7lcc8ci4pJlFVU1dQ272bnJS7XLhHF5ddRAiigsFCbSrdZbHZsSFPUELbpvPrwzbbZpBNIUTL-PKGEyEYr+ehBEIRaKxQk0AjhVaOFgEGjCAC292SLLO7K5yQeBwKGN6VOCYSiMTibD5bI53IyXCFxNRZKWlNALAAjkQGGJOB1Cj13hpQAAqAzGUzmSyhGSudyebz4TWlUChexUABu92NYrNjtkoHugwA1J7uEMMkaeGAHaS3RSPZcNtYSMyHPzFf7DibMdIXCGZHpY9GE96-cqjUn3QE0xmWOFOeJGjRQjzQMKA4JTX1qVK6bLG3Qs6yBUqVd21UnyX4PbrhPFo6K+4WUjTpfTwozxzmuWxoTDhsXtXqDaI2CM9BxEseYaPM-LJ-eT10UOr8Ev4gA2J5AA">function sqrt(x) {
+    return fixed_point_of_transform(
+               y => square(y) - x,
+               newton_transform,
+               1);
+}
+</pre></div></div>
+    
+  </p></div>
+  <div class='permalink'>
+<a name='p11' class='permalink'></a><p>
+    <div class="lang-en">We began section&nbsp;<REF NAME="sec:higher-order-procedures"><a class="superscript" id="1.3.4-sec-link-1.3" href="./1.3.html">1.3</a></REF> with the
+    observation that compound
+    
+      
+      functions
+    
+    are a crucial abstraction mechanism, because they permit us to express
+    general methods of computing as explicit elements in our programming
+    language.  Now we've seen how higher-order
+    
+      
+      functions
+    
+    permit us to manipulate these general methods to create further abstractions.</div><div class="lang-ja" style="display:none">&nbsp;<REF NAME="sec:higher-order-procedures"><a class="superscript" id="1.3.4-sec-link-1.3" href="./1.3.html">1.3</a></REF>節は、複合
+      
+      関数
+    が重要な抽象化メカニズムであるという観察から始めました。なぜなら、計算の一般的な方法をプログラミング言語の明示的な要素として表現することを可能にするからです。今度は、高階
+      
+      関数
+    がこれらの一般的な方法を操作してさらなる抽象を作り出すことを可能にする様子を見てきました。</div>
+  </p></div>
+  <div class='permalink'>
+<a name='p12' class='permalink'></a><p>
+    <div class="lang-en">As programmers, we should be alert to opportunities to identify the
+    underlying abstractions in our programs and to build upon them and
+    generalize them to create more powerful abstractions.  This is not to say
+    that one should always write programs in the most abstract way possible;
+    expert programmers know how to choose the level of abstraction appropriate
+    to their task.  But it is important to be able to think in terms of these
+    abstractions, so that we can be ready to apply them in new contexts.  The
+    significance of higher-order
+    
+      
+      functions
+    
+    is that they enable us to represent these abstractions explicitly as
+    elements in our programming language, so that they can be handled just
+    like other computational elements.</div><div class="lang-ja" style="display:none">プログラマとして、プログラムの根底にある抽象を見つけ、それを基にしてより強力な抽象を一般化して作り出す機会に敏感であるべきです。これは、常にできるだけ抽象的にプログラムを書くべきだということではありません。熟練したプログラマは、タスクに適した抽象のレベルを選ぶ方法を知っています。しかし、これらの抽象で考えることができることは重要です。そうすれば、新しいコンテキストでそれらを適用する準備ができます。高階
+      
+      関数
+    の重要性は、これらの抽象をプログラミング言語の要素として明示的に表現し、他の計算要素と同じように扱えるようにすることにあります。</div>
+  </p></div>
+  <div class='permalink'>
+<a name='p13' class='permalink'></a><p>
+    <div class="lang-en">
+    In general, programming languages impose restrictions on the ways in which
+    computational elements can be manipulated.  Elements with the fewest
+    restrictions are said to have
+    
+    <EM>first-class</EM> status.  Some of the <QUOTE>rights and
+    privileges</QUOTE> of first-class elements are:
+    </div><div class="lang-ja" style="display:none">
+    一般に、プログラミング言語は計算要素を操作する方法に制限を課します。最も制限の少ない要素は
+    
+    <EM>第一級</EM>の地位を持つと言われます。第一級要素の<QUOTE>権利と特権</QUOTE>の一部は次の通りです：
+    </div><a class='superscript' id='footnote-link-6' href='#footnote-6'>[6]</a>
+    <div class="lang-en">
+    <UL>
+      <LI>
+	
+	  
+	  They may be referred to using names.
+	
+      </LI>
+      <LI>
+	They may be passed as arguments to
+	
+	  
+	  functions.
+	
+      </LI>
+      <LI>
+	They may be returned as the results of
+	
+	  
+	  functions.
+	
+      </LI>
+      <LI>
+	They may be included in data structures.
+      </LI>
+    </UL>
+    </div><div class="lang-ja" style="display:none">
+    <UL>
+      <LI>
+	
+	  
+	  名前を使って参照できます。
+	
+      </LI>
+      <LI>
+	
+	  
+	  関数
+	に引数として渡すことができます。
+      </LI>
+      <LI>
+	
+	  
+	  関数
+	の結果として返すことができます。
+      </LI>
+      <LI>
+	データ構造に含めることができます。
+      </LI>
+    </UL>
+    </div><a class='superscript' id='footnote-link-7' href='#footnote-7'>[7]</a>
+    <div class="lang-en">
+    
+      
+      JavaScript,
+    
+    
+    
+    
+      
+      
+	like other high-level
+      
+    
+    programming languages, awards
+    
+      
+      functions
+    
+    full first-class status.  This poses challenges for efficient
+    implementation, but the resulting gain in expressive power is
+    enormous.
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      JavaScript は、他の高水準
+    
+    
+    
+    プログラミング言語
+      
+      と同様に
+    、
+      
+      関数
+    に完全な第一級の地位を与えています。これは効率的な実装に課題をもたらしますが、結果として得られる表現力の向上は莫大です。
+    </div><a class='superscript' id='footnote-link-8' href='#footnote-8'>[8]</a>
+  </p></div>
+
+  
+    <div class="permalink">
+    <a name="ex_1.40" class="permalink"></a><EXERCISE><b><a class="exercise-number permalink" id="ex_1.40">Exercise 1.40 </a></b> 
+               
+    <div class="lang-en">
+    
+      
+      Declare a function
+    
+    <kbd>cubic</kbd> that can be used together with the
+    
+      
+      <kbd>newtons_method</kbd>
+      
+    
+    
+      
+      function
+    
+    in expressions of the form
+    </div><div class="lang-ja" style="display:none">
+    
+      
+      <kbd>newtons_method</kbd> 関数
+    と一緒に次の形の式で使える
+      
+      関数
+     <kbd>cubic</kbd> を
+      
+      宣言
+    してください。
+    </div>
+    
+    <div class='snippet' id='javascript_27_13_div'><div class='pre-prettyprint'><pre class='prettyprint no-eval'>
+newtons_method(cubic(a, b, c), 1)</pre></div></div>
+    <div class="lang-en">to approximate zeros of the cubic
+    $x^3 +ax^2 +bx +c$.</div><div class="lang-ja" style="display:none">これにより3次式 $x^3 +ax^2 +bx +c$ の零点を近似します。</div>
+    
+    
+  
+      <div class="Solution">
+      <div class="solution_btn"><button class="btn btn-secondary solution_btn" href="#solution_27_1_div" data-toggle="collapse">Solution</button></div>
+      <div class="solution_content collapse" id="solution_27_1_div"><SOLUTION>
+    
+      <div class='snippet' id='javascript_27_14_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function abs(x) {
+    return x &gt;= 0 ? x : - x;
+}
+
+const tolerance = 0.00001;
+function fixed_point(f, first_guess) {
+    function close_enough(x, y) {
+        return abs(x - y) &lt; tolerance;
+    }
+    function try_with(guess) {
+        const next = f(guess);
+        return close_enough(guess, next)
+               ? next
+               : try_with(next);
+    }
+    return try_with(first_guess);
+}
+
+const dx = 0.00001;
+
+function deriv(g) {
+    return x =&gt; (g(x + dx) - g(x)) / dx;
+}
+
+function newton_transform(g) {
+    return x =&gt; x - g(x) / deriv(g)(x);
+}
+function newtons_method(g, guess) {
+    return fixed_point(newton_transform(g), guess);
+}
+
+function cube(x) {
+    return x * x * x;
+}
+
+function square(x) {
+    return x * x;
+}
+
+// cubic to be written by student; see EXERCISE 1.40
+
+newtons_method(cubic(1, -4, 0), 1);" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0AQwCMBnACgA8BKUAb11CDQAJwCmFIsPodQAPgC8oAAygA-KBkAuUAFoNAblwBffGTosKoCjQA2o4Q3KjQipWiUelKQ8XLU6oARUHKIAJgD6AA40VCQUbAQANIFUwhbhAOZEoiwsPPxCgaSUtPRkNjQsouGiJDREGQAWnMkAnvkChUJiElKMrJy6oO2gADxWtvaOZKKGhSaFviUBFMKt4QDuVBTNWTl5fJ1doGYkFqAkohyWigRse7lcc8ci4pJlFVU1dQ272bnJS7XLhHF5ddRAiigsFCbSrdZbHZsSFPUELbpvPrwzbbZpBNIUTL-PKGEy4U7nUIyVzuTzefBLfz0UL2KgAN3uHUKPXeGhcslA90GAGpQFSeHoMpwuDwwFTSQzikyLqINtYSOFVo4WAQaMIALacw7czHSfl8yXS0By1kcjJcaUKxmlFVq8zhfXiRo0UL3ZIPA4FDG9ehBEIRaKxeKXN0arVnXUGzn+4mosnOgJkIhMURWoOCHl9GQAKj5pY4CsISpdLAAjkQGGI86DC2by5WQCds1QyBNQDnQBthNsKLV+61QBYiCy4vpJ6JnABRAAai4AStBIOBF6gcEpFX4XVmmD22AxkkxkmQucHedSBcfc9xQKKGKBS3WG03n6KmO++aKZCVjG6osB6Xo+mwx6nigyQ6NgyRKFwyQoE8QA">function cubic(a, b, c) {
+    return x => cube(x) + a * square(x) + b * x + c;
+}
+</pre></div></div>
+      
+    </SOLUTION></div></div>
+</EXERCISE></div>
+
+
+  
+    <div class="permalink">
+    <a name="ex_1.41" class="permalink"></a><EXERCISE><b><a class="exercise-number permalink" id="ex_1.41">Exercise 1.41 </a></b> 
+  
+    <div class="lang-en">
+    
+      
+      Declare a function
+    
+    <kbd>double</kbd> that takes a
+    
+      
+      function
+    
+    of one argument as argument and returns a
+    
+      
+      function
+    
+    that applies the original
+    
+      
+      function
+    
+    twice.  For example, if <kbd>inc</kbd> is a
+    
+      
+      function
+    
+    that adds 1 to its argument, then
+    
+      
+      
+	<kbd>double(inc)</kbd>
+      
+    
+    should be a
+    
+      
+      function
+    
+    that adds 2.  What value is returned&nbsp;by
+    </div><div class="lang-ja" style="display:none">
+    1引数の
+      
+      関数
+    を引数として取り、元の
+      
+      関数
+    を2回適用する
+      
+      関数
+    を返す
+      
+      関数
+     <kbd>double</kbd> を
+      
+      宣言
+    してください。例えば、<kbd>inc</kbd> が引数に1を加える
+      
+      関数
+    であれば、
+      
+      <kbd>double(inc)</kbd>
+     は2を加える
+      
+      関数
+    になるはずです。次の式はどんな値を返しますか？
+    </div>
+    
+    <div class='snippet' id='javascript_27_15_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+// double to be written by student; see EXERCISE 1.41
+
+function inc(n) {
+    return n + 1;
+}" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuRQATAewFcAjAGwFNQAXE0CugdwCcBLe+mgO2YBPUAGd6ZIv3oBuUTToBRABoKAStEjgFqHCnwAzMnwDG9TiQGcTACj4BKUAG9coV6HY1x7AQIDUqaVwAX3xSSlprMOoaSPJouztrK2NEgFY7aSA">double(double(double))(inc)(5);
+</pre></div></div>
+    
+    
+  
+      <div class="Solution">
+      <div class="solution_btn"><button class="btn btn-secondary solution_btn" href="#solution_27_2_div" data-toggle="collapse">Solution</button></div>
+      <div class="solution_content collapse" id="solution_27_2_div"><SOLUTION>
+           
+      <div class='snippet' id='javascript_27_16_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function inc(n) {
+    return n + 1;
+}
+
+double(double(double))(inc)(5); // returns 21" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0K8gChIEpQBvXUH0AJwCmFIn3r0A1KgDcuAL75i5anVAATGkQBGAGwFMC7Lr35CR9AB6gAvAD5QBfU3OtWM+bnVbdTTzr2-dFyZGMlYmAFZXUBATYVEAZ1AAJhQgA">function double(f) {
+    return x => f(f(x));
+}
+</pre></div></div>
+      
+    </SOLUTION></div></div>
+</EXERCISE></div>
+
+
+  
+    <div class="permalink">
+    <a name="ex_1.42" class="permalink"></a><EXERCISE><b><a class="exercise-number permalink" id="ex_1.42">Exercise 1.42 </a></b> 
+  
+    
+    <div class="lang-en">
+    Let $f$ and $g$ be
+    two one-argument functions.  The
+    
+    
+    <EM>composition</EM>
+    $f$ after $g$ is
+    defined to be the function $x\mapsto f(g(x))$.
+    
+      
+      Declare a function
+    
+    <kbd>compose</kbd> that implements composition.  For
+    example, if <kbd>inc</kbd> is a
+    
+      
+      function
+    
+    that adds 1 to its argument,
+    </div><div class="lang-ja" style="display:none">
+    $f$ と $g$ を2つの1引数関数とします。$g$ の後の $f$ の
+    
+    
+    <EM>合成</EM>は、関数 $x\mapsto f(g(x))$ として定義されます。合成を実装する
+      
+      関数
+     <kbd>compose</kbd> を
+      
+      宣言
+    してください。例えば、<kbd>inc</kbd> が引数に1を加える
+      
+      関数
+    であれば、
+    </div>
+    
+    <div class='snippet' id='javascript_27_17_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+// compose to be written by student; see EXERCISE 1.42
+
+function square(x) {
+    return x * x;
+}
+
+function inc(n) {
+    return n + 1;
+}" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuRQBjAewFsAHEgZwFNQAXE0AI3oHcAnASwYdoB2rAJ6hqDAK4ATQQwDcY2vQCiADWUAlaJHDLUOAEz4AZhIFEG3EkOoBHCQENOtABQAPAJSgA3rlD-QZ0lOITdQACpQNzlcAF8TMwsrIW5zFwEvXwDA2mChIQBqVBj43FJKGlc7R2cAGlBUog8XADYPOSA">compose(square, inc)(6);
+</pre><pre class='prettyprintoutput'>
+49</pre></div></div>
+    <div class="lang-en">returns 49.</div><div class="lang-ja" style="display:none">は49を返します。</div>
+    
+  
+      <div class="Solution">
+      <div class="solution_btn"><button class="btn btn-secondary solution_btn" href="#solution_27_3_div" data-toggle="collapse">Solution</button></div>
+      <div class="solution_content collapse" id="solution_27_3_div"><SOLUTION>
+    
+      <div class='snippet' id='javascript_27_18_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function inc(n) {
+    return n + 1;
+}
+
+function square(x) {
+    return x * x;
+}
+
+compose(square, inc)(6); // returns 49" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0K8gChIEpQBvXUH0AJwCmFIn3r0A1KgDcuAL75i5anVABnAI5EAhoKYAPdl178hI+ntAAqUHpnzCpSrXpkaAWwAONVQKYEANKAA5obcvILCojagALwAfKAETEH6rKx2+K6e3r4a2oKBjGSsTABs6aAgJpEkqqDYAJxAA">function compose(f, g) {
+    return x => f(g(x));
+}
+</pre></div></div>
+      
+    </SOLUTION></div></div>
+</EXERCISE></div>
+
+
+  
+    <div class="permalink">
+    <a name="ex_1.43" class="permalink"></a><EXERCISE><b><a class="exercise-number permalink" id="ex_1.43">Exercise 1.43 </a></b> 
+   
+    <div class="lang-en">
+    If $f$ is a numerical function and
+
+    $n$ is a positive integer, then we can form the
+    $n$th
+    
+    repeated application of
+    $f$, which is defined to be the function whose
+    value at $x$ is
+    $f(f(\ldots(f(x))\ldots))$.  For example, if
+    $f$ is the function
+    $x \mapsto x+1$, then the
+    $n$th repeated application of
+    $f$ is the function
+    $x \mapsto x+n$. If
+    $f$ is the operation of squaring a number, then
+    the $n$th repeated application of
+    $f$ is the function that raises its argument to
+    the $2^n$th power.  Write a
+    
+      
+      function
+    
+    that takes as inputs a
+    
+      
+      function
+    
+    that computes $f$ and a positive integer
+    $n$ and returns the
+    
+      
+      function
+    
+    that computes the $n$th repeated application of
+    $f$.  Your
+    
+      
+      function
+    
+    should be able to be used as follows:
+    </div><div class="lang-ja" style="display:none">
+    $f$ が数値関数で
+
+    $n$ が正の整数であるとき、$f$ の $n$ 回
+    
+    反復適用を作ることができます。これは、$x$ での値が $f(f(\ldots(f(x))\ldots))$ である関数として定義されます。例えば、$f$ が関数 $x \mapsto x+1$ なら、$f$ の $n$ 回反復適用は関数 $x \mapsto x+n$ です。$f$ が数を2乗する操作なら、$f$ の $n$ 回反復適用は引数を $2^n$ 乗する関数です。$f$ を計算する
+      
+      関数
+    と正の整数 $n$ を入力として取り、$f$ の $n$ 回反復適用を計算する
+      
+      関数
+    を返す
+      
+      関数
+    を書いてください。次のように使えるはずです：
+    </div>
+    
+    <div class='snippet' id='javascript_27_19_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function square(x) {
+    return x * x;
+}
+
+// repeated to be written by student; see EXERCISE 1.43" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0AZwEciBDAJwFMAKADwEpQAb1ygxoLhSLt6vUACpQvANy4AvvhATOAB06sKnACagKNUACNOoAO7sqFQ-QsBPRlKOcSFZY07WAUQANAIAlaEhwANQcDHwuPQNjbmY2LgAaUAAmfm4AVn5lIA">repeated(square, 2)(5);
+</pre><pre class='prettyprintoutput'>
+625</pre></div></div>
+    <div class="lang-en">Hint: You may find it convenient to use
+    <kbd>compose</kbd> from
+    exercise&nbsp;<REF NAME="ex:compose"><a class="superscript" id="1.3.4-ex-link-1.42" href="./1.3.4.html#ex_1.42">1.42</a></REF>.</div><div class="lang-ja" style="display:none">ヒント：演習問題&nbsp;<REF NAME="ex:compose"><a class="superscript" id="1.3.4-ex-link-1.42" href="./1.3.4.html#ex_1.42">1.42</a></REF>の <kbd>compose</kbd> を使うと便利かもしれません。</div>
+    
+    
+  
+      <div class="Solution">
+      <div class="solution_btn"><button class="btn btn-secondary solution_btn" href="#solution_27_4_div" data-toggle="collapse">Solution</button></div>
+      <div class="solution_content collapse" id="solution_27_4_div"><SOLUTION>
+    
+      <div class='snippet' id='javascript_27_20_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function compose(f, g) {
+    return x =&gt; f(g(x));
+}
+
+function square(x) {
+    return x * x;
+}
+
+repeated(square, 2)(5); // 625" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0MmgWwAcaBnAUwAoCAaUAHMAlKADeuUFNAAnThSIz6AD1ABeAHygC3Qd2XDhAblwBffMXLU6odgEciAQzn7RE6bPmKVoAFShlE3NCUkpaejkWTkcKTgATXgESN0lpOQUlUHo1HNAABlSPIoB+APUtZUKi6QAuBmY2LkTPKJj45voAWlRDIPxI6NiE+yc5AQAmYW4AVmNQEFAANnHpoA">function repeated(f, n) {
+    return n === 0
+           ? x => x
+           : compose(f, repeated(f, n - 1));
+}
+</pre></div></div>
+      
+    </SOLUTION></div></div>
+</EXERCISE></div>
+
+
+  
+    <div class="permalink">
+    <a name="ex_1.44" class="permalink"></a><EXERCISE><b><a class="exercise-number permalink" id="ex_1.44">Exercise 1.44 </a></b> 
+   
+  <div class="lang-en">The idea of
+  
+  
+  <EM>smoothing</EM> a function is an important concept in
+  
+  signal processing.  If $f$ is a function and
+  $dx$ is some small number, then the smoothed
+  version of $f$ is the function whose value at a
+  point $x$ is the average of
+  $f(x-dx)$, $f(x)$, and
+  $f(x+dx)$.  Write a
+  
+    
+    function
+  
+  <kbd>smooth</kbd> that takes as input a
+  
+    
+    function
+  
+  that computes $f$ and returns a
+  
+    
+    function
+  
+  that computes the smoothed $f$.  It is sometimes
+  valuable to repeatedly smooth a function (that is, smooth the smoothed
+  function, and so on) to obtained the <EM>$n$-fold
+  smoothed function</EM>.  Show how to generate the
+  $n$-fold smoothed function of any given function
+  using <kbd>smooth</kbd> and
+  <kbd>repeated</kbd> from
+  exercise&nbsp;<REF NAME="ex:repeated"><a class="superscript" id="1.3.4-ex-link-1.43" href="./1.3.4.html#ex_1.43">1.43</a></REF>.</div><div class="lang-ja" style="display:none">関数の
+  
+  
+  <EM>平滑化</EM>という考え方は、
+  
+  信号処理における重要な概念です。$f$ が関数で $dx$ が小さな数であるとき、$f$ の平滑化版は、点 $x$ での値が $f(x-dx)$、$f(x)$、$f(x+dx)$ の平均である関数です。$f$ を計算する
+    
+    関数
+  を入力として取り、平滑化された $f$ を計算する
+    
+    関数
+  を返す
+    
+    関数
+   <kbd>smooth</kbd> を書いてください。関数を繰り返し平滑化する（つまり、平滑化された関数をさらに平滑化する、など）ことが有用な場合があり、<EM>$n$ 回平滑化関数</EM>が得られます。<kbd>smooth</kbd> と演習問題&nbsp;<REF NAME="ex:repeated"><a class="superscript" id="1.3.4-ex-link-1.43" href="./1.3.4.html#ex_1.43">1.43</a></REF>の <kbd>repeated</kbd> を使って、任意の関数の $n$ 回平滑化関数を生成する方法を示してください。</div>
+  
+  
+    
+  
+      <div class="Solution">
+      <div class="solution_btn"><button class="btn btn-secondary solution_btn" href="#solution_27_5_div" data-toggle="collapse">Solution</button></div>
+      <div class="solution_content collapse" id="solution_27_5_div"><SOLUTION>
+    
+    <div class='snippet' id='javascript_27_21_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function cube(x) {
+    return x * x * x;
+}
+
+function compose(f, g) {
+    return x =&gt; f(g(x));
+}
+
+function repeated(f, n) {
+    return n === 0
+           ? x =&gt; x
+           : compose(f, repeated(f, n - 1));
+}
+
+n_fold_smooth(cube, 5)(4);" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0MogIwFMAKADwEpQBvXUINAAnFhSLD6HUACpQ0uRwDcuAL75i5anQY0AtgAcaAZ3YEANKADmPfkJFiJU0AF4AfKAJsrnLlxXqhKSUtPSiBiwAhhQsACZsFqAktgJCouKSSa4uLqAADKn2RQD88q4eHIVFQgBcuoYmZpbhUTHxifQAtKh+AfhkdMYUoLHSuXloeVN5KCqaITrGejQ0FAAWCSn26U5l7qAJnKDdozwA1J6+oBde0henPGAYffPa9CQA+gQ0ADaxH0sVusEpZknwqjtMi1onE2IDVmtQVxNn1cJ9vn8AcsEWxGKxLABWZHYfxAA">const dx = 0.00001;
+function smooth(f) {
+    return x => (f(x - dx) + f(x) + f(x + dx)) / 3;
+}
+function n_fold_smooth(f, n) {
+    return repeated(smooth, n)(f);
+}
+</pre></div></div>
+  </SOLUTION></div></div>
+</EXERCISE></div>
+
+
+  
+    <div class="permalink">
+    <a name="ex_1.45" class="permalink"></a><EXERCISE><b><a class="exercise-number permalink" id="ex_1.45">Exercise 1.45 </a></b> 
+  
+    <div class="lang-en">
+    We saw in section&nbsp;<REF NAME="sec:proc-general-methods"><a class="superscript" id="1.3.4-sec-link-1.3.3" href="./1.3.3.html">1.3.3</a></REF> that
+    attempting to compute square roots by naively finding a fixed point of
+    $y\mapsto x/y$ does not converge, and that this
+    can be fixed by average damping.  The same method works for finding cube
+    roots as fixed points of the average-damped
+    $y\mapsto x/y^2$. Unfortunately, the process
+    does not work for
+    
+    
+    fourth roots—a single average damp is not enough to make a
+    fixed-point search for $y\mapsto x/y^3$
+    converge.  On the other hand, if we average-damp twice (i.e., use the
+    average damp of the average damp of
+    $y\mapsto x/y^3$) the fixed-point search does
+    converge.  Do some experiments to determine how many average damps are
+    required to compute
+    
+    
+    $n$th roots as a fixed-point search based upon
+    repeated average damping of $y\mapsto x/y^{n-1}$.
+    Use this to implement a simple
+    
+      
+      function
+    
+    for computing $n$th roots using
+    
+      
+      <kbd>fixed_point</kbd>,
+    
+    
+      
+      <kbd>average_damp</kbd>,
+    
+    and the <kbd>repeated</kbd>
+    
+      
+      function
+    
+    of exercise&nbsp;<REF NAME="ex:repeated"><a class="superscript" id="1.3.4-ex-link-1.43" href="./1.3.4.html#ex_1.43">1.43</a></REF>. Assume that any arithmetic
+    operations you need are available as primitives.
+    </div><div class="lang-ja" style="display:none">
+    &nbsp;<REF NAME="sec:proc-general-methods"><a class="superscript" id="1.3.4-sec-link-1.3.3" href="./1.3.3.html">1.3.3</a></REF>節で、$y\mapsto x/y$ の不動点を素朴に見つけて平方根を計算しようとしても収束せず、平均減衰で修正できることを見ました。同じ方法は、平均減衰された $y\mapsto x/y^2$ の不動点として立方根を見つけるのにも使えます。残念ながら、
+    
+    
+    4乗根には使えません——1回の平均減衰では $y\mapsto x/y^3$ の不動点探索を収束させるには不十分です。一方、平均減衰を2回行えば（すなわち、$y\mapsto x/y^3$ の平均減衰の平均減衰を使えば）、不動点探索は収束します。$y\mapsto x/y^{n-1}$ の繰り返し平均減衰に基づく不動点探索として
+    
+    
+    $n$ 乗根を計算するのに何回の平均減衰が必要かを実験で確認してください。これを使って、
+      
+      <kbd>fixed_point</kbd>、<kbd>average_damp</kbd>
+    、および演習問題&nbsp;<REF NAME="ex:repeated"><a class="superscript" id="1.3.4-ex-link-1.43" href="./1.3.4.html#ex_1.43">1.43</a></REF>の <kbd>repeated</kbd> 
+      
+      関数
+    を使って $n$ 乗根を計算する簡単な
+      
+      関数
+    を実装してください。必要な算術演算はすべてプリミティブとして利用可能と仮定します。
+    </div>
+    
+    
+  
+      <div class="Solution">
+      <div class="solution_btn"><button class="btn btn-secondary solution_btn" href="#solution_27_6_div" data-toggle="collapse">Solution</button></div>
+      <div class="solution_content collapse" id="solution_27_6_div"><SOLUTION>
+    
+      <div class='snippet' id='javascript_27_22_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function abs(x) {
+    return x &gt;= 0 ? x : - x;
+}
+
+const tolerance = 0.00001;
+function fixed_point(f, first_guess) {
+    function close_enough(x, y) {
+        return abs(x - y) &lt; tolerance;
+    }
+    function try_with(guess) {
+        const next = f(guess);
+        return close_enough(guess, next)
+               ? next
+               : try_with(next);
+    }
+    return try_with(first_guess);
+}
+
+function average(x, y) {
+    return (x + y) / 2;
+}
+
+function average_damp(f) {
+    return x =&gt; average(x, f(x));
+}
+
+function compose(f, g) {
+    return x =&gt; f(g(x));
+}
+
+function repeated(f, n) {
+    return n === 0
+           ? x =&gt; x
+           : compose(f, repeated(f, n - 1));
+}
+
+function square(x) {
+    return x * x;
+}
+
+function is_even(n) {
+    return n % 2 === 0;
+}
+
+function fast_expt(b, n) {
+    return n === 0
+           ? 1
+           : is_even(n)
+           ? square(fast_expt(b, n / 2))
+           : b * fast_expt(b, n - 1);
+}
+
+nth_root(5, 32);" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0AQwCMBnACgA8BKUAb11CDQAJwCmFIsPodQAPgC8oAAygA-KBkAuUAFoNAblwBffGTosKoCjQA2o4Q3KjQipWiUelKQ8XLU6oARUHKIAJgD6AA40VCQUbAQANIFUwhbhAOZEoiwsPPxCgaSUtPRkNjQsouGiJDREGQAWnMkAnvkChUJiElKMrJy6oO2gADxWtvaOZKKGhSaFviUBFMKt4QDuVBTNWTl5fJ1doGYkFqAkohyWigRse7lcc8ci4pJlFVU1dQ272bnJS7XLhHF5ddRAiigsFCbSrdZbHZsSFPUELbpvPrwzbbZpBNIUTL-PKGEyEYr+egMABuUwyohaww6hR671AgwA1EzQGAAEyk-BLSmMWkOenhUIMAC2kQSzIxvWkLlkIrpDI4yTu3FRZKFpRONBllQZSVAGXlglZfRk8hVdwynC4OsFFP1YkiogYFDCCUBFteiouLnkrmhx3UNpVHDDXW0ZiNVV9rw9Xp9pvoehQToF5L8+pYAEciAwxI7DizMUqAFQGYwuvMBKgsGq0kjI-1W+j0ACkoF5wdcOb1AQIDHSV0i8SYfvLCrZ9BDoZhgnUKBjhW0TZbtXb66E6kLxdLo-HHEnbGnQb5Tr3gm0TFANZPhInU8BQyzQ9dATijXCwhoGh4hIZJuFnS1KxSEIImiWJ4ndT1vVCNgaTVCVpUiZJb2XHDQClL0-wICoaGENh8J2cIKgyXl2xvXCcLYVplQ0HlAjHF8z3iVp30zJ1Emw3DPzrXBf3-QD4gAVmSDBeSeIA">function nth_root(n, x) {
+    return fixed_point(repeated(average_damp, 
+                                math_floor(math_log2(n)))
+                       (y => x / fast_expt(y, n - 1)),
+                       1);
+}
+</pre></div></div>
+      
+    </SOLUTION></div></div>
+</EXERCISE></div>
+
+
+  
+    <div class="permalink">
+    <a name="ex_1.46" class="permalink"></a><EXERCISE><b><a class="exercise-number permalink" id="ex_1.46">Exercise 1.46 </a></b> 
+  
+    <div class="lang-en">
+    Several of the numerical methods described in this chapter are instances
+    of an extremely general computational strategy known as
+    
+    
+    
+    
+    <EM>iterative improvement</EM>.  Iterative improvement says that, to compute something,
+    we start with an initial guess for the answer, test if the guess is good
+    enough, and otherwise improve the guess and continue the process using the
+    improved guess as the new guess.  Write a
+    
+      
+      function
+    
+    
+      
+      <kbd>iterative_improve</kbd>
+      
+    
+    that takes two
+    
+      
+      functions
+    
+    as arguments: a method for telling whether a guess is good enough and a
+    method for improving a guess.
+    
+      
+      The function
+      <kbd>iterative_improve</kbd>
+      
+    
+    should return as its value a
+    
+      
+      function
+    
+    that takes a guess as argument and keeps improving the guess until it is
+    good enough.  Rewrite the <kbd>sqrt</kbd>
+    
+      
+      function
+    
+    of section&nbsp;<REF NAME="sec:sqrt"><a class="superscript" id="1.3.4-sec-link-1.1.7" href="./1.1.7.html">1.1.7</a></REF> and the
+    
+      
+      <kbd>fixed_point</kbd>
+    
+    
+      
+      function
+    
+    of section&nbsp;<REF NAME="sec:proc-general-methods"><a class="superscript" id="1.3.4-sec-link-1.3.3" href="./1.3.3.html">1.3.3</a></REF> in terms of
+    
+      
+      <kbd>iterative_improve</kbd>.
+      
+    
+    </div><div class="lang-ja" style="display:none">
+    この章で説明した数値的方法のいくつかは、
+    
+    
+    
+    
+    <EM>反復的改善</EM>として知られる非常に一般的な計算戦略のインスタンスです。反復的改善は、何かを計算するには、答えの初期推測から始めて、推測が十分に良いかどうかをテストし、そうでなければ推測を改善し、改善された推測を新しい推測としてプロセスを続ける、というものです。推測が十分に良いかどうかを判定する方法と推測を改善する方法の2つの
+      
+      関数
+    を引数として取る
+      
+      関数
+     
+      
+      <kbd>iterative_improve</kbd>
+     を書いてください。
+      
+      関数 <kbd>iterative_improve</kbd>
+     は、推測を引数として取り、十分に良くなるまで推測を改善し続ける
+      
+      関数
+    を値として返すべきです。&nbsp;<REF NAME="sec:sqrt"><a class="superscript" id="1.3.4-sec-link-1.1.7" href="./1.1.7.html">1.1.7</a></REF>節の <kbd>sqrt</kbd> 
+      
+      関数
+    と&nbsp;<REF NAME="sec:proc-general-methods"><a class="superscript" id="1.3.4-sec-link-1.3.3" href="./1.3.3.html">1.3.3</a></REF>節の 
+      
+      <kbd>fixed_point</kbd>
+     
+      
+      関数
+    を 
+      
+      <kbd>iterative_improve</kbd>
+     で書き直してください。
+    </div>
+    
+    
+  
+      <div class="Solution">
+      <div class="solution_btn"><button class="btn btn-secondary solution_btn" href="#solution_27_7_div" data-toggle="collapse">Solution</button></div>
+      <div class="solution_content collapse" id="solution_27_7_div"><SOLUTION>
+    
+      <div class='snippet' id='javascript_27_23_div'><div class='pre-prettyprint'><pre class='prettyprint eval' title='Evaluate Javascript program'data-preamble="// SICP JS 1.3.4
+
+function square(x) {
+    return x * x;
+}
+
+function average(x, y) {
+    return (x + y) / 2;
+}
+
+function improve(guess, x) {
+    return average(guess, x / guess);
+}
+
+function abs(x) {
+    return x &gt;= 0 ? x : - x;
+}
+
+function is_good_enough(guess, x) {
+    return abs(square(guess) - x) &lt; 0.001;
+}
+
+function sqrt(x) {
+    return iterative_improve(y =&gt; is_good_enough(y, x), 
+                             y =&gt; improve(y, x))(1);
+}
+
+sqrt(49);" data-url="https://sourceacademy.org/playground#chap=1&prgrm=PTAEGUEkGEAVQFLlARgHQGY0BYBQuAzAVwDsBjAFwEsB7E0AZwEciBDAJwFMAKADwEpQAb1ygxoLhSLt6vUACpQvANy4AvvmLlqdUKwBundqwDmPXgBpQAT0EjxEzlJmg+oANQ3BYAEyqNhKSUtPRUALYADuw0htwmRJwMDFYCwqLiktL0BkamPPGJyUqgYAVJ-P6aQTrZAEYMfHbpYpkucgB8ALygAAygAPzFAFygALRKlYHaIaBUDAD6JjQ0ACbznCQ0RCYAFnEJSSlNDq11DcxsXPuFguOpADy9aD09KJNawbpUFLnUhvPhKIxHhzRbLNYbLa7KyA6KGY7iD41WY-Yw-a7lNIOE5OLKzBZLVbrTbbPZlBj8ZrY6kDUDkqk0hwjb6-EGROH5A4UipUjQ45yhVGsH7vaozZjsCiNLEZXEuFloqj-WHA7jWUCddr4sFEyGktVHKwMxkmmnqzWzdmq6xHfjcFA8gISqXYACcFSAA">function iterative_improve(is_good_enough, improve) {
+    function iterate(guess) {
+        return is_good_enough(guess)
+               ? guess
+               : iterate(improve(guess));
+    }
+    return iterate;
+}
+</pre></div></div>
+      
+    </SOLUTION></div></div>
+</EXERCISE></div>
+
+
+  
+  
+
+<hr>
+
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-1' href='#footnote-link-1'>[1] </a>
+    <FOOTNOTE>
+    
+    
+      
+      
+	<div class="lang-en">Observe that this
+	is an application whose function expression is itself
+	
+	
+	an application. Exercise&nbsp;<REF NAME="ex:a-plus-abs-b"><a class="superscript" id="1.3.4-ex-link-1.4" href="./1.1.6.html#ex_1.4">1.4</a></REF> already
+	demonstrated the ability to form such applications, but that was only a toy
+	example.  Here we begin to see the real need for such
+	applications—when applying a function
+	that is obtained as the value returned by a higher-order function.</div><div class="lang-ja" style="display:none">これは関数式自体が
+	
+	
+	適用であるような適用であることに注目してください。演習問題&nbsp;<REF NAME="ex:a-plus-abs-b"><a class="superscript" id="1.3.4-ex-link-1.4" href="./1.1.6.html#ex_1.4">1.4</a></REF>ですでにこのような適用を形成する能力を示しましたが、あれはおもちゃの例にすぎませんでした。ここで、このような適用の本当の必要性が見え始めます——高階関数から戻り値として得られた関数を適用するときです。</div>
+      
+    
+  
+    </FOOTNOTE></div>
+
+    
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-2' href='#footnote-link-2'>[2] </a>
+    <FOOTNOTE>
+    
+    <div class="lang-en">See exercise&nbsp;<REF NAME="ex:nth-roots"><a class="superscript" id="1.3.4-ex-link-1.45" href="./1.3.4.html#ex_1.45">1.45</a></REF>
+    for a further generalization.</div><div class="lang-ja" style="display:none">さらなる一般化については演習問題&nbsp;<REF NAME="ex:nth-roots"><a class="superscript" id="1.3.4-ex-link-1.45" href="./1.3.4.html#ex_1.45">1.45</a></REF>を参照してください。</div>
+    
+    </FOOTNOTE></div>
+
+    
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-3' href='#footnote-link-3'>[3] </a>
+    <FOOTNOTE>
+    
+    <div class="lang-en">Elementary calculus books
+    usually describe Newton's method in terms of the sequence of
+    approximations $x_{n+1}=x_n-g(x_n)/Dg(x_n)$.
+    Having language for talking about processes and using the idea of fixed
+    points simplifies the description of the method.</div><div class="lang-ja" style="display:none">初等的な微積分の教科書では、通常ニュートン法を近似の列 $x_{n+1}=x_n-g(x_n)/Dg(x_n)$ として記述します。プロセスについて語る言語を持ち、不動点のアイデアを使うことで、方法の記述が簡潔になります。</div>
+    
+    </FOOTNOTE></div>
+
+    
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-4' href='#footnote-link-4'>[4] </a>
+    <FOOTNOTE>
+    
+    <div class="lang-en">Newton's method does not
+    always converge to an answer, but it can be shown that in favorable cases
+    each iteration doubles the number-of-digits accuracy of the approximation
+    to the solution. In such cases,
+    
+    
+    Newton's method will converge much more rapidly than the half-interval
+    method.</div><div class="lang-ja" style="display:none">ニュートン法は必ずしも答えに収束するとは限りませんが、好ましい場合には各反復で近似の桁精度が2倍になることが示せます。そのような場合、
+    
+    
+    ニュートン法は二分法よりもはるかに速く収束します。</div>
+    
+    </FOOTNOTE></div>
+
+    
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-5' href='#footnote-link-5'>[5] </a>
+    <FOOTNOTE>
+    
+    <div class="lang-en">For finding square roots, Newton's method converges
+    rapidly to the correct solution from any starting point.</div><div class="lang-ja" style="display:none">平方根を求める場合、ニュートン法は任意の出発点から正しい解に急速に収束します。</div>
+    
+    </FOOTNOTE></div>
+
+    
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-6' href='#footnote-link-6'>[6] </a>
+    <FOOTNOTE>
+    
+    <div class="lang-en">The notion of
+    first-class status of programming-language
+    elements is due to the British computer scientist
+    
+    Christopher Strachey (1916–1975).</div><div class="lang-ja" style="display:none">プログラミング言語要素の第一級の地位という概念は、イギリスのコンピュータ科学者
+    
+    クリストファー・ストレイチー（1916–1975）に由来します。</div>
+    
+    </FOOTNOTE></div>
+
+    
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-7' href='#footnote-link-7'>[7] </a>
+    <FOOTNOTE>
+    
+    <div class="lang-en">We'll see
+	examples of this after we introduce data structures in
+	chapter&nbsp;<REF NAME="chap:data"><a class="superscript" id="1.3.4-chap-link-2" href="./2.html">2</a></REF>.</div><div class="lang-ja" style="display:none">&nbsp;<REF NAME="chap:data"><a class="superscript" id="1.3.4-chap-link-2" href="./2.html">2</a></REF>章でデータ構造を導入した後に、この例を見ることになります。</div>
+    
+    </FOOTNOTE></div>
+
+    
+    <div class='footnote'>
+      <a class='footnote-number' id='footnote-8' href='#footnote-link-8'>[8] </a>
+    <FOOTNOTE>
+    
+    <div class="lang-en">The major implementation cost of first-class
+    
+      
+      functions
+    
+    is that allowing
+    
+      
+      functions
+    
+    to be returned as values requires reserving storage for a
+    
+      
+      function's free names
+    
+    even while the
+    
+      
+      function
+    
+    is not executing.
+    
+      
+      
+	In the JavaScript implementation we will study in
+	section&nbsp;<REF NAME="sec:mc-eval"><a class="superscript" id="1.3.4-sec-link-4.1" href="./4.1.html">4.1</a></REF>, these names are stored in the
+	function's
+      
+       environment.</div><div class="lang-ja" style="display:none">第一級
+      
+      関数
+    の主な実装コストは、
+      
+      関数
+    を値として返すことを許すために、
+      
+      関数が実行されていないときでも関数の自由な名前
+    のためのストレージを確保する必要があることです。
+      
+      &nbsp;<REF NAME="sec:mc-eval"><a class="superscript" id="1.3.4-sec-link-4.1" href="./4.1.html">4.1</a></REF>節で学ぶ JavaScript の実装では、これらの名前は関数の
+    環境に格納されます。</div>
+    
+    </FOOTNOTE></div>
+
+    
+</div></div>
+
+    <div class='nav'>
+  
+        <a class='btn btn-secondary btn-nav' href='./1.3.3.html'>&lt; Previous</a>
+    
+    <div style='flex-grow: 1;'></div>
+  
+        <a class='btn btn-secondary btn-nav' id='29' href='./2.html'>Next &gt;</a>
+      </div>
+    <div class='chapter_sign'>
+      1.3.4&nbsp;&nbsp;
+    <div class="lang-en">
+      
+      Functions
+    
+    as Returned Values</div><div class="lang-ja" style="display:none">戻り値としての
+      
+      関数
+    </div>
+  
+    </div>
+    <script> var chapter_id = 28; </script>
+    <script> var chapter_path = "chapters/1.3.4.html"; </script>
+    <div class='next-page'></div>
+    </div>
+    </div> <!-- /.container -->
+    </body></html>
